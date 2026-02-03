@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>国风筑韵-伊始</title>
+    <style>
+        /* ========== 入口页面样式 ========== */
+        :root {
+            /* 基础颜色 */
+            --bg-color: #000;
+            --text-color: #fff;
+            
+            /* 按钮颜色 */
+            --btn-primary: #eec935b2;
+            --btn-primary-hover: #f39c12;
+            --btn-border: #fffffffb;
+            --btn-shadow: rgba(241, 196, 15, 0.5);
+            --btn-shadow-hover: rgba(241, 196, 15, 0.8);
+            
+            /* 阴影颜色 */
+            --text-shadow: rgba(0, 0, 0, 0.5);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 视频容器 */
+        #video-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* 视频元素 */
+        #intro-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* 开始按钮容器 */
+        #start-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 100px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+        
+        /* 开始按钮显示状态 */
+        #start-container.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* 开始按钮 */
+        #start-btn {
+            padding: 15px 45px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+            background: rgba(241, 196, 15, 0.75);
+            border: 2px solid var(--btn-border);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px var(--text-shadow);
+            box-shadow: 0 0 30px var(--btn-shadow);
+        }
+        
+        /* 开始按钮悬停效果 */
+        #start-btn:hover {
+            background: #f1c40f;
+            transform: scale(1.1);
+            box-shadow: 0 0 50px var(--btn-shadow-hover);
+        }
+        
+        /* 开始按钮点击效果 */
+        #start-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* ========== 鼠标跟随效果样式 ========== */
+        /* 基础样式 */
+        * {
+            cursor: none;
+        }
+
+        /* 鼠标跟随容器 */
+        #mouse-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: visible;
+        }
+
+        /* 鼠标小圆点 */
+        #mouse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        /* 鼠标圆圈 */
+        #mouse-circle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- 鼠标跟随元素 -->
+    <div id="mouse-follower">
+        <div id="mouse-dot"></div>
+        <div id="mouse-circle"></div>
+    </div>
+    
+    <!-- 入口页面 -->
+    <div id="video-container">
+        <!-- 视频元素 -->
+        <video id="intro-video" autoplay muted playsinline>
+            <source src="intro-video.mp4" type="video/mp4">
+        </video>
+        
+        <!-- 开始按钮容器 -->
+        <div id="start-container">
+            <button id="start-btn">开始抽卡</button>
+        </div>
+    </div>
+    
+    <script>
+        // ========== 入口页面脚本 ==========
+        (function() {
+            // 获取DOM元素
+            const introVideo = document.getElementById('intro-video');
+            const startContainer = document.getElementById('start-container');
+            const startBtn = document.getElementById('start-btn');
+            
+            // 视频结束事件处理
+            introVideo.addEventListener('ended', () => {
+                // 定格在最后一帧
+                introVideo.pause();
+                
+                // 显示开始按钮
+                startContainer.classList.add('visible');
+            });
+            
+            // 开始按钮点击事件
+            startBtn.addEventListener('click', () => {
+                // 跳转到加载页面
+                window.location.href = '加载页面.html';
+            });
+        })();
+        
+        // ========== 鼠标跟随效果脚本 ==========
+        (function() {
+            const mouseFollower = document.getElementById('mouse-follower');
+            const mouseDot = document.getElementById('mouse-dot');
+            const mouseCircle = document.getElementById('mouse-circle');
+            
+            if (mouseFollower && mouseDot && mouseCircle) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let circleX = 0;
+                let circleY = 0;
+                
+                // 鼠标移动事件
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    // 直接更新小圆点位置
+                    mouseDot.style.left = mouseX + 'px';
+                    mouseDot.style.top = mouseY + 'px';
+                });
+                
+                // 动画循环，实现圆圈追逐圆点
+                function animate() {
+                    // 计算圆圈到圆点的距离
+                    const dx = mouseX - circleX;
+                    const dy = mouseY - circleY;
+                    
+                    // 平滑追逐效果
+                    circleX += dx * 0.1;
+                    circleY += dy * 0.1;
+                    
+                    // 更新圆圈位置
+                    mouseCircle.style.left = circleX + 'px';
+                    mouseCircle.style.top = circleY + 'px';
+                    
+                    // 继续动画
+                    requestAnimationFrame(animate);
+                }
+                
+                // 鼠标点击事件
+                document.addEventListener('click', () => {
+                    mouseCircle.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    setTimeout(() => {
+                        mouseCircle.style.transform = 'translate(-50%, -50%) scale(1)';
+                    }, 150);
+                });
+                
+                // 启动动画
+                animate();
+            }
+        })();
+    </script>
+</body>
+</html>

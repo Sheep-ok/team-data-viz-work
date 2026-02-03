@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>国风筑韵-观数</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/loaders/GLTFLoader.js"></script>
+    <style>
+        /* ========== 简化二次页面样式 ========== */
+        :root {
+            /* 纯色背景 */
+            --secondary-bg-color: #4a90e2;
+        }
+
+        /* 二次页面容器 - 纯色背景 */
+        #secondary-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--secondary-bg-color);
+            z-index: 3000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        /* 二次页面激活状态 */
+        #secondary-page.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ========== 书本样式 ========== */
+        /* 二次页面背景 */
+        #secondary-page {
+            background: linear-gradient(135deg, #8B4513 0%, #D2B48C 50%, #8B4513 100%);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+            transition: background-image 0.5s ease-in-out;
+        }
+        
+        /* 背景图片样式 - 半透明模糊效果 */
+        #secondary-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            filter: blur(200px) brightness(0.5);
+            transform: scale(1.1);
+            z-index: 1;
+        }
+        
+        /* 确保其他内容在背景之上 */
+        #secondary-page > * {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* 书本容器 */
+        #book-container {
+            perspective: 1200px;
+        }
+        
+        /* 书本 */
+        #book {
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        /* 书页基础样式 */
+        .book-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 253, 240, 0.7);
+            background-image: linear-gradient(to right, rgba(248, 244, 227, 0.6) 0%, rgba(255, 253, 240, 0.6) 100%);
+            border: 2px solid rgba(139, 69, 19, 0.4);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-origin: center center;
+            overflow: hidden;
+            backface-visibility: hidden;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+        
+        /* 活跃页面样式 */
+        .book-page.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: perspective(1000px) rotateY(0deg) translateZ(0px) scale(1);
+            z-index: 10;
+        }
+        
+        /* 页面切换动画 - 上一页退出 */
+        .book-page.prev-exit {
+            opacity: 0;
+            transform: perspective(1000px) rotateY(-90deg) translateZ(-100px) scale(0.8);
+            z-index: 5;
+        }
+        
+        /* 页面切换动画 - 下一页退出 */
+        .book-page.next-exit {
+            opacity: 0;
+            transform: perspective(1000px) rotateY(90deg) translateZ(-100px) scale(0.8);
+            z-index: 5;
+        }
+        
+        /* 页面切换动画 - 上一页进入 */
+        .book-page.prev-enter {
+            opacity: 1;
+            transform: perspective(1000px) rotateY(90deg) translateZ(-100px) scale(0.8);
+            animation: prevPageEnter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        /* 页面切换动画 - 下一页进入 */
+        .book-page.next-enter {
+            opacity: 1;
+            transform: perspective(1000px) rotateY(-90deg) translateZ(-100px) scale(0.8);
+            animation: nextPageEnter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        /* 上一页进入动画 */
+        @keyframes prevPageEnter {
+            to {
+                transform: perspective(1000px) rotateY(0deg) translateZ(0px) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* 下一页进入动画 */
+        @keyframes nextPageEnter {
+            to {
+                transform: perspective(1000px) rotateY(0deg) translateZ(0px) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* 书页内图片样式 */
+        .book-page .page-image {
+            width: 80%;
+            height: 70%;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 2px solid #8B4513;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 图片悬停效果 */
+        .book-page .page-image:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 书页标题 */
+        .book-page h2 {
+            font-size: 24px;
+            color: #8B4513;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* 翻页箭头样式 */
+        .page-arrow {
+            transition: all 0.3s ease;
+            opacity: 0.7;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 箭头悬停效果 */
+        .page-arrow:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.2);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+        
+        /* 数据可视化区域 */
+        .visualization-area {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            padding: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 3D模型容器 */
+        #model-container {
+            border: 2px solid #8B4513;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 二次页面按钮样式 */
+        #secondary-buttons button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #8B4513;
+            background: #fffdf0;
+            border: 2px solid #8B4513;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            min-width: 180px;
+        }
+        
+        #secondary-buttons button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: #f8f4e3;
+        }
+
+        /* ========== 跳过抽卡按钮样式 ========== */
+        .skip-btn {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        /* 跳过抽卡按钮悬停效果 */
+        .skip-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* ========== 鼠标跟随效果样式 ========== */
+        /* 基础样式 */
+        * {
+            cursor: none;
+        }
+
+        /* 鼠标跟随容器 */
+        #mouse-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: visible;
+        }
+
+        /* 鼠标小圆点 */
+        #mouse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        /* 鼠标圆圈 */
+        #mouse-circle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- 鼠标跟随元素 -->
+    <div id="mouse-follower">
+        <div id="mouse-dot"></div>
+        <div id="mouse-circle"></div>
+    </div>
+    
+    <!-- 二次页面：书本样式 -->
+    <div id="secondary-page" class="active">
+        <!-- 3D模型容器（点击图片时弹出） -->
+        <div id="model-container" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 700px; height: 500px; z-index: 1000; background-image: none; background-color: transparent; border-radius: 10px; display: none;">
+            <!-- 返回书本页面按钮 -->
+            <button id="close-model-btn" style="position: absolute; top: 10px; right: 10px; padding: 12px 24px; font-size: 18px; font-weight: bold; color: #8B4513; background: #fffdf0; border: 3px solid #8B4513; border-radius: 30px; cursor: pointer; z-index: 1001; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); text-shadow: 0 0 3px rgba(255, 255, 255, 0.8); transition: all 0.3s ease; display: block; visibility: visible;">返回书本</button>
+        </div>
+        
+        <!-- 数据可视化区域 - 左侧（更长，包含两个图表） -->
+        <div id="visualization-left" class="visualization-area" style="position: absolute; top: 50%; left: 1%; transform: translateY(-50%); width: 385px; height: 700px; z-index: 10;">
+            <!-- 左侧上图表 -->
+            <div id="visualization-left-top" style="width: 100%; height: 340px; margin-bottom: 20px;"></div>
+            <!-- 左侧下图表 -->
+            <div id="visualization-left-bottom" style="width: 100%; height: 340px;"></div>
+        </div>
+        
+        <!-- 数据可视化区域 - 右侧（更长，包含两个图表） -->
+        <div id="visualization-right" class="visualization-area" style="position: absolute; top: 50%; right: 1%; transform: translateY(-50%); width: 385px; height: 700px; z-index: 10;">
+            <!-- 右侧上图表 -->
+            <div id="visualization-right-top" style="width: 100%; height: 340px; margin-bottom: 20px;"></div>
+            <!-- 右侧下图表 -->
+            <div id="visualization-right-bottom" style="width: 100%; height: 340px;"></div>
+        </div>
+        
+        <!-- 书本容器（放在顶部，包含3D图片） -->
+        <div id="book-container" style="position: absolute; top: 3%; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; z-index: 5;">
+            <!-- 书本 -->
+            <div id="book" style="position: relative; width: 100%; height: 100%; transform-style: preserve-3d;">
+                <!-- 书页 -->
+                <div id="page-1" class="book-page active" data-index="1"></div>
+                <div id="page-2" class="book-page" data-index="2"></div>
+                <div id="page-3" class="book-page" data-index="3"></div>
+                <div id="page-4" class="book-page" data-index="4"></div>
+                <div id="page-5" class="book-page" data-index="5"></div>
+                <div id="page-6" class="book-page" data-index="6"></div>
+                <div id="page-7" class="book-page" data-index="7"></div>
+                <div id="page-8" class="book-page" data-index="8"></div>
+            </div>
+        </div>
+        
+        <!-- 翻页箭头（放在书本内部，3D模型图片旁边，更小更靠近） -->
+        <div id="prev-arrow" class="page-arrow prev-arrow" style="position: absolute; top: 30%; left: calc(50% - 300px); transform: translateY(-50%); font-size: 28px; color: #8B4513; cursor: pointer; z-index: 100; background: transparent; padding: 8px 12px; border-radius: 0; box-shadow: none;">←</div>
+        <div id="next-arrow" class="page-arrow next-arrow" style="position: absolute; top: 30%; right: calc(50% - 300px); transform: translateY(-50%); font-size: 28px; color: #8B4513; cursor: pointer; z-index: 100; background: transparent; padding: 8px 12px; border-radius: 0; box-shadow: none;">→</div>
+        
+        <!-- 数据可视化区域 - 底部 -->
+        <div id="visualization-bottom" class="visualization-area" style="position: absolute; bottom: 1.5%; left: 50%; transform: translateX(-50%); width: 600px; height: 270px; z-index: 10;"></div>
+        
+        <!-- 悬浮触发小圆圈 -->
+        <div id="index-trigger" style="z-index: 20; position: absolute; top: 20px; left: 20px; width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; transition: all 0.3s ease;">📋</div>
+        
+        <!-- 侧边索引栏 -->
+        <div id="sidebar-index" class="visualization-area" style="z-index: 20; position: absolute; top: 80px; left: 20px; width: 90px; max-height: 500px; overflow-y: auto; transition: all 0.3s ease;">
+            <h3 style="text-align: center; color: #fff; margin-bottom: 15px; font-size: 14px; text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">建筑派别索引</h3>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li><button class="index-btn" data-index="1" style="width: 100%; padding: 10px; margin-bottom: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;">京派</button></li>
+                <li><button class="index-btn" data-index="2" style="width: 100%; padding: 10px; margin-bottom: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;">粤派</button></li>
+                <li><button class="index-btn" data-index="3" style="width: 100%; padding: 10px; margin-bottom: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;">徽派</button></li>
+                <li><button class="index-btn" data-index="4" style="width: 100%; padding: 10px; margin-bottom: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;">苏派</button></li>
+                <li><button class="index-btn" data-index="5" style="width: 100%; padding: 10px; margin-bottom: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;">晋派</button></li>
+                <li><button class="index-btn" data-index="6" style="width: 100%; padding: 10px; margin-bottom: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;">闽派</button></li>
+                <li><button class="index-btn" data-index="7" style="width: 100%; padding: 10px; margin-bottom: 8px; text-align: center; cursor: pointer; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;">海派</button></li>
+                <li><button class="index-btn" data-index="8" style="width: 100%; padding: 10px; text-align: center; cursor: pointer; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;">川派</button></li>
+            </ul>
+        </div>
+        
+        <!-- 按钮容器 -->
+        <div id="secondary-buttons" style="z-index: 20; position: absolute; bottom: 20px; left: 20px;">
+            <!-- 返回抽卡按钮 -->
+            <button id="secondary-back-btn" style="padding: 8px 3px; font-size: 10px; font-weight: bold; color: #ffffff; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: 0; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);">返回抽卡</button>
+        </div>
+        
+        <!-- 下一步按钮 -->
+        <div style="z-index: 20; position: absolute; bottom: 20px; right: 20px;">
+            <a id="next-page-btn" href="古今对比.html" style="padding: 8px 15px; font-size: 10px; font-weight: bold; color: #ffffff; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 30px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: 0; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); text-decoration: none; display: inline-block;">下一步</a>
+        </div>
+            <style>
+                #secondary-back-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+                    background: rgba(255, 255, 255, 0.15);
+                    border-color: rgba(255, 255, 255, 0.3);
+                }
+                #secondary-back-btn:active {
+                    transform: translateY(0);
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+                    background: rgba(255, 255, 255, 0.05);
+                }
+                
+                /* 下一步按钮悬停效果 */
+                #next-page-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+                    background: rgba(255, 255, 255, 0.15);
+                    border-color: rgba(255, 255, 255, 0.3);
+                }
+                #next-page-btn:active {
+                    transform: translateY(0);
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+                    background: rgba(255, 255, 255, 0.05);
+                }
+                
+                /* 悬浮触发小圆圈样式 */
+                #index-trigger {
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                }
+                
+                /* 悬浮触发小圆圈悬停效果 */
+                #index-trigger:hover {
+                    transform: scale(1.1);
+                    box-shadow: 0 0 20px rgba(139, 69, 19, 0.5);
+                    background: rgba(255, 253, 240, 0.9);
+                    border-color: rgba(139, 69, 19, 0.9);
+                }
+                
+                /* 侧边索引栏样式 */
+                #sidebar-index {
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    border-radius: 12px;
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+                    transform-origin: top center;
+                    transform: translateY(-10px);
+                    opacity: 0;
+                    visibility: hidden;
+                }
+                
+                /* 侧边索引栏显示状态 */
+                #sidebar-index.show {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(0);
+                }
+                
+                /* 索引按钮样式 */
+                .index-btn {
+                    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 2px solid rgba(255, 255, 255, 0.3);
+                    color: #fff;
+                }
+                
+                /* 索引按钮悬停效果 */
+                .index-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                    background: rgba(255, 255, 255, 0.2);
+                    border-color: rgba(255, 255, 255, 0.5);
+                    color: #fff;
+                }
+                
+                /* 索引按钮激活状态 */
+                .index-btn.active {
+                    background: rgba(255, 255, 255, 0.25);
+                    color: #fff;
+                    border-color: rgba(255, 255, 255, 0.6);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+                    position: relative;
+                }
+                
+                /* 激活状态的小圆点指示器 */
+                .index-btn.active::after {
+                    content: '';
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: #fff;
+                    box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+                }
+                
+                /* 索引按钮点击效果 */
+                .index-btn:active {
+                    transform: translateY(0);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                }
+            </style>
+        </div>
+    </div>
+    
+    <script>
+        // ========== 数据可视页面脚本 ==========
+        (function() {
+            // ========== DOM元素引用 ==========
+            const secondaryPage = document.getElementById('secondary-page'); // 二次页面容器
+            const secondaryBackBtn = document.getElementById('secondary-back-btn'); // 返回抽卡按钮
+            const prevArrow = document.getElementById('prev-arrow'); // 上一页箭头
+            const nextArrow = document.getElementById('next-arrow'); // 下一页箭头
+            
+            // ========== 变量定义 ==========
+            let currentPageIndex = 1; // 当前页面索引
+            let isModelVisible = false; // 3D模型是否可见
+            
+            // 建筑派别数据
+            const factionData = [
+                { name: '京派', frontImage: '京front.png', model: '北京四合院.glb' },
+                { name: '粤派', frontImage: '粤front.png', model: '广东镬耳墙.glb' },
+                { name: '徽派', frontImage: '徽front.png', model: '安徽马头墙.glb' },
+                { name: '苏派', frontImage: '苏front.png', model: '苏州庭院.glb' },
+                { name: '晋派', frontImage: '晋front.png', model: '山西大院.glb' },
+                { name: '闽派', frontImage: '闽front.png', model: '福建土楼.glb' },
+                { name: '海派', frontImage: '海front.png', model: '上海石库门.glb' },
+                { name: '川派', frontImage: '川front.png', model: '川渝吊脚楼.glb' }
+            ];
+            
+            // 建筑派别详细数据（用于可视化）
+            const visualizationData = {
+                1: { // 京派
+                    name: '京派',
+                    pie: [
+                        { name: '对称性', value: 90 },
+                        { name: '色彩鲜明', value: 85 },
+                        { name: '等级分明', value: 95 },
+                        { name: '历史悠久', value: 92 }
+                    ],
+                    // 北京胡同数量历史演变数据
+                    hutong: [
+                        { period: '元代', count: 413, source: '翁立《北京的胡同》' },
+                        { period: '明代', count: 1170, source: '《京师五城坊巷胡同集》' },
+                        { period: '清代', count: 1938, source: '《京师坊巷志稿》（取中间值）' },
+                        { period: '民国', count: 3200, source: '多田贞一《北京地名志》' },
+                        { period: '新中国成立初', count: 2550, source: '官方统计' },
+                        { period: '1998年', count: 990, source: '地图出版社调查' }
+                    ],
+                    bar: [
+                        { name: '明清时期', value: 85 },
+                        { name: '民国时期', value: 70 },
+                        { name: '现代', value: 60 }
+                    ],
+                    scatter: [
+                        [80, 90], [85, 85], [90, 95], [95, 92], [75, 88]
+                    ]
+                },
+                2: { // 粤派
+                    name: '粤派',
+                    pie: [
+                        { name: '镬耳墙', value: 92 },
+                        { name: '通风散热', value: 88 },
+                        { name: '装饰精美', value: 90 },
+                        { name: '防潮设计', value: 85 }
+                    ],
+                    bar: [
+                        { name: '明清时期', value: 82 },
+                        { name: '民国时期', value: 78 },
+                        { name: '现代', value: 75 }
+                    ],
+                    scatter: [
+                        [85, 92], [88, 88], [90, 90], [85, 85], [92, 88]
+                    ]
+                },
+                3: { // 徽派
+                    name: '徽派',
+                    pie: [
+                        { name: '马头墙', value: 95 },
+                        { name: '天井设计', value: 88 },
+                        { name: '粉墙黛瓦', value: 92 },
+                        { name: '木雕精湛', value: 90 }
+                    ],
+                    bar: [
+                        { name: '明清时期', value: 90 },
+                        { name: '民国时期', value: 75 },
+                        { name: '现代', value: 65 }
+                    ],
+                    scatter: [
+                        [90, 95], [88, 88], [92, 92], [90, 90], [85, 85]
+                    ]
+                },
+                4: { // 苏派
+                    name: '苏派',
+                    pie: [
+                        { name: '园林设计', value: 95 },
+                        { name: '小巧玲珑', value: 90 },
+                        { name: '移步换景', value: 92 },
+                        { name: '雅致精美', value: 94 }
+                    ],
+                    bar: [
+                        { name: '明清时期', value: 92 },
+                        { name: '民国时期', value: 80 },
+                        { name: '现代', value: 70 }
+                    ],
+                    scatter: [
+                        [92, 95], [90, 90], [92, 92], [94, 94], [88, 88]
+                    ]
+                },
+                5: { // 晋派
+                    name: '晋派',
+                    pie: [
+                        { name: '高墙深院', value: 93 },
+                        { name: '层楼叠院', value: 90 },
+                        { name: '防御性强', value: 95 },
+                        { name: '砖雕精美', value: 88 }
+                    ],
+                    bar: [
+                        { name: '明清时期', value: 88 },
+                        { name: '民国时期', value: 72 },
+                        { name: '现代', value: 68 }
+                    ],
+                    scatter: [
+                        [88, 93], [90, 90], [95, 95], [88, 88], [85, 85]
+                    ]
+                },
+                6: { // 闽派
+                    name: '闽派',
+                    pie: [
+                        { name: '土楼结构', value: 95 },
+                        { name: '聚族而居', value: 90 },
+                        { name: '防御功能', value: 92 },
+                        { name: '抗震性能', value: 88 }
+                    ],
+                    bar: [
+                        { name: '宋元时期', value: 80 },
+                        { name: '明清时期', value: 90 },
+                        { name: '现代', value: 75 }
+                    ],
+                    scatter: [
+                        [80, 95], [90, 90], [92, 92], [88, 88], [85, 85]
+                    ]
+                },
+                7: { // 海派
+                    name: '海派',
+                    pie: [
+                        { name: '中西合璧', value: 95 },
+                        { name: '多样化', value: 92 },
+                        { name: '商业特色', value: 88 },
+                        { name: '现代化', value: 90 }
+                    ],
+                    bar: [
+                        { name: '19世纪末', value: 75 },
+                        { name: '20世纪初', value: 88 },
+                        { name: '现代', value: 95 }
+                    ],
+                    scatter: [
+                        [75, 95], [88, 92], [95, 88], [90, 90], [85, 85]
+                    ]
+                },
+                8: { // 川派
+                    name: '川派',
+                    pie: [
+                        { name: '吊脚结构', value: 93 },
+                        { name: '依山傍水', value: 90 },
+                        { name: '通风防潮', value: 88 },
+                        { name: '木质结构', value: 85 }
+                    ],
+                    bar: [
+                        { name: '唐宋时期', value: 85 },
+                        { name: '明清时期', value: 90 },
+                        { name: '现代', value: 80 }
+                    ],
+                    scatter: [
+                        [85, 93], [90, 90], [88, 88], [85, 85], [92, 88]
+                    ]
+                }
+            };
+            
+            // ECharts实例 - 支持左右两侧各两个图表和底部图表
+            let leftTopChart = null;
+            let leftBottomChart = null;
+            let rightTopChart = null;
+            let rightBottomChart = null;
+            let bottomChart = null;
+            
+            // 初始化图表
+            function initCharts() {
+                // 初始化左侧上图表（饼图）
+                const leftTopContainer = document.getElementById('visualization-left-top');
+                if (leftTopContainer) {
+                    leftTopChart = echarts.init(leftTopContainer);
+                }
+                
+                // 初始化左侧下图表（柱状图）
+                const leftBottomContainer = document.getElementById('visualization-left-bottom');
+                if (leftBottomContainer) {
+                    leftBottomChart = echarts.init(leftBottomContainer);
+                }
+                
+                // 初始化右侧上图表（雷达图）
+                const rightTopContainer = document.getElementById('visualization-right-top');
+                if (rightTopContainer) {
+                    rightTopChart = echarts.init(rightTopContainer);
+                }
+                
+                // 初始化右侧下图表（折线图）
+                const rightBottomContainer = document.getElementById('visualization-right-bottom');
+                if (rightBottomContainer) {
+                    rightBottomChart = echarts.init(rightBottomContainer);
+                }
+                
+                // 初始化底部图表（柱状图）
+                const bottomContainer = document.getElementById('visualization-bottom');
+                if (bottomContainer) {
+                    bottomChart = echarts.init(bottomContainer);
+                }
+            }
+            
+            // 更新图表
+            function updateCharts(pageIndex) {
+                const data = visualizationData[pageIndex];
+                if (!data) return;
+                
+                // 更新左侧上图表 - 京派显示胡同数量折线图，其他派别显示建筑特点饼图
+                if (leftTopChart) {
+                    if (pageIndex === 1 && data.hutong) {
+                        // 京派 - 胡同数量历史演变折线图
+                        const lineOption = {
+                            title: {
+                                text: '北京胡同数量历史演变',
+                                subtext: '单位：条',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                },
+                                subtextStyle: {
+                                    color: '#fff',
+                                    fontSize: 12
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                formatter: function(params) {
+                                    const item = data.hutong[params[0].dataIndex];
+                                    return `${item.period}<br/>胡同数量：${item.count}条<br/>数据来源：${item.source}`;
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: data.hutong.map(item => item.period),
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11,
+                                    rotate: 30
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                min: 0,
+                                max: 3500,
+                                interval: 500,
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '胡同数量',
+                                    type: 'line',
+                                    data: data.hutong.map(item => item.count),
+                                    lineStyle: {
+                                        color: '#8B4513', // 深棕色
+                                        width: 2
+                                    },
+                                    itemStyle: {
+                                        color: '#8B4513',
+                                        borderColor: '#fff',
+                                        borderWidth: function(params) {
+                                            // 民国（峰值）和1998年（大幅下降）用红色边框标记
+                                            return (params.dataIndex === 3 || params.dataIndex === 5) ? 3 : 0;
+                                        },
+                                        color: function(params) {
+                                            // 民国（峰值）和1998年（大幅下降）用红色标记
+                                            return (params.dataIndex === 3 || params.dataIndex === 5) ? '#ff0000' : '#8B4513';
+                                        }
+                                    },
+                                    symbol: 'circle',
+                                    symbolSize: 6,
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        color: '#fff',
+                                        fontSize: 10,
+                                        formatter: function(params) {
+                                            return params.value + '条';
+                                        }
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                // 民国峰值注释
+                                {
+                                    type: 'text',
+                                    left: '65%',
+                                    top: '15%',
+                                    style: {
+                                        text: '民国峰值',
+                                        fill: '#fff',
+                                        fontSize: 10
+                                    }
+                                },
+                                // 1998年下降注释
+                                {
+                                    type: 'text',
+                                    left: '90%',
+                                    top: '85%',
+                                    style: {
+                                        text: '城市化影响',
+                                        fill: '#fff',
+                                        fontSize: 10
+                                    }
+                                },
+                                // 数据来源标注
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '95%',
+                                    style: {
+                                        text: '数据综合自文献及官方统计',
+                                        fill: '#fff',
+                                        fontSize: 10
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftTopChart.setOption(lineOption);
+                    } else {
+                        // 其他派别 - 建筑特点饼图
+                        const pieOption = {
+                            title: {
+                                text: data.name + '建筑特点',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            tooltip: {},
+                            color: [
+                                '#D2B48C', // 浅棕色
+                                '#BC8F8F', // 玫瑰棕色
+                                '#8B4513', // 深棕色
+                                '#CD853F', // 秘鲁色
+                                '#DEB887', // 棕褐色
+                                '#A0522D'  // 沙棕色
+                            ],
+                            series: [
+                                {
+                                    name: data.name + '建筑特点',
+                                    type: 'pie',
+                                    radius: ['40%', '80%'],
+                                    data: data.pie,
+                                    emphasis: {
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    },
+                                    label: {
+                                        color: '#fff',
+                                        fontSize: 12
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftTopChart.setOption(pieOption);
+                    }
+                }
+                
+                // 更新左侧下图表 - 建筑属性柱状图
+                if (leftBottomChart) {
+                    const barOption = {
+                        title: {
+                            text: '建筑属性对比',
+                            left: 'center',
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 14
+                            }
+                        },
+                        tooltip: {},
+                        xAxis: {
+                            type: 'category',
+                            data: ['美观度', '实用性', '历史价值', '文化内涵'],
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 11
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 11
+                            }
+                        },
+                        series: [
+                            {
+                                name: data.name + '属性',
+                                data: [85, 80, 90, 95],
+                                type: 'bar',
+                                itemStyle: {
+                                    color: '#D2B48C'
+                                }
+                            }
+                        ],
+                        backgroundColor: 'transparent'
+                    };
+                    leftBottomChart.setOption(barOption);
+                }
+                
+                // 更新右侧上图表 - 建筑评分雷达图
+                if (rightTopChart) {
+                    const radarOption = {
+                        title: {
+                            text: '建筑评分雷达图',
+                            left: 'center',
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 14
+                            }
+                        },
+                        tooltip: {},
+                        radar: {
+                            indicator: [
+                                { name: '美观度', max: 100 },
+                                { name: '实用性', max: 100 },
+                                { name: '历史价值', max: 100 },
+                                { name: '文化内涵', max: 100 },
+                                { name: '结构复杂度', max: 100 },
+                                { name: '地域特色', max: 100 }
+                            ],
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.3)'
+                                }
+                            },
+                            splitArea: {
+                                areaStyle: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            name: {
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 10
+                                }
+                            }
+                        },
+                        series: [
+                            {
+                                name: data.name + '评分',
+                                type: 'radar',
+                                data: [{
+                                    value: [85, 80, 90, 95, 75, 92],
+                                    name: data.name
+                                }],
+                                itemStyle: {
+                                    color: '#D2B48C'
+                                },
+                                areaStyle: {
+                                    color: 'rgba(210, 180, 140, 0.3)'
+                                }
+                            }
+                        ],
+                        backgroundColor: 'transparent'
+                    };
+                    rightTopChart.setOption(radarOption);
+                }
+                
+                // 更新右侧下图表 - 历史发展折线图
+                if (rightBottomChart) {
+                    const lineOption = {
+                        title: {
+                            text: '历史发展趋势',
+                            left: 'center',
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 14
+                            }
+                        },
+                        tooltip: {},
+                        xAxis: {
+                            type: 'category',
+                            data: ['唐宋', '明清', '民国', '现代'],
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 11
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: '发展指数',
+                            axisLabel: {
+                                color: '#fff',
+                                fontSize: 11
+                            }
+                        },
+                        series: [
+                            {
+                                name: data.name + '发展',
+                                data: [60, 85, 75, 90],
+                                type: 'line',
+                                smooth: true,
+                                itemStyle: {
+                                    color: '#D2B48C'
+                                },
+                                lineStyle: {
+                                    width: 3
+                                }
+                            }
+                        ],
+                        backgroundColor: 'transparent'
+                    };
+                    rightBottomChart.setOption(lineOption);
+                }
+                
+                // 更新底部图表（柱状图）
+                if (bottomChart) {
+                    const barOption = {
+                        title: {
+                            text: '影响力对比',
+                            left: 'center',
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 16
+                            }
+                        },
+                        tooltip: {},
+                        xAxis: {
+                            type: 'category',
+                            data: ['京派', '粤派', '徽派', '苏派', '晋派', '闽派', '海派', '川派'],
+                            axisLabel: {
+                                color: '#fff',
+                                rotate: 45
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: '影响力指数',
+                            axisLabel: {
+                                color: '#fff'
+                            }
+                        },
+                        series: [
+                            {
+                                name: '影响力',
+                                data: [95, 88, 92, 90, 85, 87, 91, 86],
+                                type: 'bar',
+                                itemStyle: {
+                                    color: '#D2B48C'
+                                }
+                            }
+                        ],
+                        backgroundColor: 'transparent'
+                    };
+                    bottomChart.setOption(barOption);
+                }
+            }
+            
+            // 窗口大小变化时调整图表
+            window.addEventListener('resize', function() {
+                if (leftTopChart) leftTopChart.resize();
+                if (leftBottomChart) leftBottomChart.resize();
+                if (rightTopChart) rightTopChart.resize();
+                if (rightBottomChart) rightBottomChart.resize();
+                if (bottomChart) bottomChart.resize();
+            });
+            
+            // 为悬浮触发小圆圈添加事件监听器
+            function bindIndexTrigger() {
+                const indexTrigger = document.getElementById('index-trigger');
+                const sidebarIndex = document.getElementById('sidebar-index');
+                
+                if (indexTrigger && sidebarIndex) {
+                    // 移除现有监听器，避免重复绑定
+                    indexTrigger.removeEventListener('mouseenter', showSidebarIndex);
+                    indexTrigger.removeEventListener('mouseleave', hideSidebarIndex);
+                    sidebarIndex.removeEventListener('mouseenter', showSidebarIndex);
+                    sidebarIndex.removeEventListener('mouseleave', hideSidebarIndex);
+                    
+                    // 添加鼠标悬停事件监听器
+                    indexTrigger.addEventListener('mouseenter', showSidebarIndex);
+                    indexTrigger.addEventListener('mouseleave', hideSidebarIndex);
+                    
+                    // 为索引栏本身也添加事件监听器，确保鼠标移到索引栏上时不会隐藏
+                    sidebarIndex.addEventListener('mouseenter', showSidebarIndex);
+                    sidebarIndex.addEventListener('mouseleave', hideSidebarIndex);
+                }
+            }
+            
+            // 显示侧边索引栏
+            function showSidebarIndex() {
+                const sidebarIndex = document.getElementById('sidebar-index');
+                if (sidebarIndex) {
+                    sidebarIndex.classList.add('show');
+                }
+            }
+            
+            // 隐藏侧边索引栏
+            function hideSidebarIndex() {
+                const sidebarIndex = document.getElementById('sidebar-index');
+                if (sidebarIndex) {
+                    sidebarIndex.classList.remove('show');
+                }
+            }
+            
+            // 为侧边索引栏按钮添加事件监听器
+            function bindIndexButtons() {
+                const indexButtons = document.querySelectorAll('.index-btn');
+                indexButtons.forEach(button => {
+                    // 移除现有监听器，避免重复绑定
+                    button.removeEventListener('click', handleIndexClick);
+                    button.addEventListener('click', handleIndexClick);
+                });
+                
+                // 初始化激活状态
+                updateIndexButtonState(currentPageIndex);
+            }
+            
+            // 处理索引按钮点击事件
+            function handleIndexClick(event) {
+                const target = event.currentTarget;
+                const pageIndex = parseInt(target.getAttribute('data-index'));
+                
+                if (pageIndex && pageIndex !== currentPageIndex) {
+                    // 更新页面索引
+                    currentPageIndex = pageIndex;
+                    
+                    // 更新索引按钮状态
+                    updateIndexButtonState(pageIndex);
+                    
+                    // 更新页面显示
+                    showPage(pageIndex);
+                    
+                    // 更新图表数据
+                    updateCharts(pageIndex);
+                }
+            }
+            
+            // 更新索引按钮激活状态
+            function updateIndexButtonState(activeIndex) {
+                const indexButtons = document.querySelectorAll('.index-btn');
+                indexButtons.forEach(button => {
+                    const btnIndex = parseInt(button.getAttribute('data-index'));
+                    if (btnIndex === activeIndex) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+            
+            // 为3D模型容器关闭按钮添加事件监听器
+            function bindCloseModelBtn() {
+                const closeModelBtn = document.getElementById('close-model-btn');
+                if (closeModelBtn) {
+                    // 移除现有监听器，避免重复绑定
+                    closeModelBtn.removeEventListener('click', handleCloseModel);
+                    closeModelBtn.addEventListener('click', handleCloseModel);
+                    
+                    // 添加调试日志
+                    console.log('Close button event listener bound');
+                    // 确保按钮可见
+                    closeModelBtn.style.display = 'block';
+                    closeModelBtn.style.visibility = 'visible';
+                } else {
+                    console.warn('Close button not found');
+                }
+            }
+            
+            // 关闭模型的处理函数
+            function handleCloseModel() {
+                const modelContainer = document.getElementById('model-container');
+                if (modelContainer && isModelVisible) {
+                    modelContainer.style.display = 'none';
+                    hideModelHint();
+                    dispose3DScene();
+                    isModelVisible = false;
+                }
+            }
+            
+            // 页面加载完成后绑定事件
+            document.addEventListener('DOMContentLoaded', function() {
+                bindCloseModelBtn();
+                bindIndexButtons();
+                bindIndexTrigger();
+            });
+            
+            // 在切换3D模型显示时重新绑定事件，确保按钮始终可用
+            window.addEventListener('resize', function() {
+                bindCloseModelBtn();
+                bindIndexButtons();
+                bindIndexTrigger();
+            });
+            
+            // 初始化书页内容
+            function initBookPages() {
+                for (let i = 0; i < factionData.length; i++) {
+                    const page = document.getElementById(`page-${i+1}`);
+                    if (page) {
+                        // 清空页面内容
+                        page.innerHTML = '';
+                        
+                        // 添加标题
+                        const title = document.createElement('h2');
+                        title.textContent = factionData[i].name;
+                        page.appendChild(title);
+                        
+                        // 添加图片
+                        const image = document.createElement('img');
+                        image.src = factionData[i].frontImage;
+                        image.className = 'page-image';
+                        image.alt = factionData[i].name;
+                        image.onclick = () => toggle3DModel(i+1);
+                        page.appendChild(image);
+                        
+                        // 添加文字提示：点击图片查看3D模型
+                        const hint = document.createElement('div');
+                        hint.style.cssText = 'position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 16px; font-weight: bold; color: #8B4513; text-shadow: 0 0 3px rgba(255, 255, 255, 0.8); background: rgba(255, 253, 240, 0.7); padding: 8px 16px; border-radius: 20px; z-index: 10;';
+                        hint.textContent = '点击图片查看3D模型';
+                        page.appendChild(hint);
+                    }
+                }
+            }
+            
+            // 3D模型相关变量
+            let scene, camera, renderer, controls, model;
+            
+            // 初始化3D场景
+            function init3DScene() {
+                console.log('Initializing 3D scene...');
+                
+                // 获取容器
+                const container = document.getElementById('model-container');
+                if (!container) {
+                    console.error('Model container not found!');
+                    return;
+                }
+                
+                // 清空容器
+                container.innerHTML = '';
+                
+                // 创建场景
+                scene = new THREE.Scene();
+                scene.background = null; // 透明背景，使用容器背景
+                
+                // 获取容器尺寸
+                const containerWidth = container.clientWidth;
+                const containerHeight = container.clientHeight;
+                
+                // 创建相机 - 使用容器宽高比
+                camera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
+                camera.position.z = 5;
+                
+                // 创建渲染器 - 使用容器尺寸
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setSize(containerWidth, containerHeight);
+                
+                // 设置渲染器的z-index，确保它在按钮下方
+                renderer.domElement.style.zIndex = '1000';
+                
+                // 添加渲染器到容器
+                container.appendChild(renderer.domElement);
+                
+                // 确保按钮始终显示在渲染器之上
+                // 重新创建按钮，确保它在DOM中的位置正确
+                let closeBtn = document.getElementById('close-model-btn');
+                
+                // 如果按钮已经存在，先移除它
+                if (closeBtn) {
+                    closeBtn.remove();
+                }
+                
+                // 创建新的返回按钮
+                closeBtn = document.createElement('button');
+                closeBtn.id = 'close-model-btn';
+                closeBtn.innerHTML = '返回';
+                closeBtn.style.cssText = 'position: absolute; top: 10px; right: 10px; padding: 8px 16px; font-size: 14px; font-weight: bold; color: #8B4513; background: #fffdf0; border: 2px solid #8B4513; border-radius: 20px; cursor: pointer; z-index: 1001; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3); text-shadow: 0 0 3px rgba(255, 255, 255, 0.8); transition: all 0.3s ease; display: block; visibility: visible;';
+                
+                // 添加悬停效果
+                closeBtn.onmouseenter = function() {
+                    closeBtn.style.transform = 'scale(1.05)';
+                    closeBtn.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.4)';
+                };
+                closeBtn.onmouseleave = function() {
+                    closeBtn.style.transform = 'scale(1)';
+                    closeBtn.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.3)';
+                };
+                
+                // 添加点击事件
+                closeBtn.addEventListener('click', handleCloseModel);
+                
+                // 添加按钮到容器
+                container.appendChild(closeBtn);
+                
+                console.log('Return to book button created and added to container');
+                
+                // 添加多种光源，确保模型被充分照亮
+                // 环境光
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+                scene.add(ambientLight);
+                
+                // 方向光 - 模拟太阳光
+                const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
+                directionalLight1.position.set(5, 10, 7.5);
+                scene.add(directionalLight1);
+                
+                const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.7);
+                directionalLight2.position.set(-5, 5, -7.5);
+                scene.add(directionalLight2);
+                
+                // 点光源
+                const pointLight1 = new THREE.PointLight(0xffffff, 0.8);
+                pointLight1.position.set(0, 5, 5);
+                scene.add(pointLight1);
+                
+                const pointLight2 = new THREE.PointLight(0xffffff, 0.7);
+                pointLight2.position.set(5, 0, -5);
+                scene.add(pointLight2);
+                
+                const pointLight3 = new THREE.PointLight(0xffffff, 0.7);
+                pointLight3.position.set(-5, 0, 5);
+                scene.add(pointLight3);
+                
+                // 添加两个新光源，总共8个灯光
+                const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.7);
+                directionalLight3.position.set(0, -10, 0);
+                scene.add(directionalLight3);
+                
+                const pointLight4 = new THREE.PointLight(0xffffff, 0.5);
+                pointLight4.position.set(0, -5, -5);
+                scene.add(pointLight4);
+                
+                // 尝试创建轨道控制器
+                try {
+                    controls = new THREE.OrbitControls(camera, renderer.domElement);
+                    
+                    // 设置控制参数，初始和最小限制为页面的五分之一，最大放大为四分之一
+                    controls.minDistance = 2.0; // 限制最小距离（最大放大为页面的四分之一）
+                    controls.maxDistance = 6; // 减小最大距离，使最小缩放限制变大
+                    controls.zoomSpeed = 0.8; // 调整缩放速度，加快一点
+                    controls.enableDamping = true; // 启用阻尼效果
+                    controls.dampingFactor = 0.05; // 阻尼系数
+                    controls.minPolarAngle = 0; // 最小极角
+                    controls.maxPolarAngle = Math.PI; // 最大极角
+                    
+                    console.log('OrbitControls initialized successfully with zoom limits');
+                } catch (error) {
+                    console.warn('OrbitControls not available, continuing without controls:', error);
+                    controls = null;
+                }
+                
+                console.log('3D scene initialized successfully');
+            }
+            
+            // 加载GLB模型
+            function loadGLBModel() {
+                console.log('Loading GLB model...');
+                
+                // 根据当前页面索引选择对应的GLB文件
+                let modelPath;
+                switch (currentPageIndex) {
+                    case 1: // 京派
+                        modelPath = '北京四合院.glb';
+                        break;
+                    case 2: // 粤派
+                        modelPath = '广东镬耳墙.glb';
+                        break;
+                    case 3: // 徽派
+                        modelPath = '安徽马头墙.glb';
+                        break;
+                    case 4: // 苏派
+                        modelPath = '苏州庭院.glb';
+                        break;
+                    case 5: // 晋派
+                        modelPath = '山西大院.glb';
+                        break;
+                    case 6: // 闽派
+                        modelPath = '福建土楼.glb';
+                        break;
+                    case 7: // 海派
+                        modelPath = '上海石库门.glb';
+                        break;
+                    case 8: // 川派
+                        modelPath = '川渝吊脚楼.glb';
+                        break;
+                    default:
+                        console.warn('No GLB model specified for page', currentPageIndex);
+                        return;
+                }
+                
+                console.log('Loading model:', modelPath);
+                
+                // 尝试创建GLTFLoader实例
+                try {
+                    const loader = new THREE.GLTFLoader();
+                    
+                    loader.load(
+                        modelPath,
+                        function (gltf) {
+                            console.log('Model loaded successfully:', gltf);
+                            
+                            // 确保场景存在（防止异步加载完成时场景已被销毁）
+                            if (!scene) {
+                                console.warn('Scene is null, cannot add model');
+                                return;
+                            }
+                            
+                            // 移除旧模型（如果存在）
+                            if (model) {
+                                scene.remove(model);
+                                console.log('Old model removed from scene');
+                            }
+                            
+                            model = gltf.scene;
+                            
+                            // 计算模型边界盒，用于调整位置和缩放
+                            const box = new THREE.Box3().setFromObject(model);
+                            const center = box.getCenter(new THREE.Vector3());
+                            const size = box.getSize(new THREE.Vector3());
+                            
+                            // 将模型居中并调整位置
+                            model.position.sub(center);
+                            model.position.y = -0.9; // 模型再往下放一点
+                            
+                            // 移除旋转，让模型正对着相机
+                            model.rotation.set(0, 0, 0);
+                            
+                            // 计算合适的缩放比例，让模型大小适中
+                            const maxDim = Math.max(size.x, size.y, size.z);
+                            const scale = 2.5 / maxDim; // 调整缩放比例，使模型大小适中
+                            model.scale.setScalar(scale);
+                            
+                            // 添加模型到场景
+                            scene.add(model);
+                            
+                            // 调整相机位置，让模型居中显示
+                            const cameraDistance = 3 * scale;
+                            camera.position.set(0, scale * size.y / 2 - 0.9, cameraDistance);
+                            camera.lookAt(0, -0.9, 0); // 相机正对着模型中心（考虑模型下移）
+                            
+                            console.log('Model added to scene');
+                        },
+                        function (xhr) {
+                            console.log('Loading progress:', (xhr.loaded / xhr.total * 100) + '%');
+                        },
+                        function (error) {
+                            console.error('Error loading model:', error);
+                        }
+                    );
+                } catch (error) {
+                    console.error('Failed to create GLTFLoader:', error);
+                    
+                    // 确保场景存在
+                    if (!scene) {
+                        console.warn('Scene is null, cannot add fallback cube');
+                        return;
+                    }
+                    
+                    // 移除旧模型（如果存在）
+                    if (model) {
+                        scene.remove(model);
+                    }
+                    
+                    // 创建一个简单的立方体作为替代
+                    const geometry = new THREE.BoxGeometry(1, 1, 1);
+                    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+                    model = new THREE.Mesh(geometry, material);
+                    scene.add(model);
+                    console.log('Added fallback cube since GLTFLoader failed');
+                }
+            }
+            
+            // 渲染循环
+            function animate3D() {
+                requestAnimationFrame(animate3D);
+                if (controls) controls.update();
+                if (renderer && scene && camera) {
+                    renderer.render(scene, camera);
+                }
+            }
+            
+            // 清理3D资源
+            function dispose3DScene() {
+                if (renderer) {
+                    const container = document.getElementById('model-container');
+                    if (container && renderer.domElement) {
+                        container.removeChild(renderer.domElement);
+                    }
+                    renderer.dispose();
+                    renderer = null;
+                }
+                
+                scene = null;
+                camera = null;
+                model = null;
+                controls = null;
+            }
+            
+            // 创建并显示3D模型操作提示
+            function createModelHint() {
+                // 检查是否已经存在提示
+                let hint = document.getElementById('model-hint');
+                if (hint) {
+                    // 如果已经存在，显示它
+                    hint.style.display = 'block';
+                    hint.style.opacity = '0';
+                    hint.style.transform = 'translateY(-20px) scale(0.9)';
+                    setTimeout(() => {
+                        hint.style.opacity = '1';
+                        hint.style.transform = 'translateY(0) scale(1)';
+                    }, 10);
+                    return;
+                }
+                
+                // 创建新的提示元素
+                hint = document.createElement('div');
+                hint.id = 'model-hint';
+                hint.style.cssText = 'position: absolute; top: 60px; right: 10px; padding: 15px; background: rgba(255, 253, 240, 0.3); backdrop-filter: blur(10px); border: 2px solid rgba(139, 69, 19, 0.5); border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); z-index: 1001; max-width: 300px; font-size: 16px; font-weight: bold; color: #8B4513; opacity: 0; transform: translateY(-20px) scale(0.9); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);';
+                
+                // 创建提示内容
+                const hintContent = document.createElement('div');
+                hintContent.innerHTML = '<p>操作提示：</p><p>• 鼠标滑轮：放大缩小模型</p><p>• 按住鼠标左键：拖拽旋转模型</p>';
+                hint.appendChild(hintContent);
+                
+                // 创建关闭按钮
+                const closeBtn = document.createElement('button');
+                closeBtn.innerHTML = '×';
+                closeBtn.style.cssText = 'position: absolute; top: 5px; right: 10px; width: 24px; height: 24px; border: none; background: rgba(139, 69, 19, 0.8); color: white; border-radius: 50%; cursor: pointer; font-size: 16px; line-height: 1; text-align: center; transition: all 0.3s ease;';
+                closeBtn.onclick = function() {
+                    hint.style.opacity = '0';
+                    hint.style.transform = 'translateY(-20px) scale(0.9)';
+                    setTimeout(() => {
+                        hint.style.display = 'none';
+                    }, 500);
+                };
+                // 添加悬停效果
+                closeBtn.onmouseenter = function() {
+                    closeBtn.style.background = 'rgba(139, 69, 19, 1)';
+                    closeBtn.style.transform = 'scale(1.1)';
+                };
+                closeBtn.onmouseleave = function() {
+                    closeBtn.style.background = 'rgba(139, 69, 19, 0.8)';
+                    closeBtn.style.transform = 'scale(1)';
+                };
+                hint.appendChild(closeBtn);
+                
+                // 添加到模型容器
+                const modelContainer = document.getElementById('model-container');
+                if (modelContainer) {
+                    modelContainer.appendChild(hint);
+                    
+                    // 触发动画
+                    setTimeout(() => {
+                        hint.style.opacity = '1';
+                        hint.style.transform = 'translateY(0) scale(1)';
+                    }, 10);
+                }
+            }
+            
+            // 隐藏3D模型操作提示
+            function hideModelHint() {
+                const hint = document.getElementById('model-hint');
+                if (hint) {
+                    // 添加隐藏动画
+                    hint.style.opacity = '0';
+                    hint.style.transform = 'translateY(-20px) scale(0.9)';
+                    setTimeout(() => {
+                        hint.style.display = 'none';
+                    }, 500);
+                }
+            }
+            
+            // 切换3D模型显示
+            function toggle3DModel(pageIndex) {
+                currentPageIndex = pageIndex;
+                const modelContainer = document.getElementById('model-container');
+                const secondaryPage = document.getElementById('secondary-page');
+                
+                if (!isModelVisible) {
+                    // 显示3D模型
+                    modelContainer.style.display = 'block';
+                    
+                    // 设置3D模型容器背景与书本背景一致，只显示图片，不添加其他颜色
+                    if (secondaryPage) {
+                        modelContainer.style.backgroundImage = secondaryPage.style.backgroundImage;
+                        modelContainer.style.backgroundBlendMode = 'normal';
+                        modelContainer.style.backgroundSize = 'cover';
+                        modelContainer.style.backgroundPosition = 'center';
+                        modelContainer.style.backgroundRepeat = 'no-repeat';
+                        modelContainer.style.backgroundColor = 'transparent';
+                    }
+                    
+                    init3DScene();
+                    loadGLBModel();
+                    animate3D();
+                    
+                    // 重新绑定关闭按钮事件，确保按钮可见且可用
+                    bindCloseModelBtn();
+                    
+                    // 创建并显示操作提示
+                    createModelHint();
+                    
+                    isModelVisible = true;
+                } else {
+                    // 隐藏3D模型
+                    modelContainer.style.display = 'none';
+                    dispose3DScene();
+                    isModelVisible = false;
+                }
+            }
+            
+            // 显示指定页面
+            function showPage(index, direction) {
+                // 隐藏所有页面
+                const pages = document.querySelectorAll('.book-page');
+                const currentPage = document.getElementById(`page-${currentPageIndex}`);
+                
+                // 重置所有页面状态
+                pages.forEach(page => {
+                    page.classList.remove('active', 'prev-exit', 'next-exit', 'prev-enter', 'next-enter');
+                    page.style.opacity = '0';
+                    page.style.pointerEvents = 'none';
+                });
+                
+                // 为当前页面添加退出动画
+                if (currentPage) {
+                    if (direction === 'prev') {
+                        currentPage.classList.add('prev-exit');
+                    } else if (direction === 'next') {
+                        currentPage.classList.add('next-exit');
+                    }
+                    currentPage.style.zIndex = '5';
+                }
+                
+                // 显示新页面
+                const newPage = document.getElementById(`page-${index}`);
+                if (newPage) {
+                    // 确保新页面在最上层
+                    newPage.style.zIndex = '10';
+                    
+                    // 强制重排，确保动画能够触发
+                    void newPage.offsetWidth;
+                    
+                    // 添加进入动画
+                    if (direction === 'prev') {
+                        newPage.classList.add('prev-enter');
+                    } else if (direction === 'next') {
+                        newPage.classList.add('next-enter');
+                    } else {
+                        // 初始加载时直接显示
+                        newPage.classList.add('active');
+                        newPage.style.opacity = '1';
+                        newPage.style.pointerEvents = 'all';
+                        // 初始加载时立即更新图表和背景
+                        currentPageIndex = index;
+                        updateCharts(currentPageIndex);
+                        updateBackground(index);
+                        updateIndexButtonState(currentPageIndex);
+                        return;
+                    }
+                }
+                
+                // 动画结束后更新数据和清理类名
+                setTimeout(() => {
+                    currentPageIndex = index;
+                    
+                    // 更新图表
+                    updateCharts(currentPageIndex);
+                    
+                    // 更新背景图片，跟随当前页面图片变化
+                    updateBackground(index);
+                    
+                    // 更新索引按钮状态
+                    updateIndexButtonState(currentPageIndex);
+                    
+                    // 清理类名并设置最终状态
+                    pages.forEach(page => {
+                        page.classList.remove('prev-exit', 'next-exit', 'prev-enter', 'next-enter');
+                        page.style.zIndex = '1';
+                        if (page.id === `page-${currentPageIndex}`) {
+                            page.classList.add('active');
+                            page.style.opacity = '1';
+                            page.style.pointerEvents = 'all';
+                            page.style.zIndex = '10';
+                        } else {
+                            page.style.opacity = '0';
+                            page.style.pointerEvents = 'none';
+                        }
+                    });
+                }, 800); // 等待动画完全结束后再清理
+            }
+            
+            // 更新背景图片
+            function updateBackground(pageIndex) {
+                const secondaryPage = document.getElementById('secondary-page');
+                if (secondaryPage) {
+                    // 获取当前页面的图片路径
+                    const imagePath = factionData[pageIndex - 1].frontImage;
+                    
+                    // 设置背景图片，使用当前页面图片作为背景
+                    secondaryPage.style.backgroundImage = `url('${imagePath}')`;
+                    // 添加渐变叠加层，增强文字可读性
+                    secondaryPage.style.backgroundBlendMode = 'overlay';
+                }
+            }
+            
+            // 上一页
+            function goToPrevPage() {
+                let newIndex;
+                if (currentPageIndex > 1) {
+                    newIndex = currentPageIndex - 1;
+                } else {
+                    newIndex = 8;
+                }
+                showPage(newIndex, 'prev');
+            }
+            
+            // 下一页
+            function goToNextPage() {
+                let newIndex;
+                if (currentPageIndex < 8) {
+                    newIndex = currentPageIndex + 1;
+                } else {
+                    newIndex = 1;
+                }
+                showPage(newIndex, 'next');
+            }
+            
+            // 关闭二次页面
+            function closeSecondaryPage() {
+                // 隐藏二次页面
+                secondaryPage.classList.remove('active');
+                
+                // 隐藏3D模型
+                document.getElementById('model-container').style.display = 'none';
+                isModelVisible = false;
+                
+                // 清理3D资源
+                dispose3DScene();
+            }
+            
+            // 返回抽卡页面
+            function backToDrawPage() {
+                window.location.href = '抽卡页面.html';
+            }
+            
+            // 从URL中获取cardIndex参数
+            function getCardIndexFromUrl() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const cardIndex = urlParams.get('cardIndex');
+                if (cardIndex) {
+                    return parseInt(cardIndex) + 1; // 转换为1-8的页面索引
+                }
+                return 1; // 默认显示第一页
+            }
+            
+            // 绑定事件
+            function bindEvents() {
+                // 绑定返回按钮点击事件
+                if (secondaryBackBtn) {
+                    secondaryBackBtn.addEventListener('click', backToDrawPage);
+                }
+                
+                // 绑定翻页箭头点击事件
+                if (prevArrow) {
+                    prevArrow.addEventListener('click', goToPrevPage);
+                }
+                if (nextArrow) {
+                    nextArrow.addEventListener('click', goToNextPage);
+                }
+                
+                // 绑定键盘事件，通过左右键切换页面
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'ArrowLeft') {
+                        goToPrevPage();
+                    } else if (event.key === 'ArrowRight') {
+                        goToNextPage();
+                    }
+                });
+            }
+            
+            // 初始化函数
+            function init() {
+                // 从URL获取cardIndex参数，设置初始页面
+                currentPageIndex = getCardIndexFromUrl();
+                
+                // 初始化书页内容
+                initBookPages();
+                
+                // 显示当前页面（初始加载，无动画）
+                showPage(currentPageIndex);
+                
+                // 初始化图表
+                initCharts();
+                // 更新图表
+                updateCharts(currentPageIndex);
+                
+                // 绑定事件
+                bindEvents();
+            }
+            
+            // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', init);
+        })();
+        
+        // ========== 鼠标跟随效果脚本 ==========
+        (function() {
+            const mouseFollower = document.getElementById('mouse-follower');
+            const mouseDot = document.getElementById('mouse-dot');
+            const mouseCircle = document.getElementById('mouse-circle');
+            
+            if (mouseFollower && mouseDot && mouseCircle) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let circleX = 0;
+                let circleY = 0;
+                
+                // 鼠标移动事件
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    // 直接更新小圆点位置
+                    mouseDot.style.left = mouseX + 'px';
+                    mouseDot.style.top = mouseY + 'px';
+                });
+                
+                // 动画循环，实现圆圈追逐圆点
+                function animate() {
+                    // 计算圆圈到圆点的距离
+                    const dx = mouseX - circleX;
+                    const dy = mouseY - circleY;
+                    
+                    // 平滑追逐效果
+                    circleX += dx * 0.1;
+                    circleY += dy * 0.1;
+                    
+                    // 更新圆圈位置
+                    mouseCircle.style.left = circleX + 'px';
+                    mouseCircle.style.top = circleY + 'px';
+                    
+                    // 继续动画
+                    requestAnimationFrame(animate);
+                }
+                
+                // 鼠标点击事件
+                document.addEventListener('click', () => {
+                    mouseCircle.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    setTimeout(() => {
+                        mouseCircle.style.transform = 'translate(-50%, -50%) scale(1)';
+                    }, 150);
+                });
+                
+                // 启动动画
+                animate();
+            }
+        })();
+    </script>
+</body>
+</html>

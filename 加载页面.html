@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>国风筑韵-启卷</title>
+    <!-- 预加载MediaPipe模型 -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <style>
+        /* ========== 基础样式 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+        
+        body {
+            overflow: hidden;
+        }
+        
+        /* ========== 加载页面样式 ========== */
+        :root {
+            /* 基础颜色 */
+            --loading-bg-image: url('加载背景.jpg'); 
+            --loading-text-color: #ffffff;
+            
+            /* 加载动画颜色 */
+            --spinner-border: rgba(255, 255, 255, 0.3);
+            --spinner-border-top: #fffffff2;
+            
+            /* 进度条颜色 */
+            --progress-bg: rgba(60, 32, 32, 0.3);
+            --progress-fill: #fffffff2;
+            
+            /* 阴影颜色 */
+            --text-shadow: rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 加载容器 */
+        #loading-container {
+            text-align: center;
+            color: var(--loading-text-color);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--loading-bg-image);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 35vh;
+        }
+        
+        /* ========== 鼠标跟随效果样式 ========== */
+        /* 鼠标跟随容器 */
+        #mouse-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: visible;
+        }
+
+        /* 鼠标小圆点 */
+        #mouse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        /* 鼠标圆圈 */
+        #mouse-circle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+        
+        /* 加载标题 */
+        #loading-title {
+            font-size: 48px;
+            font-weight: bold;
+            margin-top: -50px; 
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px var(--text-shadow);
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+        
+        /* 加载动画 */
+        #loading-spinner {
+            width: 100px;
+            height: 100px;
+            border: 8px solid var(--spinner-border);
+            border-top: 8px solid var(--spinner-border-top);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 40px;
+        }
+        
+        /* 加载进度条 */
+        #loading-bar-container {
+            width: 300px;
+            height: 20px;
+            background: var(--progress-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto 20px; 
+        }
+        
+        /* 进度条填充 */
+        #loading-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--progress-fill);
+            transition: width 0.5s ease;
+        }
+        
+        /* 加载文字 */
+        #loading-text {
+            font-size: 24px;
+            text-shadow: 0 0 10px var(--text-shadow);
+            margin: 0 auto 20px;
+        }
+        
+        /* 旋转动画 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 淡入淡出动画 */
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 鼠标跟随元素 -->
+    <div id="mouse-follower">
+        <div id="mouse-dot"></div>
+        <div id="mouse-circle"></div>
+    </div>
+    
+    <!-- 加载页面 -->
+    <div id="loading-container">
+        <!-- 加载标题 -->
+        <h1 id="loading-title">抽卡游戏</h1>
+        
+        <!-- 加载动画 -->
+        <div id="loading-spinner"></div>
+        
+        <!-- 加载文字 -->
+        <p id="loading-text">正在加载资源...</p>
+        
+        <!-- 加载进度条 -->
+        <div id="loading-bar-container">
+            <div id="loading-bar"></div>
+        </div>
+    </div>
+    
+    <script>
+        // ========== 加载页面脚本 ==========
+        (function() {
+            // 获取DOM元素
+            const loadingBar = document.getElementById('loading-bar');
+            const loadingText = document.getElementById('loading-text');
+            
+            // 模拟加载进度
+            let progress = 0;
+            const maxProgress = 100;
+            
+            // 预加载MediaPipe模型
+            function preloadMediaPipeModels() {
+                return new Promise((resolve) => {
+                    if (typeof Hands !== 'undefined') {
+                        // 创建Hands实例，触发模型下载
+                        const hands = new Hands({
+                            locateFile: (file) => {
+                                return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+                            }
+                        });
+                        
+                        // 设置基本配置
+                        hands.setOptions({
+                            maxNumHands: 1,
+                            modelComplexity: 0,
+                            minDetectionConfidence: 0.5,
+                            minTrackingConfidence: 0.4
+                        });
+                        
+                        // 模型加载完成
+                        console.log('MediaPipe模型预加载完成');
+                        resolve();
+                    } else {
+                        // 如果Hands未定义，延迟后重试
+                        setTimeout(resolve, 100);
+                    }
+                });
+            }
+            
+            // 加载进度更新函数
+            async function updateProgress() {
+                // 随机增加进度，模拟真实加载
+                progress += Math.random() * 15;
+                if (progress > maxProgress) {
+                    progress = maxProgress;
+                }
+                
+                // 更新进度条
+                loadingBar.style.width = `${progress}%`;
+                
+                // 更新加载文字
+                if (progress < 30) {
+                    loadingText.textContent = '正在初始化游戏...';
+                } else if (progress < 60) {
+                    loadingText.textContent = '正在加载卡牌资源...';
+                } else if (progress < 90) {
+                    loadingText.textContent = '正在准备摄像头...';
+                    // 在这个阶段预加载MediaPipe模型
+                    await preloadMediaPipeModels();
+                } else {
+                    loadingText.textContent = '加载完成，即将开始...';
+                }
+                
+                // 如果加载完成，跳转到抽卡页面
+                if (progress >= maxProgress) {
+                    // 延迟一段时间，让用户看到完成状态
+                    setTimeout(() => {
+                        window.location.href = '抽卡页面.html';
+                    }, 1000);
+                } else {
+                    // 继续更新进度
+                    setTimeout(updateProgress, Math.random() * 500 + 200);
+                }
+            }
+            
+            // 启动加载进度更新
+            updateProgress();
+        })();
+        
+        // ========== 鼠标跟随效果脚本 ==========
+        (function() {
+            const mouseFollower = document.getElementById('mouse-follower');
+            const mouseDot = document.getElementById('mouse-dot');
+            const mouseCircle = document.getElementById('mouse-circle');
+            
+            if (mouseFollower && mouseDot && mouseCircle) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let circleX = 0;
+                let circleY = 0;
+                
+                // 鼠标移动事件
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    // 直接更新小圆点位置
+                    mouseDot.style.left = mouseX + 'px';
+                    mouseDot.style.top = mouseY + 'px';
+                });
+                
+                // 动画循环，实现圆圈追逐圆点
+                function animate() {
+                    // 计算圆圈到圆点的距离
+                    const dx = mouseX - circleX;
+                    const dy = mouseY - circleY;
+                    
+                    // 平滑追逐效果
+                    circleX += dx * 0.1;
+                    circleY += dy * 0.1;
+                    
+                    // 更新圆圈位置
+                    mouseCircle.style.left = circleX + 'px';
+                    mouseCircle.style.top = circleY + 'px';
+                    
+                    // 继续动画
+                    requestAnimationFrame(animate);
+                }
+                
+                // 鼠标点击事件
+                document.addEventListener('click', () => {
+                    mouseCircle.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    setTimeout(() => {
+                        mouseCircle.style.transform = 'translate(-50%, -50%) scale(1)';
+                    }, 150);
+                });
+                
+                // 启动动画
+                animate();
+            }
+        })();
+    </script>
+</body>
+</html>
