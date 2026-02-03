@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>国风筑韵-观数</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -350,7 +351,7 @@
         <div id="visualization-bottom" class="visualization-area" style="position: absolute; bottom: 1.5%; left: 50%; transform: translateX(-50%); width: 600px; height: 270px; z-index: 10;"></div>
         
         <!-- 悬浮触发小圆圈 -->
-        <div id="index-trigger" style="z-index: 20; position: absolute; top: 20px; left: 20px; width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; transition: all 0.3s ease;">📋</div>
+        <div id="index-trigger" style="z-index: 20; position: absolute; top: 20px; left: 20px; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; transition: all 0.3s ease;">☰</div>
         
         <!-- 侧边索引栏 -->
         <div id="sidebar-index" class="visualization-area" style="z-index: 20; position: absolute; top: 80px; left: 20px; width: 90px; max-height: 500px; overflow-y: auto; transition: all 0.3s ease;">
@@ -526,11 +527,65 @@
                     hutong: [
                         { period: '元代', count: 413, source: '翁立《北京的胡同》' },
                         { period: '明代', count: 1170, source: '《京师五城坊巷胡同集》' },
-                        { period: '清代', count: 1938, source: '《京师坊巷志稿》（取中间值）' },
+                        { period: '清代', count: 1938, source: '《京师坊巷志稿》（取中值）' },
                         { period: '民国', count: 3200, source: '多田贞一《北京地名志》' },
                         { period: '新中国成立初', count: 2550, source: '官方统计' },
                         { period: '1998年', count: 990, source: '地图出版社调查' }
                     ],
+                    // 四合院屋顶类型多维度功能数据
+                    roofRadar: [
+                        {
+                            name: '硬山顶',
+                            value: [9, 6, 6, 10],
+                            color: '#666666', // 深灰
+                            itemStyle: { color: '#666666' },
+                            areaStyle: { color: 'rgba(102, 102, 102, 0.3)' }
+                        },
+                        {
+                            name: '歇山顶',
+                            value: [7, 10, 10, 7],
+                            color: '#8B0000', // 暗红
+                            itemStyle: { color: '#8B0000' },
+                            areaStyle: { color: 'rgba(139, 0, 0, 0.3)' }
+                        },
+                        {
+                            name: '卷棚顶',
+                            value: [5, 4, 5, 6],
+                            color: '#D2B48C', // 浅棕
+                            itemStyle: { color: '#D2B48C' },
+                            areaStyle: { color: 'rgba(210, 180, 140, 0.3)' }
+                        },
+                        {
+                            name: '走马廊',
+                            value: [3, 7, 8, 2],
+                            color: '#FFFF99', // 浅黄
+                            itemStyle: { color: '#FFFF99' },
+                            areaStyle: { color: 'rgba(255, 255, 153, 0.3)' }
+                        }
+                    ],
+                    // 四合院装饰元素文化寓意占比数据
+                    decorationPie: [
+                        { name: '木雕', value: 25, color: '#8B4513' }, // 深棕
+                        { name: '砖雕', value: 22, color: '#A0522D' }, // 红棕
+                        { name: '门饰/影壁', value: 18, color: '#FF8C00' }, // 橙色
+                        { name: '彩绘', value: 15, color: '#FFD700' }, // 明黄
+                        { name: '瓦当/脊饰', value: 12, color: '#D3D3D3' }, // 浅灰
+                        { name: '石雕', value: 8, color: '#DEB887' } // 浅棕
+                    ],
+                    // 四合院院落进数与家庭地位关联数据
+                    courtyardBar: [
+                        { name: '单进院', value: 1, status: '普通平民家', features: '紧凑、小家庭、厢房简单', color: '#DEB887' }, // 浅棕
+                        { name: '二进院', value: 2, status: '中等地位家庭', features: '宽敞、迎宾 + 居住分区', color: '#CD853F' }, // 中棕
+                        { name: '三进院', value: 3, status: '明清民间主流家庭', features: '标准结构、起居 + 私密分区', color: '#A0522D' }, // 红棕
+                        { name: '四进及以上', value: 4, status: '豪门 / 官宦家庭', features: '复杂、配套齐全', color: '#8B4513' } // 深棕
+                    ],
+                    // 图例颜色映射
+                    legendColorMap: {
+                        '硬山顶': '#666666',
+                        '歇山顶': '#8B0000',
+                        '卷棚顶': '#D2B48C',
+                        '走马廊': '#FFFF99'
+                    },
                     bar: [
                         { name: '明清时期', value: 85 },
                         { name: '民国时期', value: 70 },
@@ -706,7 +761,7 @@
                 const data = visualizationData[pageIndex];
                 if (!data) return;
                 
-                // 更新左侧上图表 - 京派显示胡同数量折线图，其他派别显示建筑特点饼图
+                // 更新左侧上图表 - 京派显示胡同数量折线图，粤派显示年代数量占比趋势图，其他派别显示建筑特点饼图
                 if (leftTopChart) {
                     if (pageIndex === 1 && data.hutong) {
                         // 京派 - 胡同数量历史演变折线图
@@ -717,7 +772,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 18
                                 },
                                 subtextStyle: {
                                     color: '#fff',
@@ -785,43 +840,256 @@
                                 }
                             ],
                             graphic: [
-                                // 民国峰值注释
-                                {
-                                    type: 'text',
-                                    left: '65%',
-                                    top: '15%',
-                                    style: {
-                                        text: '民国峰值',
-                                        fill: '#fff',
-                                        fontSize: 10
-                                    }
-                                },
-                                // 1998年下降注释
-                                {
-                                    type: 'text',
-                                    left: '90%',
-                                    top: '85%',
-                                    style: {
-                                        text: '城市化影响',
-                                        fill: '#fff',
-                                        fontSize: 10
-                                    }
-                                },
                                 // 数据来源标注
                                 {
                                     type: 'text',
                                     left: 'center',
                                     top: '95%',
                                     style: {
-                                        text: '数据综合自文献及官方统计',
+                                        text: '（数据综合自文献及官方统计）',
                                         fill: '#fff',
-                                        fontSize: 10
+                                        fontSize: 12
                                     }
                                 }
                             ],
                             backgroundColor: 'transparent'
                         };
-                        leftTopChart.setOption(lineOption);
+                        leftTopChart.setOption(lineOption, true);
+                    } else if (pageIndex === 2) {
+                        // 粤派 - 装饰特点词云图
+                        const yueWordcloudOption = {
+                            title: {
+                                text: '粤派建筑装饰特点词云图',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: function(params) {
+                                    return params.name + '<br/>题材类别：' + params.data.category + '<br/>出现频率：' + params.value + '%';
+                                }
+                            },
+                            series: [
+                                {
+                                    type: 'wordCloud',
+                                    shape: 'circle',
+                                    left: 'center',
+                                    top: 'center',
+                                    width: '80%',
+                                    height: '80%',
+                                    right: null,
+                                    bottom: null,
+                                    sizeRange: [12, 60],
+                                    rotationRange: [-90, 90],
+                                    rotationStep: 45,
+                                    gridSize: 8,
+                                    drawOutOfBound: false,
+                                    textStyle: {
+                                        fontFamily: 'sans-serif',
+                                        fontWeight: 'bold',
+                                        color: function(params) {
+                                            const categoryColors = {
+                                                '世俗生活': '#8B4513',
+                                                '封建礼制': '#D2B48C',
+                                                '海洋/外来': '#A0522D',
+                                                '趋吉避凶': '#CD853F'
+                                            };
+                                            return categoryColors[params.data.category] || '#DEB887';
+                                        }
+                                    },
+                                    emphasis: {
+                                        focus: 'self',
+                                        textStyle: {
+                                            shadowBlur: 10,
+                                            shadowColor: '#333'
+                                        }
+                                    },
+                                    data: [
+                                        {name: '粤剧人物', value: 45, category: '世俗生活'},
+                                        {name: '荔枝', value: 45, category: '世俗生活'},
+                                        {name: '芭蕉', value: 45, category: '世俗生活'},
+                                        {name: '农耕图', value: 45, category: '世俗生活'},
+                                        {name: '麒麟', value: 25, category: '封建礼制'},
+                                        {name: '凤凰', value: 25, category: '封建礼制'},
+                                        {name: '博古图', value: 25, category: '封建礼制'},
+                                        {name: '状元及第', value: 25, category: '封建礼制'},
+                                        {name: '番鬼托梁', value: 15, category: '海洋/外来'},
+                                        {name: '西洋卷草', value: 15, category: '海洋/外来'},
+                                        {name: '葡萄', value: 15, category: '海洋/外来'},
+                                        {name: '时钟', value: 15, category: '海洋/外来'},
+                                        {name: '狮子', value: 15, category: '趋吉避凶'},
+                                        {name: '葫芦', value: 15, category: '趋吉避凶'},
+                                        {name: '蝙蝠（福）', value: 15, category: '趋吉避凶'},
+                                        {name: '瑞兽', value: 15, category: '趋吉避凶'}
+                                    ]
+                                }
+                            ],
+                            graphic: [
+                                // 数据来源标注
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '9%',
+                                    style: {
+                                        text: '(以陈家祠/己略黄公祠为例，数据基于装饰元素出现频率统计)',
+                                        fill: '#fff',
+                                        fontSize: 10,
+                                        textAlign: 'center'
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftTopChart.setOption(yueWordcloudOption, true);
+                    } else if (pageIndex === 6) {
+                        // 闽派 - 建筑类型历史年代分布堆叠柱状图
+                        const minnanStackedBarOption = {
+                            title: {
+                                text: '闽派民居建筑类型历史年代分布',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                },
+                                formatter: function(params) {
+                                    const levelMap = {
+                                        0: '无',
+                                        0.5: '极少',
+                                        1: '少',
+                                        2: '中',
+                                        3: '高'
+                                    };
+                                    let result = params[0].name + '<br/>';
+                                    params.forEach(item => {
+                                        const value = item.value;
+                                        const level = levelMap[value] || '';
+                                        result += item.marker + item.seriesName + ': ' + level + '<br/>';
+                                    });
+                                    return result;
+                                }
+                            },
+                            legend: {
+                                data: ['土楼', '古厝', '祠堂', '骑楼', '其他'],
+                                bottom: 10,
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 12
+                                }
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '15%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['宋元', '明代', '清代', '民国'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 12
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                name: '数量/频次',
+                                nameTextStyle: {
+                                    color: '#fff',
+                                    padding: [0, 10, 0, 0]
+                                },
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 12,
+                                    formatter: function(value) {
+                                        const levelMap = {
+                                            0: '无',
+                                            0.5: '极少',
+                                            1: '少',
+                                            2: '中',
+                                            3: '高'
+                                        };
+                                        return levelMap[value] || '';
+                                    }
+                                },
+                                min: 0,
+                                max: 3,
+                                interval: 0.5
+                            },
+                            series: [
+                                {
+                                    name: '土楼',
+                                    type: 'bar',
+                                    stack: 'total',
+                                    emphasis: {
+                                        focus: 'series'
+                                    },
+                                    data: [1, 2, 3, 2],
+                                    itemStyle: {
+                                        color: '#8B4513'
+                                    }
+                                },
+                                {
+                                    name: '古厝',
+                                    type: 'bar',
+                                    stack: 'total',
+                                    emphasis: {
+                                        focus: 'series'
+                                    },
+                                    data: [1, 2, 3, 2],
+                                    itemStyle: {
+                                        color: '#D2B48C'
+                                    }
+                                },
+                                {
+                                    name: '祠堂',
+                                    type: 'bar',
+                                    stack: 'total',
+                                    emphasis: {
+                                        focus: 'series'
+                                    },
+                                    data: [0.5, 2, 3, 2],
+                                    itemStyle: {
+                                        color: '#BC8F8F'
+                                    }
+                                },
+                                {
+                                    name: '骑楼',
+                                    type: 'bar',
+                                    stack: 'total',
+                                    emphasis: {
+                                        focus: 'series'
+                                    },
+                                    data: [0, 0, 1, 2],
+                                    itemStyle: {
+                                        color: '#CD853F'
+                                    }
+                                },
+                                {
+                                    name: '其他',
+                                    type: 'bar',
+                                    stack: 'total',
+                                    emphasis: {
+                                        focus: 'series'
+                                    },
+                                    data: [1, 1, 2, 2],
+                                    itemStyle: {
+                                        color: '#A0522D'
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftTopChart.setOption(minnanStackedBarOption, true);
                     } else {
                         // 其他派别 - 建筑特点饼图
                         const pieOption = {
@@ -863,203 +1131,1558 @@
                             ],
                             backgroundColor: 'transparent'
                         };
-                        leftTopChart.setOption(pieOption);
+                        leftTopChart.setOption(pieOption, true);
                     }
                 }
                 
-                // 更新左侧下图表 - 建筑属性柱状图
+                // 更新左侧下图表 - 京派显示四合院装饰元素环形图，粤派显示气候-建筑适应强度热力图
                 if (leftBottomChart) {
-                    const barOption = {
-                        title: {
-                            text: '建筑属性对比',
-                            left: 'center',
-                            textStyle: {
-                                color: '#fff',
-                                fontSize: 14
-                            }
-                        },
-                        tooltip: {},
-                        xAxis: {
-                            type: 'category',
-                            data: ['美观度', '实用性', '历史价值', '文化内涵'],
-                            axisLabel: {
-                                color: '#fff',
-                                fontSize: 11
-                            }
-                        },
-                        yAxis: {
-                            type: 'value',
-                            axisLabel: {
-                                color: '#fff',
-                                fontSize: 11
-                            }
-                        },
-                        series: [
-                            {
-                                name: data.name + '属性',
-                                data: [85, 80, 90, 95],
-                                type: 'bar',
-                                itemStyle: {
-                                    color: '#D2B48C'
+                    if (pageIndex === 1 && data.decorationPie) {
+                        // 京派 - 四合院装饰元素文化寓意占比环形图
+                        const decorationPieOption = {
+                            title: {
+                                text: '四合院装饰元素文化寓意占比',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
                                 }
-                            }
-                        ],
-                        backgroundColor: 'transparent'
-                    };
-                    leftBottomChart.setOption(barOption);
-                }
-                
-                // 更新右侧上图表 - 建筑评分雷达图
-                if (rightTopChart) {
-                    const radarOption = {
-                        title: {
-                            text: '建筑评分雷达图',
-                            left: 'center',
-                            textStyle: {
-                                color: '#fff',
-                                fontSize: 14
-                            }
-                        },
-                        tooltip: {},
-                        radar: {
-                            indicator: [
-                                { name: '美观度', max: 100 },
-                                { name: '实用性', max: 100 },
-                                { name: '历史价值', max: 100 },
-                                { name: '文化内涵', max: 100 },
-                                { name: '结构复杂度', max: 100 },
-                                { name: '地域特色', max: 100 }
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: '{a} <br/>{b}: {c}% ({d}%)'
+                            },
+                            legend: {
+                                orient: 'horizontal',
+                                bottom: '85%',
+                                left: 'center',
+                                formatter: function(name) {
+                                    const item = data.decorationPie.find(item => item.name === name);
+                                    return '{a|' + name + '} {b|' + item.value + '%}';
+                                },
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 12,
+                                    rich: {
+                                        a: {
+                                            padding: [0, 5, 0, 0]
+                                        },
+                                        b: {
+                                            color: '#fff'
+                                        }
+                                    }
+                                },
+                                type: 'scroll',
+                                pageIconSize: 10,
+                                pageTextStyle: {
+                                    color: '#fff'
+                                },
+                                pageButtonItemGap: 5,
+                                pageButtonGap: 10
+                            },
+                            color: data.decorationPie.map(item => item.color),
+                            series: [
+                                {
+                                    name: '文化寓意占比',
+                                    type: 'pie',
+                                    radius: ['30px', '80px'],
+                                    center: ['50%', '50%'],
+                                    avoidLabelOverlap: false,
+                                    itemStyle: {
+                                        borderRadius: 0,
+                                        borderColor: '#fff',
+                                        borderWidth: 1
+                                    },
+                                    label: {
+                                        show: true,
+                                        position: 'outside',
+                                        formatter: '{b} {c}%',
+                                        fontSize: 14,
+                                        color: '#fff'
+                                    },
+                                    emphasis: {
+                                        label: {
+                                            show: true,
+                                            fontSize: 12,
+                                            fontWeight: 'bold'
+                                        }
+                                    },
+                                    labelLine: {
+                                        show: true
+                                    },
+                                    data: data.decorationPie
+                                }
                             ],
-                            axisLine: {
-                                lineStyle: {
+                            graphic: [
+                                // 底部注释
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '85%',
+                                    style: {
+                                        text: '（权重基于装饰元素的文化关联度及文献提及频次量化）',
+                                        fill: '#fff',
+                                        fontSize: 12
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftBottomChart.setOption(decorationPieOption, true);
+                    } else if (pageIndex === 2) {
+                        // 粤派 - 岭南气候-建筑构造适应强度热力图
+                        const heatmapOption = {
+                            title: {
+                                text: '岭南气候-建筑构造适应强度热力图',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
+                                }
+                            },
+                            tooltip: {
+                                position: 'top'
+                            },
+                            grid: {
+                                height: '50%',
+                                top: '15%'
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['冷巷', '天井', '锅耳墙', '石脚'],
+                                splitArea: {
+                                    show: true
+                                },
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11
+                                }
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: ['高温', '高湿', '强光', '暴雨'],
+                                splitArea: {
+                                    show: true
+                                },
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11
+                                }
+                            },
+                            visualMap: {
+                                min: 0,
+                                max: 2,
+                                calculable: true,
+                                orient: 'horizontal',
+                                left: 'center',
+                                bottom: '15%',
+                                inRange: {
+                                    color: ['#D2B48C', '#BC8F8F', '#8B4513'] // 浅棕色（弱）→玫瑰棕色（中）→深棕色（强）
+                                },
+                                textStyle: {
                                     color: '#fff'
                                 }
                             },
-                            splitLine: {
-                                lineStyle: {
-                                    color: 'rgba(255, 255, 255, 0.3)'
+                            series: [
+                                {
+                                    name: '适应强度',
+                                    type: 'heatmap',
+                                    data: [
+                                        [0, 0, 2], // 高温-冷巷-强
+                                        [1, 0, 2], // 高温-天井-强
+                                        [2, 0, 1], // 高温-锅耳墙-中
+                                        [3, 0, 1], // 高温-石脚-中
+                                        [0, 1, 1], // 高湿-冷巷-中
+                                        [1, 1, 1], // 高湿-天井-中
+                                        [2, 1, 0], // 高湿-锅耳墙-弱
+                                        [3, 1, 2], // 高湿-石脚-强
+                                        [0, 2, 2], // 强日照-冷巷-强
+                                        [1, 2, 0], // 强日照-天井-弱
+                                        [2, 2, 2], // 强日照-锅耳墙-强
+                                        [3, 2, 0], // 强日照-石脚-弱
+                                        [0, 3, 0], // 暴雨-冷巷-弱
+                                        [1, 3, 2], // 暴雨-天井-强
+                                        [2, 3, 0], // 暴雨-锅耳墙-弱
+                                        [3, 3, 1]  // 暴雨-石脚-中
+                                    ],
+                                    label: {
+                                        show: true,
+                                        color: '#fff'
+                                    },
+                                    emphasis: {
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
                                 }
-                            },
-                            splitArea: {
-                                areaStyle: {
-                                    color: 'rgba(255, 255, 255, 0.1)'
+                            ],
+                            graphic: [
+                                // 数据来源标注
+                                {
+                                    type: 'text',
+                                    left: '44%',
+                                    top: '87%',
+                                    style: {
+                                        text: '(适应强度基于《岭南建筑环境评价与调控》\n的实测数据及通风/遮阳原理推导)',
+                                        fill: '#fff',
+                                        fontSize: 10
+                                    }
                                 }
-                            },
-                            name: {
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftBottomChart.setOption(heatmapOption, true);
+                    } else if (pageIndex === 6) {
+                        // 闽派 - 建筑类型地域分布热力图
+                        const minnanHeatmapOption = {
+                            title: {
+                                text: '闽派建筑类型地域分布热力图',
+                                left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 10
+                                    fontSize: 14
                                 }
-                            }
-                        },
-                        series: [
-                            {
-                                name: data.name + '评分',
+                            },
+                            tooltip: {
+                                position: 'top',
+                                formatter: function(params) {
+                                    const regions = ['闽南', '闽北', '闽西', '闽东'];
+                                    const buildingTypes = ['红砖大厝', '合院民居', '土楼', '坊巷式'];
+                                    const levels = ['低', '中', '高'];
+                                    return buildingTypes[params.value[1]] + '<br/>' + regions[params.value[0]] + ': ' + levels[params.value[2]-1];
+                                }
+                            },
+                            grid: {
+                                height: '50%',
+                                top: '15%',
+                                left:'15%'
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['闽南', '闽北', '闽西', '闽东'],
+                                splitArea: {
+                                    show: true
+                                },
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11
+                                }
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: ['红砖大厝', '合院民居', '土楼', '坊巷式'],
+                                splitArea: {
+                                    show: true
+                                },
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11
+                                }
+                            },
+                            visualMap: {
+                                min: 1,
+                                max: 3,
+                                calculable: true,
+                                orient: 'horizontal',
+                                left: 'center',
+                                bottom: '15%',
+                                inRange: {
+                                    color: ['#D2B48C', '#BC8F8F', '#8B4513'] // 浅棕色（低）→玫瑰棕色（中）→深棕色（高）
+                                },
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                                formatter: function(value) {
+                                    const levels = ['', '低', '中', '高'];
+                                    return levels[value];
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '代表性强弱',
+                                    type: 'heatmap',
+                                    data: [
+                                        [0, 0, 3], // 闽南-红砖大厝-高
+                                        [1, 0, 1], // 闽北-红砖大厝-低
+                                        [2, 0, 1], // 闽西-红砖大厝-低
+                                        [3, 0, 2], // 闽东-红砖大厝-中
+                                        [0, 1, 2], // 闽南-合院民居-中
+                                        [1, 1, 2], // 闽北-合院民居-中
+                                        [2, 1, 1], // 闽西-合院民居-低
+                                        [3, 1, 2], // 闽东-合院民居-中
+                                        [0, 2, 1], // 闽南-土楼-低
+                                        [1, 2, 1], // 闽北-土楼-低
+                                        [2, 2, 3], // 闽西-土楼-高
+                                        [3, 2, 1], // 闽东-土楼-低
+                                        [0, 3, 1], // 闽南-坊巷式-低
+                                        [1, 3, 1], // 闽北-坊巷式-低
+                                        [2, 3, 1], // 闽西-坊巷式-低
+                                        [3, 3, 3]  // 闽东-坊巷式-高
+                                    ],
+                                    label: {
+                                        show: true,
+                                        color: '#fff',
+                                        formatter: function(params) {
+                                            const levels = ['', '低', '中', '高'];
+                                            return levels[params.value[2]];
+                                        }
+                                    },
+                                    emphasis: {
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftBottomChart.setOption(minnanHeatmapOption, true);
+                    } else {
+                        // 其他派别 - 建筑属性柱状图
+                        const barOption = {
+                            title: {
+                                text: '建筑属性对比',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            tooltip: {},
+                            xAxis: {
+                                type: 'category',
+                                data: ['美观度', '实用性', '历史价值', '文化内涵'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11
+                                }
+                            },
+                            series: [
+                                {
+                                    name: data.name + '属性',
+                                    data: [85, 80, 90, 95],
+                                    type: 'bar',
+                                    itemStyle: {
+                                        color: '#D2B48C'
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftBottomChart.setOption(barOption, true);
+                    }
+                }
+                
+                // 更新右侧上图表 - 京派显示四合院屋顶类型雷达图，其他派别显示建筑评分雷达图
+                if (rightTopChart) {
+                    if (pageIndex === 1 && data.roofRadar) {
+                        // 京派 - 四合院屋顶类型多维度功能雷达图
+                        const roofRadarOption = {
+                            title: {
+                                text: '四合院屋顶/结构功能多维度对比',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            legend: {
+                                data: data.roofRadar.map(item => item.name),
+                                right: 10,
+                                top: 30,
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 12
+                                },
+                                formatter: function(name) {
+                                    return name;
+                                },
+                                itemGap: 30
+                            },
+                            color: data.roofRadar.map(item => item.color),
+                            radar: {
+                                indicator: [
+                                    { name: '保温防寒', max: 10 },
+                                    { name: '礼制等级', max: 10 },
+                                    { name: '建造成本', max: 10 },
+                                    { name: '防风沙性', max: 10 }
+                                ],
+                                center: ['50%', '60%'],
+                                radius: '65%',
+                                axisLine: {
+                                    lineStyle: {
+                                        color: '#fff'
+                                    }
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        color: 'rgba(255, 255, 255, 0.3)',
+                                        type: 'dashed'
+                                    }
+                                },
+                                splitArea: {
+                                    areaStyle: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                },
+                                name: {
+                                    textStyle: {
+                                        color: '#fff',
+                                        fontSize: 12
+                                    },
+                                    padding: [0, 10]
+                                }
+                            },
+                            series: data.roofRadar.map(item => ({
+                                name: item.name,
                                 type: 'radar',
                                 data: [{
-                                    value: [85, 80, 90, 95, 75, 92],
-                                    name: data.name
+                                    value: item.value,
+                                    name: item.name,
+                                    itemStyle: item.itemStyle,
+                                    areaStyle: item.areaStyle
                                 }],
-                                itemStyle: {
-                                    color: '#D2B48C'
-                                },
-                                areaStyle: {
-                                    color: 'rgba(210, 180, 140, 0.3)'
+                                label: {
+                                    show: true,
+                                    fontSize: 9,
+                                    color: '#fff',
+                                    formatter: function(params) {
+                                        if (params && params.value !== undefined) {
+                                            return params.value + '分';
+                                        }
+                                        return '';
+                                    }
                                 }
-                            }
-                        ],
-                        backgroundColor: 'transparent'
-                    };
-                    rightTopChart.setOption(radarOption);
+                            })),
+                            graphic: [
+                                // 底部注释
+                                {
+                                    type: 'text',
+                                    left: '57%',
+                                    top: '95%',
+                                    style: {
+                                        text: '（评分基于建筑规制及实用功能分析）',
+                                        fill: '#fff',
+                                        fontSize: 10
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightTopChart.setOption(roofRadarOption, true);
+                    } else if (pageIndex === 2) {
+                        // 粤派 - 广府/客家/潮汕三大民居流派核心特征雷达图
+                        const radarOption = {
+                            title: {
+                                text: '广府/客家/潮汕三大民居流派核心特征',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            color: ['#D2B48C', '#8B4513', '#BC8F8F'],
+                            legend: {
+                                data: ['广府民居（西关大屋）', '客家民居（围龙屋）', '潮汕民居（四点金）'],
+                                orient: 'horizontal',
+                                bottom: '85%',
+                                left: 'center',
+                                formatter: function(name) {
+                                    return name;
+                                },
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 12,
+                                    rich: {
+                                        a: {
+                                            padding: [0, 5, 0, 0]
+                                        },
+                                        b: {
+                                            color: '#fff'
+                                        }
+                                    }
+                                },
+                                type: 'scroll',
+                                pageIconSize: 10,
+                                pageTextStyle: {
+                                    color: '#fff'
+                                },
+                                pageButtonItemGap: 5,
+                                pageButtonGap: 10
+                            },
+                            radar: {
+                                indicator: [
+                                    { name: '热工调节效率', max: 5 },
+                                    { name: '宗族向心密度', max: 5 },
+                                    { name: '空间演进灵活性', max: 5 },
+                                    { name: '防御性', max: 5 },
+                                    { name: '场地湿控性能', max: 5 }
+                                ],
+                                radius: '65%',
+                                center: ['50%', '60%'],
+                                axisLine: {
+                                    lineStyle: {
+                                        color: '#fff'
+                                    }
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        color: 'rgba(255, 255, 255, 0.3)'
+                                    }
+                                },
+                                splitArea: {
+                                    areaStyle: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                },
+                                name: {
+                                    textStyle: {
+                                        color: '#fff',
+                                        fontSize: 12
+                                    }
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '广府民居（西关大屋）',
+                                    type: 'radar',
+                                    data: [{
+                                        value: [5, 2, 5, 2, 4],
+                                        name: '广府民居'
+                                    }],
+                                    itemStyle: {
+                                        color: '#D2B48C'
+                                    },
+                                    lineStyle: {
+                                        width: 2
+                                    },
+                                    areaStyle: {
+                                        color: 'rgba(210, 180, 140, 0.3)'
+                                    }
+                                },
+                                {
+                                    name: '客家民居（围龙屋）',
+                                    type: 'radar',
+                                    data: [{
+                                        value: [3, 5, 2, 5, 2],
+                                        name: '客家民居'
+                                    }],
+                                    itemStyle: {
+                                        color: '#8B4513'
+                                    },
+                                    lineStyle: {
+                                        width: 2,
+                                        type: 'dashed'
+                                    },
+                                    areaStyle: {
+                                        color: 'rgba(139, 69, 19, 0.3)'
+                                    }
+                                },
+                                {
+                                    name: '潮汕民居（四点金）',
+                                    type: 'radar',
+                                    data: [{
+                                        value: [4, 5, 3, 4, 5],
+                                        name: '潮汕民居'
+                                    }],
+                                    itemStyle: {
+                                        color: '#BC8F8F'
+                                    },
+                                    lineStyle: {
+                                        width: 2,
+                                        type: 'dotted'
+                                    },
+                                    areaStyle: {
+                                        color: 'rgba(188, 143, 143, 0.3)'
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                // 数据来源标注
+                                {
+                                    type: 'text',
+                                    left: 'left',
+                                    top: '94%',
+                                    style: {
+                                        text: '(数据基于:\n《岭南采风：岭南建筑流派研究》.《中国传统建筑丛书：潮汕民居》的量化分析)',
+                                        fill: '#fff',
+                                        fontSize: 10
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightTopChart.setOption(radarOption, true);
+                    } else if (pageIndex === 6) {
+                        // 闽派 - 民居遗存记录数量趋势折线图
+                        const minnanLineOption = {
+                            title: {
+                                text: '闽派民居遗存记录数量趋势',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                formatter: function(params) {
+                                    const levelMap = {
+                                        0.5: '低',
+                                        1: '少',
+                                        2: '中',
+                                        3: '高'
+                                    };
+                                    return params[0].name + '<br/>遗存记录数量: ' + levelMap[params[0].value];
+                                }
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '15%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['宋元及以前', '明代', '清代', '民国', '1949年后'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11,
+                                    rotate: 30
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                name: '数量/频次',
+                                nameTextStyle: {
+                                    color: '#fff',
+                                    padding: [0, 10, 0, 0]
+                                },
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11,
+                                    formatter: function(value) {
+                                        const levelMap = {
+                                            0.5: '低',
+                                            1: '少',
+                                            2: '中',
+                                            3: '高'
+                                        };
+                                        return levelMap[value] || '';
+                                    }
+                                },
+                                min: 0,
+                                max: 3,
+                                interval: 0.5
+                            },
+                            series: [
+                                {
+                                    name: '遗存记录数量',
+                                    type: 'line',
+                                    data: [1, 2, 3, 2, 0.5],
+                                    smooth: true,
+                                    itemStyle: {
+                                        color: '#8B4513'
+                                    },
+                                    lineStyle: {
+                                        width: 3,
+                                        color: '#8B4513'
+                                    },
+                                    symbol: 'circle',
+                                    symbolSize: 8,
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        color: '#fff',
+                                        fontSize: 10,
+                                        formatter: function(params) {
+                                            const levelMap = {
+                                                0.5: '低',
+                                                1: '少',
+                                                2: '中',
+                                                3: '高'
+                                            };
+                                            return levelMap[params.value] || '';
+                                        }
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightTopChart.setOption(minnanLineOption, true);
+                    } else {
+                        // 其他派别 - 建筑评分雷达图
+                        const radarOption = {
+                            title: {
+                                text: '建筑评分雷达图',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            tooltip: {},
+                            radar: {
+                                indicator: [
+                                    { name: '美观度', max: 100 },
+                                    { name: '实用性', max: 100 },
+                                    { name: '历史价值', max: 100 },
+                                    { name: '文化内涵', max: 100 },
+                                    { name: '结构复杂度', max: 100 },
+                                    { name: '地域特色', max: 100 }
+                                ],
+                                axisLine: {
+                                    lineStyle: {
+                                        color: '#fff'
+                                    }
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        color: 'rgba(255, 255, 255, 0.3)'
+                                    }
+                                },
+                                splitArea: {
+                                    areaStyle: {
+                                        color: 'rgba(255, 255, 255, 0.1)'
+                                    }
+                                },
+                                name: {
+                                    textStyle: {
+                                        color: '#fff',
+                                        fontSize: 10
+                                    }
+                                }
+                            },
+                            series: [
+                                {
+                                    name: data.name + '评分',
+                                    type: 'radar',
+                                    data: [{
+                                        value: [85, 80, 90, 95, 75, 92],
+                                        name: data.name
+                                    }],
+                                    itemStyle: {
+                                        color: function(params) {
+                                            const colors = ['#8B4513', '#D2B48C', '#A0522D', '#CD853F', '#DEB887'];
+                                            return colors[params.dataIndex];
+                                        }
+                                    },
+                                    areaStyle: {
+                                        color: 'rgba(210, 180, 140, 0.3)'
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightTopChart.setOption(radarOption, true);
+                    }
                 }
                 
-                // 更新右侧下图表 - 历史发展折线图
+                // 更新右侧下图表 - 京派显示四合院文化理念树状图，其他派别显示历史发展趋势折线图
                 if (rightBottomChart) {
-                    const lineOption = {
-                        title: {
-                            text: '历史发展趋势',
-                            left: 'center',
-                            textStyle: {
-                                color: '#fff',
-                                fontSize: 14
-                            }
-                        },
-                        tooltip: {},
-                        xAxis: {
-                            type: 'category',
-                            data: ['唐宋', '明清', '民国', '现代'],
-                            axisLabel: {
-                                color: '#fff',
-                                fontSize: 11
-                            }
-                        },
-                        yAxis: {
-                            type: 'value',
-                            name: '发展指数',
-                            axisLabel: {
-                                color: '#fff',
-                                fontSize: 11
-                            }
-                        },
-                        series: [
-                            {
-                                name: data.name + '发展',
-                                data: [60, 85, 75, 90],
-                                type: 'line',
-                                smooth: true,
-                                itemStyle: {
-                                    color: '#D2B48C'
-                                },
-                                lineStyle: {
-                                    width: 3
+                    if (pageIndex === 1) {
+                        // 京派 - 四合院文化理念 - 建筑元素层级树状图
+                        const treeOption = {
+                            title: {
+                                text: '四合院文化理念 - 建筑元素层级关系',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
                                 }
-                            }
-                        ],
-                        backgroundColor: 'transparent'
-                    };
-                    rightBottomChart.setOption(lineOption);
+                            },
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            series: [
+                                {
+                                    type: 'tree',
+                                    data: [
+                                        {
+                                            name: '文化理念',
+                                            children: [
+                                                {
+                                                    name: '家庭伦理',
+                                                    children: []
+                                                },
+                                                {
+                                                    name: '风水信仰',
+                                                    children: []
+                                                },
+                                                {
+                                                    name: '四合院布局',
+                                                    children: [
+                                                        {
+                                                            name: '门饰 / 影壁',
+                                                            value: '礼制边界、祈福避邪、内外区分'
+                                                        },
+                                                        {
+                                                            name: '木雕、砖雕',
+                                                            value: '吉祥寓意、空间等级、审美表达'
+                                                        },
+                                                        {
+                                                            name: '彩绘',
+                                                            value: '等级象征、色彩文化、吉祥寓意'
+                                                        },
+                                                        {
+                                                            name: '瓦当 / 脊饰',
+                                                            value: '祥瑞保护、屋顶文化符号'
+                                                        },
+                                                        {
+                                                            name: '院落植栽',
+                                                            value: '生活理想、文化象征（清雅 / 繁衍）'
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    layout: 'orthogonal',
+                                    orient: 'LR',
+                                    top: '10%',
+                                    left: '15%',
+                                    bottom: '10%',
+                                    right: '15%',
+                                    symbolSize: [80, 40],
+                                    initialTreeDepth: 3,
+                                    lineStyle: {
+                                        width: 2,
+                                        color: '#8B4513'
+                                    },
+                                    // 控制节点间距
+                                    expandAndCollapse: false,
+                                    animationDurationUpdate: 750,
+                                    // 调整布局以增加垂直间距
+                                    roam: false,
+                                    label: {
+                                        position: 'inside',
+                                        verticalAlign: 'middle',
+                                        align: 'center',
+                                        fontSize: 12,
+                                        fontWeight: 'normal',
+                                        color: '#CD853F'
+                                    },
+                                    leaves: {
+                                        label: {
+                                            position: 'inside',
+                                            verticalAlign: 'middle',
+                                            align: 'center',
+                                            fontSize: 10,
+                                            fontWeight: 'normal',
+                                            color: '#CD853F'
+                                        },
+                                        symbolSize: [100, 30],
+                                        itemStyle: {
+                                            borderRadius: 15
+                                        }
+                                    },
+                                    emphasis: {
+                                        focus: 'descendant'
+                                    },
+                                    expandAndCollapse: false,
+                                    animationDuration: 550,
+                                    animationDurationUpdate: 750,
+                                    itemStyle: {
+                                        color: function(params) {
+                                            if (params.dataIndex === 0) {
+                                                // 一级节点
+                                                return '#8B4513';
+                                            } else if (params.level === 1) {
+                                                // 二级节点
+                                                return '#A0522D';
+                                            } else {
+                                                // 三级节点
+                                                return '#CD853F';
+                                            }
+                                        },
+                                        borderColor: function(params) {
+                                            // 核心节点强调
+                                            if (params.level === 1 && params.data.name === '四合院布局') {
+                                                return '#8B4513';
+                                            }
+                                            return '#8B4513';
+                                        },
+                                        borderWidth: function(params) {
+                                            // 核心节点强调
+                                            if (params.level === 1 && params.data.name === '四合院布局') {
+                                                return 2;
+                                            }
+                                            return 1;
+                                        },
+                                        borderRadius: function(params) {
+                                            // 三级节点圆角
+                                            if (params.level === 2) {
+                                                return 15;
+                                            }
+                                            return 0;
+                                        },
+                                        opacity: 1
+                                    },
+                                    // 自定义连接线标注
+                                    edgeSymbol: ['none', 'arrow'],
+                                    edgeSymbolSize: [0, 6],
+                                    edgeLabel: {
+                                        show: true,
+                                        position: 'middle',
+                                        formatter: function(params) {
+                                            if (params.data.value) {
+                                                return params.data.value.split('、')[0];
+                                            }
+                                            return '';
+                                        },
+                                        fontSize: 8,
+                                        fontStyle: 'italic',
+                                        color: '#fff'
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                // 底部注释
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '90%',
+                                    style: {
+                                        text: '(核心逻辑：文化理念指导布局\n布局承载建筑元素与文化表达)',
+                                        fill: '#fff',
+                                        fontSize: 12,
+                                        textAlign: 'center'
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightBottomChart.setOption(treeOption, true);
+                    } else if (pageIndex === 2) {
+                        // 粤派 - 广东传统村落/建筑群区域分布占比环形图
+                        const pieOption = {
+                            title: {
+                                text: '广东传统村落/建筑群区域分布占比',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                zlevel: 1000,
+                                formatter: function(params) {
+                                    const annotations = {
+                                        '粤东（潮汕/梅州）': '成片聚簇，传统村落最集中',
+                                        '珠三角（广府）': '高密度点状，沿珠江水网扩散',
+                                        '粤北（岭南山地）': '带状分布，沿京广古道延伸',
+                                        '粤西（高凉/雷州）': '稀疏点状，集中于雷州半岛'
+                                    };
+                                    return params.seriesName + ' <br/>' + params.name + ': ' + params.value + '% (' + params.percent + '%)' + '<br/>' + annotations[params.name];
+                                }
+                            },
+                            legend: {
+                                orient: 'horizontal',
+                                bottom: '85%',
+                                left: 'center',
+                                formatter: function(name) {
+                                    const item = [{ name: '粤东（潮汕/梅州）', value: 42 },
+                                                { name: '珠三角（广府）', value: 35 },
+                                                { name: '粤北（岭南山地）', value: 15 },
+                                                { name: '粤西（高凉/雷州）', value: 8 }].find(item => item.name === name);
+                                    return '{a|' + name + '} {b|' + item.value + '%}';
+                                },
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 12,
+                                    rich: {
+                                        a: {
+                                            padding: [0, 5, 0, 0]
+                                        },
+                                        b: {
+                                            color: '#fff'
+                                        }
+                                    }
+                                },
+                                type: 'scroll',
+                                pageIconSize: 10,
+                                pageTextStyle: {
+                                    color: '#fff'
+                                },
+                                pageButtonItemGap: 5,
+                                pageButtonGap: 10
+                            },
+                            color: [
+                                '#D2B48C', // 浅棕色
+                                '#BC8F8F', // 玫瑰棕色
+                                '#8B4513', // 深棕色
+                                '#CD853F'  // 秘鲁色
+                            ],
+                            series: [
+                                {
+                                    name: '区域分布占比',
+                                    type: 'pie',
+                                    radius: ['20%', '50%'],
+                                    center: ['50%', '55%'],
+                                    avoidLabelOverlap: false,
+                                    itemStyle: {
+                                        borderRadius: 0,
+                                        borderColor: '#fff',
+                                        borderWidth: 1
+                                    },
+                                    label: {
+                                        show: true,
+                                        position: 'outside',
+                                        formatter: '{b} {c}%',
+                                        fontSize: 12,
+                                        color: '#fff'
+                                    },
+                                    emphasis: {
+                                        label: {
+                                            show: true,
+                                            fontSize: 14,
+                                            fontWeight: 'bold'
+                                        }
+                                    },
+                                    labelLine: {
+                                        show: true
+                                    },
+                                    data: [
+                                        { name: '粤东（潮汕/梅州）', value: 42 },
+                                        { name: '珠三角（广府）', value: 35 },
+                                        { name: '粤北（岭南山地）', value: 15 },
+                                        { name: '粤西（高凉/雷州）', value: 8 }
+                                    ]
+                                }
+                            ],
+                            graphic: [
+                                // 数据来源标注
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '85%',
+                                    style: {
+                                        text: '(数据参考《中国传统村落名录》（住建部等七部门发布）及学术估算)',
+                                        fill: '#fff',
+                                        fontSize: 10,
+                                        textAlign: 'center'
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightBottomChart.setOption(pieOption, true);
+                    } else if (pageIndex === 6) {
+                        // 闽派 - 建筑类型与地域代表性对应关系矩阵式条形图
+                        const minnanMatrixBarOption = {
+                            title: {
+                                text: '闽派建筑类型与地域代表性对应关系',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            legend: {
+                                data: ['红砖大厝', '合院民居', '土楼', '坊巷式'],
+                                top: '9%',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '5%',
+                                bottom: '10%',
+                                top: '15%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['闽南', '闽北', '闽西', '闽东'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: ['红砖大厝', '合院民居', '土楼', '坊巷式'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '红砖大厝',
+                                    type: 'bar',
+                                    data: [3, 1, 1, 2],
+                                    itemStyle: {
+                                        color: '#8B4513'
+                                    },
+                                    label: {
+                                        show: true,
+                                        position: 'inside',
+                                        color: '#fff',
+                                        fontSize: 10,
+                                        formatter: function(params) {
+                                            const levelMap = {
+                                                1: '低',
+                                                2: '中',
+                                                3: '高'
+                                            };
+                                            return levelMap[params.value] || '';
+                                        }
+                                    }
+                                },
+                                {
+                                    name: '合院民居',
+                                    type: 'bar',
+                                    data: [2, 2, 1, 2],
+                                    itemStyle: {
+                                        color: '#D2B48C'
+                                    },
+                                    label: {
+                                        show: true,
+                                        position: 'inside',
+                                        color: '#fff',
+                                        fontSize: 10,
+                                        formatter: function(params) {
+                                            const levelMap = {
+                                                1: '低',
+                                                2: '中',
+                                                3: '高'
+                                            };
+                                            return levelMap[params.value] || '';
+                                        }
+                                    }
+                                },
+                                {
+                                    name: '土楼',
+                                    type: 'bar',
+                                    data: [1, 1, 3, 1],
+                                    itemStyle: {
+                                        color: '#BC8F8F'
+                                    },
+                                    label: {
+                                        show: true,
+                                        position: 'inside',
+                                        color: '#fff',
+                                        fontSize: 10,
+                                        formatter: function(params) {
+                                            const levelMap = {
+                                                1: '低',
+                                                2: '中',
+                                                3: '高'
+                                            };
+                                            return levelMap[params.value] || '';
+                                        }
+                                    }
+                                },
+                                {
+                                    name: '坊巷式',
+                                    type: 'bar',
+                                    data: [1, 1, 1, 3],
+                                    itemStyle: {
+                                        color: '#CD853F'
+                                    },
+                                    label: {
+                                        show: true,
+                                        position: 'inside',
+                                        color: '#fff',
+                                        fontSize: 10,
+                                        formatter: function(params) {
+                                            const levelMap = {
+                                                1: '低',
+                                                2: '中',
+                                                3: '高'
+                                            };
+                                            return levelMap[params.value] || '';
+                                        }
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightBottomChart.setOption(minnanMatrixBarOption, true);
+                    } else {
+                        // 其他派别 - 历史发展趋势折线图
+                        const lineOption = {
+                            title: {
+                                text: '历史发展趋势',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            tooltip: {},
+                            xAxis: {
+                                type: 'category',
+                                data: ['唐宋', '明清', '民国', '现代'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                name: '发展指数',
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 11
+                                }
+                            },
+                            series: [
+                                {
+                                    name: data.name + '发展',
+                                    data: [60, 85, 75, 90],
+                                    type: 'line',
+                                    smooth: true,
+                                    itemStyle: {
+                                        color: function(params) {
+                                            const colors = ['#8B4513', '#D2B48C', '#A0522D', '#CD853F', '#DEB887'];
+                                            return colors[params.dataIndex];
+                                        }
+                                    },
+                                    lineStyle: {
+                                        width: 3
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightBottomChart.setOption(lineOption, true);
+                    }
                 }
                 
-                // 更新底部图表（柱状图）
+                // 更新底部图表 - 京派显示四合院院落进数关联图，其他派别显示影响力对比图
                 if (bottomChart) {
-                    const barOption = {
-                        title: {
-                            text: '影响力对比',
-                            left: 'center',
-                            textStyle: {
-                                color: '#fff',
-                                fontSize: 16
-                            }
-                        },
-                        tooltip: {},
-                        xAxis: {
-                            type: 'category',
-                            data: ['京派', '粤派', '徽派', '苏派', '晋派', '闽派', '海派', '川派'],
-                            axisLabel: {
-                                color: '#fff',
-                                rotate: 45
-                            }
-                        },
-                        yAxis: {
-                            type: 'value',
-                            name: '影响力指数',
-                            axisLabel: {
-                                color: '#fff'
-                            }
-                        },
-                        series: [
-                            {
-                                name: '影响力',
-                                data: [95, 88, 92, 90, 85, 87, 91, 86],
-                                type: 'bar',
-                                itemStyle: {
-                                    color: '#D2B48C'
+                    if (pageIndex === 1 && data.courtyardBar) {
+                        // 京派 - 四合院院落进数与家庭地位关联图（横向柱状图）
+                        const courtyardBarOption = {
+                            title: {
+                                text: '四合院院落进数与家庭地位关联',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
                                 }
-                            }
-                        ],
-                        backgroundColor: 'transparent'
-                    };
-                    bottomChart.setOption(barOption);
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                },
+                                formatter: function(params) {
+                                    const item = data.courtyardBar[params[0].dataIndex];
+                                    return `${item.name}<br/>家庭地位：${item.status}<br/>布局复杂度：${item.value}<br/>特征：${item.features}`;
+                                }
+                            },
+                            grid: {
+                                left: '0%',
+                                right: '50%',
+                                bottom: '15%',
+                                top: '15%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'value',
+                                min: 0,
+                                max: 4,
+                                interval: 1,
+                                axisLabel: {
+                                    show: false
+                                },
+                                axisLine: {
+                                    show: false
+                                },
+                                axisTick: {
+                                    show: false
+                                },
+                                splitLine: {
+                                    show: false
+                                }
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: data.courtyardBar.map(item => item.name),
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                },
+                                axisLine: {
+                                    show: false
+                                },
+                                axisTick: {
+                                    show: false
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '布局复杂度',
+                                    type: 'bar',
+                                    data: data.courtyardBar.map(item => ({
+                                        value: item.value,
+                                        itemStyle: {
+                                            color: item.color
+                                        }
+                                    })),
+                                    barWidth: 30,
+                                    barGap: '15px',
+                                    label: {
+                                        show: true,
+                                        position: 'right',
+                                        formatter: function(params) {
+                                            const item = data.courtyardBar[params.dataIndex];
+                                            return item.features;
+                                        },
+                                        color: '#fff',
+                                        fontSize: 14
+                                    },
+                                    markPoint: {
+                                        symbolSize: 0
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                // 底部注释
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '90%',
+                                    style: {
+                                        text: '（布局复杂度基于院落结构与功能分区量化）',
+                                        fill: '#fff',
+                                        fontSize: 12
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        bottomChart.setOption(courtyardBarOption, true);
+                    } else if (pageIndex === 2) {
+                        // 粤派 - 古建筑材料体积占比横向柱状图
+                        const barOption = {
+                            title: {
+                                text: '粤派古建筑材料体积占比',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                },
+                                formatter: function(params) {
+                                    const features = ['高热惰性，隔热降温', '韧性好，耐腐蚀', '防潮耐压，阻断毛细水', '隔热排盐，地域特色显著', '装饰性强，耐候性好'];
+                                    const ranges = ['50%-60%', '15%-20%', '10%-15%', '0%-30%', '2%-5%'];
+                                    return params[0].name + '<br/>体积占比：' + ranges[params[0].dataIndex] + '<br/>关键物理特性：' + features[params[0].dataIndex];
+                                }
+                            },
+                            grid: {
+                                left: '5%',
+                                right: '20%',
+                                bottom: '15%',
+                                top: '15%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'value',
+                                min: 0,
+                                max: 60,
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    formatter: '{value}%'
+                                }
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: ['青砖', '木材(坤甸木/杉木)', '石材(红砂岩/花岗岩)', '蚝壳', '灰塑/陶瓷'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '体积占比',
+                                    type: 'bar',
+                                    data: [60, 20, 15, 30, 5],
+                                    itemStyle: {
+                                        color: function(params) {
+                                            const colors = ['#8B4513', '#D2B48C', '#A0522D', '#CD853F', '#DEB887'];
+                                            return colors[params.dataIndex];
+                                        }
+                                    },
+                                    barWidth: 25,
+                                    label: {
+                                        show: true,
+                                        position: 'right',
+                                        formatter: function(params) {
+                                            const ranges = ['50%-60%', '15%-20%', '10%-15%', '0%-30%', '2%-5%'];
+                                            return ranges[params.dataIndex];
+                                        },
+                                        color: '#fff',
+                                        fontSize: 12
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                // 数据来源标注
+                                {
+                                    type: 'text',
+                                    left: 'left',
+                                    top: '95%',
+                                    style: {
+                                        text: '(数据参考《岭南建筑环境评价与调控》《蚝壳墙：岭南建筑的生态智慧》学术研究，为体积估算值)',
+                                        fill: '#fff',
+                                        fontSize: 10
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        bottomChart.setOption(barOption, true);
+                    } else if (pageIndex === 6) {
+                        // 闽派 - 建筑类型的地域分布关联桑基图
+                        const sankeyOption = {
+                            title: {
+                                text: '闽派典型建筑类型的地域分布关联',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 18
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: function(params) {
+                                    return params.name;
+                                }
+                            },
+                            series: [
+                                {
+                                    type: 'sankey',
+                                    left: 10,
+                                    top: 55,
+                                    right: 270,
+                                    bottom: 40,
+                                    data: [
+                                        {name: '红砖大厝', itemStyle: {color: '#8B4513'}},
+                                        {name: '土楼', itemStyle: {color: '#D2B48C'}},
+                                        {name: '合院民居', itemStyle: {color: '#A0522D'}},
+                                        {name: '坊巷式民居', itemStyle: {color: '#CD853F'}},
+                                        {name: '闽南', itemStyle: {color: '#DEB887'}},
+                                        {name: '闽西', itemStyle: {color: '#BC8F8F'}},
+                                        {name: '闽北/闽东', itemStyle: {color: '#8B7355'}},
+                                        {name: '闽东（福州）', itemStyle: {color: '#F4A460'}},
+                                        {name: '闽南古厝、红砖厝集群（泉州 / 厦门 / 漳州）', itemStyle: {color: '#B22222'}},
+                                        {name: '福建土楼世界遗产（永定 / 南靖 / 诏安）', itemStyle: {color: '#CD5C5C'}},
+                                        {name: '闽北 / 闽东传统院落理论', itemStyle: {color: '#F08080'}},
+                                        {name: '三坊七巷古建筑群', itemStyle: {color: '#E9967A'}}
+                                    ],
+                                    links: [
+                                        {source: '红砖大厝', target: '闽南', value: 1},
+                                        {source: '土楼', target: '闽西', value: 1},
+                                        {source: '合院民居', target: '闽北/闽东', value: 1},
+                                        {source: '坊巷式民居', target: '闽东（福州）', value: 1},
+                                        {source: '闽南', target: '闽南古厝、红砖厝集群（泉州 / 厦门 / 漳州）', value: 1},
+                                        {source: '闽西', target: '福建土楼世界遗产（永定 / 南靖 / 诏安）', value: 1},
+                                        {source: '闽北/闽东', target: '闽北 / 闽东传统院落理论', value: 1},
+                                        {source: '闽东（福州）', target: '三坊七巷古建筑群', value: 1}
+                                    ],
+                                    lineStyle: {
+                                        color: 'gradient',
+                                        curveness: 0.5
+                                    },
+                                    label: {
+                                        color: '#fff',
+                                        fontSize: 14
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                // 数据来源标注
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '95%',
+                                    style: {
+                                        text: '(数据来源：基于闽派建筑类型与地域分布分析)',
+                                        fill: '#fff',
+                                        fontSize: 10
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        bottomChart.setOption(sankeyOption, true);
+                    } else {
+                        // 其他派别 - 影响力对比图
+                        const barOption = {
+                            title: {
+                                text: '影响力对比',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 16
+                                }
+                            },
+                            tooltip: {},
+                            xAxis: {
+                                type: 'category',
+                                data: ['京派', '粤派', '徽派', '苏派', '晋派', '闽派', '海派', '川派'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    rotate: 45
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                name: '影响力指数',
+                                axisLabel: {
+                                    color: '#fff'
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '影响力',
+                                    data: [95, 88, 92, 90, 85, 87, 91, 86],
+                                    type: 'bar',
+                                    itemStyle: {
+                                        color: '#D2B48C'
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        bottomChart.setOption(barOption, true);
+                    }
                 }
             }
             
@@ -1719,7 +3342,11 @@
                 } else {
                     newIndex = 8;
                 }
-                showPage(newIndex, 'prev');
+                
+                if (newIndex !== currentPageIndex) {
+                    // 直接调用showPage，让它处理所有更新逻辑
+                    showPage(newIndex, 'prev');
+                }
             }
             
             // 下一页
@@ -1730,7 +3357,11 @@
                 } else {
                     newIndex = 1;
                 }
-                showPage(newIndex, 'next');
+                
+                if (newIndex !== currentPageIndex) {
+                    // 直接调用showPage，让它处理所有更新逻辑
+                    showPage(newIndex, 'next');
+                }
             }
             
             // 关闭二次页面
