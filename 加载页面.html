@@ -338,7 +338,7 @@
     <!-- 加载页面 -->
     <div id="loading-container">
         <!-- 加载标题 -->
-        <h1 id="loading-title">抽卡游戏</h1>
+        <h1 id="loading-title">即将开始</h1>
         
         <!-- 加载动画 -->
         <div id="loading-spinner"></div>
@@ -418,7 +418,6 @@
                 
                 // 如果加载完成，跳转到抽卡页面
                 if (progress >= maxProgress) {
-                    // 延迟一段时间，让用户看到完成状态
                     setTimeout(() => {
                         window.location.href = '抽卡页面.html';
                     }, 1000);
