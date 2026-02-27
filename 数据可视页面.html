@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -293,7 +293,7 @@
         /* 导航品牌 */
         .nav-brand {
             padding: 5px 0;
-            margin-right: 30px;
+            margin-right: 15px;
         }
 
         .nav-brand a {
@@ -326,18 +326,21 @@
         /* 导航链接 */
         .nav-link {
             display: block;
-            padding: 8px 12px;
+            padding: 12px 20px;
             color: #fffdf0;
             text-decoration: none;
             font-size: 16px;
             font-weight: bold;
             transition: all 0.3s ease;
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            background: transparent;
         }
 
         .nav-link:hover {
             color: #fff;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* 下拉菜单 */
@@ -1111,7 +1114,115 @@
                             backgroundColor: 'transparent'
                         };
                         leftTopChart.setOption(huipaiColorPieOption, true);
-                    } else if (pageIndex === 5) {
+                    } else if (pageIndex === 4) {
+                        // 苏派 - 年代分布图时间轴折线图
+                        const suTimelineOption = {
+                            title: {
+                                text: '苏派民居年代分布',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 20
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'cross'
+                                },
+                                formatter: function(params) {
+                                    const periodData = [
+                                        {
+                                            period: '明代及以前(1368-1644，含元)',
+                                            percentage: '约10%-15%',
+                                            features: '风格朴拙，构架硕大',
+                                            performance: '木构架粗壮，梁架多用"月梁"，彩画简洁，较少繁复堆砌，体现文人内敛气质。',
+                                            examples: '东山杨湾怀荫堂、明善堂；西山明月湾古村老宅；城区部分明代祠堂。'
+                                        },
+                                        {
+                                            period: '清代早中期(1644-1840)',
+                                            percentage: '约35%-40%',
+                                            features: '技艺成熟，宅园融合',
+                                            performance: '厅堂布局极其讲究，砖雕门楼工艺达到顶峰。庭院中的叠石理水艺术与生活空间深度结合。',
+                                            examples: '拙政园、留园、网师园住宅部；同里退思园；东山春在楼主体。'
+                                        },
+                                        {
+                                            period: '清代晚期(1840-1911)',
+                                            percentage: '约45%-50%',
+                                            features: '现存主体，装饰繁复',
+                                            performance: '现存数量最多（多为战后重建）。装饰细节趋于极致，中西合璧风格萌芽（如铸铁花格、海棠玻璃）。',
+                                            examples: '山塘街、平江路历史街区民居；控保建筑名录晚清宅邸；西山敬修堂。'
+                                        }
+                                    ];
+                                    const item = periodData[params[0].dataIndex];
+                                    return item.period + '<br/>' +
+                                           '现存占比（预估）: ' + item.percentage + '<br/>' +
+                                           '核心建筑特征: ' + item.features + '<br/>' +
+                                           '空间与艺术表现: ' + item.performance + '<br/>' +
+                                           '现存代表实例: ' + item.examples;
+                                },
+                                confine: true
+                            },
+                            grid: {
+                                left: '5%',
+                                right: '5%',
+                                bottom: '10%',
+                                top: '20%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['明代及以前', '清代早中期', '清代晚期'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    rotate: 30
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                min: 0,
+                                max: 60,
+                                interval: 15,
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    formatter: '{value}%'
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '现存占比（预估）',
+                                    type: 'line',
+                                    data: [12.5, 37.5, 47.5],
+                                    lineStyle: {
+                                        color: '#D4A017', // 苏派国风水色调 - 金黄色
+                                        width: 3
+                                    },
+                                    itemStyle: {
+                                        color: '#D4A017',
+                                        borderColor: '#fff',
+                                        borderWidth: 2
+                                    },
+                                    symbol: 'circle',
+                                    symbolSize: 8,
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        color: '#fff',
+                                        fontSize: 12,
+                                        formatter: function(params) {
+                                            const percentages = ['10%-15%', '35%-40%', '45%-50%'];
+                                            return percentages[params.dataIndex];
+                                        }
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftTopChart.setOption(suTimelineOption, true);
+                    } 
+                    else if (pageIndex === 5) {
                         // 晋派 - 民居建筑类型多维度雷达图
                         const jinRadarOption = {
                             title: {
@@ -1758,7 +1869,7 @@
                         leftTopChart.setOption(pieOption, true);
                     }
                 }
-                
+                //左下图
                 if (leftBottomChart) {
                     if (pageIndex === 1 && data.decorationPie) {
                         // 京派 - 四合院装饰元素文化寓意占比环形图
@@ -2081,6 +2192,134 @@
                             backgroundColor: 'transparent'
                         };
                         leftBottomChart.setOption(huipaiWeightBarOption, true);
+                    } else if (pageIndex === 4) {
+                        // 苏派 - 文化影响堆叠柱状图
+                        const suCultureBarOption = {
+                            title: {
+                                text: '苏派民居建筑要素文化影响占比',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 20
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                },
+                                formatter: function(params) {
+                                    const comprehensiveMap = {
+                                        '空间轴线布局': '尊卑有序 ，深宅大院',
+                                        '色彩体系 (粉墙黛⽡)': '极简留白 ，水墨意境',
+                                        '园林要素 (石/水/木)': '天人合一 ，移情于景',
+                                        '界面渗透 (窗/廊/罩)': '虚实转换 ，内外流通',
+                                        '装饰题材 (雕刻)': '志趣高洁 ，托物言志'
+                                    };
+                                    let result = params[0].name + '<br/>';
+                                    params.forEach(item => {
+                                        result += item.marker + item.seriesName + ': ' + item.value + '%<br/>';
+                                    });
+                                    result += '综合文化特质: ' + comprehensiveMap[params[0].name];
+                                    return result;
+                                },
+                                confine: true
+                            },
+                            legend: {
+                                data: ['儒家礼制(秩序)', '文人审美(意境)', '隐逸文化(私密)', '禅宗/自然观(融合)'],
+                                top: '10%',
+                                left: 'center',
+                                type: 'scroll',
+                                orient: 'horizontal',
+                                pageIconSize: 10,
+                                pageTextStyle: {
+                                    color: '#fff'
+                                },
+                                pageButtonItemGap: 5,
+                                pageButtonGap: 10,
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 12
+                                }
+                            },
+                            grid: {
+                                left: '5%',
+                                right: '5%',
+                                bottom: '7%',
+                                top: '20%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['空间轴线布局', '色彩体系 (粉墙黛⽡)', '园林要素 (石/水/木)', '界面渗透 (窗/廊/罩)', '装饰题材 (雕刻)'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    rotate: 30
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                max: 100,
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    formatter: '{value}%'
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '儒家礼制(秩序)',
+                                    type: 'bar',
+                                    stack: 'total',
+                                    emphasis: {
+                                        focus: 'series'
+                                    },
+                                    data: [65, 5, 5, 10, 30],
+                                    itemStyle: {
+                                        color: '#D4A017' // 苏派国风水色调 - 金黄色
+                                    }
+                                },
+                                {
+                                    name: '文人审美(意境)',
+                                    type: 'bar',
+                                    stack: 'total',
+                                    emphasis: {
+                                        focus: 'series'
+                                    },
+                                    data: [10, 70, 45, 30, 50],
+                                    itemStyle: {
+                                        color: '#6B8E23' // 苏派国风水色调 - 青绿色
+                                    }
+                                },
+                                {
+                                    name: '隐逸文化(私密)',
+                                    type: 'bar',
+                                    stack: 'total',
+                                    emphasis: {
+                                        focus: 'series'
+                                    },
+                                    data: [15, 15, 20, 20, 10],
+                                    itemStyle: {
+                                        color: '#E6C270' // 苏派国风水色调 - 浅金黄色
+                                    }
+                                },
+                                {
+                                    name: '禅宗/自然观(融合)',
+                                    type: 'bar',
+                                    stack: 'total',
+                                    emphasis: {
+                                        focus: 'series'
+                                    },
+                                    data: [10, 10, 30, 40, 10],
+                                    itemStyle: {
+                                        color: '#F5E6C8' // 苏派国风水色调 - 浅黄色
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        leftBottomChart.setOption(suCultureBarOption, true);
                     }
                     else if (pageIndex === 5) {
                         // 晋派 - 民居各建筑部位雕饰类型占比堆积条形图
@@ -3029,6 +3268,87 @@
                             backgroundColor: 'transparent'
                         };
                         rightTopChart.setOption(huipaiTimelineOption, true);
+                    } else if (pageIndex === 4) {
+                        // 苏派 - 庭院内园林元素构成柱状图
+                        const suGardenOption = {
+                            title: {
+                                text: '庭院内园林元素构成',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 20
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                },
+                                formatter: function(params) {
+                                    const gardenData = [
+                                        {name: '植物', percentage: '90%以上'},
+                                        {name: '水景', percentage: '40–60%'},
+                                        {name: '假山', percentage: '30–50%'},
+                                        {name: '景石', percentage: '60%以上'}
+                                    ];
+                                    const item = gardenData[params[0].dataIndex];
+                                    return item.name + '<br/>出现比例：' + item.percentage;
+                                },
+                                confine: true
+                            },
+                            grid: {
+                                left: '5%',
+                                right: '10%',
+                                bottom: '5%',
+                                top: '20%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['植物', '水景', '假山', '景石'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                min: 0,
+                                max: 100,
+                                interval: 20,
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    formatter: '{value}%'
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '出现比例',
+                                    type: 'bar',
+                                    data: [95, 50, 40, 65],
+                                    itemStyle: {
+                                        color: function(params) {
+                                            const colors = ['#D4A017', '#6B8E23', '#E6C270', '#F5E6C8'];
+                                            return colors[params.dataIndex];
+                                        }
+                                    },
+                                    barWidth: 40,
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        color: '#fff',
+                                        fontSize: 12,
+                                        formatter: function(params) {
+                                            const percentages = ['90%以上', '40–60%', '30–50%', '60%以上'];
+                                            return percentages[params.dataIndex];
+                                        }
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightTopChart.setOption(suGardenOption, true);
                     } 
                     else if (pageIndex === 5) {
                         // 晋派 - 各时代现存数量柱状图
@@ -3992,6 +4312,90 @@
                             backgroundColor: 'transparent'
                         };
                         rightBottomChart.setOption(huipaiHeatmapOption, true);
+                    } else if (pageIndex === 4) {
+                        // 苏派 - 天井园林元素数据特征柱状图
+                        const suPatioOption = {
+                            title: {
+                                text: '天井园林元素数据特征',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 20
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                },
+                                formatter: function(params) {
+                                    const patioData = [
+                                        {name: '地面景观', item: '花街铺地覆盖率', range: '60 以上'},
+                                        {name: '竖向景观', item: '贴墙假山出现率', range: '30-50'},
+                                        {name: '渗透界面', item: '漏窗 / 花窗视觉通透率', range: '20-40'},
+                                        {name: '生命要素', item: '孤赏花木绿视率', range: '15-20'},
+                                        {name: '水文要素', item: '太平缸 / 石盆出现率', range: '50 左右'},
+                                        {name: '空间界面', item: '墙面反射率', range: '60-70'}
+                                    ];
+                                    const item = patioData[params[0].dataIndex];
+                                    return item.name + ' - ' + item.item + '<br/>参考值（%）：' + item.range;
+                                },
+                                confine: true
+                            },
+                            grid: {
+                                left: '5%',
+                                right: '5%',
+                                bottom: '1.5%',
+                                top: '5%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['花街铺地覆盖率', '贴墙假山出现率', '漏窗/花窗视觉通透率', '孤赏花木绿视率', '太平缸/石盆出现率', '墙面反射率'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    rotate: 45
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                min: 0,
+                                max: 80,
+                                interval: 20,
+                                axisLabel: {
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    formatter: '{value}%'
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '参考值',
+                                    type: 'bar',
+                                    data: [65, 40, 30, 17.5, 50, 65],
+                                    itemStyle: {
+                                        color: function(params) {
+                                            const colors = ['#D4A017', '#6B8E23', '#E6C270', '#F5E6C8', '#D4A017', '#6B8E23'];
+                                            return colors[params.dataIndex];
+                                        }
+                                    },
+                                    barWidth: 40,
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        color: '#fff',
+                                        fontSize: 12,
+                                        formatter: function(params) {
+                                            const ranges = ['60+', '30-50', '20-40', '15-20', '~50', '60-70'];
+                                            return ranges[params.dataIndex];
+                                        }
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        rightBottomChart.setOption(suPatioOption, true);
                     }
                     else if (pageIndex === 5) {
                         // 晋派 - 民居建筑类型空间规模 - 商业属性散点图
@@ -4869,6 +5273,122 @@
                             backgroundColor: 'transparent'
                         };
                         bottomChart.setOption(fireRoofBarOption, true);
+                    } else if (pageIndex === 4) {
+                        // 苏派 - 叠石理水综合数据双系列柱状图
+                        const suBarOption = {
+                            title: {
+                                text: '叠石理水综合数据',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 20
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                },
+                                formatter: function(params) {
+                                    const dieShiData = [
+                                        {name: '假山主体', desc: '叠石要素 - 假山主体', value: 90},
+                                        {name: '石壁', desc: '叠石要素 - 石壁', value: 70},
+                                        {name: '石洞结构', desc: '叠石要素 - 石洞结构', value: 60},
+                                        {name: '水池边石', desc: '叠石要素 - 水池边石', value: 50},
+                                        {name: '观赏石景', desc: '叠石要素 - 观赏石景', value: 40}
+                                    ];
+                                    const liShuiData = [
+                                        {name: '屋檐排水', desc: '理水节点 - 屋檐排水', value: 90, core: '收集雨水'},
+                                        {name: '天井汇水', desc: '理水节点 - 天井汇水', value: 80, core: '汇集雨水形成小水景'},
+                                        {name: '排水沟', desc: '理水节点 - 排水沟', value: 70, core: '排出积水'},
+                                        {name: '水池储水', desc: '理水节点 - 水池储水', value: 50, core: '调节湿度 + 景观造景'},
+                                        {name: '四水归堂', desc: '理水节点 - 四水归堂', value: 40, core: '排水 + 风水寓意'}
+                                    ];
+                                    
+                                    let result = '';
+                                    params.forEach(item => {
+                                        if (item.seriesName === '叠石系列') {
+                                            const data = dieShiData[item.dataIndex];
+                                            result += item.marker + data.desc + '，功能重要性 / 出现比例：' + data.value + '%<br/>';
+                                        } else if (item.seriesName === '理水系列') {
+                                            const data = liShuiData[item.dataIndex];
+                                            result += item.marker + data.desc + '，功能重要性：' + data.value + '%（核心：' + data.core + '）<br/>';
+                                        }
+                                    });
+                                    return result;
+                                },
+                                confine: true
+                            },
+                            legend: {
+                                data: ['叠石系列', '理水系列'],
+                                top: '10%',
+                                left: 'center',
+                                textStyle: {
+                                    color: '#fff'
+                                }
+                            },
+                            grid: {
+                                left: '10%',
+                                right: '10%',
+                                bottom: '1.5%',
+                                top: '20%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['假山主体', '石壁', '石洞结构', '水池边石', '观赏石景'],
+                                axisLabel: {
+                                    color: '#fff',
+                                    rotate: 30,
+                                    fontSize: 14
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                min: 0,
+                                max: 100,
+                                interval: 25,
+                                axisLabel: {
+                                    color: '#fff',
+                                    formatter: '{value}%',
+                                    fontSize: 14
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '叠石系列',
+                                    type: 'bar',
+                                    data: [90, 70, 60, 50, 40],
+                                    itemStyle: {
+                                        color: '#D4A017' // 苏派国风水色调 - 金黄色
+                                    },
+                                    barWidth: 30,
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        color: '#fff',
+                                        formatter: '{c}%'
+                                    }
+                                },
+                                {
+                                    name: '理水系列',
+                                    type: 'bar',
+                                    data: [90, 80, 70, 50, 40],
+                                    itemStyle: {
+                                        color: '#6B8E23' // 苏派国风水色调 - 青绿色
+                                    },
+                                    barWidth: 30,
+                                    label: {
+                                        show: true,
+                                        position: 'top',
+                                        color: '#fff',
+                                        formatter: '{c}%'
+                                    }
+                                }
+                            ],
+                            backgroundColor: 'transparent'
+                        };
+                        bottomChart.setOption(suBarOption, true);
                     } 
                     else if (pageIndex === 5) {
                         // 晋派 - 民居地域分布热力柱形图（五大区域）
