@@ -393,17 +393,22 @@
             position: fixed;
             top: 30px;
             right: 30px;
-            padding: 12px 25px;
-            font-size: 16px;
+            padding: 10px 20px;
+            font-size: 14px;
             font-weight: bold;
             color: white;
             background: rgba(0, 0, 0, 0.7);
             border: none;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            z-index: 1000;
+            z-index: 9999;
             backdrop-filter: blur(5px);
+            min-width: 100px;
+            text-align: center;
+            display: inline-block;
+            user-select: none;
+            pointer-events: auto;
         }
 
         /* 跳过抽卡按钮悬停效果 */
@@ -412,7 +417,7 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-        
+
         /* ========== 顶部下拉菜单导航样式 ========== */
         /* 导航栏容器 */
         #top-nav {
@@ -650,6 +655,7 @@
         
         <!-- 跳过抽卡按钮 -->
         <button id="skip-draw-btn" class="skip-btn">跳过抽卡</button>
+
     </div>
     
     <script>
