@@ -44,8 +44,8 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 1527px;
+            height: 740px;
             background: var(--loading-bg-image);
             background-size: cover;
             background-position: center;
@@ -55,7 +55,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding-top: 35vh;
+            padding-top: 269px;
         }
         
         /* ========== 鼠标跟随效果样式 ========== */
@@ -152,10 +152,98 @@
             50% { opacity: 1; }
         }
         
+        /* ========== 弹窗样式 ========== */
+        /* 弹窗容器 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            display: none;
+        }
+        
+        /* 弹窗内容 */
+        .modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 弹窗标题 */
+        .modal-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* 弹窗内容 */
+        .modal-body {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        
+        .modal-body p {
+            text-indent: 2em;
+            margin-bottom: 15px;
+        }
+        
+        /* 关闭按钮 */
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            color: #333;
+        }
+        
+        /* 准备好了按钮 */
+        #ready-btn {
+            display: none;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+        
+        #ready-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+        }
+        
         /* ========== 顶部下拉菜单导航样式 ========== */
         /* 导航栏容器 */
         #top-nav {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -169,8 +257,9 @@
             justify-content: center;
             align-items: center;
             padding: 10px 20px;
-            max-width: 1200px;
+            width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
 
         /* 导航品牌 */
@@ -275,71 +364,6 @@
     </style>
 </head>
 <body>
-    <!-- 顶部导航栏 -->
-    <nav id="top-nav">
-        <div class="nav-container">
-            <!-- 品牌标识 -->
-            <div class="nav-brand">
-                <a href="index.html">国风筑韵</a>
-            </div>
-            
-            <!-- 导航菜单 -->
-            <ul class="nav-menu">
-                <!-- 首页 -->
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">首页</a>
-                </li>
-                
-                <!-- 卡牌展示 -->
-                <li class="nav-item">
-                    <a href="抽卡页面.html" class="nav-link">卡牌展示</a>
-                </li>
-                
-                <!-- 数据可视化 -->
-                <li class="nav-item">
-                    <a href="数据可视页面.html" class="nav-link">数据可视化</a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
-                    </ul>
-                </li>
-                
-                <!-- 3D模型 -->
-                <li class="nav-item">
-                    <a href="数据可视页面.html" class="nav-link">3D模型</a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-model="北京四合院.glb">北京四合院</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-model="广东镬耳墙.glb">广东镬耳墙</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-model="安徽马头墙.glb">安徽马头墙</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-model="苏州庭院.glb">苏州庭院</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-model="山西大院.glb">山西大院</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-model="福建土楼.glb">福建土楼</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-model="上海石库门.glb">上海石库门</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-model="川渝吊脚楼.glb">川渝吊脚楼</a></li>
-                    </ul>
-                </li>
-                
-                <!-- 古今对比 -->
-                <li class="nav-item">
-                    <a href="古今对比.html" class="nav-link">古今对比</a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
-                        <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
-                        <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
-                        <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
-                        <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    
     <!-- 鼠标跟随元素 -->
     <div id="mouse-follower">
         <div id="mouse-dot"></div>
@@ -348,6 +372,70 @@
     
     <!-- 加载页面 -->
     <div id="loading-container">
+        <!-- 顶部导航栏 -->
+        <nav id="top-nav">
+            <div class="nav-container">
+                <!-- 品牌标识 -->
+                <div class="nav-brand">
+                    <a href="index.html">国风筑韵</a>
+                </div>
+                
+                <!-- 导航菜单 -->
+                <ul class="nav-menu">
+                    <!-- 首页 -->
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">首页</a>
+                    </li>
+                    
+                    <!-- 卡牌展示 -->
+                    <li class="nav-item">
+                        <a href="抽卡页面.html" class="nav-link">卡牌展示</a>
+                    </li>
+                    
+                    <!-- 数据可视化 -->
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">数据可视化</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 3D模型 -->
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">3D模型</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-model="北京四合院.glb">北京四合院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-model="广东镬耳墙.glb">广东镬耳墙</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-model="安徽马头墙.glb">安徽马头墙</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-model="苏州庭院.glb">苏州庭院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-model="山西大院.glb">山西大院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-model="福建土楼.glb">福建土楼</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-model="上海石库门.glb">上海石库门</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-model="川渝吊脚楼.glb">川渝吊脚楼</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 古今对比 -->
+                    <li class="nav-item">
+                        <a href="古今对比.html" class="nav-link">古今对比</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <!-- 加载标题 -->
         <h1 id="loading-title">即将开始</h1>
         
@@ -361,6 +449,23 @@
         <div id="loading-bar-container">
             <div id="loading-bar"></div>
         </div>
+        
+        <!-- 准备好了按钮 -->
+        <button id="ready-btn">准备好了</button>
+    </div>
+    
+    <!-- 作品使用手册弹窗 -->
+    <div id="intro-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 class="modal-title">国风筑韵·作品使用手册</h2>
+            <div class="modal-body">
+                <p>本作品以"古建筑八大派系民居"为主题，对各派系的建筑结构特征、年代分布、地域分布、雕饰类型及文化内涵进行系统整理，并通过数据可视化图表与三维模型进行展示。</p>
+                <p>进入主界面后，用户通过手势"抽卡"进入对应派系页面。每个页面包含多种数据图表，从时间、空间、结构与装饰等不同维度呈现民居建筑信息，并支持悬浮交互显示详细数据。点击页面中心建筑图标，可进入3D模型浏览页面，帮助用户直观理解建筑形态。</p>
+                <p>在八大派系内容展示完成后，作品进一步介绍传统民居的保护现状与数字创新，说明数字化技术在建筑保护与文化传承中的应用。同时，在顶部导航栏可直接跳转目标页面，便于用户直接浏览。</p>
+                <p>本系统旨在通过交互与数据整合的方式，帮助用户全面了解中国传统民居的类型体系与特征差异</p>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -369,6 +474,9 @@
             // 获取DOM元素
             const loadingBar = document.getElementById('loading-bar');
             const loadingText = document.getElementById('loading-text');
+            const readyBtn = document.getElementById('ready-btn');
+            const introModal = document.getElementById('intro-modal');
+            const closeBtn = document.querySelector('.close-btn');
             
             // 模拟加载进度
             let progress = 0;
@@ -403,6 +511,11 @@
                 });
             }
             
+            // 显示弹窗
+            function showModal() {
+                introModal.style.display = 'flex';
+            }
+            
             // 加载进度更新函数
             async function updateProgress() {
                 // 随机增加进度，模拟真实加载
@@ -424,19 +537,46 @@
                     // 在这个阶段预加载MediaPipe模型
                     await preloadMediaPipeModels();
                 } else {
-                    loadingText.textContent = '加载完成，即将开始...';
+                    loadingText.textContent = '加载完成，请查看作品使用手册';
                 }
                 
-                // 如果加载完成，跳转到抽卡页面
+                // 如果加载完成，显示准备好了按钮和弹窗
                 if (progress >= maxProgress) {
                     setTimeout(() => {
-                        window.location.href = '抽卡页面.html';
-                    }, 1000);
+                        readyBtn.style.display = 'block';
+                        showModal();
+                    }, 500);
                 } else {
                     // 继续更新进度
                     setTimeout(updateProgress, Math.random() * 500 + 200);
                 }
             }
+            
+            // 关闭弹窗
+            function closeModal() {
+                introModal.style.display = 'none';
+            }
+            
+            // 跳转到抽卡页面
+            function goToCardPage() {
+                window.location.href = '抽卡页面.html';
+            }
+            
+            // 事件监听
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeModal);
+            }
+            
+            if (readyBtn) {
+                readyBtn.addEventListener('click', goToCardPage);
+            }
+            
+            // 点击弹窗外部关闭
+            window.addEventListener('click', (e) => {
+                if (e.target === introModal) {
+                    closeModal();
+                }
+            });
             
             // 启动加载进度更新
             updateProgress();

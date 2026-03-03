@@ -30,8 +30,8 @@
         /* 视频容器 */
         #video-container {
             position: relative;
-            width: 100vw;
-            height: 100vh;
+            width: 1527px;
+            height: 740px;
             overflow: hidden;
         }
         
@@ -47,13 +47,13 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 1527px;
+            height: 740px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding-top: 20vh;
+            padding-top: 154px;
             opacity: 0;
             pointer-events: none;
             transition: opacity 1s ease;
@@ -61,9 +61,9 @@
         
         /* 标题图片 */
         #title-image {
-            max-width: 80%;
-            max-height: 40vh;
-            margin-bottom: 150px;
+            max-width: 1093px;
+            max-height: 307px;
+            margin-bottom: 105px;
         }
         
         /* 开始按钮显示状态 */
@@ -145,7 +145,7 @@
         /* ========== 顶部下拉菜单导航样式 ========== */
         /* 导航栏容器 */
         #top-nav {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -159,8 +159,9 @@
             justify-content: center;
             align-items: center;
             padding: 10px 20px;
-            max-width: 1200px;
+            width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
 
         /* 导航品牌 */
@@ -265,71 +266,6 @@
     </style>
 </head>
 <body>
-    <!-- 顶部导航栏 -->
-    <nav id="top-nav">
-        <div class="nav-container">
-            <!-- 品牌标识 -->
-            <div class="nav-brand">
-                <a href="index.html">国风筑韵</a>
-            </div>
-            
-            <!-- 导航菜单 -->
-            <ul class="nav-menu">
-                <!-- 首页 -->
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">首页</a>
-                </li>
-                
-                <!-- 卡牌展示 -->
-                <li class="nav-item">
-                    <a href="抽卡页面.html" class="nav-link">卡牌展示</a>
-                </li>
-                
-                <!-- 数据可视化 -->
-                <li class="nav-item">
-                    <a href="数据可视页面.html" class="nav-link">数据可视化</a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
-                    </ul>
-                </li>
-                
-                <!-- 3D模型 -->
-                <li class="nav-item">
-                    <a href="数据可视页面.html" class="nav-link">3D模型</a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-model="北京四合院.glb">北京四合院</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-model="广东镬耳墙.glb">广东镬耳墙</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-model="安徽马头墙.glb">安徽马头墙</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-model="苏州庭院.glb">苏州庭院</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-model="山西大院.glb">山西大院</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-model="福建土楼.glb">福建土楼</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-model="上海石库门.glb">上海石库门</a></li>
-                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-model="川渝吊脚楼.glb">川渝吊脚楼</a></li>
-                    </ul>
-                </li>
-                
-                <!-- 古今对比 -->
-                <li class="nav-item">
-                    <a href="古今对比.html" class="nav-link">古今对比</a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
-                        <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
-                        <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
-                        <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
-                        <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    
     <!-- 鼠标跟随元素 -->
     <div id="mouse-follower">
         <div id="mouse-dot"></div>
@@ -338,6 +274,70 @@
     
     <!-- 入口页面 -->
     <div id="video-container">
+        <!-- 顶部导航栏 -->
+        <nav id="top-nav">
+            <div class="nav-container">
+                <!-- 品牌标识 -->
+                <div class="nav-brand">
+                    <a href="index.html">国风筑韵</a>
+                </div>
+                
+                <!-- 导航菜单 -->
+                <ul class="nav-menu">
+                    <!-- 首页 -->
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">首页</a>
+                    </li>
+                    
+                    <!-- 卡牌展示 -->
+                    <li class="nav-item">
+                        <a href="抽卡页面.html" class="nav-link">卡牌展示</a>
+                    </li>
+                    
+                    <!-- 数据可视化 -->
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">数据可视化</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 3D模型 -->
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">3D模型</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-model="北京四合院.glb">北京四合院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-model="广东镬耳墙.glb">广东镬耳墙</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-model="安徽马头墙.glb">安徽马头墙</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-model="苏州庭院.glb">苏州庭院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-model="山西大院.glb">山西大院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-model="福建土楼.glb">福建土楼</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-model="上海石库门.glb">上海石库门</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-model="川渝吊脚楼.glb">川渝吊脚楼</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 古今对比 -->
+                    <li class="nav-item">
+                        <a href="古今对比.html" class="nav-link">古今对比</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <!-- 视频元素 -->
         <video id="intro-video" autoplay muted playsinline>
             <source src="intro-video.mp4" type="video/mp4">
