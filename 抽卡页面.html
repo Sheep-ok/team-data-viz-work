@@ -79,7 +79,7 @@
         
         /* ========== 摄像头和状态栏 ========== */
         #input_video { 
-            position: fixed; right: 20px; bottom: 20px; 
+            position: absolute; left: 20px; top: 20px; 
             width: 200px; height: 150px; 
             border-radius: 8px; z-index: 3000; 
             transform: rotateY(180deg); 
@@ -136,6 +136,8 @@
             backface-visibility: hidden; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         /* 卡牌背面样式 */
@@ -734,24 +736,31 @@
                         return;
                     }
                     
-                    allImages.forEach(imgSrc => {
-                        const img = new Image();
-                        img.onload = () => {
-                            loadedCount++;
-                            // 更新加载进度
-                            const progress = Math.round((loadedCount / totalImages) * 100);
-                            statusDiv.innerHTML = `加载中...${progress}%<br>卡牌正在准备入场`;
-                            if (loadedCount === totalImages) {
-                                resolve();
-                            }
-                        };
-                        img.onerror = () => {
-                            loadedCount++;
-                            if (loadedCount === totalImages) {
-                                resolve();
-                            }
-                        };
-                        img.src = imgSrc;
+                    // 使用Promise.all实现并行加载，大幅提升加载速度
+                    const loadPromises = allImages.map(imgSrc => {
+                        return new Promise((loadResolve) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                loadedCount++;
+                                // 减少DOM操作，只在关键节点更新进度
+                                if (loadedCount % 2 === 0 || loadedCount === totalImages) {
+                                    const progress = Math.round((loadedCount / totalImages) * 100);
+                                    statusDiv.innerHTML = `加载中...${progress}%<br>卡牌正在准备入场`;
+                                }
+                                loadResolve(img); // 返回加载完成的图片对象
+                            };
+                            img.onerror = () => {
+                                loadedCount++;
+                                loadResolve(null); // 加载失败返回null
+                            };
+                            img.src = imgSrc;
+                        });
+                    });
+                    
+                    Promise.all(loadPromises).then((loadedImages) => {
+                        // 将加载完成的图片对象缓存起来
+                        window.cachedImages = loadedImages;
+                        resolve();
                     });
                 });
             }
@@ -881,10 +890,16 @@
                     // 创建卡牌主体
                     const body = document.createElement('div');
                     body.className = 'card-body';
+                    
+                    // 使用缓存的图片对象，避免重复加载
+                    const cachedImages = window.cachedImages || [];
+                    const backImg = cachedImages[i];
+                    const frontImg = cachedImages[i + cardCount];
+                    
                     // 设置卡牌正反面HTML结构
                     body.innerHTML = `
-                        <div class="face back"><img src="${cardImages.back[i]}" alt="卡牌背面 ${i+1}"></div>
-                        <div class="face front"><img src="${cardImages.front[i]}" alt="卡牌正面 ${i+1}"></div>
+                        <div class="face back"><img src="${backImg ? backImg.src : cardImages.back[i]}" alt="卡牌背面 ${i+1}" loading="lazy"></div>
+                        <div class="face front"><img src="${frontImg ? frontImg.src : cardImages.front[i]}" alt="卡牌正面 ${i+1}" loading="lazy"></div>
                     `;
                     
                     // 添加到文档片段
@@ -905,7 +920,7 @@
                             requestAnimationFrame(() => {
                                 wrapper.style.transform = `rotateY(${i * stepAngle}deg) translateZ(${radius}px)`;
                             });
-                        }, i * 150); // 每张卡牌延迟150ms，使动画更流畅
+                        }, i * 80); // 减少延迟从150ms到80ms，加快入场速度
                     });
                     
                     // 动画结束后开始自动旋转
@@ -914,7 +929,7 @@
                             interactionState = "IDLE";
                             statusDiv.innerHTML = "✅ 初始化成功！<br>✊ 握拳：旋转洗牌中...<br>☝️ 比1：选择该卡牌<br>🖐️ 张手：查看详情";
                         });
-                    }, cardCount * 150 + 1200); // 等待所有卡牌动画完成后再开始旋转
+                    }, cardCount * 80 + 800); // 调整等待时间，与新的延迟匹配
                 }
             }
             
@@ -962,6 +977,9 @@
             // ========== 2. 动画循环 ==========
             let lastTime = 0;
             let rotationSpeed = 0.3; // 减慢旋转速度，使动画更平滑
+            let lastTransformValue = ''; // 缓存上次的transform值，避免不必要的DOM更新
+            const frameInterval = 1000 / 60; // 限制为60fps
+            let lastFrameTime = 0;
             
             function gameLoop(timestamp) {
                 // 如果详情页打开，停止一切背景旋转计算
@@ -972,19 +990,28 @@
                     }
                     
                     // 平滑插值旋转，实现流畅动画
-                    currentRotation = currentRotation + (targetRotation - currentRotation) * 0.12; // 调整平滑系数，使旋转更自然
+                    const newRotation = currentRotation + (targetRotation - currentRotation) * 0.12;
                     
-                    // 使用transform3d确保硬件加速
-                    carousel.style.transform = `translateZ(0) rotateY(${currentRotation}deg)`;
+                    // 只有当旋转角度有明显变化时才更新DOM
+                    if (Math.abs(newRotation - currentRotation) > 0.001) {
+                        currentRotation = newRotation;
+                        const transformValue = `translateZ(0) rotateY(${currentRotation}deg)`;
+                        
+                        // 只在transform值变化时更新DOM
+                        if (transformValue !== lastTransformValue) {
+                            carousel.style.transform = transformValue;
+                            lastTransformValue = transformValue;
+                        }
 
-                    // 计算当前可见的卡牌索引
-                    let normalizedRot = (-currentRotation) % 360;
-                    if (normalizedRot < 0) normalizedRot += 360;
-                    const newActiveIndex = Math.round(normalizedRot / stepAngle) % cardCount;
-                    
-                    // 只有当活跃索引变化时才更新，减少不必要的计算
-                    if (newActiveIndex !== activeIndex) {
-                        activeIndex = newActiveIndex;
+                        // 计算当前可见的卡牌索引
+                        let normalizedRot = (-currentRotation) % 360;
+                        if (normalizedRot < 0) normalizedRot += 360;
+                        const newActiveIndex = Math.round(normalizedRot / stepAngle) % cardCount;
+                        
+                        // 只有当活跃索引变化时才更新，减少不必要的计算
+                        if (newActiveIndex !== activeIndex) {
+                            activeIndex = newActiveIndex;
+                        }
                     }
                 }
                 // 递归调用，保持动画持续运行
@@ -1172,7 +1199,8 @@
                 // 手势识别结果防抖 - 降低延迟
                 let lastGesture = null;
                 let lastGestureTime = 0;
-                const gestureDebounceTime = 50; // 降低到50ms，提高响应速度
+                const gestureDebounceTime = 80; // 调整到80ms，平衡响应速度和性能
+                let frameCount = 0; // 帧计数器，用于限制处理频率
                 
                 // 优化：改进手势分析算法，提高准确性
                 function analyzeGesture(landmarks) {
@@ -1247,6 +1275,10 @@
                     // 如果详情页打开，忽略所有手势
                     if (isDetailPageOpen) return;
                     
+                    // 帧率限制：每3帧处理一次，减少计算量
+                    frameCount++;
+                    if (frameCount % 3 !== 0) return;
+                    
                     // 如果检测到手部关键点
                     if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
                         const currentTime = Date.now();
@@ -1261,9 +1293,9 @@
                             }
                         }
                     } else {
-                        // 没有检测到手时，定期重置状态（每200ms）
+                        // 没有检测到手时，定期重置状态（每300ms）
                         const currentTime = Date.now();
-                        if (lastGesture !== null && currentTime - lastGestureTime > 200) {
+                        if (lastGesture !== null && currentTime - lastGestureTime > 300) {
                             updateState("NONE");
                             lastGesture = null;
                             lastGestureTime = currentTime;

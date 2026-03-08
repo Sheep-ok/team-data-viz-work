@@ -65,7 +65,7 @@
             width: 100%;
             height: 100%;
             background: inherit;
-            filter: blur(200px) brightness(0.5);
+            filter: blur(400px) brightness(0.7);
             transform: scale(1.1);
             z-index: 1;
         }
@@ -96,13 +96,11 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: rgba(255, 253, 240, 0.7);
-            background-image: linear-gradient(to right, rgba(248, 244, 227, 0.6) 0%, rgba(255, 253, 240, 0.6) 100%);
-            border: 2px solid rgba(139, 69, 19, 0.4);
+            background: rgba(255, 255, 255, 0);
+            background-image: linear-gradient(to right, rgba(248, 244, 227, 0) 0%, rgba(255, 253, 240, 0) 100%);
+            border: none;
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            box-shadow: none;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -189,15 +187,17 @@
         /* 书页标题 */
         .book-page h2 {
             font-size: 24px;
-            color: #8B4513;
+            color: #fff;
+            margin-top: -30px;
             margin-bottom: 20px;
             text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         /* 翻页箭头样式 */
         .page-arrow {
             transition: all 0.3s ease;
-            opacity: 0.7;
+            opacity: 1;
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
         
@@ -210,11 +210,20 @@
         
         /* 数据可视化区域 */
         .visualization-area {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0);
+            border: none;
             border-radius: 10px;
-            backdrop-filter: blur(10px);
             padding: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            box-shadow: none;
+        }
+        
+        /* 上下图表容器样式 */
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
         }
         
         /* 3D模型容器 */
@@ -530,17 +539,17 @@
         <!-- 数据可视化区域 - 左侧（更长，包含两个图表） -->
         <div id="visualization-left" class="visualization-area" style="position: absolute; top: 50%; left: 1.5%; transform: translateY(-50%); width: 390px; height: 680px; z-index: 10;">
             <!-- 左侧上图表 -->
-            <div id="visualization-left-top" style="width: 100%; height: 320px; margin-bottom: 40px;"></div>
+            <div id="visualization-left-top" class="chart-container" style="width: 100%; height: 320px; margin-bottom: 20px;"></div>
             <!-- 左侧下图表 -->
-            <div id="visualization-left-bottom" style="width: 100%; height: 320px; margin-top:0px;"></div>
+            <div id="visualization-left-bottom" class="chart-container" style="width: 100%; height: 320px; margin-bottom: 0;"></div>
         </div>
         
         <!-- 数据可视化区域 - 右侧（更长，包含两个图表） -->
         <div id="visualization-right" class="visualization-area" style="position: absolute; top: 50%; right: 1.5%; transform: translateY(-50%); width: 390px; height: 680px; z-index: 10;">
             <!-- 右侧上图表 -->
-            <div id="visualization-right-top" style="width: 100%; height: 330px; margin-bottom: 40px;"></div>
+            <div id="visualization-right-top" class="chart-container" style="width: 100%; height: 330px; margin-bottom: 20px;"></div>
             <!-- 右侧下图表 -->
-            <div id="visualization-right-bottom" style="width: 100%; height: 330px;"></div>
+            <div id="visualization-right-bottom" class="chart-container" style="width: 100%; height: 330px; margin-bottom: 0;"></div>
         </div>
         
         <!-- 书本容器（放在顶部，包含3D图片） -->
@@ -560,11 +569,14 @@
         </div>
         
         <!-- 翻页箭头（放在书本内部，3D模型图片旁边，更小更靠近） -->
-        <div id="prev-arrow" class="page-arrow prev-arrow" style="position: absolute; top: 35%; left: calc(50% - 210px); transform: translateY(-50%); font-size: 20px; color: #8B4513; cursor: pointer; z-index: 100; background: transparent; padding: 6px 8px; border-radius: 0; box-shadow: none;">←</div>
-        <div id="next-arrow" class="page-arrow next-arrow" style="position: absolute; top: 35%; right: calc(50% - 210px); transform: translateY(-50%); font-size: 20px; color: #8B4513; cursor: pointer; z-index: 100; background: transparent; padding: 6px 8px; border-radius: 0; box-shadow: none;">→</div>
+        <div id="prev-arrow" class="page-arrow prev-arrow" style="position: absolute; top: 38%; left: calc(50% - 310px); transform: translateY(-50%); font-size: 16px; color: #fff; cursor: pointer; z-index: 100; background: transparent; padding: 8px 12px; border-radius: 5px; box-shadow: none;">← 上一派别</div>
+        <div id="next-arrow" class="page-arrow next-arrow" style="position: absolute; top: 38%; right: calc(50% - 310px); transform: translateY(-50%); font-size: 16px; color: #fff; cursor: pointer; z-index: 100; background: transparent; padding: 8px 12px; border-radius: 5px; box-shadow: none;">下一派别 →</div>
         
         <!-- 数据可视化区域 - 底部 -->
-        <div id="visualization-bottom" class="visualization-area" style="position: absolute; bottom: 2.5%; left: 50%; transform: translateX(-50%); width: 550px; height: 280px; z-index: 10;"></div>
+        <div id="visualization-bottom" class="visualization-area" style="position: absolute; bottom: 2.5%; left: 50%; transform: translateX(-50%); width: 550px; height: 280px; z-index: 10;">
+            <!-- 底部图表容器 -->
+            <div id="visualization-bottom-chart" class="chart-container" style="width: 100%; height: 100%; margin-bottom: 0;"></div>
+        </div>
         
         <!-- 侧边索引栏 -->
         <div id="sidebar-index" class="visualization-area" style="z-index: -1; position: absolute; top: 60px; left: 10px; width: 63px; max-height: 350px; overflow-y: auto; transition: all 0.3s ease;">
@@ -699,14 +711,14 @@
             
             // 建筑派别数据
             const factionData = [
-                { name: '京派', frontImage: '京front.png', model: '北京四合院.glb' },
-                { name: '粤派', frontImage: '粤front.png', model: '广东镬耳墙.glb' },
-                { name: '徽派', frontImage: '徽front.png', model: '安徽马头墙.glb' },
-                { name: '苏派', frontImage: '苏front.png', model: '苏州庭院.glb' },
-                { name: '晋派', frontImage: '晋front.png', model: '山西大院.glb' },
-                { name: '闽派', frontImage: '闽front.png', model: '福建土楼.glb' },
-                { name: '海派', frontImage: '海front.png', model: '上海石库门.glb' },
-                { name: '川派', frontImage: '川front.png', model: '川渝吊脚楼.glb' }
+                { name: '京派', frontImage: '京front.png', model: '北京四合院.glb', description: '四合院作为京派建筑的典型代表，其装饰元素承载着深厚的文化寓意，吉祥寓意、伦理教化、自然山水等主题体现了传统建筑的文化内涵。四合院屋顶类型多样，不同形式在功能属性上各具特色，体现了京派建筑的实用性与审美性的完美结合。' },
+                { name: '粤派', frontImage: '粤front.png', model: '广东镬耳墙.glb', description: '粤派建筑装饰融合了世俗生活、封建礼制、海洋外来文化等多重元素，形成了独特的岭南艺术风格。建筑构造巧妙适应岭南湿热气候，体现了人与自然和谐共生的智慧。' },
+                { name: '徽派', frontImage: '徽front.png', model: '安徽马头墙.glb', description: '徽派民居以"白墙黛瓦"为标志性色彩特征，黑白相间的建筑色调营造出素雅宁静的视觉效果。马头墙、天井等核心建筑元素不仅具有实用功能，更承载着徽商文化的精神内涵。' },
+                { name: '苏派', frontImage: '苏front.png', model: '苏州庭院.glb', description: '苏派民居历经明代、清代早中期至清代晚期的发展演变，现存建筑以清代晚期为主，体现了江南水乡建筑的精湛技艺。园林元素与居住空间的完美融合，展现了苏派建筑"宅园一体"的独特魅力。' },
+                { name: '晋派', frontImage: '晋front.png', model: '山西大院.glb', description: '晋派民居类型丰富多样，从碹窑式到复合大院型，在居住功能、商业属性、空间规模、防御性等方面各具特色。精美的木雕、石雕、砖雕装饰遍布各建筑部位，彰显了晋商文化的繁荣与精湛工艺。' },
+                { name: '闽派', frontImage: '闽front.png', model: '福建土楼.glb', description: '闽派建筑类型包括土楼、古厝、祠堂、骑楼等，从宋元到民国时期不断发展演变，体现了地域文化的多样性。不同建筑类型在福建各地域分布呈现明显差异，反映了当地地理环境与人文特色。' },
+                { name: '海派', frontImage: '海front.png', model: '上海石库门.glb', description: '海派建筑在1911年前形成了老式石库门、绞圈房、广式里弄、外廊住宅四大核心类型，体现了中西合璧的独特风格。石库门里弄在1870-1911年间快速发展，成为上海城市建筑的典型代表。' },
+                { name: '川派', frontImage: '川front.png', model: '川渝吊脚楼.glb', description: '川派民居装饰以木雕、砖石雕、彩绘漆画等为主要类型，梁枋、门窗、屋脊等部位装饰精美，体现了巴蜀文化的艺术特色。不同建筑类型在装饰风格上各具特点，展现了川渝地区传统民居的多样性。' }
             ];
             
             // 建筑派别详细数据（用于可视化）
@@ -728,54 +740,54 @@
                         {
                             name: '硬山顶',
                             value: [9, 6, 6, 10],
-                            color: '#666666', // 深灰
-                            itemStyle: { color: '#666666' },
-                            areaStyle: { color: 'rgba(102, 102, 102, 0.3)' }
+                            color: '#232528', // 青瓦深灰
+                            itemStyle: { color: '#232528' },
+                            areaStyle: { color: 'rgba(35, 37, 40, 0.3)' }
                         },
                         {
                             name: '歇山顶',
                             value: [7, 10, 10, 7],
-                            color: '#8B0000', // 暗红
-                            itemStyle: { color: '#8B0000' },
-                            areaStyle: { color: 'rgba(139, 0, 0, 0.3)' }
+                            color: '#7A1E1E', // 故宫红，低明度
+                            itemStyle: { color: '#7A1E1E' },
+                            areaStyle: { color: 'rgba(122, 30, 30, 0.3)' }
                         },
                         {
                             name: '卷棚顶',
                             value: [5, 4, 5, 6],
-                            color: '#D2B48C', // 浅棕
-                            itemStyle: { color: '#D2B48C' },
-                            areaStyle: { color: 'rgba(210, 180, 140, 0.3)' }
+                            color: '#6D4A21', // 木构棕
+                            itemStyle: { color: '#6D4A21' },
+                            areaStyle: { color: 'rgba(109, 74, 33, 0.3)' }
                         },
                         {
                             name: '走马廊',
                             value: [3, 7, 8, 2],
-                            color: '#FFFF99', // 浅黄
-                            itemStyle: { color: '#FFFF99' },
-                            areaStyle: { color: 'rgba(255, 255, 153, 0.3)' }
+                            color: '#D4A814', // 琉璃黄，低饱和
+                            itemStyle: { color: '#D4A814' },
+                            areaStyle: { color: 'rgba(212, 168, 20, 0.3)' }
                         }
                     ],
                     // 四合院装饰元素文化寓意占比数据
                     decorationPie: [
-                        { name: '木雕', value: 25, color: '#8B4513' }, // 深棕
-                        { name: '砖雕', value: 22, color: '#A0522D' }, // 红棕
-                        { name: '门饰/影壁', value: 18, color: '#FF8C00' }, // 橙色
-                        { name: '彩绘', value: 15, color: '#FFD700' }, // 明黄
-                        { name: '瓦当/脊饰', value: 12, color: '#D3D3D3' }, // 浅灰
-                        { name: '石雕', value: 8, color: '#DEB887' } // 浅棕
+                        { name: '木雕', value: 25, color: '#6D4A21' }, // 木构棕
+                        { name: '砖雕', value: 22, color: '#7A1E1E' }, // 故宫红，低明度
+                        { name: '门饰/影壁', value: 18, color: '#D4A814' }, // 琉璃黄，低饱和
+                        { name: '彩绘', value: 15, color: '#C6C4C0' }, // 汉白玉灰
+                        { name: '瓦当/脊饰', value: 12, color: '#232528' }, // 青瓦深灰
+                        { name: '石雕', value: 8, color: '#152D2D' } // 深青灰
                     ],
                     // 四合院院落进数与家庭地位关联数据
                     courtyardBar: [
-                        { name: '单进院', value: 1, status: '普通平民家', features: '紧凑、小家庭、厢房简单', color: '#DEB887' }, // 浅棕
-                        { name: '二进院', value: 2, status: '中等地位家庭', features: '宽敞、迎宾 + 居住分区', color: '#CD853F' }, // 中棕
-                        { name: '三进院', value: 3, status: '明清民间主流家庭', features: '标准结构、起居 + 私密分区', color: '#A0522D' }, // 红棕
-                        { name: '四进及以上', value: 4, status: '豪门 / 官宦家庭', features: '复杂、配套齐全', color: '#8B4513' } // 深棕
+                        { name: '单进院', value: 1, status: '普通平民家', features: '紧凑、小家庭、厢房简单', color: '#C6C4C0' }, // 汉白玉灰
+                        { name: '二进院', value: 2, status: '中等地位家庭', features: '宽敞、迎宾 + 居住分区', color: '#6D4A21' }, // 木构棕
+                        { name: '三进院', value: 3, status: '明清民间主流家庭', features: '标准结构、起居 + 私密分区', color: '#D4A814' }, // 琉璃黄，低饱和
+                        { name: '四进及以上', value: 4, status: '豪门 / 官宦家庭', features: '复杂、配套齐全', color: '#7A1E1E' } // 故宫红，低明度
                     ],
                     // 图例颜色映射
                     legendColorMap: {
-                        '硬山顶': '#666666',
-                        '歇山顶': '#8B0000',
-                        '卷棚顶': '#D2B48C',
-                        '走马廊': '#FFFF99'
+                        '硬山顶': '#232528', // 青瓦深灰
+                        '歇山顶': '#7A1E1E', // 故宫红，低明度
+                        '卷棚顶': '#6D4A21', // 木构棕
+                        '走马廊': '#D4A814' // 琉璃黄，低饱和
                     },
                     bar: [
                         { name: '明清时期', value: 85 },
@@ -850,7 +862,7 @@
                 }
                 
                 // 初始化底部图表（柱状图）
-                const bottomContainer = document.getElementById('visualization-bottom');
+                const bottomContainer = document.getElementById('visualization-bottom-chart');
                 if (bottomContainer) {
                     bottomChart = echarts.init(bottomContainer);
                 }
@@ -872,7 +884,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 },
                                 subtextStyle: {
                                     color: '#fff',
@@ -892,7 +904,7 @@
                                 data: data.hutong.map(item => item.period),
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     rotate: 30
                                 }
                             },
@@ -912,19 +924,19 @@
                                     type: 'line',
                                     data: data.hutong.map(item => item.count),
                                     lineStyle: {
-                                        color: '#8B4513', // 深棕色
+                                        color: '#7A1E1E', // 故宫红，低明度
                                         width: 2
                                     },
                                     itemStyle: {
-                                        color: '#8B4513',
-                                        borderColor: '#fff',
+                                        color: '#7A1E1E',
+                                        borderColor: '#C6C4C0', // 汉白玉灰
                                         borderWidth: function(params) {
                                             // 民国（峰值）和1998年（大幅下降）用红色边框标记
                                             return (params.dataIndex === 3 || params.dataIndex === 5) ? 3 : 0;
                                         },
                                         color: function(params) {
                                             // 民国（峰值）和1998年（大幅下降）用红色标记
-                                            return (params.dataIndex === 3 || params.dataIndex === 5) ? '#ff0000' : '#8B4513';
+                                            return (params.dataIndex === 3 || params.dataIndex === 5) ? '#D4A814' : '#7A1E1E'; // 琉璃黄，低饱和
                                         }
                                     },
                                     symbol: 'circle',
@@ -932,7 +944,7 @@
                                     label: {
                                         show: true,
                                         position: 'top',
-                                        color: '#fff',
+                                        color: '#fff', // 白色
                                         fontSize: 12,
                                         formatter: function(params) {
                                             return params.value + '条';
@@ -964,7 +976,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -984,7 +996,7 @@
                                     height: '70%',
                                     right: null,
                                     bottom: null,
-                                    sizeRange: [10, 50],
+                                    sizeRange: [10, 40],
                                     rotationRange: [-90, 90],
                                     rotationStep: 45,
                                     gridSize: 6,
@@ -994,12 +1006,12 @@
                                         fontWeight: 'bold',
                                         color: function(params) {
                                             const categoryColors = {
-                                                '世俗生活': '#8B4513',
-                                                '封建礼制': '#D2B48C',
-                                                '海洋/外来': '#A0522D',
-                                                '趋吉避凶': '#CD853F'
+                                                '世俗生活': '#A65C32', // 赤陶棕，骑楼砖红
+                                                '封建礼制': '#D49A48', // 陶土金，镬耳饰金
+                                                '海洋/外来': '#3A5F70', // 青灰蓝，骑楼廊柱
+                                                '趋吉避凶': '#8B7D46' // 古铜绿，骑楼花窗
                                             };
-                                            return categoryColors[params.data.category] || '#DEB887';
+                                            return categoryColors[params.data.category] || '#E6D5B8'; // 米黄墙，骑楼墙面
                                         }
                                     },
                                     emphasis: {
@@ -1055,7 +1067,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -1109,21 +1121,21 @@
                                     itemStyle: {
                                         color: function(params) {
                                             const colors = {
-                                                '白墙': '#F2EBE5',
-                                                '深灰黑瓦': '#6E6963',
-                                                '灰砖基座': '#CBD6E0',
-                                                '木构自然色': '#C7A67F'
+                                                '白墙': '#E0E0DB', // 粉墙灰，非纯白
+                                                '深灰黑瓦': '#232A30', // 黛瓦黑
+                                                '灰砖基座': '#4A5557', // 青灰瓦
+                                                '木构自然色': '#936537' // 木构棕
                                             };
                                             return colors[params.name];
                                         },
-                                        borderColor: '#fff',
+                                        borderColor: '#E0E0DB', // 粉墙灰，非纯白
                                         borderWidth: 1
                                     },
                                     label: {
                                         show: true,
                                         position: 'outside',
                                         color: '#fff',
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         formatter: function(params) {
                                             return params.name;
                                         }
@@ -1148,7 +1160,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -1201,7 +1213,7 @@
                                 data: ['明代及以前', '清代早中期', '清代晚期'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     rotate: 30
                                 }
                             },
@@ -1212,7 +1224,7 @@
                                 interval: 15,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     formatter: '{value}%'
                                 }
                             },
@@ -1222,11 +1234,11 @@
                                     type: 'line',
                                     data: [12.5, 37.5, 47.5],
                                     lineStyle: {
-                                        color: '#D4A017', // 苏派国风水色调 - 金黄色
+                                        color: '#B8952F', // 鎏金，低饱和
                                         width: 3
                                     },
                                     itemStyle: {
-                                        color: '#D4A017',
+                                        color: '#B8952F', // 鎏金，低饱和
                                         borderColor: '#fff',
                                         borderWidth: 2
                                     },
@@ -1256,7 +1268,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -1279,7 +1291,7 @@
                                 pageButtonItemGap: 5,
                                 pageButtonGap: 10
                             },
-                            color: ['#D2B48C', '#8B4513', '#7A2F2F', '#5A3E2B', '#D4A017'],
+                            color: ['#6D3A10', '#4A3629', '#B8861B', '#233240', '#804123'], // 土黄褐、砖雕灰、鎏金、深青灰、赤陶色
                             radar: {
                                 indicator: [
                                     { name: '居住功能', max: 5 },
@@ -1308,7 +1320,7 @@
                                 name: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 14
+                                        fontSize: 12
                                     }
                                 }
                             },
@@ -1321,13 +1333,13 @@
                                         name: '碹窑式'
                                     }],
                                     itemStyle: {
-                                        color: '#D2B48C'
+                                        color: '#6D3A10' // 土黄褐，低明度
                                     },
                                     lineStyle: {
                                         width: 1.5
                                     },
                                     areaStyle: {
-                                        color: 'rgba(210, 180, 140, 0.3)'
+                                        color: 'rgba(109, 58, 16, 0.3)'
                                     }
                                 },
                                 {
@@ -1338,13 +1350,13 @@
                                         name: '合院式'
                                     }],
                                     itemStyle: {
-                                        color: '#8B4513'
+                                        color: '#4A3629' // 砖雕灰
                                     },
                                     lineStyle: {
                                         width: 1.5
                                     },
                                     areaStyle: {
-                                        color: 'rgba(139, 69, 19, 0.3)'
+                                        color: 'rgba(74, 54, 41, 0.3)'
                                     }
                                 },
                                 {
@@ -1355,13 +1367,13 @@
                                         name: '楼居式'
                                     }],
                                     itemStyle: {
-                                        color: '#7A2F2F'
+                                        color: '#B8861B' // 鎏金，低饱和
                                     },
                                     lineStyle: {
                                         width: 1.5
                                     },
                                     areaStyle: {
-                                        color: 'rgba(122, 47, 47, 0.3)'
+                                        color: 'rgba(184, 134, 27, 0.3)'
                                     }
                                 },
                                 {
@@ -1372,13 +1384,13 @@
                                         name: '堡寨式'
                                     }],
                                     itemStyle: {
-                                        color: '#5A3E2B'
+                                        color: '#233240' // 深青灰
                                     },
                                     lineStyle: {
                                         width: 1.5
                                     },
                                     areaStyle: {
-                                        color: 'rgba(90, 62, 43, 0.3)'
+                                        color: 'rgba(35, 50, 64, 0.3)'
                                     }
                                 },
                                 {
@@ -1389,13 +1401,13 @@
                                         name: '复合大院型'
                                     }],
                                     itemStyle: {
-                                        color: '#D4A017'
+                                        color: '#804123' // 赤陶色
                                     },
                                     lineStyle: {
                                         width: 1.5
                                     },
                                     areaStyle: {
-                                        color: 'rgba(212, 160, 23, 0.3)'
+                                        color: 'rgba(128, 65, 35, 0.3)'
                                     }
                                 }
                             ],
@@ -1424,7 +1436,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -1470,7 +1482,7 @@
                                 data: ['宋元', '明代', '清代', '民国'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             yAxis: {
@@ -1508,8 +1520,9 @@
                                     },
                                     data: [1, 2, 3, 2],
                                     itemStyle: {
-                                        color: '#8B4513'
-                                    }
+                                        color: '#7B2929' // 红砖深棕红
+                                    },
+                                    barWidth: 35
                                 },
                                 {
                                     name: '古厝',
@@ -1520,8 +1533,9 @@
                                     },
                                     data: [1, 2, 3, 2],
                                     itemStyle: {
-                                        color: '#D2B48C'
-                                    }
+                                        color: '#B49242' // 土楼金棕
+                                    },
+                                    barWidth: 35
                                 },
                                 {
                                     name: '祠堂',
@@ -1532,8 +1546,9 @@
                                     },
                                     data: [0.5, 2, 3, 2],
                                     itemStyle: {
-                                        color: '#BC8F8F'
-                                    }
+                                        color: '#4A5765' // 青灰石色
+                                    },
+                                    barWidth: 35
                                 },
                                 {
                                     name: '骑楼',
@@ -1544,8 +1559,9 @@
                                     },
                                     data: [0, 0, 1, 2],
                                     itemStyle: {
-                                        color: '#CD853F'
-                                    }
+                                        color: '#6E4B34' // 老木棕
+                                    },
+                                    barWidth: 35
                                 },
                                 {
                                     name: '其他',
@@ -1556,8 +1572,9 @@
                                     },
                                     data: [1, 1, 2, 2],
                                     itemStyle: {
-                                        color: '#A0522D'
-                                    }
+                                        color: '#2C353D' // 深檐灰
+                                    },
+                                    barWidth: 35
                                 }
                             ],
                             backgroundColor: 'transparent'
@@ -1572,7 +1589,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -1674,7 +1691,7 @@
                                 name: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 14
+                                        fontSize: 12
                                     }
                                 }
                             },
@@ -1687,14 +1704,14 @@
                                         name: '老式石库门'
                                     }],
                                     itemStyle: {
-                                        color: '#8B4513' // 深棕色
+                                        color: '#3D3533' // 石库门深褐
                                     },
                                     lineStyle: {
                                         width: 3,
-                                        color: '#8B4513'
+                                        color: '#3D3533'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(139, 69, 19, 0.3)'
+                                        color: 'rgba(61, 53, 51, 0.3)'
                                     }
                                 },
                                 {
@@ -1705,14 +1722,14 @@
                                         name: '绞圈房'
                                     }],
                                     itemStyle: {
-                                        color: '#D2B48C' // 浅棕色
+                                        color: '#6B5E54' // 老洋房木棕
                                     },
                                     lineStyle: {
                                         width: 3,
-                                        color: '#D2B48C'
+                                        color: '#6B5E54'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(210, 180, 140, 0.3)'
+                                        color: 'rgba(107, 94, 84, 0.3)'
                                     }
                                 },
                                 {
@@ -1723,14 +1740,14 @@
                                         name: '广式里弄'
                                     }],
                                     itemStyle: {
-                                        color: '#CD853F' // 秘鲁色
+                                        color: '#8C7D67' // 铜黄旧饰
                                     },
                                     lineStyle: {
                                         width: 3,
-                                        color: '#CD853F'
+                                        color: '#8C7D67'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(205, 133, 63, 0.3)'
+                                        color: 'rgba(140, 125, 103, 0.3)'
                                     }
                                 },
                                 {
@@ -1741,14 +1758,14 @@
                                         name: '外廊住宅'
                                     }],
                                     itemStyle: {
-                                        color: '#BC8F8F' // 玫瑰棕色
+                                        color: '#4A5761' // 老上海灰蓝
                                     },
                                     lineStyle: {
                                         width: 3,
-                                        color: '#BC8F8F'
+                                        color: '#4A5761'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(188, 143, 143, 0.3)'
+                                        color: 'rgba(74, 87, 97, 0.3)'
                                     }
                                 }
                             ],
@@ -1777,7 +1794,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -1797,7 +1814,7 @@
                                     height: '75%',
                                     right: null,
                                     bottom: null,
-                                    sizeRange: [10, 50],
+                                    sizeRange: [10, 40],
                                     rotationRange: [-90, 90],
                                     rotationStep: 45,
                                     gridSize: 6,
@@ -1807,11 +1824,11 @@
                                         fontWeight: 'bold',
                                         color: function(params) {
                                             const categoryColors = {
-                                                '装饰类型': '#D2B48C',
-                                                '表现形式': '#BC8F8F',
-                                                '常见位置': '#8B4513'
+                                                '装饰类型': '#55701C', // 竹青绿，低明度
+                                                '表现形式': '#D2B888', // 土黄墙，低饱和
+                                                '常见位置': '#6D3A10' // 木构棕
                                             };
-                                            return categoryColors[params.data.category] || '#CD853F';
+                                            return categoryColors[params.data.category] || '#A85218'; // 赤陶色
                                         }
                                     },
                                     emphasis: {
@@ -1905,7 +1922,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -1951,25 +1968,29 @@
                                     avoidLabelOverlap: false,
                                     itemStyle: {
                                         borderRadius: 0,
-                                        borderColor: '#fff',
+                                        borderColor: '#C6C4C0', // 汉白玉灰
                                         borderWidth: 1
                                     },
                                     label: {
                                         show: true,
                                         position: 'outside',
                                         formatter: '{b} {c}%',
-                                        fontSize: 14,
-                                        color: '#fff'
+                                        fontSize: 13,
+                                        color: '#fff' // 白色
                                     },
                                     emphasis: {
                                         label: {
                                             show: true,
                                             fontSize: 12,
-                                            fontWeight: 'bold'
+                                            fontWeight: 'bold',
+                                            color: '#fff' // 白色
                                         }
                                     },
                                     labelLine: {
-                                        show: true
+                                        show: true,
+                                        lineStyle: {
+                                            color: '#fff' // 白色
+                                        }
                                     },
                                     data: data.decorationPie
                                 }
@@ -1998,7 +2019,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -2044,7 +2065,7 @@
                                 left: 'center',
                                 bottom: '15%',
                                 inRange: {
-                                    color: ['#D2B48C', '#BC8F8F', '#8B4513'] // 浅棕色（弱）→玫瑰棕色（中）→深棕色（强）
+                                    color: ['#E6D5B8', '#8B7D46', '#A65C32'] // 米黄墙（弱）→古铜绿（中）→赤陶棕（强）
                                 },
                                 textStyle: {
                                     color: '#fff'
@@ -2117,7 +2138,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -2167,7 +2188,7 @@
                                 data: ['空间结构', '装饰工艺', '造型特征', '人文遗迹'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     interval: 0
                                 }
                             },
@@ -2175,7 +2196,7 @@
                                 type: 'value',
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     formatter: '{value}'
                                 }
                             },
@@ -2186,7 +2207,7 @@
                                     type: 'bar',
                                     itemStyle: {
                                         color: function(params) {
-                                            const colors = ['#F2EBE5', '#6E6963', '#CBD6E0', '#C7A67F'];
+                                            const colors = ['#E0E0DB', '#232A30', '#6E7A46', '#936537']; // 粉墙灰、黛瓦黑、苔痕绿、木构棕
                                             return colors[params.dataIndex];
                                         }
                                     },
@@ -2226,7 +2247,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -2280,7 +2301,7 @@
                                 data: ['空间轴线布局', '色彩体系 (粉墙黛⽡)', '园林要素 (石/水/木)', '界面渗透 (窗/廊/罩)', '装饰题材 (雕刻)'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     rotate: 30
                                 }
                             },
@@ -2289,7 +2310,7 @@
                                 max: 100,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     formatter: '{value}%'
                                 }
                             },
@@ -2303,7 +2324,7 @@
                                     },
                                     data: [65, 5, 5, 10, 30],
                                     itemStyle: {
-                                        color: '#D4A017' // 苏派国风水色调 - 金黄色
+                                        color: '#B8952F' // 鎏金，低饱和
                                     }
                                 },
                                 {
@@ -2315,7 +2336,7 @@
                                     },
                                     data: [10, 70, 45, 30, 50],
                                     itemStyle: {
-                                        color: '#6B8E23' // 苏派国风水色调 - 青绿色
+                                        color: '#739688' // 湖石青，低饱和
                                     }
                                 },
                                 {
@@ -2327,7 +2348,7 @@
                                     },
                                     data: [15, 15, 20, 20, 10],
                                     itemStyle: {
-                                        color: '#E6C270' // 苏派国风水色调 - 浅金黄色
+                                        color: '#856342' // 木构棕
                                     }
                                 },
                                 {
@@ -2339,7 +2360,7 @@
                                     },
                                     data: [10, 10, 30, 40, 10],
                                     itemStyle: {
-                                        color: '#F5E6C8' // 苏派国风水色调 - 浅黄色
+                                        color: '#4A5961' // 青灰瓦
                                     }
                                 }
                             ],
@@ -2355,7 +2376,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -2403,7 +2424,7 @@
                                 data: ['建筑基座', '外部立面', '门窗隔扇', '构件连接', '入口空间'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     rotate: 30,
                                     interval: 0
                                 }
@@ -2413,7 +2434,7 @@
                                 max: 100,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     formatter: '{value}%'
                                 }
                             },
@@ -2427,7 +2448,7 @@
                                     },
                                     data: [5, 80, 10, 0, 20],
                                     itemStyle: {
-                                        color: '#D2B48C'
+                                        color: '#4A3629' // 砖雕灰
                                     }
                                 },
                                 {
@@ -2439,7 +2460,7 @@
                                     },
                                     data: [5, 10, 85, 95, 0],
                                     itemStyle: {
-                                        color: '#8B4513'
+                                        color: '#6D3A10' // 土黄褐，低明度
                                     }
                                 },
                                 {
@@ -2451,7 +2472,7 @@
                                     },
                                     data: [90, 10, 5, 5, 80],
                                     itemStyle: {
-                                        color: '#CD853F'
+                                        color: '#804123' // 赤陶色
                                     }
                                 }
                             ],
@@ -2480,7 +2501,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -2528,7 +2549,7 @@
                                 left: 'center',
                                 bottom: '10%',
                                 inRange: {
-                                    color: ['#D2B48C', '#BC8F8F', '#8B4513'] // 浅棕色（低）→玫瑰棕色（中）→深棕色（高）
+                                    color: ['#E0D7C8', '#B49242', '#7B2929'] // 浅墙米灰（低）→土楼金棕（中）→红砖深棕红（高）
                                 },
                                 textStyle: {
                                     color: '#fff'
@@ -2588,7 +2609,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 },
                                 subtextStyle: {
                                     color: '#fff',
@@ -2642,7 +2663,7 @@
                                 data: ['1870-1880', '1880-1890', '1890-1900', '1900-1911'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     rotate: 30,
                                     interval: 0
                                 }
@@ -2666,7 +2687,7 @@
                                     type: 'bar',
                                     itemStyle: {
                                         color: function(params) {
-                                            const colors = ['#D2B48C', '#BC8F8F', '#8B4513', '#CD853F'];
+                                            const colors = ['#3D3533', '#6B5E54', '#8C7D67', '#4A5761']; // 石库门深褐、老洋房木棕、铜黄旧饰、老上海灰蓝
                                             return colors[params.dataIndex];
                                         }
                                     },
@@ -2706,7 +2727,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -2753,7 +2774,7 @@
                                 data: ['干栏式住宅', '四合院式住宅', '吊脚楼', '宅第/大户型'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     rotate: 30,
                                     interval: 0
                                 }
@@ -2763,7 +2784,7 @@
                                 max: 100,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     formatter: '{value}%'
                                 }
                             },
@@ -2777,8 +2798,9 @@
                                     },
                                     data: [50, 40, 45, 45],
                                     itemStyle: {
-                                        color: '#D2B48C'
-                                    }
+                                        color: '#55701C' // 竹青绿，低明度
+                                    },
+                                    barWidth: 35
                                 },
                                 {
                                     name: '砖/石雕',
@@ -2789,8 +2811,9 @@
                                     },
                                     data: [15, 20, 20, 25],
                                     itemStyle: {
-                                        color: '#BC8F8F'
-                                    }
+                                        color: '#6D3A10' // 木构棕
+                                    },
+                                    barWidth: 35
                                 },
                                 {
                                     name: '彩绘/漆画',
@@ -2801,8 +2824,9 @@
                                     },
                                     data: [10, 15, 10, 15],
                                     itemStyle: {
-                                        color: '#8B4513'
-                                    }
+                                        color: '#D2B888' // 土黄墙，低饱和
+                                    },
+                                    barWidth: 35
                                 },
                                 {
                                     name: '灰塑/泥塑',
@@ -2813,8 +2837,9 @@
                                     },
                                     data: [10, 10, 10, 10],
                                     itemStyle: {
-                                        color: '#CD853F'
-                                    }
+                                        color: '#253A3A' // 深青灰
+                                    },
+                                    barWidth: 35
                                 },
                                 {
                                     name: '屋顶脊饰',
@@ -2825,8 +2850,9 @@
                                     },
                                     data: [15, 15, 15, 5],
                                     itemStyle: {
-                                        color: '#A0522D'
-                                    }
+                                        color: '#A85218' // 赤陶色
+                                    },
+                                    barWidth: 35
                                 }
                             ],
                             backgroundColor: 'transparent'
@@ -2840,7 +2866,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -2887,7 +2913,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -2919,24 +2945,24 @@
                                 radius: '60%',
                                 axisLine: {
                                     lineStyle: {
-                                        color: '#fff'
+                                        color: '#fff' // 白色
                                     }
                                 },
                                 splitLine: {
                                     lineStyle: {
-                                        color: 'rgba(255, 255, 255, 0.3)',
+                                        color: 'rgba(255, 255, 255, 0.3)', // 白色
                                         type: 'dashed'
                                     }
                                 },
                                 splitArea: {
                                     areaStyle: {
-                                        color: 'rgba(255, 255, 255, 0.1)'
+                                        color: 'rgba(255, 255, 255, 0.1)' // 白色
                                     }
                                 },
                                 name: {
                                     textStyle: {
-                                        color: '#fff',
-                                        fontSize: 14
+                                        color: '#fff', // 白色
+                                        fontSize: 12
                                     },
                                     padding: [0, 10]
                                 }
@@ -2953,7 +2979,7 @@
                                 label: {
                                     show: true,
                                     fontSize: 9,
-                                    color: '#fff',
+                                    color: '#fff', // 白色
                                     formatter: function(params) {
                                         if (params && params.value !== undefined) {
                                             return params.value + '分';
@@ -2986,14 +3012,14 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
                                 trigger: 'item',
                                 confine: true
                             },
-                            color: ['#D2B48C', '#8B4513', '#BC8F8F'],
+                            color: ['#A65C32', '#D49A48', '#3A5F70'], // 赤陶棕、陶土金、青灰蓝
                             legend: {
                                 data: ['广府民居（西关大屋）', '客家民居（围龙屋）', '潮汕民居（四点金）'],
                                 orient: 'horizontal',
@@ -3050,7 +3076,7 @@
                                 name: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 14
+                                        fontSize: 12
                                     }
                                 }
                             },
@@ -3063,13 +3089,13 @@
                                         name: '广府民居'
                                     }],
                                     itemStyle: {
-                                        color: '#D2B48C'
+                                        color: '#A65C32' // 赤陶棕，骑楼砖红
                                     },
                                     lineStyle: {
                                         width: 2
                                     },
                                     areaStyle: {
-                                        color: 'rgba(210, 180, 140, 0.3)'
+                                        color: 'rgba(166, 92, 50, 0.3)'
                                     }
                                 },
                                 {
@@ -3080,14 +3106,14 @@
                                         name: '客家民居'
                                     }],
                                     itemStyle: {
-                                        color: '#8B4513'
+                                        color: '#D49A48' // 陶土金，镬耳饰金
                                     },
                                     lineStyle: {
                                         width: 2,
                                         type: 'dashed'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(139, 69, 19, 0.3)'
+                                        color: 'rgba(212, 154, 72, 0.3)'
                                     }
                                 },
                                 {
@@ -3098,14 +3124,14 @@
                                         name: '潮汕民居'
                                     }],
                                     itemStyle: {
-                                        color: '#BC8F8F'
+                                        color: '#3A5F70' // 青灰蓝，骑楼廊柱
                                     },
                                     lineStyle: {
                                         width: 2,
                                         type: 'dotted'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(188, 143, 143, 0.3)'
+                                        color: 'rgba(58, 95, 112, 0.3)'
                                     }
                                 }
                             ],
@@ -3134,7 +3160,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -3190,11 +3216,11 @@
                                 name: '世纪',
                                 nameTextStyle: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 },
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             yAxis: {
@@ -3204,11 +3230,11 @@
                                 name: '发展成熟度（分）',
                                 nameTextStyle: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 },
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             series: [
@@ -3225,11 +3251,11 @@
                                     symbol: 'circle',
                                     symbolSize: 10,
                                     lineStyle: {
-                                        color: '#8B4513',
+                                        color: '#936537', // 木构棕
                                         width: 3
                                     },
                                     itemStyle: {
-                                        color: '#8B4513'
+                                        color: '#936537' // 木构棕
                                     }
                                 },
                                 // 状态色块
@@ -3237,11 +3263,11 @@
                                     name: '发展状态',
                                     type: 'custom',
                                     data: [
-                                        {name: '萌芽期', x: 9, width: 4, color: '#FFFFCC', text: '天井式住宅原型'},
-                                        {name: '成型期', x: 13, width: 2, color: '#B3D9FF', text: '高墙深院雏形'},
-                                        {name: '鼎盛期', x: 16, width: 1, color: '#CCFFCC', text: '规模扩大，装饰增加'},
-                                        {name: '极盛期', x: 17, width: 1, color: '#FFB3B3', text: '白墙黛瓦、马头墙规范化'},
-                                        {name: '稳定延续期', x: 19, width: 1, color: '#E6CCFF', text: '延续明清形制'}
+                                        {name: '萌芽期', x: 9, width: 4, color: '#E0E0DB', text: '天井式住宅原型'},
+                                        {name: '成型期', x: 13, width: 2, color: '#4A5557', text: '高墙深院雏形'},
+                                        {name: '鼎盛期', x: 16, width: 1, color: '#6E7A46', text: '规模扩大，装饰增加'},
+                                        {name: '极盛期', x: 17, width: 1, color: '#232A30', text: '白墙黛瓦、马头墙规范化'},
+                                        {name: '稳定延续期', x: 19, width: 1, color: '#B8952F', text: '延续明清形制'}
                                     ],
                                     renderItem: function(params, api) {
                                         const xValue = api.value('x');
@@ -3276,7 +3302,7 @@
                                                     type: 'text',
                                                     style: {
                                                         text: api.value('text'),
-                                                        fill: '#333',
+                                                        fill: '#fff',
                                                         fontSize: 10
                                                     },
                                                     position: [rectShape.x + rectShape.width / 2, rectShape.y + rectShape.height / 2],
@@ -3302,7 +3328,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -3334,7 +3360,7 @@
                                 data: ['植物', '水景', '假山', '景石'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             yAxis: {
@@ -3344,7 +3370,7 @@
                                 interval: 20,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     formatter: '{value}%'
                                 }
                             },
@@ -3355,7 +3381,7 @@
                                     data: [95, 50, 40, 65],
                                     itemStyle: {
                                         color: function(params) {
-                                            const colors = ['#D4A017', '#6B8E23', '#E6C270', '#F5E6C8'];
+                                            const colors = ['#739688', '#4A5961', '#D8DAD3', '#B8952F']; // 湖石青、青灰瓦、粉墙灰、鎏金
                                             return colors[params.dataIndex];
                                         }
                                     },
@@ -3384,7 +3410,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -3417,7 +3443,7 @@
                                 data: ['唐五代', '宋辽金', '元代', '明代', '清代'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             yAxis: {
@@ -3427,7 +3453,7 @@
                                 interval: 100,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             series: [
@@ -3437,7 +3463,7 @@
                                     data: [5, 15, 8, 250, 900],
                                     itemStyle: {
                                         color: function(params) {
-                                            const colors = ['#E0E0E0', '#999999', '#666666', '#5A3E2B', '#7A2F2F'];
+                                            const colors = ['#D8D8C0', '#4A3629', '#B8861B', '#233240', '#6D3A10']; // 米白墙、砖雕灰、鎏金、深青灰、土黄褐
                                             return colors[params.dataIndex];
                                         }
                                     },
@@ -3478,7 +3504,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -3506,7 +3532,7 @@
                                 data: ['宋元及以前', '明代', '清代', '民国', '1949年后'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     rotate: 30
                                 }
                             },
@@ -3542,11 +3568,11 @@
                                     data: [1, 2, 3, 2, 0.5],
                                     smooth: true,
                                     itemStyle: {
-                                        color: '#8B4513'
+                                        color: '#7B2929' // 红砖深棕红
                                     },
                                     lineStyle: {
                                         width: 3,
-                                        color: '#8B4513'
+                                        color: '#7B2929' // 红砖深棕红
                                     },
                                     symbol: 'circle',
                                     symbolSize: 8,
@@ -3579,7 +3605,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -3624,7 +3650,7 @@
                                 },
                                 confine: true
                             },
-                            color: ['#8B4513', '#D2B48C'], // 深棕色、浅棕色
+                            color: ['#3D3533', '#4A5761'], // 石库门深褐、老上海灰蓝
                             legend: {
                                 data: ['中式元素', '西式元素'],
                                 top: '8%',
@@ -3661,7 +3687,7 @@
                                 name: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 14
+                                        fontSize: 12
                                     }
                                 }
                             },
@@ -3674,14 +3700,14 @@
                                         name: '中式元素'
                                     }],
                                     itemStyle: {
-                                        color: '#8B4513' // 深棕色
+                                        color: '#3D3533' // 石库门深褐
                                     },
                                     lineStyle: {
                                         width: 3,
-                                        color: '#8B4513'
+                                        color: '#3D3533'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(139, 69, 19, 0.3)'
+                                        color: 'rgba(61, 53, 51, 0.3)'
                                     }
                                 },
                                 {
@@ -3692,14 +3718,14 @@
                                         name: '西式元素'
                                     }],
                                     itemStyle: {
-                                        color: '#D2B48C' // 浅棕色
+                                        color: '#4A5761' // 老上海灰蓝
                                     },
                                     lineStyle: {
                                         width: 3,
-                                        color: '#D2B48C'
+                                        color: '#4A5761'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(210, 180, 140, 0.3)'
+                                        color: 'rgba(74, 87, 97, 0.3)'
                                     }
                                 }
                             ],
@@ -3728,14 +3754,14 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
                                 trigger: 'item',
                                 confine: true
                             },
-                            color: ['#D2B48C', '#BC8F8F', '#8B4513', '#CD853F', '#A0522D'],
+                            color: ['#55701C', '#6D3A10', '#D2B888', '#253A3A', '#A85218'], // 竹青绿、木构棕、土黄墙、深青灰、赤陶色
                             legend: {
                                 data: ['干栏式住宅', '四合院式住宅', '吊脚楼', '平屋农户型', '宅第/大户型'],
                                 top: '7%',
@@ -3780,7 +3806,7 @@
                                 name: {
                                     textStyle: {
                                         color: '#fff',
-                                        fontSize: 14
+                                        fontSize: 12
                                     }
                                 }
                             },
@@ -3793,13 +3819,13 @@
                                         name: '干栏式住宅'
                                     }],
                                     itemStyle: {
-                                        color: '#D2B48C'
+                                        color: '#55701C' // 竹青绿，低明度
                                     },
                                     lineStyle: {
                                         width: 2
                                     },
                                     areaStyle: {
-                                        color: 'rgba(210, 180, 140, 0.3)'
+                                        color: 'rgba(85, 112, 28, 0.3)'
                                     }
                                 },
                                 {
@@ -3810,14 +3836,14 @@
                                         name: '四合院式住宅'
                                     }],
                                     itemStyle: {
-                                        color: '#BC8F8F'
+                                        color: '#6D3A10' // 木构棕
                                     },
                                     lineStyle: {
                                         width: 2,
                                         type: 'dashed'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(188, 143, 143, 0.3)'
+                                        color: 'rgba(109, 58, 16, 0.3)'
                                     }
                                 },
                                 {
@@ -3828,14 +3854,14 @@
                                         name: '吊脚楼'
                                     }],
                                     itemStyle: {
-                                        color: '#8B4513'
+                                        color: '#D2B888' // 土黄墙，低饱和
                                     },
                                     lineStyle: {
                                         width: 2,
                                         type: 'dotted'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(139, 69, 19, 0.3)'
+                                        color: 'rgba(210, 184, 136, 0.3)'
                                     }
                                 },
                                 {
@@ -3846,14 +3872,14 @@
                                         name: '平屋农户型'
                                     }],
                                     itemStyle: {
-                                        color: '#CD853F'
+                                        color: '#253A3A' // 深青灰
                                     },
                                     lineStyle: {
                                         width: 2,
                                         type: 'solid'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(205, 133, 63, 0.3)'
+                                        color: 'rgba(37, 58, 58, 0.3)'
                                     }
                                 },
                                 {
@@ -3864,14 +3890,14 @@
                                         name: '宅第/大户型'
                                     }],
                                     itemStyle: {
-                                        color: '#A0522D'
+                                        color: '#A85218' // 赤陶色
                                     },
                                     lineStyle: {
                                         width: 2,
                                         type: 'solid'
                                     },
                                     areaStyle: {
-                                        color: 'rgba(160, 82, 45, 0.3)'
+                                        color: 'rgba(168, 82, 24, 0.3)'
                                     }
                                 }
                             ],
@@ -3956,7 +3982,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -4016,7 +4042,7 @@
                                     initialTreeDepth: 3,
                                     lineStyle: {
                                         width: 2,
-                                        color: '#8B4513'
+                                        color: '#7A1E1E' // 故宫红，低明度
                                     },
                                     expandAndCollapse: false,
                                     animationDurationUpdate: 750,
@@ -4028,7 +4054,7 @@
                                         align: 'center',
                                         fontSize: 13,
                                         fontWeight: 'normal',
-                                        color: '#CD853F'
+                                        color: '#8B4513' // 棕色
                                     },
                                     leaves: {
                                         label: {
@@ -4037,11 +4063,12 @@
                                             align: 'center',
                                             fontSize: 12,
                                             fontWeight: 'normal',
-                                            color: '#CD853F'
+                                            color: '#8B4513' // 棕色
                                         },
                                         symbolSize: [100, 30],
                                         itemStyle: {
-                                            borderRadius: 15
+                                            borderRadius: 15,
+                                            color: '#6D4A21' // 木构棕
                                         }
                                     },
                                     emphasis: {
@@ -4126,7 +4153,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -4175,10 +4202,10 @@
                                 pageButtonGap: 10
                             },
                             color: [
-                                '#D2B48C', // 浅棕色
-                                '#BC8F8F', // 玫瑰棕色
-                                '#8B4513', // 深棕色
-                                '#CD853F'  // 秘鲁色
+                                '#A65C32', // 赤陶棕，骑楼砖红
+                                '#D49A48', // 陶土金，镬耳饰金
+                                '#3A5F70', // 青灰蓝，骑楼廊柱
+                                '#8B7D46'  // 古铜绿，骑楼花窗
                             ],
                             series: [
                                 {
@@ -4202,7 +4229,7 @@
                                     emphasis: {
                                         label: {
                                             show: true,
-                                            fontSize: 14,
+                                            fontSize: 12,
                                             fontWeight: 'bold',
                                             formatter: '{b}'
                                         }
@@ -4244,7 +4271,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -4289,7 +4316,7 @@
                                 left: 'center',
                                 bottom: '10 %',
                                 inRange: {
-                                    color: ['#F2EBE5', '#DEB887', '#CD853F', '#A0522D', '#8B4513']
+                                    color: ['#E0E0DB', '#6E7A46', '#B8952F', '#936537', '#232A30'] // 粉墙灰、苔痕绿、鎏金饰、木构棕、黛瓦黑
                                 },
                                 textStyle: {
                                     color: '#fff'
@@ -4348,7 +4375,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -4382,7 +4409,7 @@
                                 data: ['花街铺地覆盖率', '贴墙假山出现率', '漏窗/花窗视觉通透率', '孤赏花木绿视率', '太平缸/石盆出现率', '墙面反射率'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     rotate: 45
                                 }
                             },
@@ -4393,7 +4420,7 @@
                                 interval: 20,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     formatter: '{value}%'
                                 }
                             },
@@ -4404,7 +4431,7 @@
                                     data: [65, 40, 30, 17.5, 50, 65],
                                     itemStyle: {
                                         color: function(params) {
-                                            const colors = ['#D4A017', '#6B8E23', '#E6C270', '#F5E6C8', '#D4A017', '#6B8E23'];
+                                            const colors = ['#739688', '#4A5961', '#D8DAD3', '#B8952F', '#856342', '#2E3F40']; // 湖石青、青灰瓦、粉墙灰、鎏金、木构棕、黛瓦黑
                                             return colors[params.dataIndex];
                                         }
                                     },
@@ -4433,7 +4460,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -4480,12 +4507,12 @@
                                 interval: 1,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     formatter: '{value}'
                                 },
                                 nameTextStyle: {
                                     color: '#fff',
-                                    fontSize: 13
+                                    fontSize: 12
                                 },
                                 splitLine: {
                                     lineStyle: {
@@ -4501,12 +4528,12 @@
                                 interval: 1,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     formatter: '{value}'
                                 },
                                 nameTextStyle: {
                                     color: '#fff',
-                                    fontSize: 13
+                                    fontSize: 12
                                 },
                                 splitLine: {
                                     lineStyle: {
@@ -4522,11 +4549,11 @@
                                         return data[1] * 10 + 10; // 空间规模越大，气泡越大
                                     },
                                     data: [
-                                        {value: [1, 1], name: '碹窑式', itemStyle: {color: '#D2B48C'}}, // 黄土色
-                                        {value: [2, 3], name: '合院式', itemStyle: {color: '#666666'}}, // 深灰
-                                        {value: [5, 3], name: '楼居式', itemStyle: {color: '#8B4513'}}, // 砖红
-                                        {value: [3, 4], name: '堡寨式', itemStyle: {color: '#2F4F2F'}}, // 墨绿
-                                        {value: [4, 5], name: '复合大院型', itemStyle: {color: '#1E3A5F'}} // 藏青
+                                        {value: [1, 1], name: '碹窑式', itemStyle: {color: '#6D3A10'}}, // 土黄褐，低明度
+                                        {value: [2, 3], name: '合院式', itemStyle: {color: '#4A3629'}}, // 砖雕灰
+                                        {value: [5, 3], name: '楼居式', itemStyle: {color: '#B8861B'}}, // 鎏金，低饱和
+                                        {value: [3, 4], name: '堡寨式', itemStyle: {color: '#233240'}}, // 深青灰
+                                        {value: [4, 5], name: '复合大院型', itemStyle: {color: '#804123'}} // 赤陶色
                                     ],
                                     label: {
                                         show: true,
@@ -4548,7 +4575,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize:20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -4563,7 +4590,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             grid: {
@@ -4578,7 +4605,7 @@
                                 data: ['闽南', '闽北', '闽西', '闽东'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             yAxis: {
@@ -4586,7 +4613,7 @@
                                 data: ['红砖大厝', '合院民居', '土楼', '坊巷式'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             series: [
@@ -4595,7 +4622,7 @@
                                     type: 'bar',
                                     data: [3, 1, 1, 2],
                                     itemStyle: {
-                                        color: '#8B4513'
+                                        color: '#7B2929' // 红砖深棕红
                                     },
                                     label: {
                                         show: true,
@@ -4617,7 +4644,7 @@
                                     type: 'bar',
                                     data: [2, 2, 1, 2],
                                     itemStyle: {
-                                        color: '#D2B48C'
+                                        color: '#B49242' // 土楼金棕
                                     },
                                     label: {
                                         show: true,
@@ -4639,7 +4666,7 @@
                                     type: 'bar',
                                     data: [1, 1, 3, 1],
                                     itemStyle: {
-                                        color: '#BC8F8F'
+                                        color: '#4A5765' // 青灰石色
                                     },
                                     label: {
                                         show: true,
@@ -4661,7 +4688,7 @@
                                     type: 'bar',
                                     data: [1, 1, 1, 3],
                                     itemStyle: {
-                                        color: '#CD853F'
+                                        color: '#6E4B34' // 老木棕
                                     },
                                     label: {
                                         show: true,
@@ -4691,7 +4718,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -4749,9 +4776,9 @@
                                 pageButtonGap: 10
                             },
                             color: [
-                                '#8B4513', // 深棕色（公共租界）
-                                '#A0522D', // 中棕色（法租界周边）
-                                '#CD853F'  // 秘鲁色（老城厢外围）
+                                '#3D3533', // 石库门深褐（公共租界）
+                                '#6B5E54', // 老洋房木棕（法租界周边）
+                                '#8C7D67'  // 铜黄旧饰（老城厢外围）
                             ],
                             series: [
                                 {
@@ -4769,13 +4796,13 @@
                                         show: true,
                                         position: 'outside',
                                         formatter: '{b}',
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: '#fff'
                                     },
                                     emphasis: {
                                         label: {
                                             show: true,
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             fontWeight: 'bold',
                                             formatter: '{b}'
                                         }
@@ -4815,7 +4842,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -4849,11 +4876,11 @@
                                 pageButtonGap: 10
                             },
                             color: [
-                                '#8B4513', // 深棕色（川西北最多）
-                                '#A0522D', // 中棕色
-                                '#CD853F', // 秘鲁色
-                                '#D2B48C', // 浅棕色
-                                '#DEB887'  // 最浅棕色（攀西最少）
+                                '#55701C', // 竹青绿，低明度（川西北最多）
+                                '#6D3A10', // 木构棕
+                                '#D2B888', // 土黄墙，低饱和
+                                '#253A3A', // 深青灰
+                                '#A85218'  // 赤陶色（攀西最少）
                             ],
                             series: [
                                 {
@@ -4871,13 +4898,13 @@
                                         show: true,
                                         position: 'outside',
                                         formatter: '{b}',
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         color: '#fff'
                                     },
                                     emphasis: {
                                         label: {
                                             show: true,
-                                            fontSize: 14,
+                                            fontSize: 12,
                                             fontWeight: 'bold',
                                             formatter: '{b}'
                                         }
@@ -4958,7 +4985,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -5002,7 +5029,7 @@
                                 data: data.courtyardBar.map(item => item.name),
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 },
                                 axisLine: {
                                     show: false
@@ -5030,8 +5057,8 @@
                                             const item = data.courtyardBar[params.dataIndex];
                                             return item.features;
                                         },
-                                        color: '#fff',
-                                        fontSize: 14
+                                        color: '#fff', // 白色
+                                        fontSize: 12
                                     },
                                     markPoint: {
                                         symbolSize: 0
@@ -5062,7 +5089,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -5089,7 +5116,7 @@
                                 max: 60,
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14,
+                                    fontSize: 12,
                                     formatter: '{value}%'
                                 }
                             },
@@ -5098,7 +5125,7 @@
                                 data: ['青砖', '木材(坤甸木/杉木)', '石材(红砂岩/花岗岩)', '蚝壳', '灰塑/陶瓷'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             series: [
@@ -5108,7 +5135,7 @@
                                     data: [60, 20, 15, 30, 5],
                                     itemStyle: {
                                         color: function(params) {
-                                            const colors = ['#8B4513', '#D2B48C', '#A0522D', '#CD853F', '#DEB887'];
+                                            const colors = ['#A65C32', '#D49A48', '#3A5F70', '#8B7D46', '#2D3A3A']; // 赤陶棕、陶土金、青灰蓝、古铜绿、深褐灰
                                             return colors[params.dataIndex];
                                         }
                                     },
@@ -5149,7 +5176,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -5176,7 +5203,7 @@
                                 },
                                 confine: true
                             },
-                            color: ['#D5E1E8', '#C7A67F'],
+                            color: ['#E0E0DB', '#936537'], // 粉墙灰、木构棕
                             legend: {
                                 data: ['防火策略(左)', '屋顶形式(右)'],
                                 top: '10%',
@@ -5231,7 +5258,8 @@
                                     gridIndex: 0,
                                     data: ['马头墙', '院内水源', '巷道隔断'],
                                     axisLabel: {
-                                        color: '#fff'
+                                        color: '#fff',
+                                        fontSize: 12
                                     }
                                 },
                                 {
@@ -5239,7 +5267,8 @@
                                     gridIndex: 1,
                                     data: ['硬山顶', '悬山顶', '歇山顶', '庑殿顶及其他'],
                                     axisLabel: {
-                                        color: '#fff'
+                                        color: '#fff',
+                                        fontSize: 12
                                     }
                                 }
                             ],
@@ -5252,7 +5281,7 @@
                                     data: [85, 70, 60],
                                     itemStyle: {
                                         color: function(params) {
-                                            const colors = ['#F2EBE5', '#CBD6E0', '#C7A67F'];
+                                            const colors = ['#E0E0DB', '#6E7A46', '#B8952F']; // 粉墙灰、苔痕绿、鎏金饰
                                             return colors[params.dataIndex];
                                         }
                                     },
@@ -5260,6 +5289,7 @@
                                     label: {
                                         show: true,
                                         position: 'right',
+                                        fontSize: 12,
                                         color: '#fff',
                                         formatter: '{c}%'
                                     }
@@ -5272,7 +5302,7 @@
                                     data: [65, 20, 8, 2],
                                     itemStyle: {
                                         color: function(params) {
-                                            const colors = ['#F2EBE5', '#6E6963', '#CBD6E0', '#C7A67F'];
+                                            const colors = ['#E0E0DB', '#232A30', '#4A5557', '#936537']; // 粉墙灰、黛瓦黑、青灰瓦、木构棕
                                             return colors[params.dataIndex];
                                         }
                                     },
@@ -5280,6 +5310,7 @@
                                     label: {
                                         show: true,
                                         position: 'right',
+                                        fontSize: 12,
                                         color: '#fff',
                                         formatter: '{c}%'
                                     }
@@ -5309,7 +5340,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -5368,7 +5399,7 @@
                                 axisLabel: {
                                     color: '#fff',
                                     rotate: 30,
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             yAxis: {
@@ -5379,7 +5410,7 @@
                                 axisLabel: {
                                     color: '#fff',
                                     formatter: '{value}%',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             series: [
@@ -5388,12 +5419,13 @@
                                     type: 'bar',
                                     data: [90, 70, 60, 50, 40],
                                     itemStyle: {
-                                        color: '#D4A017' // 苏派国风水色调 - 金黄色
+                                        color: '#739688' // 湖石青，低饱和
                                     },
                                     barWidth: 35,
                                     label: {
                                         show: true,
                                         position: 'top',
+                                        fontSize: 12,
                                         color: '#fff',
                                         formatter: '{c}%'
                                     }
@@ -5403,12 +5435,13 @@
                                     type: 'bar',
                                     data: [90, 80, 70, 50, 40],
                                     itemStyle: {
-                                        color: '#6B8E23' // 苏派国风水色调 - 青绿色
+                                        color: '#4A5961' // 青灰瓦
                                     },
                                     barWidth: 35,
                                     label: {
                                         show: true,
                                         position: 'top',
+                                        fontSize: 12,
                                         color: '#fff',
                                         formatter: '{c}%'
                                     }
@@ -5426,7 +5459,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -5469,7 +5502,7 @@
                                 data: ['晋中地区', '晋东南地区', '晋南地区', '晋西地区', '晋北地区'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             series: [
@@ -5479,7 +5512,7 @@
                                     data: [5, 4, 4, 3, 2],
                                     itemStyle: {
                                         color: function(params) {
-                                            const colors = ['#D4A017', '#E6C270', '#E6C270', '#F5E6C8', '#F9F6F0'];
+                                            const colors = ['#6D3A10', '#4A3629', '#804123', '#233240', '#D8D8C0']; // 土黄褐、砖雕灰、赤陶色、深青灰、米白墙
                                             return colors[params.dataIndex];
                                         }
                                     },
@@ -5521,7 +5554,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -5549,18 +5582,18 @@
                                     right: 270,
                                     bottom: 40,
                                     data: [
-                                        {name: '红砖大厝', itemStyle: {color: '#8B4513'}},
-                                        {name: '土楼', itemStyle: {color: '#D2B48C'}},
-                                        {name: '合院民居', itemStyle: {color: '#A0522D'}},
-                                        {name: '坊巷式民居', itemStyle: {color: '#CD853F'}},
-                                        {name: '闽南', itemStyle: {color: '#DEB887'}},
-                                        {name: '闽西', itemStyle: {color: '#BC8F8F'}},
-                                        {name: '闽北/闽东', itemStyle: {color: '#8B7355'}},
-                                        {name: '闽东（福州）', itemStyle: {color: '#F4A460'}},
-                                        {name: '闽南古厝、红砖厝集群（泉州 / 厦门 / 漳州）', itemStyle: {color: '#B22222'}},
-                                        {name: '福建土楼世界遗产（永定 / 南靖 / 诏安）', itemStyle: {color: '#CD5C5C'}},
-                                        {name: '闽北 / 闽东传统院落理论', itemStyle: {color: '#F08080'}},
-                                        {name: '三坊七巷古建筑群', itemStyle: {color: '#E9967A'}}
+                                        {name: '红砖大厝', itemStyle: {color: '#7B2929'}}, // 红砖深棕红
+                                        {name: '土楼', itemStyle: {color: '#B49242'}}, // 土楼金棕
+                                        {name: '合院民居', itemStyle: {color: '#4A5765'}}, // 青灰石色
+                                        {name: '坊巷式民居', itemStyle: {color: '#6E4B34'}}, // 老木棕
+                                        {name: '闽南', itemStyle: {color: '#2C353D'}}, // 深檐灰
+                                        {name: '闽西', itemStyle: {color: '#E0D7C8'}}, // 浅墙米灰
+                                        {name: '闽北/闽东', itemStyle: {color: '#7B2929'}}, // 红砖深棕红
+                                        {name: '闽东（福州）', itemStyle: {color: '#B49242'}}, // 土楼金棕
+                                        {name: '闽南古厝、红砖厝集群（泉州 / 厦门 / 漳州）', itemStyle: {color: '#4A5765'}}, // 青灰石色
+                                        {name: '福建土楼世界遗产（永定 / 南靖 / 诏安）', itemStyle: {color: '#6E4B34'}}, // 老木棕
+                                        {name: '闽北 / 闽东传统院落理论', itemStyle: {color: '#2C353D'}}, // 深檐灰
+                                        {name: '三坊七巷古建筑群', itemStyle: {color: '#E0D7C8'}} // 浅墙米灰
                                     ],
                                     links: [
                                         {source: '红砖大厝', target: '闽南', value: 1},
@@ -5578,7 +5611,7 @@
                                     },
                                     label: {
                                         color: '#fff',
-                                        fontSize: 14
+                                        fontSize: 12
                                     }
                                 }
                             ],
@@ -5606,7 +5639,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -5644,7 +5677,7 @@
                                 data: ['1852', '1854', '1865', '1900'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 14
+                                    fontSize: 12
                                 }
                             },
                             yAxis: {
@@ -5667,11 +5700,11 @@
                                     type: 'line',
                                     data: [500, 20000, 90000, 440000],
                                     lineStyle: {
-                                        color: '#8B4513',
+                                        color: '#2C343A', // 深檐冷灰
                                         width: 3
                                     },
                                     itemStyle: {
-                                        color: '#8B4513',
+                                        color: '#2C343A', // 深檐冷灰
                                         borderColor: '#fff',
                                         borderWidth: 2
                                     },
@@ -5722,7 +5755,7 @@
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
-                                    fontSize: 20
+                                    fontSize: 18
                                 }
                             },
                             tooltip: {
@@ -5750,16 +5783,16 @@
                                     right: 100,
                                     bottom: 40,
                                     data: [
-                                        {name: '五福木雕文化', itemStyle: {color: '#8B4513'}},
-                                        {name: '天人合一哲学', itemStyle: {color: '#A0522D'}},
-                                        {name: '民族融合文化', itemStyle: {color: '#CD853F'}},
-                                        {name: '湖广移民文化', itemStyle: {color: '#D2B48C'}},
-                                        {name: '农耕生产文化', itemStyle: {color: '#DEB887'}},
-                                        {name: '干栏式住宅', itemStyle: {color: '#BC8F8F'}},
-                                        {name: '四合院式住宅', itemStyle: {color: '#8B7355'}},
-                                        {name: '吊脚楼', itemStyle: {color: '#F4A460'}},
-                                        {name: '平屋农户型', itemStyle: {color: '#E9967A'}},
-                                        {name: '宅第/大户型', itemStyle: {color: '#B22222'}}
+                                        {name: '五福木雕文化', itemStyle: {color: '#55701C'}}, // 竹青绿，低明度
+                                        {name: '天人合一哲学', itemStyle: {color: '#6D3A10'}}, // 木构棕
+                                        {name: '民族融合文化', itemStyle: {color: '#D2B888'}}, // 土黄墙，低饱和
+                                        {name: '湖广移民文化', itemStyle: {color: '#253A3A'}}, // 深青灰
+                                        {name: '农耕生产文化', itemStyle: {color: '#A85218'}}, // 赤陶色
+                                        {name: '干栏式住宅', itemStyle: {color: '#D0C672'}}, // 竹黄，低饱和
+                                        {name: '四合院式住宅', itemStyle: {color: '#55701C'}}, // 竹青绿，低明度
+                                        {name: '吊脚楼', itemStyle: {color: '#6D3A10'}}, // 木构棕
+                                        {name: '平屋农户型', itemStyle: {color: '#D2B888'}}, // 土黄墙，低饱和
+                                        {name: '宅第/大户型', itemStyle: {color: '#253A3A'}} // 深青灰
                                     ],
                                     links: [
                                         {source: '五福木雕文化', target: '干栏式住宅', value: 1},
@@ -5939,19 +5972,28 @@
                         title.textContent = factionData[i].name;
                         page.appendChild(title);
                         
-                        // 添加图片
-                        const image = document.createElement('img');
-                        image.src = factionData[i].frontImage;
-                        image.className = 'page-image';
-                        image.alt = factionData[i].name;
-                        image.onclick = () => toggle3DModel(i+1);
-                        page.appendChild(image);
+                        // 添加文字介绍
+                        const description = document.createElement('p');
+                        description.textContent = factionData[i].description || factionData[i].introduction || '暂无介绍';
+                        description.style.cssText = 'padding: 20px; font-size: 16px; line-height: 1.8; color: #fff; text-align: justify; max-width: 90%; text-indent: 2em;';
+                        page.appendChild(description);
                         
-                        // 添加文字提示：点击图片查看3D模型
-                        const hint = document.createElement('div');
-                        hint.style.cssText = 'position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 16px; font-weight: bold; color: #8B4513; text-shadow: 0 0 3px rgba(255, 255, 255, 0.8); background: rgba(255, 253, 240, 0.7); padding: 8px 16px; border-radius: 20px; z-index: 10;';
-                        hint.textContent = '点击图片查看3D模型';
-                        page.appendChild(hint);
+                        // 添加3D模型按钮
+                        const modelBtn = document.createElement('button');
+                        modelBtn.textContent = '查看3D模型';
+                        modelBtn.style.cssText = 'margin-top: 20px; padding: 12px 30px; font-size: 16px; font-weight: bold; color: #fff; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 25px; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);';
+                        modelBtn.onmouseenter = function() {
+                            this.style.background = 'rgba(255, 255, 255, 0.8)';
+                            this.style.borderColor = 'rgba(255, 255, 255, 0.8)';
+                            this.style.color = '#000';
+                        };
+                        modelBtn.onmouseleave = function() {
+                            this.style.background = 'rgba(255, 255, 255, 0.1)';
+                            this.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                            this.style.color = '#fff';
+                        };
+                        modelBtn.onclick = () => toggle3DModel(i+1);
+                        page.appendChild(modelBtn);
                     }
                 }
             }
