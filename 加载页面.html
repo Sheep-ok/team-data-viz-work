@@ -162,71 +162,7 @@
             50% { opacity: 1; }
         }
         
-        /* ========== 弹窗样式 ========== */
-        /* 弹窗容器 */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            display: none;
-        }
-        
-        /* 弹窗内容 */
-        .modal-content {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* 弹窗标题 */
-        .modal-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        /* 弹窗内容 */
-        .modal-body {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #555;
-            margin-bottom: 30px;
-        }
-        
-        .modal-body p {
-            text-indent: 2em;
-            margin-bottom: 15px;
-        }
-        
-        /* 关闭按钮 */
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-            transition: color 0.3s ease;
-        }
-        
-        .close-btn:hover {
-            color: #333;
-        }
+
         
         /* 准备好了按钮 */
         #ready-btn {
@@ -371,6 +307,182 @@
             opacity: 1;
             visibility: visible;
         }
+
+        /* ========== 操作指南区域样式 ========== */
+        #guide-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1527px;
+            height: 740px;
+            background: url('加载背景.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        #guide-container.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .guide-section {
+            width: 1400px;
+            background: rgba(255, 253, 240, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 24px 50px 22px;
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(139, 69, 19, 0.15);
+            animation: sectionFadeIn 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes sectionFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .guide-section h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #5a3010;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .guide-text {
+            display: flex;
+            gap: 28px;
+        }
+
+        .guide-text p {
+            flex: 1;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #5a4030;
+            text-indent: 2em;
+            margin: 0;
+        }
+
+        .flow-section {
+            width: 1400px;
+            margin-top: 10px;
+            background: rgba(255, 253, 240, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 12px 20px 10px;
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(139, 69, 19, 0.15);
+            animation: sectionFadeIn 0.8s ease 0.2s forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+        }
+
+        .flow-section h2 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #5a3010;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .flow-tip {
+            position: absolute;
+            top: 12px;
+            right: 25px;
+            font-size: 11px;
+            color: #a0522d;
+            font-weight: bold;
+        }
+
+        .flow-tree {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #5a4030;
+            overflow: hidden;
+        }
+
+        .flow-col {
+            flex: 1;
+            min-width: 0;
+            padding: 0 8px;
+            border-right: 1px solid rgba(139, 69, 19, 0.1);
+        }
+        .flow-col:last-child { border-right: none; }
+
+        .flow-title {
+            display: inline-block;
+            background: #8B4513;
+            color: #fffdf0;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 3px 12px;
+            border-radius: 6px;
+            margin: 4px 0 3px;
+        }
+
+        .flow-step {
+            background: rgba(139, 69, 19, 0.06);
+            border: 1.5px solid rgba(139, 69, 19, 0.2);
+            border-radius: 8px;
+            padding: 5px 10px;
+            margin: 3px 0 3px 14px;
+            position: relative;
+        }
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 12px;
+            width: 8px;
+            height: 1.5px;
+            background: #B8860B;
+        }
+
+        .flow-branch {
+            margin-left: 14px;
+            padding-left: 10px;
+            border-left: 1.5px solid #B8860B;
+        }
+
+        .op { color: #B8860B; font-weight: bold; }
+        .note { color: #888; font-style: italic; font-size: 10px; }
+        .page-link { color: #8B4513; font-weight: bold; }
+        .arrow { color: #B8860B; margin: 0 2px; }
+
+        #enter-btn {
+            display: block;
+            margin: 8px auto 2px;
+            padding: 8px 40px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #fff;
+            background: rgba(139, 69, 19, 0.85);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+            z-index: 10;
+        }
+
+        #enter-btn:hover {
+            background: rgba(139, 69, 19, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.45);
+        }
     </style>
 </head>
 <body>
@@ -464,19 +576,127 @@
         <button id="ready-btn">准备好了</button>
     </div>
     
-    <!-- 作品使用手册弹窗 -->
-    <div id="intro-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2 class="modal-title">国风筑韵·作品使用手册</h2>
-            <div class="modal-body">
-                <p>本作品以"古建筑八大派系民居"为主题，对各派系的建筑结构特征、年代分布、地域分布、雕饰类型及文化内涵进行系统整理，并通过数据可视化图表与三维模型进行展示。</p>
-                <p>进入主界面后，用户通过手势"抽卡"进入对应派系页面。每个页面包含多种数据图表，从时间、空间、结构与装饰等不同维度呈现民居建筑信息，并支持悬浮交互显示详细数据。点击页面中心建筑图标，可进入3D模型浏览页面，帮助用户直观理解建筑形态。</p>
-                <p>在八大派系内容展示完成后，作品进一步介绍传统民居的保护现状与数字创新，说明数字化技术在建筑保护与文化传承中的应用。同时，在顶部导航栏可直接跳转目标页面，便于用户直接浏览。</p>
-                <p>本系统旨在通过交互与数据整合的方式，帮助用户全面了解中国传统民居的类型体系与特征差异</p>
+    <!-- 操作指南区域（加载完成后显示） -->
+    <div id="guide-container">
+        <!-- 顶部导航栏（指南视图） -->
+        <nav id="top-nav-guide" style="position:absolute;top:0;left:0;width:100%;background:transparent;z-index:9000;">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <a href="index.html">国风筑韵</a>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link">首页</a></li>
+                    <li class="nav-item"><a href="抽卡页面.html" class="nav-link">卡牌展示</a></li>
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">数据可视化</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link">京派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link">粤派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link">徽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link">苏派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link">晋派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link">闽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link">海派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link">川派</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">3D模型</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link">北京四合院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link">广东镬耳墙</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link">安徽马头墙</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link">苏州庭院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link">山西大院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link">福建土楼</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link">上海石库门</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link">川渝吊脚楼</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="古今对比.html" class="nav-link">古今对比</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- 操作指南内容 -->
+        <div class="guide-section">
+            <h1>国风筑韵 · 作品使用手册</h1>
+            <div class="guide-text">
+                <p>本作品以"古建筑八大派系民居"为主题，对各派系的建筑结构特征、年代分布、地域分布、雕饰类型及文化内涵进行系统整理，并通过数据可视化图表与三维模型进行展示。进入主界面后，用户通过手势"抽卡"进入对应派系页面。</p>
+                <p>每个页面包含多种数据图表，从时间、空间、结构与装饰等维度呈现民居建筑信息，支持悬浮交互显示详细数据。点击页面中心建筑图标可进入3D模型浏览，帮助用户直观理解建筑形态。</p>
+                <p>八大派系展示完成后，作品进一步介绍传统民居的保护现状与数字创新。顶部导航栏可直接跳转目标页面，便于快速浏览。下方流程图展示了完整的操作路径。</p>
             </div>
         </div>
+
+        <!-- 流程图 -->
+        <div class="flow-section">
+            <h2>操作流程图</h2>
+            <span class="flow-tip">★ 通过顶部导航栏也可以快速切换页面</span>
+
+            <div class="flow-tree">
+                <div class="flow-col">
+                    <span class="flow-title">首页</span>
+                    <div class="flow-step">点击按钮 <span class="arrow">→</span> 进入<span class="page-link">加载页面</span></div>
+
+                    <span class="flow-title">加载页面（本页）</span>
+                    <div class="flow-step">等待资源加载完成</div>
+                    <div class="flow-step">点击<span class="op">"准备好了"</span>按钮 <span class="arrow">→</span> 查看<span class="page-link">操作指南</span></div>
+
+                    <span class="flow-title">抽卡页面</span>
+                    <div class="flow-step">若检测到摄像头：开启摄像头，通过手势抽取卡牌</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">抽到的卡牌展示并配有派系介绍</div>
+                        <div class="flow-step">点击卡牌 <span class="arrow">→</span> 进入对应<span class="page-link">数据可视化页面</span></div>
+                        <div class="flow-step">点击<span class="op">"返回卡池"</span>按钮可继续抽卡</div>
+                    </div>
+                    <div class="flow-step">若无摄像头 / 点击<span class="op">"跳过抽卡"</span> <span class="arrow">→</span> 直接进入<span class="page-link">数据可视化页面</span></div>
+                </div>
+
+                <div class="flow-col">
+                    <span class="flow-title">数据可视化页面</span>
+                    <div class="flow-step">展示当前派系的建筑数据图表，支持悬浮查看详情</div>
+                    <div class="flow-step">点击页面中间的建筑图片 <span class="arrow">→</span> 打开<span class="page-link">3D模型浏览</span>弹窗</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">滚轮放大/缩小模型</div>
+                        <div class="flow-step">按住左键拖拽旋转模型</div>
+                        <div class="flow-step">点击<span class="op">"返回书本"</span> <span class="arrow">→</span> 关闭弹窗回到数据页</div>
+                    </div>
+                    <div class="flow-step">点击左右<span class="op">箭头</span>按钮 <span class="arrow">→</span> 切换到上一个/下一个派系</div>
+                    <div class="flow-step">浏览完最后一个派系，点击<span class="op">"下一步"</span> <span class="arrow">→</span> 进入<span class="page-link">古今对比页面</span></div>
+                    <div class="flow-step">点击导航栏可直接跳转到任意派系页面</div>
+                    <div class="flow-step">点击左下角<span class="op">"返回抽卡"</span>按钮 <span class="arrow">→</span> 回到<span class="page-link">抽卡页面</span></div>
+                </div>
+
+                <div class="flow-col">
+                    <span class="flow-title">古今对比页面</span>
+                    <div class="flow-step">展示传统民居保护现状与数字创新的数据图表</div>
+                    <div class="flow-step">通过顶部<span class="op">导航栏</span>切换不同图表主题</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">文化重心迁移</div>
+                        <div class="flow-step">古建筑总量分布</div>
+                        <div class="flow-step">保护单位统计</div>
+                        <div class="flow-step">消失与修缮对比</div>
+                        <div class="flow-step">数字创新应用</div>
+                    </div>
+                    <div class="flow-step">点击<span class="op">"上一个""下一个"</span>按钮切换图表</div>
+                    <div class="flow-step">点击导航栏可快速跳转其他页面</div>
+                    <div class="flow-step">点击左下角<span class="op">"返回"</span>按钮 <span class="arrow">→</span> 回到<span class="page-link">数据可视化页面</span></div>
+                </div>
+            </div>
+
+            <button id="enter-btn">进入体验</button>
+        </div>
     </div>
+
     
     <script>
         // ========== 加载页面脚本 ==========
@@ -485,8 +705,6 @@
             const loadingBar = document.getElementById('loading-bar');
             const loadingText = document.getElementById('loading-text');
             const readyBtn = document.getElementById('ready-btn');
-            const introModal = document.getElementById('intro-modal');
-            const closeBtn = document.querySelector('.close-btn');
             
             // 模拟加载进度
             let progress = 0;
@@ -521,10 +739,6 @@
                 });
             }
             
-            // 显示弹窗
-            function showModal() {
-                introModal.style.display = 'flex';
-            }
             
             // 加载进度更新函数
             async function updateProgress() {
@@ -547,14 +761,13 @@
                     // 在这个阶段预加载MediaPipe模型
                     await preloadMediaPipeModels();
                 } else {
-                    loadingText.textContent = '加载完成，请查看作品使用手册';
+                    loadingText.textContent = '加载完成';
                 }
                 
                 // 如果加载完成，显示准备好了按钮和弹窗
                 if (progress >= maxProgress) {
                     setTimeout(() => {
                         readyBtn.style.display = 'block';
-                        showModal();
                     }, 500);
                 } else {
                     // 继续更新进度
@@ -562,35 +775,33 @@
                 }
             }
             
-            // 关闭弹窗
-            function closeModal() {
-                introModal.style.display = 'none';
-            }
-            
-            // 跳转到抽卡页面
-            function goToCardPage() {
-                window.location.href = '抽卡页面.html';
-            }
-            
-            // 事件监听
-            if (closeBtn) {
-                closeBtn.addEventListener('click', closeModal);
+            // 跳转到操作指南区域
+            function goToGuidePage() {
+                const loadingContainer = document.getElementById('loading-container');
+                const guideContainer = document.getElementById('guide-container');
+                loadingContainer.style.transition = 'opacity 0.4s ease';
+                loadingContainer.style.opacity = '0';
+                setTimeout(() => {
+                    loadingContainer.style.display = 'none';
+                    guideContainer.style.display = 'flex';
+                    // 触发 reflow 后设置 opacity 实现淡入
+                    guideContainer.offsetHeight;
+                    guideContainer.style.opacity = '1';
+                }, 400);
             }
             
             if (readyBtn) {
-                readyBtn.addEventListener('click', goToCardPage);
+                readyBtn.addEventListener('click', goToGuidePage);
             }
-            
-            // 点击弹窗外部关闭
-            window.addEventListener('click', (e) => {
-                if (e.target === introModal) {
-                    closeModal();
-                }
-            });
             
             // 启动加载进度更新
             updateProgress();
         })();
+        
+        // 进入体验按钮 → 跳转到抽卡页面
+        document.getElementById('enter-btn').addEventListener('click', function() {
+            window.location.href = '抽卡页面.html';
+        });
         
         // ========== 鼠标跟随效果脚本 ==========
         (function() {
