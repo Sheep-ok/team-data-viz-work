@@ -3034,8 +3034,8 @@
                                     { name: '建造成本', max: 10 },
                                     { name: '防风沙性', max: 10 }
                                 ],
-                                center: ['50%', '58%'],
-                                radius: '60%',
+                                center: ['50%', '52%'],
+                                radius: '52%',
                                 axisLine: {
                                     lineStyle: {
                                         color: '#fff' // 白色
@@ -3085,12 +3085,12 @@
                                 // 底部注释
                                 {
                                     type: 'text',
-                                    left: '70%',
-                                    top: '90%',
+                                    left: 'center',
+                                    bottom: '1%',
                                     style: {
-                                        text: '（评分基于建筑规\n制及实用功能分析）',
+                                        text: '*数据来源于《北京旧城历史文化保护区规划》北京25片历史文化保护区资料等',
                                         fill: '#fff',
-                                        fontSize: 12
+                                        fontSize: 10
                                     }
                                 }
                             ],
@@ -3235,7 +3235,7 @@
                                     left: 'left',
                                     top: '89%',
                                     style: {
-                                        text: '(数据基于:\n《岭南采风：岭南建筑流派研究》、\n《中国传统建筑丛书：潮汕民居》的量化分析)',
+                                        text: '*数据基于:\n《岭南采风：岭南建筑流派研究》、\n《中国传统建筑丛书：潮汕民居》的量化分析',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -3410,6 +3410,19 @@
                                     }
                                 }
                             ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    bottom: '1%',
+                                    style: {
+                                        text: '*数据来源于梁思成《中国建筑史》、汪之力《徽州建筑》、\n程觉民《徽州古民居研究》、王振忠《徽商史》及相关徽州地方志与建筑史论文',
+                                        fill: '#fff',
+                                        fontSize: 10,
+                                        textAlign: 'center'
+                                    }
+                                }
+                            ],
                             backgroundColor: 'transparent'
                         };
                         rightTopChart.setOption(huipaiTimelineOption, true);
@@ -3488,6 +3501,18 @@
                                             const percentages = ['90%以上', '40–60%', '30–50%', '60%以上'];
                                             return percentages[params.dataIndex];
                                         }
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    bottom: 0,
+                                    style: {
+                                        text: '*数据来源于陆元鼎《中国民居建筑》、苏州市房产管理局《苏州古民居》',
+                                        fill: '#fff',
+                                        fontSize: 12
                                     }
                                 }
                             ],
@@ -3574,13 +3599,12 @@
                                 }
                             ],
                             graphic: [
-                                // 底部注释
                                 {
                                     type: 'text',
                                     left: 'center',
                                     top: '90%',
                                     style: {
-                                        text: '(不含乡村零散小院落，清代计入则达数千座)',
+                                        text: '*数据来源于第三次全国文物普查、山西省古建筑保护研究所统计等',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -3686,7 +3710,17 @@
                                     }
                                 }
                             ],
-                            backgroundColor: 'transparent'
+                            backgroundColor: 'transparent',
+                            graphic: [{
+                                type: 'text',
+                                left: 'center',
+                                bottom: '1%',
+                                style: {
+                                    text: '*数据来源于《中国古代建筑史》、《中国建筑史》、《中国古建筑概论》',
+                                    fill: '#fff',
+                                    fontSize: 12
+                                }
+                            }]
                         };
                         rightTopChart.setOption(minnanLineOption, true);
                     }
@@ -3829,7 +3863,7 @@
                                     left: 'center',
                                     top: '92%',
                                     style: {
-                                        text: '(数据来源：《上海石库门》专著、上海市档案馆、\n上海日报、石库门开放博物馆资料)',
+                                        text: '*数据来源：《上海石库门》专著、上海市档案馆、\n上海日报、石库门开放博物馆资料',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -3994,7 +4028,17 @@
                                     }
                                 }
                             ],
-                            backgroundColor: 'transparent'
+                            backgroundColor: 'transparent',
+                            graphic: [{
+                                type: 'text',
+                                left: '3%',
+                                bottom: '5%',
+                                style: {
+                                    text: '*数据来源于传统民居建筑研究文献整理与指标归纳',
+                                    fill: '#fff',
+                                    fontSize: 11
+                                }
+                            }]
                         };
                         rightTopChart.setOption(chuanRadarOption, true);
                     } else {
@@ -4228,7 +4272,7 @@
                                     left: '10%',
                                     top: '75%',
                                     style: {
-                                        text: '(核心逻辑：文化理念指导布局\n布局承载建筑元素与文化表达)',
+                                        text: '*核心逻辑：文化理念指导布局\n布局承载建筑元素与文化表达',
                                         fill: '#fff',
                                         fontSize: 12,
                                         textAlign: 'center'
@@ -4343,9 +4387,9 @@
                                 {
                                     type: 'text',
                                     left: 'center',
-                                    top: '82%',
+                                    top: '80%',
                                     style: {
-                                        text: '(数据参考《中国传统村落名录》（住建部等七部门发布）及学术估算)',
+                                        text: '*数据参考《中国传统村落名录》（住建部等七部门发布）及学术估算',
                                         fill: '#fff',
                                         fontSize: 12,
                                         textAlign: 'center'
@@ -4457,6 +4501,19 @@
                                     }
                                 }
                             ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    bottom: '1%',
+                                    style: {
+                                        text: '*数据来源于中国非物质文化遗产数字博物馆、\n《徽州"三雕"艺术探析》等',
+                                        fill: '#fff',
+                                        fontSize: 12,
+                                        textAlign: 'center'
+                                    }
+                                }
+                            ],
                             backgroundColor: 'transparent'
                         };
                         rightBottomChart.setOption(huipaiHeatmapOption, true);
@@ -4493,7 +4550,7 @@
                             grid: {
                                 left: '5%',
                                 right: '5%',
-                                bottom: '1.5%',
+                                bottom: '12%',
                                 top: '11%',
                                 containLabel: true
                             },
@@ -4502,7 +4559,7 @@
                                 data: ['花街铺地覆盖率', '贴墙假山出现率', '漏窗/花窗视觉通透率', '孤赏花木绿视率', '太平缸/石盆出现率', '墙面反射率'],
                                 axisLabel: {
                                     color: '#fff',
-                                    fontSize: 12,
+                                    fontSize: 11,
                                     rotate: 45
                                 }
                             },
@@ -4538,6 +4595,19 @@
                                             const ranges = ['60+', '30-50', '20-40', '15-20', '~50', '60-70'];
                                             return ranges[params.dataIndex];
                                         }
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    bottom: '5%',
+                                    style: {
+                                        text: '*数据来源于《中国古典园林史》《苏州古典园林》\n《园冶》《中国园林艺术》相关研究资料',
+                                        fill: '#fff',
+                                        fontSize: 12,
+                                        textAlign: 'center'
                                     }
                                 }
                             ],
@@ -4652,6 +4722,18 @@
                                         show: true,
                                         position: 'top',
                                         color: '#fff',
+                                        fontSize: 12
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: '5%',
+                                    bottom: '5%',
+                                    style: {
+                                        text: '*数据来源于《中国民居建筑》、《中国传统民居》等',
+                                        fill: '#fff',
                                         fontSize: 12
                                     }
                                 }
@@ -4799,7 +4881,17 @@
                                     }
                                 }
                             ],
-                            backgroundColor: 'transparent'
+                            backgroundColor: 'transparent',
+                            graphic: [{
+                                type: 'text',
+                                left: '3%',
+                                bottom: '3%',
+                                style: {
+                                    text: '*数据来源于《中国古代建筑史》、联合国教科文组织\n 世界遗产资料等',
+                                    fill: '#fff',
+                                    fontSize: 11
+                                }
+                            }]
                         };
                         rightBottomChart.setOption(minnanMatrixBarOption, true);
                     } 
@@ -4914,12 +5006,12 @@
                                 // 数据来源标注
                                 {
                                     type: 'text',
-                                    left: 'center',
+                                    left: '3%',
                                     top: '89%',
                                     style: {
-                                        text: '(数据来源：上海通志馆、上海社会科学院、澎湃新闻)',
+                                        text: '*数据来源：上海通志馆、上海社会科学院、澎湃新闻',
                                         fill: '#fff',
-                                        fontSize: 12
+                                        fontSize: 11
                                     }
                                 }
                             ],
@@ -5014,7 +5106,17 @@
                                     ]
                                 }
                             ],
-                            backgroundColor: 'transparent'
+                            backgroundColor: 'transparent',
+                            graphic: [{
+                                type: 'text',
+                                left: '3%',
+                                bottom: '3%',
+                                style: {
+                                    text: '*数据来源于四川省人民政府正式公布的\n首批四川传统村落名录统计',
+                                    fill: '#fff',
+                                    fontSize: 11
+                                }
+                            }]
                         };
                         rightBottomChart.setOption(chuanPieOption, true);
                     } else {
@@ -5629,7 +5731,7 @@
                                     left: 'center',
                                     top: '90%',
                                     style: {
-                                        text: '(数据来源：《山西传统民居》《中国传统村落名录（山西）》)',
+                                        text: '*数据来源：《山西传统民居》《中国传统村落名录（山西）》',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -5830,7 +5932,7 @@
                                     left: 'center',
                                     top: '91%',
                                     style: {
-                                        text: '(数据来源：澎湃新闻《近代上海的城市化》、上海通志馆史料、\n上海市档案馆《上海租界志》、《上海市建筑史》)',
+                                        text: '*数据来源：澎湃新闻《近代上海的城市化》、上海通志馆史料、\n上海市档案馆《上海租界志》、《上海市建筑史》等',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -5907,7 +6009,17 @@
                                     }
                                 }
                             ],
-                            backgroundColor: 'transparent'
+                            backgroundColor: 'transparent',
+                            graphic: [{
+                                type: 'text',
+                                left: '3%',
+                                bottom: '1%',
+                                style: {
+                                    text: '*数据来源于《干栏式建筑：多民族共享的生态住居文化》、\n《川北传统民居建筑木雕图解与文化记忆》等',
+                                    fill: '#fff',
+                                    fontSize: 11
+                                }
+                            }]
                         };
                         bottomChart.setOption(chuanSankeyOption, true);
                     } 
