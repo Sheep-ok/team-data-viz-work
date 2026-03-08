@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta name="viewport" content="width=1527, user-scalable=yes">
@@ -481,6 +481,11 @@
                         <a href="index.html" class="nav-link">首页</a>
                     </li>
                     
+                    <!-- 操作指南 -->
+                    <li class="nav-item">
+                        <a href="操作指南.html" class="nav-link">操作指南</a>
+                    </li>
+                    
                     <!-- 卡牌展示 -->
                     <li class="nav-item">
                         <a href="抽卡页面.html" class="nav-link">卡牌展示</a>
@@ -957,9 +962,9 @@
                                 {
                                     type: 'text',
                                     left: 'center',
-                                    top: '97%',
+                                    top: '95%',
                                     style: {
-                                        text: '（数据综合自文献及官方统计,见图中tooltip）',
+                                        text: '* 数据综合自文献及官方统计,详情见图中tooltip',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -993,7 +998,7 @@
                                     left: 'center',
                                     top: 'center',
                                     width: '90%',
-                                    height: '70%',
+                                    height: '80%',
                                     right: null,
                                     bottom: null,
                                     sizeRange: [10, 40],
@@ -1046,9 +1051,9 @@
                                 {
                                     type: 'text',
                                     left: 'center',
-                                    top: '11%',
+                                    top: '92%',
                                     style: {
-                                        text: '(以陈家祠/己略黄公祠为例，数据基于装饰元素出现频率统计)',
+                                        text: '* 以陈家祠/己略黄公祠为例，数据来源于广东民间工艺博物馆官方资料、\n己略黄公祠文物档案、《中国建筑艺术全集》',
                                         fill: '#fff',
                                         fontSize: 12,
                                         textAlign: 'center'
@@ -1110,8 +1115,8 @@
                                 {
                                     name: '徽派民居建筑色彩占比',
                                     type: 'pie',
-                                    radius: ['40px', '100px'],
-                                    center: ['53%', '60%'],
+                                    radius: ['40px', '80px'],
+                                    center: ['53%', '55%'],
                                     data: [
                                         {name: '白墙', value: 60},
                                         {name: '深灰黑瓦', value: 30},
@@ -1146,6 +1151,20 @@
                                             shadowOffsetX: 0,
                                             shadowColor: 'rgba(0, 0, 0, 0.5)'
                                         }
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '87%',
+                                    style: {
+                                        text: '* 数据来源于《村落徽州徽派民居建设技术导则》、《中国传统建筑色彩标准》、\n《基于视觉感知的徽州街巷建筑色彩特征量化解析研究 —— 以宏村为例》、\n《徽州古村落色彩分析》',
+                                        fill: '#fff',
+                                        fontSize: 10,
+                                        lineHeight: 13,
+                                        textAlign: 'center'
                                     }
                                 }
                             ],
@@ -1256,6 +1275,20 @@
                                     }
                                 }
                             ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '93%',
+                                    style: {
+                                        text: '* 数据来源于《苏州市第三次全国文物普查成果》及《中国文物地图集》',
+                                        fill: '#fff',
+                                        fontSize: 10,
+                                        lineHeight: 13,
+                                        textAlign: 'center'
+                                    }
+                                }
+                            ],
                             backgroundColor: 'transparent'
                         };
                         leftTopChart.setOption(suTimelineOption, true);
@@ -1300,7 +1333,7 @@
                                     { name: '防御性', max: 5 },
                                     { name: '建造造价', max: 5 }
                                 ],
-                                radius: '70%',
+                                radius: '65%',
                                 center: ['50%', '61.5%'],
                                 axisLine: {
                                     lineStyle: {
@@ -1416,9 +1449,9 @@
                                 {
                                     type: 'text',
                                     left: 'center',
-                                    top: '97%',
+                                    top: '95%',
                                     style: {
-                                        text: '(分值越高，对应属性特征越显著)',
+                                        text: '* 数据来源于《山西民居》、《山西晋中传统民居空间形态研究》',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -1464,7 +1497,7 @@
                             },
                             legend: {
                                 data: ['土楼', '古厝', '祠堂', '骑楼', '其他'],
-                                bottom: 10,
+                                top: 25,
                                 left: 'center',
                                 textStyle: {
                                     color: '#fff',
@@ -1474,6 +1507,7 @@
                             grid: {
                                 left: '3%',
                                 right: '4%',
+                                top: '25%',
                                 bottom: '15%',
                                 containLabel: true
                             },
@@ -1575,6 +1609,20 @@
                                         color: '#2C353D' // 深檐灰
                                     },
                                     barWidth: 35
+                                }
+                            ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '91.5%',
+                                    style: {
+                                        text: '* 数据来源于第三次 / 第四次全国文物普查、福建省文物局、\n《福建土楼：中国传统民居的瑰宝》、《福建古建筑》',
+                                        fill: '#fff',
+                                        fontSize: 10,
+                                        lineHeight: 13,
+                                        textAlign: 'center'
+                                    }
                                 }
                             ],
                             backgroundColor: 'transparent'
@@ -1776,7 +1824,7 @@
                                     left: 'center',
                                     top: '96%',
                                     style: {
-                                        text: '(评分：1 分最低，5 分最高，分值越高对应特征越显著)',
+                                        text: '* 数据来源于《上海百年建筑史》《上海石库门： 中西合璧的住宅》',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -1861,6 +1909,20 @@
                                         {name: '门洞', value: 2, category: '常见位置'},
                                         {name: '屏风', value: 1, category: '常见位置'}
                                     ]
+                                }
+                            ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '90%',
+                                    style: {
+                                        text: '* 数据来源于《四川民居散论》《巴蜀城镇与民居》《川西民居建筑研究》',
+                                        fill: '#fff',
+                                        fontSize: 10,
+                                        lineHeight: 13,
+                                        textAlign: 'center'
+                                    }
                                 }
                             ],
                             backgroundColor: 'transparent'
@@ -1963,8 +2025,8 @@
                                 {
                                     name: '文化寓意占比',
                                     type: 'pie',
-                                    radius: ['30px', '80px'],
-                                    center: ['50%', '50%'],
+                                    radius: ['30px', '70px'],
+                                    center: ['50%', '46%'],
                                     avoidLabelOverlap: false,
                                     itemStyle: {
                                         borderRadius: 0,
@@ -2000,9 +2062,9 @@
                                 {
                                     type: 'text',
                                     left: 'center',
-                                    top: '88%',
+                                    top: '78%',
                                     style: {
-                                        text: '（权重基于装饰元素的文化关联度及文献提及频次量化）',
+                                        text: '* 数据来源于《中国古代建筑装饰五书》、\n《中国传统建筑雕饰》、《砖雕石刻》、《装饰之道》、\n《北京四合院建筑》、《中国民居装饰艺术》,数值取所参考中值',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -2032,7 +2094,7 @@
                             },
                             grid: {
                                 height: '50%',
-                                top: '15%',
+                                top: '10%',
                                 left: '10%'
                             },
                             xAxis: {
@@ -2063,7 +2125,7 @@
                                 calculable: true,
                                 orient: 'horizontal',
                                 left: 'center',
-                                bottom: '15%',
+                                bottom: '19%',
                                 inRange: {
                                     color: ['#E6D5B8', '#8B7D46', '#A65C32'] // 米黄墙（弱）→古铜绿（中）→赤陶棕（强）
                                 },
@@ -2119,11 +2181,12 @@
                                 {
                                     type: 'text',
                                     left: '0%',
-                                    top: '87%',
+                                    top: '81%',
                                     style: {
-                                        text: '(适应强度基于《岭南建筑环境评价与调控》的实测数据及通风/遮阳推导)',
+                                        text: '* 数据来源于《岭南传统村落微气候环境研究》、《岭南建筑研究》、\n《岭南民居天井的自然通风手法研究》、《岭南传统民居的建筑遮阳设计》',
                                         fill: '#fff',
-                                        fontSize: 12
+                                        fontSize: 12,
+                                        lineHeight: 14
                                     }
                                 }
                             ],
@@ -2180,7 +2243,8 @@
                             grid: {
                                 left: '3%',
                                 right: '3.5%',
-                                bottom: '10%',
+                                bottom: '25%',
+                                top:'10%',
                                 containLabel: true
                             },
                             xAxis: {
@@ -2228,11 +2292,12 @@
                                 {
                                     type: 'text',
                                     left: 'center',
-                                    top: '10%',
+                                    bottom: '13%',
                                     style: {
-                                        text: '(权重基于特征提及频次与文化代表性量化)',
+                                        text: '* 参考于第三次全国文物普查、《安徽民居》、\n《徽州文化生态保护实验区总体规划》，为示意性量化分析结果',
                                         fill: '#fff',
-                                        fontSize: 12
+                                        lineHeight: 15,
+                                        fontSize: 10
                                     }
                                 }
                             ],
@@ -2481,9 +2546,9 @@
                                 {
                                     type: 'text',
                                     left: 'center',
-                                    top: '87%',
+                                    top: '85%',
                                     style: {
-                                        text: '(数据基于《山西民居》测绘 + 平遥古城实地普查)',
+                                        text: '* 数据基于《山西民居》测绘数据拟合及平遥古城实地普查',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -2516,7 +2581,7 @@
                             },
                             grid: {
                                 height: '50%',
-                                top: '15%',
+                                top: '10%',
                                 left:'15%'
                             },
                             xAxis: {
@@ -2547,7 +2612,7 @@
                                 calculable: true,
                                 orient: 'horizontal',
                                 left: 'center',
-                                bottom: '10%',
+                                bottom: '19%',
                                 inRange: {
                                     color: ['#E0D7C8', '#B49242', '#7B2929'] // 浅墙米灰（低）→土楼金棕（中）→红砖深棕红（高）
                                 },
@@ -2594,6 +2659,20 @@
                                             shadowBlur: 10,
                                             shadowColor: 'rgba(0, 0, 0, 0.5)'
                                         }
+                                    }
+                                }
+                            ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '81%',
+                                    style: {
+                                        text: '* 数据来源于联合国教科文组织世界遗产中心、\n《基于GIS的福建省传统村落空间分布特征分析》等',
+                                        fill: '#fff',
+                                        fontSize: 10,
+                                        lineHeight: 15,
+                                        textAlign: 'center'
                                     }
                                 }
                             ],
@@ -2654,7 +2733,7 @@
                             grid: {
                                 left: '3%',
                                 right: '3.5%',
-                                bottom: '10%',
+                                bottom: '20%',
                                 top: '20%',
                                 containLabel: true
                             },
@@ -2708,9 +2787,9 @@
                                 {
                                     type: 'text',
                                     left: 'center',
-                                    top: '90%',
+                                    top: '81%',
                                     style: {
-                                        text: '（核心开发数据）',
+                                        text: '* 数据来源于《上海道契》、《上海住宅建设志》、\n《上海租界志》，有估算值',
                                         fill: '#fff',
                                         fontSize: 12
                                     }
@@ -2766,7 +2845,7 @@
                             grid: {
                                 left: '3%',
                                 right: '3.5%',
-                                bottom: '8%',
+                                bottom: '15%',
                                 containLabel: true
                             },
                             xAxis: {
@@ -2853,6 +2932,20 @@
                                         color: '#A85218' // 赤陶色
                                     },
                                     barWidth: 35
+                                }
+                            ],
+                            graphic: [
+                                {
+                                    type: 'text',
+                                    left: 'center',
+                                    top: '84%',
+                                    style: {
+                                        text: '* 数据基于《吊脚楼建筑与文化研究》《川西民居吊脚楼•中国建筑艺术》，有估算值',
+                                        fill: '#fff',
+                                        fontSize: 10,
+                                        lineHeight: 12,
+                                        textAlign: 'center'
+                                    }
                                 }
                             ],
                             backgroundColor: 'transparent'

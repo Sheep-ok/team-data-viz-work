@@ -28,7 +28,6 @@
         }
 
         /* ========== 页面容器 ========== */
-        /*11111*/
         #guide-container {
             position: absolute;
             top: 0;
@@ -39,15 +38,22 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             padding-top: 50px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        #guide-container.visible {
+            display: flex;
+            opacity: 1;
         }
 
         /* ========== 上半区：操作指南 ========== */
         .guide-section {
             width: 1400px;
+            height: 160px;
             background: rgba(255, 253, 240, 0.88);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -58,6 +64,7 @@
             animation: sectionFadeIn 0.6s ease forwards;
             opacity: 0;
             transform: translateY(20px);
+            box-sizing: border-box;
         }
 
         @keyframes sectionFadeIn {
@@ -89,6 +96,7 @@
         /* ========== 下半区：流程图 ========== */
         .flow-section {
             width: 1400px;
+            height: 480px;
             margin-top: 10px;
             background: rgba(255, 253, 240, 0.88);
             backdrop-filter: blur(12px);
@@ -101,6 +109,7 @@
             opacity: 0;
             transform: translateY(20px);
             position: relative;
+            box-sizing: border-box;
         }
 
         .flow-section h2 {
@@ -363,7 +372,7 @@
 
     <div id="guide-container">
         <!-- 顶部导航栏 -->
-        <nav id="top-nav">
+        <nav id="top-nav-guide" style="position:absolute;top:0;left:0;width:100%;background:transparent;z-index:9000;">
             <div class="nav-container">
                 <div class="nav-brand">
                     <a href="index.html">国风筑韵</a>
@@ -371,6 +380,9 @@
                 <ul class="nav-menu">
                     <li class="nav-item">
                         <a href="index.html" class="nav-link">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="操作指南.html" class="nav-link">操作指南</a>
                     </li>
                     <li class="nav-item">
                         <a href="抽卡页面.html" class="nav-link">卡牌展示</a>
@@ -431,18 +443,13 @@
             <span class="flow-tip">★ 通过顶部导航栏也可以快速切换页面</span>
 
             <div class="flow-tree">
-                <!-- 第一列：首页 → 加载 → 抽卡 -->
                 <div class="flow-col">
                     <span class="flow-title">首页</span>
                     <div class="flow-step">点击按钮 <span class="arrow">→</span> 进入<span class="page-link">加载页面</span></div>
 
-                    <span class="flow-title">加载页面</span>
+                    <span class="flow-title">加载页面（本页）</span>
                     <div class="flow-step">等待资源加载完成</div>
-                    <div class="flow-step">点击<span class="op">"准备好了"</span>按钮 <span class="arrow">→</span> 进入<span class="page-link">操作指南</span><span class="note">（本页）</span></div>
-
-                    <span class="flow-title">操作指南（本页）</span>
-                    <div class="flow-step">阅读使用手册与流程图</div>
-                    <div class="flow-step">点击<span class="op">"进入体验"</span>按钮 <span class="arrow">→</span> 进入<span class="page-link">抽卡页面</span></div>
+                    <div class="flow-step">点击<span class="op">"准备好了"</span>按钮 <span class="arrow">→</span> 查看<span class="page-link">操作指南</span></div>
 
                     <span class="flow-title">抽卡页面</span>
                     <div class="flow-step">若检测到摄像头：开启摄像头，通过手势抽取卡牌</div>
@@ -452,10 +459,8 @@
                         <div class="flow-step">点击<span class="op">"返回卡池"</span>按钮可继续抽卡</div>
                     </div>
                     <div class="flow-step">若无摄像头 / 点击<span class="op">"跳过抽卡"</span> <span class="arrow">→</span> 直接进入<span class="page-link">数据可视化页面</span></div>
-                    <div class="flow-step">点击左下角<span class="op">"返回"</span>按钮 <span class="arrow">→</span> 回到<span class="page-link">操作指南</span></div>
                 </div>
 
-                <!-- 第二列：数据可视化页面 -->
                 <div class="flow-col">
                     <span class="flow-title">数据可视化页面</span>
                     <div class="flow-step">展示当前派系的建筑数据图表，支持悬浮查看详情</div>
@@ -471,7 +476,6 @@
                     <div class="flow-step">点击左下角<span class="op">"返回抽卡"</span>按钮 <span class="arrow">→</span> 回到<span class="page-link">抽卡页面</span></div>
                 </div>
 
-                <!-- 第三列：古今对比页面 -->
                 <div class="flow-col">
                     <span class="flow-title">古今对比页面</span>
                     <div class="flow-step">展示传统民居保护现状与数字创新的数据图表</div>
@@ -494,6 +498,14 @@
     </div>
 
     <script>
+        // 页面加载完成后显示操作指南
+        window.addEventListener('DOMContentLoaded', function() {
+            const guideContainer = document.getElementById('guide-container');
+            if (guideContainer) {
+                guideContainer.classList.add('visible');
+            }
+        });
+
         // 跳转到抽卡页面
         document.getElementById('enter-btn').addEventListener('click', function() {
             window.location.href = '抽卡页面.html';

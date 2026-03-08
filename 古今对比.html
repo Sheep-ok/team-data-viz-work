@@ -116,7 +116,7 @@
         
 
         
-        /* 半透明磨砂框 */
+        /* 图表背景框 */
         .chart-frame {
             width: 46%;
             height: 130%;
@@ -124,12 +124,9 @@
             top: 13%;
             left: 24%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.08);
+            background: transparent;
             border-radius: 16px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             z-index: 1;
             opacity: 0;
             transition: all 1s ease-out;
@@ -217,12 +214,9 @@
             font-size: 18px;
             line-height: 1.6;
             padding: 30px;
-            background: rgba(255, 255, 255, 0.08);
+            background: transparent;
             border-radius: 16px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
             z-index: 10;
             opacity: 0;
@@ -808,6 +802,11 @@
                     <!-- 首页 -->
                     <li class="nav-item">
                         <a href="index.html" class="nav-link">首页</a>
+                    </li>
+                    
+                    <!-- 操作指南 -->
+                    <li class="nav-item">
+                        <a href="操作指南.html" class="nav-link">操作指南</a>
                     </li>
                     
                     <!-- 卡牌展示 -->
