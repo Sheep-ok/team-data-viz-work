@@ -191,12 +191,9 @@
             top: 20%;
             left: 23.5%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.08);
+            background: transparent;
             border-radius: 16px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             z-index: 1;
             opacity: 0;
             transition: all 1s ease-out;
@@ -1190,6 +1187,32 @@
                         }
                     }
                 }
+            ],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '91%',
+                    style: {
+                        text: '* 数据参考于《中国文化地理》《唐宋诗歌版图的空间分布与位移》、《历史时期中国文化重心的演变和风俗区域特色》、\n《基于唐宋文人足迹集聚性分析的中心文化城市变迁》、《中国历代文学家之地理分布 》、《清朝进士题名录》、\n国家统计局、教育部、《中国省域居民文化消费时空特征及影响因素分析》等，为估算计算值',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 15,
+                        textAlign: 'center'
+                    }
+                },
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '75%',
+                    style: {
+                        text: 'tips:点击朝代旁小框可以切换年代数据',
+                        fill: '#fff',
+                        fontSize: 12,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
             ]
         };
         
@@ -1395,7 +1418,21 @@
                     shadowColor: 'rgba(255, 255, 255, 0.8)',
                     shadowBlur: 10
                 }
-            }]
+            }],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '98%',
+                    style: {
+                        text: '* 数据来源于央广网、央视网、人民日报、中国网、江苏省住房和城乡建设厅',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
+            ]
         };
 
 
@@ -1407,7 +1444,7 @@
                 left: 'center',
                 textStyle: {
                     color: '#fff',
-                    fontSize: 22
+                    fontSize: 20
                 }
             },
             animation: true,
@@ -1418,25 +1455,29 @@
             },
             legend: {
                 data: ['国家级', '省级'],
-                bottom: 5,
+                bottom: 400,
                 textStyle: {
                     color: '#fff',
-                    fontSize: 16
+                    fontSize: 14
                 },
                 selected: {
                     '国家级': true,
                     '省级': false
                 }
             },
+            grid: {
+                top: '30%',
+                bottom: '35%'
+            },
             polar: {
-                radius: ['30%', '80%']
+                radius: ['30%', '60%']
             },
             angleAxis: {
                 type: 'category',
                 data: ['北京四合院', '苏州园林', '安徽马头墙', '山西大院', '福建土楼', '广东镬耳墙', '川渝吊脚楼', '上海石库门'],
                 axisLabel: {
                     color: '#fff',
-                    fontSize: 17
+                    fontSize: 14
                 }
             },
             radiusAxis: {
@@ -1506,6 +1547,32 @@
                         enabled: true
                     }
                 }
+            ],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '88%',
+                    style: {
+                        text: '* 数据来源于国务院、北京市文物局、江苏省人民政府、安徽省文化和旅游厅、\n山西省文物局、福建省人民政府、广东省文化和旅游厅局、\n重庆市文化和旅游发展委员会、四川省人民政府、上海市公共数据开放平台',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                },
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '85%',
+                    style: {
+                        text: 'tips:  点击国家级/省级旁边小框切换展示数据',
+                        fill: '#fff',
+                        fontSize: 12,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
             ]
         };
         
@@ -1522,6 +1589,12 @@
                     color: '#fff',
                     fontSize: 22
                 }
+            },
+            grid: {
+                left: '10%',
+                right: '10%',
+                top: '20%',
+                bottom: '25%'
             },
             animation: true,
             animationDuration: 1500,
@@ -1544,7 +1617,7 @@
             },
             legend: {
                 data: ['年消失率', '日均消失数量', '核心建筑修缮比例'],
-                bottom: 5,
+                bottom: 50,
                 textStyle: {
                     color: '#fff',
                     fontSize: 16
@@ -1698,10 +1771,24 @@
                         shadowBlur: 10
                     }
                 }
+            ],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '90%',
+                    style: {
+                        text: '* 数据来源于：国务院新闻办公室、 中华人民共和国住房和城乡建设部、央视网、\n央广网、中国新闻网、 中华人民共和国住房和城乡建设部、《立法保护传统村落文化迫在眉睫》、\n《中国传统村落保护调查报告（2017）》、《中国传统村落研究2024年度报告》等',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
             ]
         };
-        
-        
+
+
         // 建筑数字化落地量图表数据
         const digitalOption = {
             backgroundColor: 'transparent',
@@ -1768,10 +1855,10 @@
                 }
             },
             grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                top: '20%',
+                left: '8%',
+                right: '8%',
+                bottom: '15%',
+                top: '25%',
                 containLabel: true
             },
             xAxis: {
@@ -1892,7 +1979,21 @@
                 animationDelay: function(idx) {
                     return 400 + idx * 100; // 从左到右依次动画
                 }
-            }]
+            }],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '90%',
+                    style: {
+                        text: '* 数据来源于中华人民共和国住房和城乡建设部、国家数据局、人民网、新华网、南方日报、广州日报等',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
+            ]
         };
         
         // 初始化图表实例
