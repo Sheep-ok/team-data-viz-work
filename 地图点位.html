@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=1527, user-scalable=yes">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 1527px;
+        height: 740px;
+        overflow: hidden;
+      }
+    </style>
+    <meta charset="UTF-8">
+    <title>国风筑韵-地图点位</title>
+    <!-- 高德地图 API -->
+    <script src="https://webapi.amap.com/maps?v=2.0&key=eaba9ff3bd5d7410cd0628b70d6fd324"></script>
+    <!-- 高德地图UI插件 -->
+    <script src="https://webapi.amap.com/ui/1.1/main.js?v=1.1.1"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'SimSun', serif;
+            background: url('古今对比背景.jpg') center/cover no-repeat;
+            width: 1527px;
+            height: 740px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 背景遮罩 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            z-index: -1;
+        }
+
+        /* 主容器 */
+        .container {
+            width: 1527px;
+            height: 740px;
+            display: flex;
+            position: relative;
+        }
+
+        /* 左侧地图区域 */
+        .map-section {
+            width: 1000px;
+            height: 80%;
+            position: relative;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            margin: 100px 20px 20px 40px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        #amap {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+
+        /* 右侧控制面板 */
+        .control-panel {
+            width: 527px;
+            height: 80%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 15px;
+            margin: 100px 40px 20px 0;
+        }
+
+        /* 标题 */
+        .panel-title {
+            font-size: 32px;
+            color: #d4af37;
+            text-align: center;
+            margin: auto;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            letter-spacing: 8px;
+            font-weight: bold;
+        }
+
+
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 25px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: #d4af37;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            z-index: 100;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* 加载提示 */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #d4af37;
+            font-size: 18px;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top-color: #d4af37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 导航栏容器 */
+        #top-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            z-index: 9000;
+        }
+
+        /* 导航内容容器 */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* 导航品牌 */
+        .nav-brand {
+            padding: 5px 0;
+            margin-right: 15px;
+        }
+
+        .nav-brand a {
+            color: #fffdf0;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .nav-brand a:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 导航菜单 */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 导航项 */
+        .nav-item {
+            position: relative;
+        }
+
+        /* 导航链接 */
+        .nav-link {
+            display: block;
+            padding: 12px 20px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 下拉菜单 */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            min-width: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9100;
+        }
+
+        /* 下拉菜单项 */
+        .dropdown-item {
+            list-style: none;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 8px 12px;
+            color: black;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .dropdown-link:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        /* 导航项悬停时显示下拉菜单 */
+        .nav-item:hover .dropdown-menu {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <nav id="top-nav">
+            <div class="nav-container">
+                <!-- 标识 -->
+                <div class="nav-brand">
+                    <a href="index.html">国风筑韵</a>
+                </div>
+                
+                <!-- 导航菜单 -->
+                <ul class="nav-menu">
+                    <!-- 首页 -->
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">首页</a>
+                    </li>
+                    
+                    <!-- 操作指南 -->
+                    <li class="nav-item">
+                        <a href="操作指南.html" class="nav-link">操作指南</a>
+                    </li>
+                    
+                    <!-- 卡牌展示 -->
+                    <li class="nav-item">
+                        <a href="抽卡页面.html" class="nav-link">卡牌展示</a>
+                    </li>
+                    
+                    <!-- 数据可视化 -->
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">数据可视化</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
+                            <li class="dropdown-item" style="border-top: 1px solid rgba(0,0,0,0.1); margin-top: 5px; padding-top: 5px;"><a href="数据可视页面.html" class="dropdown-link" style="font-weight: bold;">3D模型</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-model="北京四合院.glb">北京四合院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-model="广东镬耳墙.glb">广东镬耳墙</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-model="安徽马头墙.glb">安徽马头墙</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-model="苏州庭院.glb">苏州庭院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-model="山西大院.glb">山西大院</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-model="福建土楼.glb">福建土楼</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-model="上海石库门.glb">上海石库门</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-model="川渝吊脚楼.glb">川渝吊脚楼</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 地图点位 -->
+                    <li class="nav-item">
+                        <a href="地图点位.html" class="nav-link">地图点位</a>
+                    </li>
+                    
+                    <!-- 古今对比 -->
+                    <li class="nav-item">
+                        <a href="古今对比.html" class="nav-link">古今对比</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <a href="数据可视页面.html" class="back-btn">← 返回数据可视化</a>
+        <div class="map-section">
+            <div id="amap"></div>
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <div>正在加载地图...</div>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <div style="padding: 20px 0; color: #fffdf0; line-height: 1.8;">
+                <p style="margin-bottom: 15px; text-align: center; font-size: 22px; color: #d4af37; font-weight: bold;">
+                    全国重点文物保护单位空间分布概况介绍
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    本地图可视化展示了八批共 5058 处全国重点文物保护单位的空间分布与核心信息，涵盖了从古代遗址到近现代革命旧址的各类文化遗产。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    从分布格局来看，国保单位呈现出明显的区域集聚特征：
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    黄河流域与长江流域是核心密集区，对应中华文明起源与发展的核心地带，如陕西、河南、山西等省份集中了大量古遗址、古墓葬与古建筑；
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    东部沿海与沿江城市（如北京、上海、江苏、广东）则以近现代重要史迹、名人故居及工业遗产为主，反映了近代中国社会变革与城市发展脉络；
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    西南、西北边疆地区的国保单位多为少数民族特色建筑、宗教遗存与革命遗址，体现了多民族文化交融与红色历史印记。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    从类型构成上看，数据覆盖古遗址、古墓葬、古建筑、石窟寺及石刻、近现代重要史迹及代表性建筑等六大类别，其中古建筑占比最高，广泛分布于全国各地，是中国传统营造技艺与地域建筑文化的直观载体；近现代重要史迹则集中于革命老区与通商口岸城市，成为中国近代历史的重要见证。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    通过地理编码获取的经纬度坐标，本可视化实现了国保单位的精准落位，既展现了中华文明多元一体、绵延不绝的时空脉络，也为文化遗产保护、旅游开发与学术研究提供了直观的空间参考。
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 下一步按钮 -->
+    <div style="z-index: 20; position: absolute; bottom: 14px; right: 14px;">
+        <a href="古今对比.html" style="padding: 10px 20px; font-size: 12px; font-weight: bold; color: #ffffff; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 25px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: 0; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); text-decoration: none; display: inline-block;">下一步</a>
+    </div>
+
+    <script>
+        let map = null;
+        
+        // 初始化地图
+        function initMap() {
+            // 创建地图实例 - 设置为1000公里比例尺（zoom级别为3）
+            map = new AMap.Map('amap', {
+                zoom: 3,
+                center: [105.0, 38.0],
+                viewMode: '2D',
+                mapStyle: 'amap://styles/normal',
+                features: ['bg', 'road', 'building', 'point']
+            });
+            
+            // 添加控件
+            AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.MapType'], function() {
+                map.addControl(new AMap.ToolBar({
+                    position: 'RB'
+                }));
+                map.addControl(new AMap.Scale());
+                map.addControl(new AMap.MapType({
+                    defaultType: 0
+                }));
+            });
+            
+            // 加载点位数据
+            loadMapPoints();
+        }
+        
+        // 加载地图点位数据
+        function loadMapPoints() {
+            // 加载点聚合插件
+            AMapUI.load(['ui/overlay/SimpleMarker'], function(SimpleMarker) {
+                fetch('map_points.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        // 创建标记点
+                        const markers = [];
+                        data.forEach(point => {
+                            const marker = new AMap.Marker({
+                                position: [point.lng, point.lat],
+                                title: point.name,
+                                icon: new AMap.Icon({
+                                    size: new AMap.Size(12, 12),
+                                    image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjYiIGZpbGw9IiNkNGFmMzciIGZpbGwtb3BhY2l0eT0iMC44IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==',
+                                    imageOffset: new AMap.Pixel(0, 0),
+                                    imageSize: new AMap.Size(12, 12)
+                                }),
+                                extData: point
+                            });
+                            
+                            // 添加点击事件
+                            marker.on('click', function() {
+                                showInfoWindow(point);
+                            });
+                            
+                            markers.push(marker);
+                        });
+                        
+                        // 添加标记点到地图
+                        map.add(markers);
+                        
+                        // 隐藏加载提示
+                        document.getElementById('loading').style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('加载点位数据失败:', error);
+                        document.getElementById('loading').innerHTML = '<div style="color: red;">加载点位数据失败</div>';
+                    });
+            });
+        }
+        
+        // 显示信息窗口
+        function showInfoWindow(point) {
+            const infoWindow = new AMap.InfoWindow({
+                content: `
+                    <div style="padding: 10px; min-width: 200px;">
+                        <h3 style="margin: 0 0 10px 0; color: #333;">${point.name}</h3>
+                        <p style="margin: 5px 0; color: #666;"><strong>地址：</strong>${point.address}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>省份：</strong>${point.province}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>城市：</strong>${point.city}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>类型：</strong>${point.type}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>时代：</strong>${point.era}</p>
+                        <p style="margin: 5px 0; color: #999; font-size: 12px;">经度：${point.lng.toFixed(6)}，纬度：${point.lat.toFixed(6)}</p>
+                    </div>
+                `,
+                offset: new AMap.Pixel(0, -10)
+            });
+            
+            infoWindow.open(map, [point.lng, point.lat]);
+        }
+        
+        // 页面加载完成后初始化地图
+        window.onload = initMap;
+    </script>
+</body>
+</html>
