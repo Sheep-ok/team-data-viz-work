@@ -352,8 +352,9 @@
             </div>
         </div>
         
-        <div class="control-panel">
-            <div style="padding: 20px 0; color: #fffdf0; line-height: 1.8;">
+        <div class="control-panel" id="info-panel">
+            <!-- 国保单位信息 -->
+            <div id="culture-info" style="padding: 20px 0; color: #fffdf0; line-height: 1.8;">
                 <p style="margin-bottom: 15px; text-align: center; font-size: 22px; color: #d4af37; font-weight: bold;">
                     全国重点文物保护单位空间分布概况介绍
                 </p>
@@ -379,6 +380,40 @@
                     通过地理编码获取的经纬度坐标，本可视化实现了国保单位的精准落位，既展现了中华文明多元一体、绵延不绝的时空脉络，也为文化遗产保护、旅游开发与学术研究提供了直观的空间参考。
                 </p>
             </div>
+            
+            <!-- 传统村落信息 -->
+            <div id="village-info" style="padding: 20px 0; color: #fffdf0; line-height: 1.8; display: none;">
+                <p style="margin-bottom: 15px; text-align: center; font-size: 22px; color: #d4af37; font-weight: bold;">
+                    中国传统村落空间分布概况介绍
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    本地图可视化展示了中国传统村落的空间分布与核心信息，涵盖了全国各地具有历史文化价值的传统村落。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    从分布格局来看，传统村落呈现出明显的地域特色：
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    南方地区（如安徽、浙江、江西等省份）的传统村落以徽派、江南水乡风格为主，保存完好的古民居群展现了传统建筑的精湛技艺；
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    北方地区（如山西、陕西、北京等）的传统村落则以四合院、窑洞等特色建筑为主，体现了北方地区的地域文化与生活方式；
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    西南地区（如四川、云南、贵州等）的传统村落多为少数民族聚居地，具有独特的民族建筑风格和文化传统。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    传统村落是中华优秀传统文化的重要载体，承载着历史记忆、民族智慧和地域特色。通过本可视化，我们可以直观了解传统村落的空间分布特征，为传统村落的保护、传承与发展提供参考。
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 数据切换框 -->
+    <div style="z-index: 20; position: absolute; top: 114px; left: 54px; background: rgba(0, 0, 0, 0.02); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px; min-width: 120px;">
+        <div style="color: #000000; font-size: 12px; font-weight: bold; margin-bottom: 8px; text-align: center;">数据切换</div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <button id="btn-culture" style="padding: 6px 12px; font-size: 11px; color: #000000; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px; cursor: pointer; transition: all 0.3s ease; text-align: center; box-shadow: none;">国保单位</button>
+            <button id="btn-village" style="padding: 6px 12px; font-size: 11px; color: #000000; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px; cursor: pointer; transition: all 0.3s ease; text-align: center; box-shadow: none;">中国传统村落</button>
         </div>
     </div>
     
@@ -389,12 +424,14 @@
 
     <script>
         let map = null;
+        let currentMarkers = [];
+        let currentData = 'culture'; // culture 或 village
         
         // 初始化地图
         function initMap() {
-            // 创建地图实例 - 设置为1000公里比例尺（zoom级别为3）
+            // 创建地图实例 - 设置为500公里比例尺（zoom级别为4）
             map = new AMap.Map('amap', {
-                zoom: 3,
+                zoom: 4,
                 center: [105.0, 38.0],
                 viewMode: '2D',
                 mapStyle: 'amap://styles/normal',
@@ -412,19 +449,84 @@
                 }));
             });
             
-            // 加载点位数据
-            loadMapPoints();
+            // 绑定数据切换按钮事件
+            document.getElementById('btn-culture').addEventListener('click', function() {
+                if (currentData !== 'culture') {
+                    currentData = 'culture';
+                    updateButtonStyles();
+                    updateInfoPanel();
+                    loadMapPoints('map_points.json');
+                }
+            });
+            
+            document.getElementById('btn-village').addEventListener('click', function() {
+                if (currentData !== 'village') {
+                    currentData = 'village';
+                    updateButtonStyles();
+                    updateInfoPanel();
+                    loadMapPoints('village_points.json');
+                }
+            });
+            
+            // 初始化按钮样式和信息面板
+            updateButtonStyles();
+            updateInfoPanel();
+            
+            // 加载默认点位数据
+            loadMapPoints('map_points.json');
+        }
+        
+        // 更新按钮样式
+        function updateButtonStyles() {
+            if (currentData === 'culture') {
+                document.getElementById('btn-culture').style.color = '#000000';
+                document.getElementById('btn-culture').style.background = 'rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-culture').style.border = '1px solid rgba(255, 255, 255, 0.4)';
+                document.getElementById('btn-culture').style.boxShadow = '0 0 15px rgba(212, 175, 55, 0.6)';
+                document.getElementById('btn-village').style.color = '#000000';
+                document.getElementById('btn-village').style.background = 'rgba(255, 255, 255, 0.1)';
+                document.getElementById('btn-village').style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-village').style.boxShadow = 'none';
+            } else {
+                document.getElementById('btn-village').style.color = '#000000';
+                document.getElementById('btn-village').style.background = 'rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-village').style.border = '1px solid rgba(255, 255, 255, 0.4)';
+                document.getElementById('btn-village').style.boxShadow = '0 0 15px rgba(212, 175, 55, 0.6)';
+                document.getElementById('btn-culture').style.color = '#000000';
+                document.getElementById('btn-culture').style.background = 'rgba(255, 255, 255, 0.1)';
+                document.getElementById('btn-culture').style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-culture').style.boxShadow = 'none';
+            }
+        }
+        
+        // 更新右侧信息面板内容
+        function updateInfoPanel() {
+            if (currentData === 'culture') {
+                document.getElementById('culture-info').style.display = 'block';
+                document.getElementById('village-info').style.display = 'none';
+            } else {
+                document.getElementById('culture-info').style.display = 'none';
+                document.getElementById('village-info').style.display = 'block';
+            }
         }
         
         // 加载地图点位数据
-        function loadMapPoints() {
+        function loadMapPoints(dataFile) {
+            // 清除现有标记点
+            if (currentMarkers.length > 0) {
+                map.remove(currentMarkers);
+                currentMarkers = [];
+            }
+            
+            // 显示加载提示
+            document.getElementById('loading').style.display = 'block';
+            
             // 加载点聚合插件
             AMapUI.load(['ui/overlay/SimpleMarker'], function(SimpleMarker) {
-                fetch('map_points.json')
+                fetch(dataFile)
                     .then(response => response.json())
                     .then(data => {
                         // 创建标记点
-                        const markers = [];
                         data.forEach(point => {
                             const marker = new AMap.Marker({
                                 position: [point.lng, point.lat],
@@ -443,11 +545,11 @@
                                 showInfoWindow(point);
                             });
                             
-                            markers.push(marker);
+                            currentMarkers.push(marker);
                         });
                         
                         // 添加标记点到地图
-                        map.add(markers);
+                        map.add(currentMarkers);
                         
                         // 隐藏加载提示
                         document.getElementById('loading').style.display = 'none';
@@ -461,8 +563,10 @@
         
         // 显示信息窗口
         function showInfoWindow(point) {
-            const infoWindow = new AMap.InfoWindow({
-                content: `
+            let content = '';
+            
+            if (point.type) { // 文物数据
+                content = `
                     <div style="padding: 10px; min-width: 200px;">
                         <h3 style="margin: 0 0 10px 0; color: #333;">${point.name}</h3>
                         <p style="margin: 5px 0; color: #666;"><strong>地址：</strong>${point.address}</p>
@@ -472,7 +576,23 @@
                         <p style="margin: 5px 0; color: #666;"><strong>时代：</strong>${point.era}</p>
                         <p style="margin: 5px 0; color: #999; font-size: 12px;">经度：${point.lng.toFixed(6)}，纬度：${point.lat.toFixed(6)}</p>
                     </div>
-                `,
+                `;
+            } else { // 村落数据
+                content = `
+                    <div style="padding: 10px; min-width: 200px;">
+                        <h3 style="margin: 0 0 10px 0; color: #333;">${point.name}</h3>
+                        <p style="margin: 5px 0; color: #666;"><strong>省份：</strong>${point.province}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>城市：</strong>${point.city}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>区县：</strong>${point.district}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>乡镇：</strong>${point.town}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>村庄：</strong>${point.village}</p>
+                        <p style="margin: 5px 0; color: #999; font-size: 12px;">经度：${point.lng.toFixed(6)}，纬度：${point.lat.toFixed(6)}</p>
+                    </div>
+                `;
+            }
+            
+            const infoWindow = new AMap.InfoWindow({
+                content: content,
                 offset: new AMap.Pixel(0, -10)
             });
             
