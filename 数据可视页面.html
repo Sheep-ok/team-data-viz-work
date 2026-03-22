@@ -832,6 +832,112 @@
             let rightTopChart = null;
             let rightBottomChart = null;
             let bottomChart = null;
+
+            // 京派文化理念节点说明（用于右下树图悬浮）
+            const jingNodeDescMap = {
+                '家庭伦理': '四合院布局深受儒家家庭伦理影响，体现尊老爱幼、等级分工的空间组织。',
+                '风水信仰': '传统庭院建筑遵循风水思想，方位与朝向设计与环境和谐与福祉追求有关。',
+                '门饰 / 影壁': '门饰与影壁不仅美观，还用于区分内外、祈福避邪与礼制象征。',
+                '木雕、砖雕': '木构件上的雕刻图案丰富，既有审美功能也含吉祥寓意；四合院墙体与构件上的砖雕多为象征吉祥与祝福的图案。',
+                '彩绘': '彩画装饰体现建筑功能等级与传统色彩象征体系。',
+                '瓦当 / 脊饰': '屋顶装饰寓意保护与祥瑞，体现屋顶文化符号。',
+                '院落植栽': '院内植栽反映生活理想与文化象征，如繁衍祝福、清雅高洁等。'
+            };
+
+            let jingNodeTipEl = null;
+
+            function ensureJingNodeTipEl() {
+                if (jingNodeTipEl) return jingNodeTipEl;
+                const tip = document.createElement('div');
+                tip.id = 'jing-node-tip';
+                tip.style.position = 'fixed';
+                tip.style.left = '0';
+                tip.style.top = '0';
+                tip.style.zIndex = '10050';
+                tip.style.maxWidth = '360px';
+                tip.style.padding = '8px 10px';
+                tip.style.background = 'rgba(35, 35, 35, 0.92)';
+                tip.style.border = '1px solid #D4A814';
+                tip.style.borderRadius = '8px';
+                tip.style.color = '#fff';
+                tip.style.fontSize = '12px';
+                tip.style.lineHeight = '1.55';
+                tip.style.pointerEvents = 'none';
+                tip.style.display = 'none';
+                tip.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.35)';
+                document.body.appendChild(tip);
+                jingNodeTipEl = tip;
+                return tip;
+            }
+
+            function hideJingNodeTip() {
+                const tip = ensureJingNodeTipEl();
+                tip.style.display = 'none';
+            }
+
+            function moveJingNodeTip(clientX, clientY) {
+                const tip = ensureJingNodeTipEl();
+                const offsetX = 14;
+                const offsetY = 14;
+                let x = clientX + offsetX;
+                let y = clientY + offsetY;
+
+                const maxX = window.innerWidth - tip.offsetWidth - 8;
+                const maxY = window.innerHeight - tip.offsetHeight - 8;
+
+                if (x > maxX) x = Math.max(8, clientX - tip.offsetWidth - 12);
+                if (y > maxY) y = Math.max(8, clientY - tip.offsetHeight - 12);
+
+                tip.style.left = x + 'px';
+                tip.style.top = y + 'px';
+            }
+
+            function setupJingTreeHoverTooltip(chart) {
+                if (!chart) return;
+                chart.off('mouseover');
+                chart.off('mousemove');
+                chart.off('globalout');
+
+                chart.on('mouseover', function(params) {
+                    const nodeName = params && params.data && params.data.name ? params.data.name : '';
+                    const desc = jingNodeDescMap[nodeName];
+                    if (!desc) {
+                        hideJingNodeTip();
+                        return;
+                    }
+
+                    const tip = ensureJingNodeTipEl();
+                    tip.innerHTML = '<b>' + nodeName + '</b><br>' + desc;
+                    tip.style.display = 'block';
+
+                    const e = params && params.event && params.event.event;
+                    if (e) {
+                        moveJingNodeTip(e.clientX, e.clientY);
+                    }
+                });
+
+                chart.on('mousemove', function(params) {
+                    const nodeName = params && params.data && params.data.name ? params.data.name : '';
+                    const desc = jingNodeDescMap[nodeName];
+                    if (!desc) return;
+                    const e = params && params.event && params.event.event;
+                    if (e) {
+                        moveJingNodeTip(e.clientX, e.clientY);
+                    }
+                });
+
+                chart.on('globalout', function() {
+                    hideJingNodeTip();
+                });
+            }
+
+            function teardownJingTreeHoverTooltip(chart) {
+                if (!chart) return;
+                chart.off('mouseover');
+                chart.off('mousemove');
+                chart.off('globalout');
+                hideJingNodeTip();
+            }
             
             // 初始化图表
             function initCharts() {
@@ -1299,7 +1405,35 @@
                             },
                             tooltip: {
                                 trigger: 'item',
-                                confine: true
+                                confine: true,
+                                backgroundColor: 'rgba(35, 35, 35, 0.9)',
+                                borderColor: '#D4A814',
+                                borderWidth: 1,
+                                textStyle: {
+                                    color: '#fff',
+                                    fontSize: 12,
+                                    lineHeight: 18
+                                },
+                                formatter: function(params) {
+                                    const nodeDescMap = {
+                                        '家庭伦理': '四合院布局深受儒家家庭伦理影响，体现尊老爱幼、等级分工的空间组织。',
+                                        '风水信仰': '传统庭院建筑遵循风水思想，方位与朝向设计与环境和谐与福祉追求有关。',
+                                        '门饰 / 影壁': '门饰与影壁不仅美观，还用于区分内外、祈福避邪与礼制象征。',
+                                        '木雕、砖雕': '木构件上的雕刻图案丰富，既有审美功能也含吉祥寓意；四合院墙体与构件上的砖雕多为象征吉祥与祝福的图案。',
+                                        '彩绘': '彩画装饰体现建筑功能等级与传统色彩象征体系。',
+                                        '瓦当 / 脊饰': '屋顶装饰寓意保护与祥瑞，体现屋顶文化符号。',
+                                        '院落植栽': '院内植栽反映生活理想与文化象征，如繁衍祝福、清雅高洁等。'
+                                    };
+
+                                    const name = params && params.data && params.data.name ? params.data.name : '';
+                                    const desc = nodeDescMap[name];
+
+                                    if (desc) {
+                                        return '<b>' + name + '</b><br/>' + desc;
+                                    }
+
+                                    return name;
+                                }
                             },
                             legend: {
                                 data: ['碹窑式', '合院式', '楼居式', '堡寨式', '复合大院型'],
@@ -4104,6 +4238,8 @@
                 
                 // 更新右侧下图表
                 if (rightBottomChart) {
+                    teardownJingTreeHoverTooltip(rightBottomChart);
+
                     if (pageIndex === 1) {
                         // 京派 - 四合院文化理念 - 建筑元素层级树状图
                         const treeOption = {
@@ -4116,8 +4252,7 @@
                                 }
                             },
                             tooltip: {
-                                trigger: 'item',
-                                confine: true
+                                show: false
                             },
                             series: [
                                 {
@@ -4275,6 +4410,7 @@
                             backgroundColor: 'transparent'
                         };
                         rightBottomChart.setOption(treeOption, true);
+                        setupJingTreeHoverTooltip(rightBottomChart);
                     } else if (pageIndex === 2) {
                         // 粤派 - 广东传统村落/建筑群区域分布占比环形图
                         const pieOption = {
