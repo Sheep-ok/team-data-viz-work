@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta name="viewport" content="width=1527, user-scalable=yes">
@@ -494,6 +494,11 @@
                         <a href="抽卡页面.html" class="nav-link">卡牌展示</a>
                     </li>
                     
+                    <!-- 古建筑探索 -->
+                    <li class="nav-item">
+                        <a href="游戏地图页面.html" class="nav-link">古建筑探索</a>
+                    </li>
+                    
                     <!-- 数据可视化 -->
                     <li class="nav-item">
                         <a href="数据可视页面.html" class="nav-link">数据可视化</a>
@@ -593,8 +598,8 @@
         
         <!-- 按钮容器 -->
         <div id="secondary-buttons" style="z-index: 20; position: absolute; bottom: 14px; left: 14px;">
-            <!-- 返回抽卡按钮 -->
-            <button id="secondary-back-btn" style="padding: 10px 15px; font-size: 12px; font-weight: bold; color: #ffffff; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 25px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: 0; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);">返回抽卡</button>
+            <!-- 返回地图按钮 -->
+            <button id="secondary-back-btn" style="padding: 10px 15px; font-size: 12px; font-weight: bold; color: #ffffff; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 25px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: 0; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);">返回地图</button>
         </div>
         
         <!-- 下一步按钮 -->
@@ -6877,7 +6882,7 @@
             
             // 返回抽卡页面
             function backToDrawPage() {
-                window.location.href = '抽卡页面.html';
+                window.location.href = '游戏地图页面.html';
             }
             
             // 从URL中获取cardIndex参数

@@ -27,4 +27,4 @@ with open('all_villages.json', 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=2)
 
 print(f'成功转换 {len(data)} 个传统村落数据到 all_villages.json')
-print(f'数据范围: 经度 {min(p["lng"]):.6f} ~ {max(p["lng"]):.6f}, 纬度 {min(p["lat"]):.6f} ~ {max(p["lat"]):.6f}')
+print(f'数据范围: 经度 {min(point["lng"] for point in data):.6f} ~ {max(point["lng"] for point in data):.6f}, 纬度 {min(point["lat"] for point in data):.6f} ~ {max(point["lat"] for point in data):.6f}')

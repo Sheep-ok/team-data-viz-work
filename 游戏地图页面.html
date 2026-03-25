@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=1527, user-scalable=yes">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 1527px;
+        height: 740px;
+        overflow: hidden; 
+      }
+    </style>
+    <meta charset="UTF-8">
+    <title>游戏地图</title>
+    <style>
+        body {
+            background: url('游戏地图.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
+        
+        /* ========== 顶部下拉菜单导航样式 ========== */
+        /* 导航栏容器 */
+        #top-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            z-index: 9000;
+        }
+
+        /* 导航内容容器 */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* 导航品牌 */
+        .nav-brand {
+            padding: 5px 0;
+            margin-right: 15px;
+        }
+
+        .nav-brand a {
+            color: #fffdf0;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .nav-brand a:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 导航菜单 */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 导航项 */
+        .nav-item {
+            position: relative;
+        }
+
+        /* 导航链接 */
+        .nav-link {
+            display: block;
+            padding: 12px 20px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9100;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-item {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 8px 12px;
+            color: black;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .dropdown-link:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 建筑物容器 */
+        .building-container {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .building-container:hover {
+            transform: scale(1.1);
+        }
+        
+        /* 气泡样式 */
+        .bubble {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(128, 128, 128, 0.6);
+            border: 2px solid #fff;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .bubble.active {
+            background: rgba(212, 175, 55, 0.8);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+        }
+        
+        /* 建筑物标签 */
+        .building-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .building-container:hover .building-label {
+            opacity: 1;
+        }
+        
+        /* 触发框样式 */
+        .trigger-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .trigger-box.active {
+            display: flex;
+        }
+        
+        .trigger-box-header {
+            padding: 20px;
+            border-bottom: 1px solid #d4af37;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .trigger-box-title {
+            color: #d4af37;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            color: #d4af37;
+        }
+        
+        .trigger-box-content {
+            flex: 1;
+            padding: 20px;
+            color: #fff;
+            overflow-y: auto;
+        }
+        
+        .trigger-box-footer {
+            padding: 20px;
+            border-top: 1px solid #d4af37;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .complete-btn {
+            padding: 10px 20px;
+            background: #d4af37;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .complete-btn:hover {
+            background: #f0c14b;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav id="top-nav">
+        <div class="nav-container">
+            <!-- 标识 -->
+            <div class="nav-brand">
+                <a href="index.html">国风筑韵</a>
+            </div>
+            
+            <!-- 导航菜单 -->
+            <ul class="nav-menu">
+                <!-- 首页 -->
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">首页</a>
+                </li>
+                
+                <!-- 操作指南 -->
+                <li class="nav-item">
+                    <a href="操作指南.html" class="nav-link">操作指南</a>
+                </li>
+                
+                <!-- 卡牌展示 -->
+                <li class="nav-item">
+                    <a href="抽卡页面.html" class="nav-link">卡牌展示</a>
+                </li>
+                
+                <!-- 古建筑探索 -->
+                <li class="nav-item">
+                    <a href="游戏地图页面.html" class="nav-link">古建筑探索</a>
+                </li>
+                
+                <!-- 数据可视化 -->
+                <li class="nav-item">
+                    <a href="数据可视页面.html" class="nav-link">数据可视化</a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
+                    </ul>
+                </li>
+                
+                <!-- 地图点位 -->
+                <li class="nav-item">
+                    <a href="地图点位.html" class="nav-link">地图点位</a>
+                </li>
+                
+                <!-- 古今对比 -->
+                <li class="nav-item">
+                    <a href="古今对比.html" class="nav-link">古今对比</a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- 触发框 -->
+    <div class="trigger-box" id="triggerBox">
+        <div class="trigger-box-header">
+            <h3 class="trigger-box-title" id="boxTitle">建筑物详情</h3>
+            <button class="close-btn" id="closeBtn">&times;</button>
+        </div>
+        <div class="trigger-box-content" id="boxContent">
+            <p>这里将显示建筑物的游戏或介绍内容</p>
+        </div>
+        <div class="trigger-box-footer">
+            <button class="complete-btn" id="completeBtn">完成任务</button>
+        </div>
+    </div>
+    
+    <!-- 建筑物点位 -->
+    <div class="building-container" data-building="北京四合院" style="top: 210px; left: 921px;">
+        <div class="bubble"></div>
+        <div class="building-label">北京四合院</div>
+    </div>
+    
+    <div class="building-container" data-building="山西大院" style="top: 300px; left: 805px;">
+        <div class="bubble"></div>
+        <div class="building-label">山西大院</div>
+    </div>
+    
+    <div class="building-container" data-building="川渝吊脚楼" style="top: 435px; left: 503px;">
+        <div class="bubble"></div>
+        <div class="building-label">川渝吊脚楼</div>
+    </div>
+    
+    <div class="building-container" data-building="苏州庭院" style="top: 405px; left: 964px;">
+        <div class="bubble"></div>
+        <div class="building-label">苏州庭院</div>
+    </div>
+    
+    <div class="building-container" data-building="安徽马头墙" style="top: 282px; left: 1005px;">
+        <div class="bubble"></div>
+        <div class="building-label">安徽马头墙</div>
+    </div>
+    
+    <div class="building-container" data-building="福建土楼" style="top: 518px; left: 1038px;">
+        <div class="bubble"></div>
+        <div class="building-label">福建土楼</div>
+    </div>
+    
+    <div class="building-container" data-building="广东镬耳墙" style="top: 565px; left: 827px;">
+        <div class="bubble"></div>
+        <div class="building-label">广东镬耳墙</div>
+    </div>
+    
+    <div class="building-container" data-building="上海石库门" style="top: 384px; left: 1130px;">
+        <div class="bubble"></div>
+        <div class="building-label">上海石库门</div>
+    </div>
+    
+    <!-- 底部按钮 -->
+    <div style="position: absolute; bottom: 20px; left: 20px; z-index: 100;">
+        <button id="back-to-draw-btn" style="padding: 10px 20px; font-size: 14px; font-weight: bold; color: #fff; background: rgba(0, 0, 0, 0.7); border: 2px solid #d4af37; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">返回抽卡</button>
+    </div>
+    
+    <div style="position: absolute; bottom: 20px; right: 20px; z-index: 100;">
+        <button id="go-to-data-btn" style="padding: 10px 20px; font-size: 14px; font-weight: bold; color: #fff; background: rgba(0, 0, 0, 0.7); border: 2px solid #d4af37; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">前往数据页面</button>
+    </div>
+    
+    <script>
+        // 获取DOM元素
+        const overlay = document.getElementById('overlay');
+        const triggerBox = document.getElementById('triggerBox');
+        const boxTitle = document.getElementById('boxTitle');
+        const boxContent = document.getElementById('boxContent');
+        const closeBtn = document.getElementById('closeBtn');
+        const completeBtn = document.getElementById('completeBtn');
+        const buildingContainers = document.querySelectorAll('.building-container');
+        const backToDrawBtn = document.getElementById('back-to-draw-btn');
+        const goToDataBtn = document.getElementById('go-to-data-btn');
+        
+        let currentBuilding = null;
+        
+        // 建筑物数据
+        const buildingData = {
+            '北京四合院': {
+                title: '北京四合院',
+                content: '<h4>北京四合院</h4><p>北京四合院是中国传统建筑的代表之一，以其独特的布局和建筑风格闻名。</p><p>任务：了解四合院的建筑特点和文化内涵。</p>'
+            },
+            '山西大院': {
+                title: '山西大院',
+                content: '<h4>山西大院</h4><p>山西大院以其宏伟的规模和精美的雕刻著称，是晋商文化的重要载体。</p><p>任务：探索山西大院的建筑特色和历史背景。</p>'
+            },
+            '川渝吊脚楼': {
+                title: '川渝吊脚楼',
+                content: '<h4>川渝吊脚楼</h4><p>吊脚楼是西南地区特有的建筑形式，适应了当地的地形和气候特点。</p><p>任务：了解吊脚楼的建筑原理和文化意义。</p>'
+            },
+            '苏州庭院': {
+                title: '苏州庭院',
+                content: '<h4>苏州庭院</h4><p>苏州园林以其精巧的设计和优美的景观闻名于世，是中国古典园林的杰出代表。</p><p>任务：欣赏苏州庭院的造园艺术和美学价值。</p>'
+            },
+            '安徽马头墙': {
+                title: '安徽马头墙',
+                content: '<h4>安徽马头墙</h4><p>马头墙是徽派建筑的标志性元素，具有防火和装饰的双重功能。</p><p>任务：了解马头墙的建筑特点和文化寓意。</p>'
+            },
+            '福建土楼': {
+                title: '福建土楼',
+                content: '<h4>福建土楼</h4><p>福建土楼以其独特的圆形或方形布局和坚固的结构著称，是客家文化的重要象征。</p><p>任务：探索土楼的建筑特色和历史背景。</p>'
+            },
+            '广东镬耳墙': {
+                title: '广东镬耳墙',
+                content: '<h4>广东镬耳墙</h4><p>镬耳墙是广府建筑的特色元素，形如镬耳，寓意吉祥如意。</p><p>任务：了解镬耳墙的建筑特点和文化内涵。</p>'
+            },
+            '上海石库门': {
+                title: '上海石库门',
+                content: '<h4>上海石库门</h4><p>石库门是上海特有的建筑形式，融合了中西建筑风格，见证了上海的历史变迁。</p><p>任务：探索石库门的建筑特色和文化意义。</p>'
+            }
+        };
+        
+        // 为每个建筑物添加点击事件
+        buildingContainers.forEach(container => {
+            container.addEventListener('click', function() {
+                const buildingName = this.dataset.building;
+                currentBuilding = this;
+                
+                // 更新触发框内容
+                boxTitle.textContent = buildingData[buildingName].title;
+                boxContent.innerHTML = buildingData[buildingName].content;
+                
+                // 显示遮罩层和触发框
+                overlay.classList.add('active');
+                triggerBox.classList.add('active');
+            });
+        });
+        
+        // 关闭按钮事件
+        closeBtn.addEventListener('click', function() {
+            overlay.classList.remove('active');
+            triggerBox.classList.remove('active');
+            currentBuilding = null;
+        });
+        
+        // 完成任务按钮事件
+        completeBtn.addEventListener('click', function() {
+            if (currentBuilding) {
+                // 标记任务完成，气泡变亮
+                const bubble = currentBuilding.querySelector('.bubble');
+                bubble.classList.add('active');
+                
+                // 关闭触发框
+                overlay.classList.remove('active');
+                triggerBox.classList.remove('active');
+                currentBuilding = null;
+            }
+        });
+        
+        // 点击遮罩层关闭
+        overlay.addEventListener('click', function() {
+            overlay.classList.remove('active');
+            triggerBox.classList.remove('active');
+            currentBuilding = null;
+        });
+        
+        // 阻止触发框内部点击事件冒泡
+        triggerBox.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // 绑定返回抽卡按钮点击事件
+        backToDrawBtn.addEventListener('click', function() {
+            window.location.href = '抽卡页面.html';
+        });
+        
+        // 绑定前往数据页面按钮点击事件
+        goToDataBtn.addEventListener('click', function() {
+            window.location.href = '数据可视页面.html';
+        });
+    </script>
+</body>
+</html>
