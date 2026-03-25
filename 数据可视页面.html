@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta name="viewport" content="width=1527, user-scalable=yes">
@@ -861,10 +861,10 @@
                 tip.style.zIndex = '10050';
                 tip.style.maxWidth = '360px';
                 tip.style.padding = '8px 10px';
-                tip.style.background = 'rgba(35, 35, 35, 0.92)';
-                tip.style.border = '1px solid #D4A814';
+                tip.style.background = '#fff';
+                tip.style.border = 'none';
                 tip.style.borderRadius = '8px';
-                tip.style.color = '#fff';
+                tip.style.color = '#333';
                 tip.style.fontSize = '12px';
                 tip.style.lineHeight = '1.55';
                 tip.style.pointerEvents = 'none';
@@ -880,24 +880,54 @@
                 tip.style.display = 'none';
             }
 
-            function moveJingNodeTip(clientX, clientY) {
+            function moveJingNodeTip(clientX, clientY, chartContainer) {
                 const tip = ensureJingNodeTipEl();
                 const offsetX = 14;
                 const offsetY = 14;
-                let x = clientX + offsetX;
-                let y = clientY + offsetY;
-
-                const maxX = window.innerWidth - tip.offsetWidth - 8;
-                const maxY = window.innerHeight - tip.offsetHeight - 8;
-
-                if (x > maxX) x = Math.max(8, clientX - tip.offsetWidth - 12);
-                if (y > maxY) y = Math.max(8, clientY - tip.offsetHeight - 12);
-
+                
+                // 获取图表容器的位置信息
+                const containerRect = chartContainer ? chartContainer.getBoundingClientRect() : {
+                    left: 0,
+                    top: 0,
+                    right: window.innerWidth,
+                    bottom: window.innerHeight
+                };
+                
+                // 计算相对于容器的位置
+                let x = clientX - containerRect.left + offsetX;
+                let y = clientY - containerRect.top + offsetY;
+                
+                // 限制在容器内
+                const containerWidth = containerRect.right - containerRect.left;
+                const containerHeight = containerRect.bottom - containerRect.top;
+                
+                // 如果超出右边界，显示在左侧
+                if (x + tip.offsetWidth > containerWidth) {
+                    x = clientX - containerRect.left - tip.offsetWidth - 12;
+                }
+                
+                // 如果超出下边界，显示在上方
+                if (y + tip.offsetHeight > containerHeight) {
+                    y = clientY - containerRect.top - tip.offsetHeight - 12;
+                }
+                
+                // 确保不超出容器左边界和上边界
+                x = Math.max(8, x);
+                y = Math.max(8, y);
+                
+                // 使用相对于容器的定位
+                tip.style.position = 'absolute';
                 tip.style.left = x + 'px';
                 tip.style.top = y + 'px';
+                
+                // 将tooltip添加到图表容器内
+                if (chartContainer && tip.parentElement !== chartContainer) {
+                    chartContainer.style.position = 'relative';
+                    chartContainer.appendChild(tip);
+                }
             }
 
-            function setupJingTreeHoverTooltip(chart) {
+            function setupJingTreeHoverTooltip(chart, chartContainer) {
                 if (!chart) return;
                 chart.off('mouseover');
                 chart.off('mousemove');
@@ -917,7 +947,7 @@
 
                     const e = params && params.event && params.event.event;
                     if (e) {
-                        moveJingNodeTip(e.clientX, e.clientY);
+                        moveJingNodeTip(e.clientX, e.clientY, chartContainer);
                     }
                 });
 
@@ -927,7 +957,7 @@
                     if (!desc) return;
                     const e = params && params.event && params.event.event;
                     if (e) {
-                        moveJingNodeTip(e.clientX, e.clientY);
+                        moveJingNodeTip(e.clientX, e.clientY, chartContainer);
                     }
                 });
 
@@ -4415,7 +4445,8 @@
                             backgroundColor: 'transparent'
                         };
                         rightBottomChart.setOption(treeOption, true);
-                        setupJingTreeHoverTooltip(rightBottomChart);
+                        const rightBottomContainer = document.getElementById('visualization-right-bottom');
+                        setupJingTreeHoverTooltip(rightBottomChart, rightBottomContainer);
                     } else if (pageIndex === 2) {
                         // 粤派 - 广东传统村落/建筑群区域分布占比环形图
                         const pieOption = {

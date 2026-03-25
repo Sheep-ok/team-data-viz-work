@@ -94,7 +94,7 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
             background: rgba(255, 255, 255, 0.1);
         }
-
+        
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -105,7 +105,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(101, 67, 33, 0.5);
             border-radius: 12px;
             overflow: hidden;
             opacity: 0;
@@ -174,8 +174,8 @@
         }
         
         .bubble.active {
-            background: rgba(212, 175, 55, 0.8);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            background: rgba(101, 67, 33, 0.8);
+            box-shadow: 0 0 15px rgba(101, 67, 33, 0.8);
         }
         
         /* 建筑物标签 */
@@ -205,11 +205,13 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 600px;
-            height: 400px;
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid #d4af37;
+            height: 380px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid #654321;
             border-radius: 15px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 30px rgba(101, 67, 33, 0.5);
             z-index: 1000;
             display: none;
             flex-direction: column;
@@ -221,14 +223,14 @@
         
         .trigger-box-header {
             padding: 20px;
-            border-bottom: 1px solid #d4af37;
+            border-bottom: 1px solid #654321;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .trigger-box-title {
-            color: #d4af37;
+            color: #654321;
             font-size: 20px;
             font-weight: bold;
         }
@@ -240,10 +242,21 @@
             font-size: 24px;
             cursor: pointer;
             transition: color 0.3s ease;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(101, 67, 33, 0.2);
         }
         
         .close-btn:hover {
-            color: #d4af37;
+            color: #654321;
+            background: rgba(101, 67, 33, 0.4);
         }
         
         .trigger-box-content {
@@ -255,7 +268,7 @@
         
         .trigger-box-footer {
             padding: 20px;
-            border-top: 1px solid #d4af37;
+            border-top: 1px solid #654321;
             display: flex;
             justify-content: flex-end;
             gap: 10px;
@@ -263,8 +276,8 @@
         
         .complete-btn {
             padding: 10px 20px;
-            background: #d4af37;
-            color: #000;
+            background: #654321;
+            color: #fff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -273,8 +286,8 @@
         }
         
         .complete-btn:hover {
-            background: #f0c14b;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            background: #8B4513;
+            box-shadow: 0 0 15px rgba(101, 67, 33, 0.5);
         }
         
         /* 遮罩层 */
@@ -291,6 +304,141 @@
         
         .overlay.active {
             display: block;
+        }
+        
+        /* 任务进度指示器 */
+        .progress-indicator {
+            position: absolute;
+            top: 80px;
+            right: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid #654321;
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(101, 67, 33, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-indicator .progress-text {
+            white-space: nowrap;
+        }
+        
+        .progress-indicator span {
+            color: #fff;
+            margin: 0 5px;
+        }
+        
+        /* 下载成就图按钮 */
+        .download-achievement-btn {
+            padding: 5px 15px;
+            background: #654321;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: none;
+        }
+        
+        .download-achievement-btn.show {
+            display: inline-block;
+        }
+        
+        .download-achievement-btn:hover {
+            background: #8B4513;
+            box-shadow: 0 0 10px rgba(101, 67, 33, 0.8);
+        }
+        
+        /* 成功图片弹窗 */
+        .success-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 3px solid #654321;
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 50px rgba(101, 67, 33, 0.8);
+            max-width: 60vw;
+            max-height: 60vh;
+        }
+        
+        .success-modal.active {
+            display: flex;
+        }
+        
+        .success-image {
+            max-width: 55vw;
+            max-height: 55vh;
+            border-radius: 10px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .download-btn {
+            position: absolute;
+            top: 10px;
+            right: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #654321;
+            border: 1px solid #654321;
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .download-btn:hover {
+            background: rgba(101, 67, 33, 0.3);
+            box-shadow: 0 0 15px rgba(101, 67, 33, 0.8);
+        }
+        
+        .close-success-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(101, 67, 33, 0.2);
+        }
+        
+        .close-success-btn:hover {
+            color: #654321;
+            background: rgba(101, 67, 33, 0.4);
         }
     </style>
 </head>
@@ -363,11 +511,24 @@
     <!-- 遮罩层 -->
     <div class="overlay" id="overlay"></div>
     
+    <!-- 任务进度指示器 -->
+    <div class="progress-indicator" id="progressIndicator">
+        <div class="progress-text">完成 <span id="completedCount">0</span>/<span id="totalCount">8</span></div>
+        <a href="收集成功图.jpg" class="download-achievement-btn" id="downloadAchievementBtn" download="收集成功图.jpg">下载成就图</a>
+    </div>
+    
+    <!-- 成功图片弹窗 -->
+    <div class="success-modal" id="successModal">
+        <a href="收集成功图.jpg" class="download-btn" download="收集成功图.jpg">下载</a>
+        <button class="close-success-btn" id="closeSuccessBtn">&times;</button>
+        <img src="收集成功图.jpg" alt="收集成功" class="success-image">
+    </div>
+    
     <!-- 触发框 -->
     <div class="trigger-box" id="triggerBox">
+        <button class="close-btn" id="closeBtn">&times;</button>
         <div class="trigger-box-header">
             <h3 class="trigger-box-title" id="boxTitle">建筑物详情</h3>
-            <button class="close-btn" id="closeBtn">&times;</button>
         </div>
         <div class="trigger-box-content" id="boxContent">
             <p>这里将显示建筑物的游戏或介绍内容</p>
@@ -420,11 +581,11 @@
     
     <!-- 底部按钮 -->
     <div style="position: absolute; bottom: 20px; left: 20px; z-index: 100;">
-        <button id="back-to-draw-btn" style="padding: 10px 20px; font-size: 14px; font-weight: bold; color: #fff; background: rgba(0, 0, 0, 0.7); border: 2px solid #d4af37; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">返回抽卡</button>
+        <button id="back-to-draw-btn" style="padding: 10px 20px; font-size: 14px; font-weight: bold; color: #fff; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 2px solid #654321; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">返回抽卡</button>
     </div>
     
     <div style="position: absolute; bottom: 20px; right: 20px; z-index: 100;">
-        <button id="go-to-data-btn" style="padding: 10px 20px; font-size: 14px; font-weight: bold; color: #fff; background: rgba(0, 0, 0, 0.7); border: 2px solid #d4af37; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">前往数据页面</button>
+        <button id="go-to-data-btn" style="padding: 10px 20px; font-size: 14px; font-weight: bold; color: #fff; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 2px solid #654321; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">前往数据页面</button>
     </div>
     
     <script>
@@ -438,8 +599,83 @@
         const buildingContainers = document.querySelectorAll('.building-container');
         const backToDrawBtn = document.getElementById('back-to-draw-btn');
         const goToDataBtn = document.getElementById('go-to-data-btn');
+        const progressIndicator = document.getElementById('progressIndicator');
+        const completedCountElement = document.getElementById('completedCount');
+        const totalCountElement = document.getElementById('totalCount');
+        const successModal = document.getElementById('successModal');
+        const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+        const downloadAchievementBtn = document.getElementById('downloadAchievementBtn');
         
         let currentBuilding = null;
+        
+        // 初始化总任务数
+        const totalBuildings = buildingContainers.length;
+        totalCountElement.textContent = totalBuildings;
+        
+        // 保存任务状态到本地存储
+        function saveProgress() {
+            const completedBuildings = [];
+            buildingContainers.forEach((container, index) => {
+                const bubble = container.querySelector('.bubble');
+                if (bubble.classList.contains('active')) {
+                    completedBuildings.push(container.dataset.building);
+                }
+            });
+            localStorage.setItem('completedBuildings', JSON.stringify(completedBuildings));
+        }
+        
+        // 重置所有任务
+        function resetProgress() {
+            buildingContainers.forEach(container => {
+                const bubble = container.querySelector('.bubble');
+                bubble.classList.remove('active');
+            });
+            localStorage.removeItem('completedBuildings');
+            updateProgress();
+        }
+        
+        // 从本地存储加载任务状态
+        function loadProgress() {
+            // 检查是否是通过链接跳转来的页面
+            if (document.referrer) {
+                // 是通过链接跳转，从本地存储加载进度
+                const completedBuildings = JSON.parse(localStorage.getItem('completedBuildings') || '[]');
+                buildingContainers.forEach(container => {
+                    if (completedBuildings.includes(container.dataset.building)) {
+                        const bubble = container.querySelector('.bubble');
+                        bubble.classList.add('active');
+                    }
+                });
+            } else {
+                // 是直接访问或刷新，重置所有任务
+                resetProgress();
+            }
+        }
+        
+        // 更新进度函数
+        function updateProgress() {
+            const completedBuildings = document.querySelectorAll('.bubble.active').length;
+            completedCountElement.textContent = completedBuildings;
+            
+            // 保存进度到本地存储
+            saveProgress();
+            
+            // 检查是否完成所有任务
+            if (completedBuildings === totalBuildings) {
+                // 显示成功图片弹窗
+                successModal.classList.add('active');
+                // 显示下载成就图按钮
+                downloadAchievementBtn.classList.add('show');
+            } else {
+                // 隐藏下载成就图按钮
+                downloadAchievementBtn.classList.remove('show');
+            }
+        }
+        
+        // 从本地存储加载进度
+        loadProgress();
+        // 初始化进度
+        updateProgress();
         
         // 建筑物数据
         const buildingData = {
@@ -507,6 +743,9 @@
                 const bubble = currentBuilding.querySelector('.bubble');
                 bubble.classList.add('active');
                 
+                // 更新进度
+                updateProgress();
+                
                 // 关闭触发框
                 overlay.classList.remove('active');
                 triggerBox.classList.remove('active');
@@ -534,6 +773,11 @@
         // 绑定前往数据页面按钮点击事件
         goToDataBtn.addEventListener('click', function() {
             window.location.href = '数据可视页面.html';
+        });
+        
+        // 关闭成功图片弹窗
+        closeSuccessBtn.addEventListener('click', function() {
+            successModal.classList.remove('active');
         });
     </script>
 </body>
