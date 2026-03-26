@@ -1072,14 +1072,14 @@
             openDetailPage(currentIndex);
         }
 
-        // 打开数据可视页面
+        // 打开游戏地图页面
         function openDataVisualizationPage() {
             const activeIndex = parseInt(detailNumber.innerText) - 1;
             // 保存当前卡牌状态
             saveCardState();
-            // 设置标志，指示用户是从抽卡页面进入数据可视页面的
-            localStorage.setItem('fromCardPageToDataPage', 'true');
-            window.location.href = '数据可视页面.html?cardIndex=' + activeIndex;
+            // 设置标志，指示用户是从抽卡页面进入游戏地图页面的
+            localStorage.setItem('fromCardPageToMapPage', 'true');
+            window.location.href = '游戏地图页面.html?cardIndex=' + activeIndex;
         }
 
         // 绑定返回按钮点击事件

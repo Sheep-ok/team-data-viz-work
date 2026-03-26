@@ -851,6 +851,7 @@
                             <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
                             <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
                             <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                            <li class="dropdown-item"><a href="古今对比.html?chart=6" class="dropdown-link">当代延续</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -905,39 +906,73 @@
             </div>
             
             <!-- 建筑数字化落地量图表区域 -->
-            <div class="digital-chart-section">
-                <!-- 建筑数字化落地量图表 -->
-                <div id="digitalChart" class="chart-container"></div>
-                <div class="chart-frame"></div>
+        <div class="digital-chart-section">
+            <!-- 建筑数字化落地量图表 -->
+            <div id="digitalChart" class="chart-container"></div>
+            <div class="chart-frame"></div>
+            
+            <!-- 第五张图表文案卡片 -->
+            <div class="chart-text">
+                <h3>数字化创新落地成果</h3>
+                <p>据中国新闻网、新华网、人民网等权威媒体及住建部、国家数据局官方发布信息显示，国内重点城市依托数字化技术推进历史建筑保护利用创新落地，各城市结合地域建筑特色形成差异化实践成果：</p>
                 
-                <!-- 第五张图表文案卡片 -->
-                <div class="chart-text">
-                    <h3>数字化创新落地成果</h3>
-                    <p>据中国新闻网、新华网、人民网等权威媒体及住建部、国家数据局官方发布信息显示，国内重点城市依托数字化技术推进历史建筑保护利用创新落地，各城市结合地域建筑特色形成差异化实践成果：</p>
+                <div class="city-card">
+                    <h4>广州</h4>
+                    <p>完成 815 处历史建筑三维数字化测绘建档，黄埔区同步实现 19 处历史建筑智能监控覆盖</p>
+                </div>
+                
+                <div class="city-card">
+                    <h4>苏州</h4>
+                    <p>聚焦古建筑数字孪生建设，完成 14 处古建筑三维模型搭建并汇聚 438 处文控保单位数字化信息</p>
+                </div>
+                
+                <div class="city-card">
+                    <h4>哈尔滨</h4>
+                    <p>推进历史文化建筑数字孪生规模化采集，已完成 581 栋建筑数据采集工作，同步获取 2mm 高精度点云数据累计 13312GB</p>
+                </div>
+                
+                <div class="city-card">
+                    <h4>西安</h4>
+                    <p>针对古建筑结构安全搭建智能监测体系，在城墙区域布设 3000 个监测点位、1300 个智能终端，实现古建筑健康数据实时捕捉与可视化管控</p>
+                </div>
+                
+                <p>各试点城市数字化创新实践，为全国历史建筑保护利用提供了技术落地与模式探索的典型示范。</p>
+            </div>
+        </div>
+        
+        <!-- 视频展示区域 -->
+        <div class="digital-chart-section">
+            <!-- 视频容器 -->
+            <div id="videoContainer" class="chart-container">
+                <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
+                    <!-- 视频标题 -->
+                    <h3 id="videoTopTitle" style="color: white; text-align: center; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">2026.03.20 焦点访谈 | 修缮乱象</h3>
                     
-                    <div class="city-card">
-                        <h4>广州</h4>
-                        <p>完成 815 处历史建筑三维数字化测绘建档，黄埔区同步实现 19 处历史建筑智能监控覆盖</p>
+                    <!-- 视频播放器 -->
+                    <video id="videoPlayer" width="90%" height="400" controls>
+                        <source src="古今对比_焦点访谈.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                    
+                    <!-- 视频切换按钮 -->
+                    <div style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);">
+                        <button id="prevVideoBtn" style="background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer;">←</button>
                     </div>
-                    
-                    <div class="city-card">
-                        <h4>苏州</h4>
-                        <p>聚焦古建筑数字孪生建设，完成 14 处古建筑三维模型搭建并汇聚 438 处文控保单位数字化信息</p>
+                    <div style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">
+                        <button id="nextVideoBtn" style="background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer;">→</button>
                     </div>
-                    
-                    <div class="city-card">
-                        <h4>哈尔滨</h4>
-                        <p>推进历史文化建筑数字孪生规模化采集，已完成 581 栋建筑数据采集工作，同步获取 2mm 高精度点云数据累计 13312GB</p>
-                    </div>
-                    
-                    <div class="city-card">
-                        <h4>西安</h4>
-                        <p>针对古建筑结构安全搭建智能监测体系，在城墙区域布设 3000 个监测点位、1300 个智能终端，实现古建筑健康数据实时捕捉与可视化管控</p>
-                    </div>
-                    
-                    <p>各试点城市数字化创新实践，为全国历史建筑保护利用提供了技术落地与模式探索的典型示范。</p>
                 </div>
             </div>
+            <div class="chart-frame"></div>
+            
+            <!-- 视频文案卡片 -->
+            <div id="videoText" class="chart-text">
+                <h3>古建修缮视频集</h3>
+                <div class="city-card">
+                    <h4 id="videoTitle">2026.03.20 焦点访谈 | 修缮乱象</h4>
+                </div>
+            </div>
+        </div>
             
             <!-- 切换按钮 -->
             <div class="nav-buttons">
@@ -1020,7 +1055,7 @@
             const chartParam = urlParams.get('chart');
             if (chartParam) {
                 const chartIndex = parseInt(chartParam) - 1;
-                if (chartIndex >= 0 && chartIndex < 5) {
+                if (chartIndex >= 0 && chartIndex < 6) {
                     setTimeout(() => {
                         switchChart(chartIndex);
                     }, 100);
@@ -2009,7 +2044,7 @@
         
         // 图表切换功能
         let currentChartIndex = 0;
-        let charts = [heatmapChart, barChart, polarChart, pixelChart, digitalChart];
+        let charts = [heatmapChart, barChart, polarChart, pixelChart, digitalChart, null];
         const chartContainers = document.querySelectorAll('.chart-container');
         
         // 切换到指定图表
@@ -2138,6 +2173,8 @@
                         digitalChart.resize();
                     }, 200);
                 }, 100);
+            } else if (index === 5) { // 视频展示索引
+                // 视频部分不需要ECharts图表，直接显示
             }
         }
         
@@ -2183,6 +2220,62 @@
         // 页面加载完成后处理URL参数
         window.addEventListener('load', function() {
             handleUrlParams();
+        });
+        
+        // 视频切换功能
+        let currentVideoIndex = 0;
+        const videos = [
+            {
+                src: '古今对比_焦点访谈.mp4',
+                title: '2026.03.20 焦点访谈 | 修缮乱象',
+            },
+            {
+                src: '古今对比_新闻直播间.mp4',
+                title: '2026.03.21 新闻直播间 | 记者调查：古建修缮莫“任性”',
+            },
+            {
+                src: '古今对比_养心殿大修.mp4',
+                title: '2025.12.27 一问到底 | 何为“研究性保护修复”？包含哪些工作？',
+            },
+            {
+                src: '古今对比_养心殿修复.mp4',
+                title: '2025.12.27 一问到底 | 养心殿是何格局？大修后陈列有何亮点？',
+            }
+        ];
+        
+        // 切换视频函数
+        function switchVideo(index) {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoTopTitle = document.getElementById('videoTopTitle');
+            const videoTitle = document.getElementById('videoTitle');
+            
+            // 更新视频源
+            videoPlayer.src = videos[index].src;
+            videoPlayer.load();
+            
+            // 更新标题
+            videoTopTitle.textContent = videos[index].title;
+            videoTitle.textContent = videos[index].title;
+            
+            // 更新当前视频索引
+            currentVideoIndex = index;
+        }
+        
+        // 绑定视频切换按钮事件
+        document.getElementById('prevVideoBtn').addEventListener('click', function() {
+            let newIndex = currentVideoIndex - 1;
+            if (newIndex < 0) {
+                newIndex = videos.length - 1;
+            }
+            switchVideo(newIndex);
+        });
+        
+        document.getElementById('nextVideoBtn').addEventListener('click', function() {
+            let newIndex = currentVideoIndex + 1;
+            if (newIndex >= videos.length) {
+                newIndex = 0;
+            }
+            switchVideo(newIndex);
         });
     </script>
 </body>

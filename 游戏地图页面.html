@@ -174,14 +174,43 @@
         }
         
         .bubble.active {
-            background: rgba(101, 67, 33, 0.8);
-            box-shadow: 0 0 15px rgba(101, 67, 33, 0.8);
+            background: rgba(255, 204, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+        }
+        
+        /* 闪烁动画 */
+        .bubble.pulse {
+            animation: pulse 1s infinite;
+        }
+        
+        /* 固定橙红色状态 */
+        .bubble.orange {
+            background: rgba(255, 69, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.8);
+        }
+        
+        @keyframes pulse {
+            0% {
+                background: rgba(255, 107, 107, 0.6);
+                box-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                background: rgba(255, 69, 0, 0.8);
+                box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+                transform: translateX(-50%) scale(1.2);
+            }
+            100% {
+                background: rgba(255, 107, 107, 0.6);
+                box-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+                transform: translateX(-50%) scale(1);
+            }
         }
         
         /* 建筑物标签 */
         .building-label {
             position: absolute;
-            bottom: -25px;
+            top: -35px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.7);
@@ -192,6 +221,7 @@
             white-space: nowrap;
             opacity: 0;
             transition: opacity 0.3s ease;
+            pointer-events: none;
         }
         
         .building-container:hover .building-label {
@@ -200,13 +230,13 @@
         
         /* 触发框样式 */
         .trigger-box {
-            position: fixed;
+            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 600px;
-            height: 380px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 700px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 2px solid #654321;
@@ -225,14 +255,24 @@
             padding: 20px;
             border-bottom: 1px solid #654321;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
         }
         
         .trigger-box-title {
-            color: #654321;
+            color: #fff;
             font-size: 20px;
             font-weight: bold;
+            margin: 0 0 10px 0;
+        }
+        
+        .trigger-box-content-intro {
+            color: #fff;
+            font-size: 16px;
+            line-height: 1.4;
+            margin: 10px 0 0 0;
+            padding: 0;
+            width: 100%;
         }
         
         .close-btn {
@@ -264,6 +304,97 @@
             padding: 20px;
             color: #fff;
             overflow-y: auto;
+            display: flex;
+            gap: 20px;
+            position: relative;
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            border-radius: 10px;
+            z-index: 1002;
+        }
+        
+        .info-panel.active {
+            display: flex;
+        }
+        
+        .info-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .info-content {
+            font-size: 14px;
+            color: #ddd;
+            line-height: 1.4;
+        }
+        
+        .image-container {
+            position: relative;
+            flex: 1;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .building-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .magnifier {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            background-repeat: no-repeat;
+            background-size: 500% 500%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: none;
+            pointer-events: none;
+        }
+        
+        .exploration-points {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .exploration-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff0;
+            border-radius: 50%;
+            background: rgba(255, 255, 0, 0.3);
+            pointer-events: auto;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .exploration-point:hover {
+            transform: scale(1.2);
+            background: rgba(255, 255, 0, 0.6);
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
         }
         
         .trigger-box-footer {
@@ -290,6 +421,22 @@
             box-shadow: 0 0 15px rgba(101, 67, 33, 0.5);
         }
         
+        .data-btn {
+            padding: 10px 20px;
+            background: #654321;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .data-btn:hover {
+            background: #8B4513;
+            box-shadow: 0 0 15px rgba(101, 67, 33, 0.5);
+        }
+        
         /* 遮罩层 */
         .overlay {
             position: fixed;
@@ -297,7 +444,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 999;
             display: none;
         }
@@ -514,6 +661,7 @@
     <!-- 任务进度指示器 -->
     <div class="progress-indicator" id="progressIndicator">
         <div class="progress-text">完成 <span id="completedCount">0</span>/<span id="totalCount">8</span></div>
+        <button id="resetProgressBtn" style="padding: 5px 15px; background: #654321; color: #fff; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin-top: 5px;">清除所有已探索点</button>
         <a href="收集成功图.jpg" class="download-achievement-btn" id="downloadAchievementBtn" download="收集成功图.jpg">下载成就图</a>
     </div>
     
@@ -529,11 +677,18 @@
         <button class="close-btn" id="closeBtn">&times;</button>
         <div class="trigger-box-header">
             <h3 class="trigger-box-title" id="boxTitle">建筑物详情</h3>
+            <p class="trigger-box-content-intro" id="boxContentIntro"></p>
         </div>
         <div class="trigger-box-content" id="boxContent">
-            <p>这里将显示建筑物的游戏或介绍内容</p>
+            <div class="image-container">
+                <img class="building-image" id="buildingImage" src="" alt="建筑物图片">
+                <div class="magnifier" id="magnifier"></div>
+                <div class="exploration-points" id="explorationPoints"></div>
+            </div>
         </div>
+        <div class="info-panel" id="infoPanel"></div>
         <div class="trigger-box-footer">
+            <button class="data-btn" id="dataBtn">查看数据</button>
             <button class="complete-btn" id="completeBtn">完成任务</button>
         </div>
     </div>
@@ -593,9 +748,11 @@
         const overlay = document.getElementById('overlay');
         const triggerBox = document.getElementById('triggerBox');
         const boxTitle = document.getElementById('boxTitle');
+        const boxContentIntro = document.getElementById('boxContentIntro');
         const boxContent = document.getElementById('boxContent');
         const closeBtn = document.getElementById('closeBtn');
         const completeBtn = document.getElementById('completeBtn');
+        const dataBtn = document.getElementById('dataBtn');
         const buildingContainers = document.querySelectorAll('.building-container');
         const backToDrawBtn = document.getElementById('back-to-draw-btn');
         const goToDataBtn = document.getElementById('go-to-data-btn');
@@ -605,6 +762,7 @@
         const successModal = document.getElementById('successModal');
         const closeSuccessBtn = document.getElementById('closeSuccessBtn');
         const downloadAchievementBtn = document.getElementById('downloadAchievementBtn');
+        const resetProgressBtn = document.getElementById('resetProgressBtn');
         
         let currentBuilding = null;
         
@@ -662,10 +820,13 @@
             
             // 检查是否完成所有任务
             if (completedBuildings === totalBuildings) {
-                // 显示成功图片弹窗
-                successModal.classList.add('active');
-                // 显示下载成就图按钮
-                downloadAchievementBtn.classList.add('show');
+                // 10秒后显示成功图片弹窗
+                setTimeout(() => {
+                    // 显示成功图片弹窗
+                    successModal.classList.add('active');
+                    // 显示下载成就图按钮
+                    downloadAchievementBtn.classList.add('show');
+                }, 10000);
             } else {
                 // 隐藏下载成就图按钮
                 downloadAchievementBtn.classList.remove('show');
@@ -677,41 +838,308 @@
         // 初始化进度
         updateProgress();
         
+        // 检查URL参数，处理从抽卡页面跳转过来的情况
+        function checkUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cardIndex = urlParams.get('cardIndex');
+            
+            if (cardIndex !== null) {
+                // 根据cardIndex找到对应的建筑物
+                const buildingOrder = [
+                    '北京四合院', // 京派 - 索引0
+                    '广东镬耳墙', // 粤派 - 索引1
+                    '安徽马头墙', // 徽派 - 索引2
+                    '苏州庭院',   // 苏派 - 索引3
+                    '山西大院',   // 晋派 - 索引4
+                    '福建土楼',   // 闽派 - 索引5
+                    '上海石库门', // 海派 - 索引6
+                    '川渝吊脚楼'  // 川派 - 索引7
+                ];
+                
+                const buildingName = buildingOrder[parseInt(cardIndex)];
+                if (buildingName) {
+                    // 找到对应的建筑物容器
+                    const buildingContainer = document.querySelector(`[data-building="${buildingName}"]`);
+                    if (buildingContainer) {
+                        // 获取对应的气泡
+                        const bubble = buildingContainer.querySelector('.bubble');
+                        if (bubble) {
+                            // 添加闪烁动画效果
+                            bubble.classList.add('pulse');
+                            
+                            // 2秒后停止闪烁，变成固定橙红色
+                            setTimeout(() => {
+                                bubble.classList.remove('pulse');
+                                bubble.classList.add('orange');
+                            }, 2000);
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 调用检查URL参数的函数
+        checkUrlParams();
+        
         // 建筑物数据
         const buildingData = {
             '北京四合院': {
                 title: '北京四合院',
-                content: '<h4>北京四合院</h4><p>北京四合院是中国传统建筑的代表之一，以其独特的布局和建筑风格闻名。</p><p>任务：了解四合院的建筑特点和文化内涵。</p>'
+                content: '中国北方典型合院式民居，以中轴对称、院落围合为特征，承载着传统礼制与居住秩序。',
+                image: '游戏_京派.jpg',
+                explorationPoints: [
+                    {
+                        x: 50, // 相对于图片宽度的百分比
+                        y: 45, // 相对于图片高度的百分比
+                        title: '雕花门窗',
+                        content: '北京四合院的门窗多采用精美的雕花工艺，图案多为吉祥如意的象征，如牡丹、蝙蝠等，体现了中国传统建筑的装饰艺术。'
+                    },
+                    {
+                        x: 75,
+                        y: 55,
+                        title: '朱漆大门',
+                        content: '四合院的大门通常为朱红色，象征着喜庆和吉祥。门上装有门环和门钉，门钉数量和排列有严格的等级规定。'
+                    },
+                    {
+                        x: 30,
+                        y: 8,
+                        title: '灰色瓦顶',
+                        content: '四合院的屋顶多采用灰色瓦片，坡度适中，有利于排水。瓦当和滴水檐也有精美的图案装饰。'
+                    }
+                ]
             },
             '山西大院': {
                 title: '山西大院',
-                content: '<h4>山西大院</h4><p>山西大院以其宏伟的规模和精美的雕刻著称，是晋商文化的重要载体。</p><p>任务：探索山西大院的建筑特色和历史背景。</p>'
+                content: '晋商豪宅代表，高墙深院、三雕精美，布局严谨气派，彰显晋商财富与儒商文化。',
+                image: '游戏_晋派.jpg',
+                explorationPoints: [
+                    {
+                        x: 40,
+                        y: 35,
+                        title: '砖雕',
+                        content: '两侧砖柱从上到下布满雕刻，包括：上部：几何纹、回纹，寓意 “富贵不断头”。中部：凤穿牡丹或花鸟纹样，象征 “富贵吉祥”。下部：与基座石雕呼应，形成完整的装饰序列。'
+                    },
+                    {
+                        x: 60,
+                        y: 35,
+                        title: '门簪（门替）',
+                        content: '门楣下方突出的木构件，既用于固定门扇，也做装饰，图中可见4根门簪，是明清时期的典型样式。'
+                    }
+                ]
             },
             '川渝吊脚楼': {
                 title: '川渝吊脚楼',
-                content: '<h4>川渝吊脚楼</h4><p>吊脚楼是西南地区特有的建筑形式，适应了当地的地形和气候特点。</p><p>任务：了解吊脚楼的建筑原理和文化意义。</p>'
+                content: '西南山地干栏式民居，底层架空、依山而建，适应潮湿地形，是川渝少数民族与山地居民的经典居所。',
+                image: '游戏_川派.jpg',
+                explorationPoints: [
+                    {
+                        x: 30,
+                        y: 18,
+                        title: '曲线翘角',
+                        content: '屋顶为歇山顶或悬山顶，屋檐向外大幅挑出，檐角微微上翘，形似飞鸟展翅，既美观又能有效遮雨护墙。'
+                    },
+                    {
+                        x: 65,
+                        y: 40,
+                        title: '小青瓦',
+                        content: '吊脚楼的屋顶多覆盖小青瓦，色泽古朴，与周围的自然环境和谐统一。'
+                    },
+                    {
+                        x: 75,
+                        y: 80,
+                        title: '挑廊',
+                        content: '楼层向外延伸的木质走廊，供晾晒、休憩，栏杆多为直棂或梳齿状。'
+                    }
+                ]
             },
             '苏州庭院': {
                 title: '苏州庭院',
-                content: '<h4>苏州庭院</h4><p>苏州园林以其精巧的设计和优美的景观闻名于世，是中国古典园林的杰出代表。</p><p>任务：欣赏苏州庭院的造园艺术和美学价值。</p>'
+                content: '江南文人园林典范，以小中见大、移步换景、漏窗曲廊营造含蓄雅致的山水意境。',
+                image: '游戏_苏派.jpg',
+                explorationPoints: [
+                    {
+                        x: 30,
+                        y: 20,
+                        title: '漏窗（花窗）',
+                        content: '形制与功能：又称 "花窗""漏窗"，是江南园林的标志性符号，兼具通风采光、框景造景、私密屏障三重功能。窗洞将窗外的竹石、树木框成天然画卷，实现 "一步一景" 的视觉体验。'
+                    },
+                    {
+                        x: 80,
+                        y: 75,
+                        title: '抄手游廊（回廊）',
+                        content: '沿建筑或园林边界延伸，连接亭台楼阁，是园林中供人漫步、赏景的线性空间。且有半廊设计——一侧靠墙（或建筑），一侧面向园林，既保证行走安全，又最大化观景视野。'
+                    },
+                    {
+                        x: 60,
+                        y: 20,
+                        title: '卷棚顶',
+                        content: '曲线柔和的小青瓦屋面，檐角微微上翘，形成 "飞檐" 效果，轻盈灵动。'
+                    }
+                ]
             },
             '安徽马头墙': {
                 title: '安徽马头墙',
-                content: '<h4>安徽马头墙</h4><p>马头墙是徽派建筑的标志性元素，具有防火和装饰的双重功能。</p><p>任务：了解马头墙的建筑特点和文化寓意。</p>'
+                content: '徽派建筑标志性封火墙，阶梯式叠落形似马头，兼具防火防风与等级象征意义。',
+                image: '游戏_徽派.jpg',
+                explorationPoints: [
+                    {
+                        x: 30,
+                        y: 25,
+                        title: '马头墙',
+                        content: '马头墙是徽派建筑的标志性元素，造型如马头，具有防火和装饰的双重功能，体现了徽派建筑的独特风格。'
+                    },
+                    {
+                        x: 70,
+                        y: 40,
+                        title: '墀头（chí tóu）',
+                        content: '等级象征：马头墙的层数、高度与雕刻精细度，曾是家族地位与财富的直观体现，层数越多代表地位越高。'
+                    }
+                ]
             },
             '福建土楼': {
                 title: '福建土楼',
-                content: '<h4>福建土楼</h4><p>福建土楼以其独特的圆形或方形布局和坚固的结构著称，是客家文化的重要象征。</p><p>任务：探索土楼的建筑特色和历史背景。</p>'
+                content: '客家聚居式巨型夯土建筑，环形封闭、聚族而居，兼具居住、防御与宗族文化功能。',
+                image: '游戏_闽派.jpg',
+                explorationPoints: [
+                    {
+                        x: 25,
+                        y: 10,
+                        title: '木构梁架',
+                        content: '穿斗式木结构：以立柱、穿枋串联成框架，不依赖大型斗拱，结构简洁、抗震性强，适合山地地形。楼层出挑：上层木构向外悬挑形成廊檐，既扩大使用空间，又为下层夯土墙遮雨，避免墙体被雨水侵蚀坍塌。'
+                    },
+                    {
+                        x: 85,
+                        y: 45,
+                        title: '夯土墙（生土墙）',
+                        content: '墙体以黄泥 + 砂石 + 稻草 / 竹筋分层夯筑而成，厚度可达 50–80cm，保温隔热、隔音效果极佳，是南方山区应对昼夜温差与多雨气候的关键。墙体内嵌石块加固，表面粗糙斑驳，局部长满青苔，体现岁月沉淀与自然共生的质感。'
+                    },
+                    {
+                        x: 50,
+                        y: 55,
+                        title: '直棂木窗',
+                        content: '样式：简洁的竖棂 + 横撑格栅，无复杂雕花，以实用为主，保证通风采光同时兼顾防盗与私密性。构造：木质窗扇以合页固定，可向内或向外开启，窗框与夯土墙紧密咬合。'
+                    }
+                ]
             },
             '广东镬耳墙': {
                 title: '广东镬耳墙',
-                content: '<h4>广东镬耳墙</h4><p>镬耳墙是广府建筑的特色元素，形如镬耳，寓意吉祥如意。</p><p>任务：了解镬耳墙的建筑特点和文化内涵。</p>'
+                content: '岭南广府特色民居，以锅耳状山墙为标志，通风防火，是功名与家族地位的象征。',
+                image: '游戏_粤派.jpg',
+                explorationPoints: [
+                    {
+                        x: 70,
+                        y: 8,
+                        title: '镬耳山墙',
+                        content: '镬耳造型：山墙顶部呈弧形隆起，形似铁锅的双耳，因此得名 "镬耳屋"。这种造型是广府建筑最具辨识度的符号。功能：高耸的镬耳墙可有效阻断火势蔓延，起到封火墙作用；同时能引导穿堂风，增强建筑通风，适应岭南炎热潮湿气候。等级象征：镬耳的数量与高度曾是家族功名与财富的象征，只有取得科举功名或官宦身份的家族才能建造，寓意 "独占鳌头、步步高升"。'
+                    },
+                    {
+                        x: 40,
+                        y: 60,
+                        title: '镬耳墙雕刻',
+                        content: '镬耳边缘布满高浮雕 + 透雕，图中可见双凤戏珠纹样，凤凰为岭南吉祥瑞兽，寓意 "太平盛世、家族兴旺"。周围环绕卷草纹、忍冬纹、云纹，线条流畅繁复，是广府砖雕的典型风格，工艺精湛，立体感极强。'
+                    },
+                    {
+                        x: 76,
+                        y: 53,
+                        title: '灰塑装饰',
+                        content: '屋脊与山墙交界处点缀灰塑彩塑（图中可见带彩釉的小构件），题材多为人物故事、花鸟瑞兽，色彩虽经岁月褪去，仍能看出当年的华丽。灰塑是岭南特有的工艺，以石灰、稻草、纸筋为原料，塑形后上色，耐风雨腐蚀，适合岭南湿热气候。'
+                    },
+                    {
+                        x: 20,
+                        y: 60,
+                        title: '小青瓦坡屋面',
+                        content: '采用 "仰合瓦" 铺设，瓦垄整齐，排水顺畅，适应岭南多雨天气。檐口瓦当与滴水造型规整，部分带有简单纹饰，是实用与装饰的结合。'
+                    }
+                ]
             },
             '上海石库门': {
                 title: '上海石库门',
-                content: '<h4>上海石库门</h4><p>石库门是上海特有的建筑形式，融合了中西建筑风格，见证了上海的历史变迁。</p><p>任务：探索石库门的建筑特色和文化意义。</p>'
+                content: '近代上海中西合璧里弄住宅，石框木门融合中式仪门与西式装饰，是海派文化的代表。',
+                image: '游戏_海派.jpg',
+                explorationPoints: [
+                    {
+                        x: 35,
+                        y: 50,
+                        title: '立柱石雕',
+                        content: '柱头：雕刻涡卷纹 + 花卉，模仿西方古典柱式（科林斯柱 / 爱奥尼柱）的装饰元素。柱身：竖向浮雕缠枝莲 / 牡丹纹，寓意 "富贵绵长"，是中式吉祥题材与西式构图的结合。'
+                    },
+                    {
+                        x: 65,
+                        y: 60,
+                        title: '石库门门头',
+                        content: '石框木门：以整块花岗岩 / 青石砌筑门框，搭配厚重的实木双开大门，是 "石库门" 名称的由来。中西合璧形制：中式内核：承袭江南民居的 "仪门" 形制，强调门第秩序。西式装饰：门楣、立柱大量运用巴洛克、洛可可风格的卷草纹、涡卷纹，是近代西风东渐的直接体现。'
+                    },
+                    {
+                        x: 35,
+                        y: 10,
+                        title: '小瓦披檐',
+                        content: '门楣上方的中式小青瓦披檐，用于遮雨护墙，是江南传统建筑的实用主义智慧。'
+                    },
+                    {
+                        x: 65,
+                        y: 5,
+                        title: '花格窗',
+                        content: '门上方的石框窗，采用几何纹 + 卷草纹铁花格栅，是西式铁艺与中式纹样的结合，兼具通风与防盗功能。'
+                    }
+                ]
             }
         };
+        
+        // 获取图片、放大镜和信息面板元素
+        const buildingImage = document.getElementById('buildingImage');
+        const magnifier = document.getElementById('magnifier');
+        const imageContainer = document.querySelector('.image-container');
+        const explorationPoints = document.getElementById('explorationPoints');
+        const infoPanel = document.getElementById('infoPanel');
+        
+        // 初始化探索点
+        function initExplorationPoints(buildingName) {
+            // 清空现有探索点
+            explorationPoints.innerHTML = '';
+            
+            // 隐藏信息面板
+            infoPanel.classList.remove('active');
+            
+            // 获取当前建筑物的探索点数据
+            const points = buildingData[buildingName].explorationPoints;
+            
+            // 为每个探索点创建元素
+            points.forEach(point => {
+                const pointElement = document.createElement('div');
+                pointElement.className = 'exploration-point';
+                pointElement.style.left = point.x + '%';
+                pointElement.style.top = point.y + '%';
+                pointElement.dataset.title = point.title;
+                pointElement.dataset.content = point.content;
+                
+                // 添加鼠标悬停事件 - 关闭放大镜
+                pointElement.addEventListener('mouseenter', function() {
+                    magnifier.style.display = 'none';
+                });
+                
+                // 添加鼠标离开事件 - 恢复放大镜
+                pointElement.addEventListener('mouseleave', function() {
+                    magnifier.style.display = 'block';
+                });
+                
+                // 添加点击事件 - 显示文字，探索点消失，放大镜出现
+                pointElement.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // 隐藏该探索点
+                    this.style.display = 'none';
+                    // 显示放大镜
+                    magnifier.style.display = 'block';
+                    // 显示信息面板（一直显示在下面）
+                    infoPanel.innerHTML = `
+                        <div class="info-title">${this.dataset.title}</div>
+                        <div class="info-content">${this.dataset.content}</div>
+                    `;
+                    infoPanel.classList.add('active');
+                });
+                
+                explorationPoints.appendChild(pointElement);
+            });
+        }
         
         // 为每个建筑物添加点击事件
         buildingContainers.forEach(container => {
@@ -719,9 +1147,22 @@
                 const buildingName = this.dataset.building;
                 currentBuilding = this;
                 
+                // 标记任务完成，气泡变亮
+                const bubble = this.querySelector('.bubble');
+                // 移除orange类，添加active类（黄色）
+                bubble.classList.remove('orange');
+                bubble.classList.add('active');
+                
+                // 更新进度
+                updateProgress();
+                
                 // 更新触发框内容
                 boxTitle.textContent = buildingData[buildingName].title;
-                boxContent.innerHTML = buildingData[buildingName].content;
+                boxContentIntro.textContent = buildingData[buildingName].content;
+                buildingImage.src = buildingData[buildingName].image;
+                
+                // 初始化探索点
+                initExplorationPoints(buildingName);
                 
                 // 显示遮罩层和触发框
                 overlay.classList.add('active');
@@ -729,27 +1170,87 @@
             });
         });
         
+        // 放大镜功能
+        imageContainer.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // 计算鼠标在图片上的位置
+            const imgRect = buildingImage.getBoundingClientRect();
+            const imgX = x - (imgRect.left - rect.left);
+            const imgY = y - (imgRect.top - rect.top);
+            
+            // 确保鼠标在图片范围内
+            if (imgX >= 0 && imgX <= imgRect.width && imgY >= 0 && imgY <= imgRect.height) {
+                // 显示放大镜
+                magnifier.style.display = 'block';
+                
+                // 计算放大镜位置（居中）
+                magnifier.style.left = (x - 75) + 'px';
+                magnifier.style.top = (y - 75) + 'px';
+                
+                // 计算背景图片位置（2倍放大）
+                const bgX = (imgX / imgRect.width) * 100;
+                const bgY = (imgY / imgRect.height) * 100;
+                
+                magnifier.style.backgroundImage = `url('${buildingImage.src}')`;
+                magnifier.style.backgroundPosition = `${bgX}% ${bgY}%`;
+            } else {
+                // 鼠标移出图片范围，隐藏放大镜
+                magnifier.style.display = 'none';
+            }
+        });
+        
+        // 鼠标离开容器时隐藏放大镜
+        imageContainer.addEventListener('mouseleave', function() {
+            magnifier.style.display = 'none';
+        });
+        
         // 关闭按钮事件
         closeBtn.addEventListener('click', function() {
             overlay.classList.remove('active');
             triggerBox.classList.remove('active');
             currentBuilding = null;
+            // 清空探索点
+            explorationPoints.innerHTML = '';
+            // 隐藏信息面板
+            infoPanel.classList.remove('active');
         });
         
         // 完成任务按钮事件
         completeBtn.addEventListener('click', function() {
+            // 直接关闭触发框，因为任务已经在点击气泡时完成
+            overlay.classList.remove('active');
+            triggerBox.classList.remove('active');
+            currentBuilding = null;
+            // 清空探索点
+            explorationPoints.innerHTML = '';
+            // 隐藏信息面板
+            infoPanel.classList.remove('active');
+        });
+        
+        // 查看数据按钮事件
+        dataBtn.addEventListener('click', function() {
             if (currentBuilding) {
-                // 标记任务完成，气泡变亮
-                const bubble = currentBuilding.querySelector('.bubble');
-                bubble.classList.add('active');
+                const buildingName = currentBuilding.dataset.building;
+                // 建筑物名称到cardIndex的映射
+                const buildingToCardIndex = {
+                    '北京四合院': 0, // 京派
+                    '广东镬耳墙': 1, // 粤派
+                    '安徽马头墙': 2, // 徽派
+                    '苏州庭院': 3,   // 苏派
+                    '山西大院': 4,   // 晋派
+                    '福建土楼': 5,   // 闽派
+                    '上海石库门': 6, // 海派
+                    '川渝吊脚楼': 7  // 川派
+                };
                 
-                // 更新进度
-                updateProgress();
-                
-                // 关闭触发框
-                overlay.classList.remove('active');
-                triggerBox.classList.remove('active');
-                currentBuilding = null;
+                const cardIndex = buildingToCardIndex[buildingName];
+                if (cardIndex !== undefined) {
+                    // 跳转到对应派别的数据可视页面
+                    window.location.href = '数据可视页面.html?cardIndex=' + cardIndex;
+                }
             }
         });
         
@@ -758,6 +1259,10 @@
             overlay.classList.remove('active');
             triggerBox.classList.remove('active');
             currentBuilding = null;
+            // 清空探索点
+            explorationPoints.innerHTML = '';
+            // 隐藏信息面板
+            infoPanel.classList.remove('active');
         });
         
         // 阻止触发框内部点击事件冒泡
@@ -778,6 +1283,11 @@
         // 关闭成功图片弹窗
         closeSuccessBtn.addEventListener('click', function() {
             successModal.classList.remove('active');
+        });
+        
+        // 清除所有已探索点按钮事件
+        resetProgressBtn.addEventListener('click', function() {
+            resetProgress();
         });
     </script>
 </body>
