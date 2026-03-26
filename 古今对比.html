@@ -385,6 +385,28 @@
             animation: fadeInUp 1s ease-out;
         }
         
+        /* 当视频展示区域激活时显示文案和磨砂框 */
+        #videoContainer.active + .chart-frame {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        #videoContainer.active + .chart-frame + .chart-text {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        /* 视频展示区域文案卡片特定样式 */
+        #videoContainer + .chart-frame + .chart-text {
+            position: absolute;
+            top: -220px;
+            right: 20px;
+            width: 37%;
+            max-height: 135%;
+            overflow-y: hidden;
+        }
+        
         /* 淡入上移动画 */
         @keyframes fadeInUp {
             from {
@@ -560,7 +582,7 @@
         
         /* 按钮容器 */
         #buttons-container {
-            position: fixed;
+            position: absolute;
             bottom: 20px;
             left: 20px;
             z-index: 20;
@@ -846,12 +868,12 @@
                     <li class="nav-item">
                         <a href="古今对比.html" class="nav-link">古今对比</a>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
-                            <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
-                            <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
-                            <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
-                            <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
-                            <li class="dropdown-item"><a href="古今对比.html?chart=6" class="dropdown-link">当代延续</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=6" class="dropdown-link">当代延续</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -968,8 +990,10 @@
             <!-- 视频文案卡片 -->
             <div id="videoText" class="chart-text">
                 <h3>古建修缮视频集</h3>
-                <div class="city-card">
-                    <h4 id="videoTitle">2026.03.20 焦点访谈 | 修缮乱象</h4>
+                <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; transition: all 0.3s ease;">
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在当代城市更新与文旅开发不断推进的背景下，古建筑修缮逐渐从单纯的技术问题，演变为涉及文化认知与价值判断的复杂议题。该视频通过多起典型案例，揭示了当前部分地区在古建修缮过程中存在的突出问题——以"修复"为名进行"重建"，甚至出现拆除原有结构、仿造新建筑的现象，使得原本承载历史信息的真实遗存被人为替代。这类"过度修缮"不仅破坏了文物本体，也在无形中削弱了古建筑作为历史见证的文化价值。</p>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">报道进一步强调，古建筑保护应遵循"最小干预、不改变原状"的基本原则，即在确保结构安全的前提下，尽可能保留原有材料、工艺与空间形态。这一理念体现了从"视觉更新"向"真实性保护"的转变，也反映出我国文物保护观念正逐步与国际通行标准接轨。与此同时，视频还指出当前监管机制与专业能力仍存在不足，一些工程在审批、施工及验收环节缺乏科学评估，导致修缮行为偏离保护初衷。</p>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">整体来看，该视频不仅呈现了古建筑修缮中的现实乱象，更通过问题的揭示，引出对"什么才是真正的保护"的深层思考，为古建筑在现代语境下的合理延续提供了重要的价值参照。</p>
                 </div>
             </div>
         </div>
@@ -2220,6 +2244,8 @@
         // 页面加载完成后处理URL参数
         window.addEventListener('load', function() {
             handleUrlParams();
+            // 设置初始视频文字内容
+            switchVideo(currentVideoIndex);
         });
         
         // 视频切换功能
@@ -2228,18 +2254,26 @@
             {
                 src: '古今对比_焦点访谈.mp4',
                 title: '2026.03.20 焦点访谈 | 修缮乱象',
+                cardTitle: '修缮失序：古建筑保护的现实困境',
+                content: '<p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在当代城市更新与文旅开发不断推进的背景下，古建筑修缮逐渐从单纯的技术问题，演变为涉及文化认知与价值判断的复杂议题。该视频通过多起典型案例，揭示了当前部分地区在古建修缮过程中存在的突出问题——以"修复"为名进行"重建"，甚至出现拆除原有结构、仿造新建筑的现象，使得原本承载历史信息的真实遗存被人为替代。这类"过度修缮"不仅破坏了文物本体，也在无形中削弱了古建筑作为历史见证的文化价值。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">报道进一步强调，古建筑保护应遵循"最小干预、不改变原状"的基本原则，即在确保结构安全的前提下，尽可能保留原有材料、工艺与空间形态。这一理念体现了从"视觉更新"向"真实性保护"的转变，也反映出我国文物保护观念正逐步与国际通行标准接轨。与此同时，视频还指出当前监管机制与专业能力仍存在不足，一些工程在审批、施工及验收环节缺乏科学评估，导致修缮行为偏离保护初衷。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">整体来看，该视频不仅呈现了古建筑修缮中的现实乱象，更通过问题的揭示，引出对"什么才是真正的保护"的深层思考，为古建筑在现代语境下的合理延续提供了重要的价值参照。</p>'
             },
             {
                 src: '古今对比_新闻直播间.mp4',
                 title: '2026.03.21 新闻直播间 | 记者调查：古建修缮莫“任性”',
+                cardTitle: '修缮失序：古建筑保护的现实困境',
+                content: '<p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在当代城市更新与文旅开发不断推进的背景下，古建筑修缮逐渐从单纯的技术问题，演变为涉及文化认知与价值判断的复杂议题。该视频通过多起典型案例，揭示了当前部分地区在古建修缮过程中存在的突出问题——以"修复"为名进行"重建"，甚至出现拆除原有结构、仿造新建筑的现象，使得原本承载历史信息的真实遗存被人为替代。这类"过度修缮"不仅破坏了文物本体，也在无形中削弱了古建筑作为历史见证的文化价值。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">报道进一步强调，古建筑保护应遵循"最小干预、不改变原状"的基本原则，即在确保结构安全的前提下，尽可能保留原有材料、工艺与空间形态。这一理念体现了从"视觉更新"向"真实性保护"的转变，也反映出我国文物保护观念正逐步与国际通行标准接轨。与此同时，视频还指出当前监管机制与专业能力仍存在不足，一些工程在审批、施工及验收环节缺乏科学评估，导致修缮行为偏离保护初衷。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">整体来看，该视频不仅呈现了古建筑修缮中的现实乱象，更通过问题的揭示，引出对"什么才是真正的保护"的深层思考，为古建筑在现代语境下的合理延续提供了重要的价值参照。</p>'
             },
             {
                 src: '古今对比_养心殿大修.mp4',
                 title: '2025.12.27 一问到底 | 何为“研究性保护修复”？包含哪些工作？',
+                cardTitle: '科学守护：古建筑修复的当代路径',
+                content: '<p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">与前者所呈现的问题视角不同，养心殿修缮案例则展示了一种更为科学、系统的古建筑保护路径。作为故宫最具历史意义的核心建筑之一，养心殿历经数百年使用与环境影响，出现了木构件损坏、虫害侵蚀、湿度失衡等多种复杂病害。在此背景下，故宫启动了持续十年的"研究性保护修缮工程"，通过前期详尽的测绘记录与病害分析，为后续修复提供科学依据。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在具体实施过程中，该项目并未简单追求外观复原，而是强调对建筑本体与附属文物的整体保护。例如，对大量纸质"贴落画"的修复，需要同时应对虫害与霉菌问题；对地下古代烟道系统的重新勘察，则不仅揭示了历史营造智慧，也为改善室内环境提供了新的思路。更值得关注的是，现代技术手段被有机融入传统修缮之中，如三维扫描、数字建模与3D打印等技术的应用，在提升修复效率的同时，也为后续研究与展示积累了完整的数据资料。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">此外，"数字养心殿"的建设，使这一历史空间突破了物理限制，以虚拟方式向公众开放，实现了从"保护实体"到"拓展体验"的转变。这不仅延续了古建筑的文化生命，也标志着传统遗产在数字时代中的再生路径。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">通过这一案例可以看到，古建筑保护正在从经验性修补，转向以科学研究为基础的系统工程；从单一修缮行为，拓展为涵盖展示、传播与再利用的综合实践。这种转变，正是古建筑在现代社会中实现持续发展的关键所在。</p>'
             },
             {
                 src: '古今对比_养心殿修复.mp4',
                 title: '2025.12.27 一问到底 | 养心殿是何格局？大修后陈列有何亮点？',
+                cardTitle: '科学守护：古建筑修复的当代路径',
+                content: '<p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">与前者所呈现的问题视角不同，养心殿修缮案例则展示了一种更为科学、系统的古建筑保护路径。作为故宫最具历史意义的核心建筑之一，养心殿历经数百年使用与环境影响，出现了木构件损坏、虫害侵蚀、湿度失衡等多种复杂病害。在此背景下，故宫启动了持续十年的"研究性保护修缮工程"，通过前期详尽的测绘记录与病害分析，为后续修复提供科学依据。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在具体实施过程中，该项目并未简单追求外观复原，而是强调对建筑本体与附属文物的整体保护。例如，对大量纸质"贴落画"的修复，需要同时应对虫害与霉菌问题；对地下古代烟道系统的重新勘察，则不仅揭示了历史营造智慧，也为改善室内环境提供了新的思路。更值得关注的是，现代技术手段被有机融入传统修缮之中，如三维扫描、数字建模与3D打印等技术的应用，在提升修复效率的同时，也为后续研究与展示积累了完整的数据资料。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">此外，"数字养心殿"的建设，使这一历史空间突破了物理限制，以虚拟方式向公众开放，实现了从"保护实体"到"拓展体验"的转变。这不仅延续了古建筑的文化生命，也标志着传统遗产在数字时代中的再生路径。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">通过这一案例可以看到，古建筑保护正在从经验性修补，转向以科学研究为基础的系统工程；从单一修缮行为，拓展为涵盖展示、传播与再利用的综合实践。这种转变，正是古建筑在现代社会中实现持续发展的关键所在。</p>'
             }
         ];
         
@@ -2247,7 +2281,8 @@
         function switchVideo(index) {
             const videoPlayer = document.getElementById('videoPlayer');
             const videoTopTitle = document.getElementById('videoTopTitle');
-            const videoTitle = document.getElementById('videoTitle');
+            const videoContent = document.querySelector('#videoText > div');
+            const videoCardTitle = document.querySelector('#videoText > h3');
             
             // 更新视频源
             videoPlayer.src = videos[index].src;
@@ -2255,7 +2290,12 @@
             
             // 更新标题
             videoTopTitle.textContent = videos[index].title;
-            videoTitle.textContent = videos[index].title;
+            
+            // 更新卡片标题
+            videoCardTitle.textContent = videos[index].cardTitle;
+            
+            // 更新文字内容
+            videoContent.innerHTML = videos[index].content;
             
             // 更新当前视频索引
             currentVideoIndex = index;
