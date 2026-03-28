@@ -12,23 +12,14 @@
       }
     </style>
     <meta charset="UTF-8">
-    <title>国风筑韵-伊始</title>
+    <title>国风筑韵-周边文创</title>
     <style>
-        /* ========== 入口页面样式 ========== */
+        /* ========== 基础样式 ========== */
         :root {
             /* 基础颜色 */
             --bg-color: #000;
             --text-color: #fff;
-            
-            /* 按钮颜色 */
-            --btn-primary: #eec935b2;
-            --btn-primary-hover: #f39c12;
-            --btn-border: #fffffffb;
-            --btn-shadow: rgba(241, 196, 15, 0.5);
-            --btn-shadow-hover: rgba(241, 196, 15, 0.8);
-            
-            /* 阴影颜色 */
-            --text-shadow: rgba(0, 0, 0, 0.5);
+            --text-light: #fffdf0;
         }
         
         * {
@@ -37,119 +28,15 @@
             box-sizing: border-box;
         }
         
-        /* 视频容器 */
-        #video-container {
+        /* 页面容器 */
+        #文创-container {
             position: relative;
             width: 1527px;
             height: 740px;
+            background-image: url('纯色文创背景.jpg');
+            background-size: cover;
+            background-position: center;
             overflow: hidden;
-        }
-        
-        /* 视频元素 */
-        #intro-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        /* 开始按钮容器 */
-        #start-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 1527px;
-            height: 740px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding-top: 154px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 1s ease;
-        }
-        
-        /* 标题图片 */
-        #title-image {
-            max-width: 1093px;
-            max-height: 307px;
-            margin-bottom: 105px;
-        }
-        
-        /* 开始按钮显示状态 */
-        #start-container.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        /* 开始按钮 */
-        #start-btn {
-            padding: 15px 45px;
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--text-color);
-            background: rgba(240, 228, 183, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 10px var(--text-shadow);
-            box-shadow: 0 0 30px rgba(241, 231, 190, 0.3);
-        }
-        
-        /* 开始按钮悬停效果 */
-        #start-btn:hover {
-            background: rgba(247, 234, 181, 0.6);
-            transform: scale(1.1);
-            box-shadow: 0 0 50px rgba(234, 226, 196, 0.5);
-        }
-        
-        /* 开始按钮点击效果 */
-        #start-btn:active {
-            transform: scale(0.95);
-        }
-        
-        /* ========== 鼠标跟随效果样式 ========== */
-        /* 基础样式 */
-        * {
-            cursor: none;
-        }
-
-        /* 鼠标跟随容器 */
-        #mouse-follower {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9999;
-            overflow: visible;
-        }
-
-        /* 鼠标小圆点 */
-        #mouse-dot {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10000;
-            mix-blend-mode: difference;
-        }
-
-        /* 鼠标圆圈 */
-        #mouse-circle {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border: 1px solid white;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            mix-blend-mode: difference;
-            transition: transform 0.1s ease;
         }
         
         /* ========== 顶部下拉菜单导航样式 ========== */
@@ -274,26 +161,106 @@
             opacity: 1;
             visibility: visible;
         }
+        
+        /* ========== 内容区域样式 ========== */
+        .content-section {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding-top: 80px;
+            display: flex;
+        }
+        
+        /* 左侧图片区域 */
+        .image-container {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        /* 自定义滚动条 */
+        .image-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .image-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .image-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 223, 160, 0.5);
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+        
+        .image-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 223, 160, 0.8);
+        }
+        
+        /* 图片样式 */
+        .文创-image {
+            width: 90%;
+            max-width: 600px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .文创-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* 右侧文字介绍区域 */
+        .text-container {
+            width: 50%;
+            height: 100%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: var(--text-light);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 标题样式 */
+        .文创-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #fffdf0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 段落样式 */
+        .文创-description {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        /* 强调文本 */
+        .highlight {
+            color: #f39c12;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <!-- 鼠标跟随元素 -->
-    <div id="mouse-follower">
-        <div id="mouse-dot"></div>
-        <div id="mouse-circle"></div>
-    </div>
-    
-    <!-- 入口页面 -->
-    <div id="video-container">
+    <div id="文创-container">
         <!-- 顶部导航栏 -->
         <nav id="top-nav">
             <div class="nav-container">
-                <!-- 品牌标识 -->
                 <div class="nav-brand">
                     <a href="index.html">国风筑韵</a>
                 </div>
-                
-                <!-- 导航菜单 -->
                 <ul class="nav-menu">
                     <!-- 首页 -->
                     <li class="nav-item">
@@ -351,94 +318,41 @@
                 </ul>
             </div>
         </nav>
-        <!-- 视频元素 -->
-        <video id="intro-video" autoplay muted playsinline>
-            <source src="intro-video.mp4" type="video/mp4">
-        </video>
         
-        <!-- 开始按钮容器 -->
-        <div id="start-container">
-            <img id="title-image" src="大字标题.jpg" alt="大字标题">
-            <button id="start-btn">启章</button>
+        <!-- 内容区域 -->
+        <div class="content-section">
+            <!-- 左侧图片区域 -->
+            <div class="image-container">
+                <img src="ip主图.jpg" alt="IP主图" class="文创-image">
+                <img src="ip3视图.png" alt="IP 3视图" class="文创-image">
+                <img src="ip文创.png" alt="IP文创" class="文创-image">
+            </div>
+            
+            <!-- 右侧文字介绍区域 -->
+            <div class="text-container">
+                <h1 class="文创-title">国风筑韵 · 文创周边</h1>
+                <p class="文创-description">
+                    以<span class="highlight">古建筑八大派系</span>为灵感，我们打造了一系列融合传统与现代的文创产品。
+                    通过数字化技术与传统工艺的结合，让古老的建筑文化焕发新的活力。
+                </p>
+                <p class="文创-description">
+                    <span class="highlight">IP主图</span>展现了我们的核心形象，融合了八大派系的建筑元素，
+                    象征着传统文化的传承与创新。
+                </p>
+                <p class="文创-description">
+                    <span class="highlight">IP 3视图</span>全方位展示了我们的设计理念，
+                    从不同角度呈现古建筑的美学价值。
+                </p>
+                <p class="文创-description">
+                    <span class="highlight">IP文创</span>产品系列包括文具、服饰、家居用品等，
+                    将古建筑元素融入现代生活，让文化触手可及。
+                </p>
+                <p class="文创-description">
+                    每一件产品都承载着对传统文化的敬畏与热爱，
+                    希望通过这些文创作品，让更多人了解和喜爱中国传统建筑文化。
+                </p>
+            </div>
         </div>
     </div>
-    
-    <script>
-        // ========== 入口页面脚本 ==========
-        (function() {
-            // 获取DOM元素
-            const introVideo = document.getElementById('intro-video');
-            const startContainer = document.getElementById('start-container');
-            const startBtn = document.getElementById('start-btn');
-            
-            // 视频结束事件处理
-            introVideo.addEventListener('ended', () => {
-                // 定格在最后一帧
-                introVideo.pause();
-                
-                // 显示开始按钮
-                startContainer.classList.add('visible');
-            });
-            
-            // 开始按钮点击事件
-            startBtn.addEventListener('click', () => {
-                // 跳转到加载页面
-                window.location.href = '加载页面.html';
-            });
-        })();
-        
-        // ========== 鼠标跟随效果脚本 ==========
-        (function() {
-            const mouseFollower = document.getElementById('mouse-follower');
-            const mouseDot = document.getElementById('mouse-dot');
-            const mouseCircle = document.getElementById('mouse-circle');
-            
-            if (mouseFollower && mouseDot && mouseCircle) {
-                let mouseX = 0;
-                let mouseY = 0;
-                let circleX = 0;
-                let circleY = 0;
-                
-                // 鼠标移动事件
-                document.addEventListener('mousemove', (e) => {
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                    
-                    // 直接更新小圆点位置
-                    mouseDot.style.left = mouseX + 'px';
-                    mouseDot.style.top = mouseY + 'px';
-                });
-                
-                // 动画循环，实现圆圈追逐圆点
-                function animate() {
-                    // 计算圆圈到圆点的距离
-                    const dx = mouseX - circleX;
-                    const dy = mouseY - circleY;
-                    
-                    // 平滑追逐效果
-                    circleX += dx * 0.1;
-                    circleY += dy * 0.1;
-                    
-                    // 更新圆圈位置
-                    mouseCircle.style.left = circleX + 'px';
-                    mouseCircle.style.top = circleY + 'px';
-                    
-                    // 继续动画
-                    requestAnimationFrame(animate);
-                }
-                
-                // 鼠标点击事件
-                document.addEventListener('click', () => {
-                    mouseCircle.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                    setTimeout(() => {
-                        mouseCircle.style.transform = 'translate(-50%, -50%) scale(1)';
-                    }, 150);
-                });
-                
-                // 启动动画
-                animate();
-            }
-        })();
-    </script>
 </body>
 </html>
