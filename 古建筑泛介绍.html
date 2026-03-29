@@ -159,6 +159,37 @@
       font-size: 20px;
     }
 
+    #buildingCraftPanel {
+      background-image: url('详细介绍图片/建造工艺背景1.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #buildingCraftPanel .panel-header {
+      position: relative;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    #buildingCraftPanel .panel-header h2 {
+      text-align: center;
+      width: 100%;
+    }
+
+    #buildingCraftPanel .back-to-overview {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    #jianzaogongyi {
+      background: transparent;
+      border: none;
+      padding-top: 6px;
+    }
+
     .content-with-image {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
@@ -885,6 +916,693 @@
       line-height: 1.35;
     }
 
+    /* 虚线时间线导航栏 */
+    .craft-timeline-nav {
+      width: 100%;
+      margin-top: -10px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .craft-timeline-container {
+      position: relative;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      overflow: visible;
+    }
+
+    .craft-timeline-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      transform: translateY(-50%);
+    }
+
+    .craft-timeline-items {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      overflow-y: visible;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
+    .craft-timeline-items::-webkit-scrollbar {
+      display: none;
+    }
+
+    .craft-timeline-item {
+      position: relative;
+      flex: 0 0 auto;
+      min-width: 120px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0 10px;
+      transition: all 0.3s ease;
+    }
+
+    .craft-timeline-item::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 22px;
+      width: calc(100% - 22px);
+      border-top: 2px dashed #8b572a;
+      transform: translateY(-50%);
+      z-index: 1;
+      opacity: 0.85;
+    }
+
+    .craft-timeline-item:last-child::after {
+      display: none;
+    }
+
+    .craft-timeline-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #8b572a;
+      border: 1px solid #fff;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 18px;
+      transition: all 0.3s ease;
+      z-index: 3;
+    }
+
+    .craft-timeline-item.active .craft-timeline-dot {
+      width: 10px;
+      height: 10px;
+      background: #d4a574;
+      box-shadow: 0 0 6px rgba(212, 165, 116, 0.5);
+      left: 17px;
+    }
+
+    .craft-timeline-label {
+      position: absolute;
+      top: 10px;
+      left: 22px;
+      font-size: 12px;
+      color: #f7e7bc;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+      text-align: center;
+      max-width: 110px;
+      word-wrap: break-word;
+      line-height: 1.2;
+      opacity: 1;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 4;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+    }
+
+    .craft-timeline-item.active .craft-timeline-label {
+      color: #ffe8a8;
+      font-weight: 700;
+      opacity: 1;
+      transform: translateX(-50%) scale(1.25);
+      animation: titleZoom 0.4s ease-out;
+    }
+
+    @keyframes titleZoom {
+      0% {
+        transform: translateX(-50%) scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(-50%) scale(1.25);
+        opacity: 1;
+      }
+    }
+
+    /* 翻页容器 */
+    .craft-carousel-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      margin-top: -30px;
+    }
+
+    .craft-carousel {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgba(255, 250, 240, 0.8);
+      min-height: 440px;
+    }
+
+    .craft-item {
+      flex: 0 0 100%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      transition: transform 0.4s ease;
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .craft-item.active {
+      position: relative;
+      opacity: 1;
+      transform: translateX(0);
+      top: auto;
+      left: auto;
+    }
+
+    .craft-item.prev {
+      transform: translateX(-100%);
+    }
+
+    .craft-item.next {
+      transform: translateX(100%);
+    }
+
+    .craft-item h4 {
+      margin: 0 0 15px;
+      font-size: 24px;
+      color: #3b2b17;
+      text-align: center;
+    }
+
+    .craft-item p {
+      margin: 0 0 12px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: #4a3a2a;
+      text-align: justify;
+    }
+
+    .craft-item p:last-child {
+      margin-bottom: 0;
+    }
+
+    .craft-rich-layout {
+      display: grid;
+      grid-template-columns: 0.55fr 0.65fr 0.65fr;
+      gap: 14px;
+      align-items: start;
+      margin-top: 4px;
+      height: calc(100% - 48px);
+    }
+
+    .craft-rich-image {
+      width: 100%;
+      height: 100%;
+      min-height: 320px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid rgba(140, 87, 42, 0.28);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      background: rgba(255, 248, 235, 0.75);
+    }
+
+    .craft-rich-col {
+      height: 100%;
+      overflow: auto;
+      padding-right: 6px;
+    }
+
+    .craft-rich-layout .craft-rich-col:nth-child(2) {
+      transform: translateX(12px);
+    }
+
+    .craft-rich-layout .craft-rich-col:nth-child(3) {
+      transform: translateX(-8px);
+    }
+
+    .craft-rich-col h5 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      color: #3b2b17;
+    }
+
+    .craft-rich-col p {
+      margin: 0 0 6px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #4a3a2a;
+      text-align: left;
+    }
+
+    .craft-rich-col p:last-child {
+      margin-bottom: 0;
+    }
+
+    .craft-rich-layout.craft-platform-layout {
+      position: relative;
+      grid-template-columns: 1fr 0.58fr 1fr;
+      gap: 14px;
+    }
+
+    .craft-rich-layout.craft-platform-layout .craft-rich-col:nth-child(1),
+    .craft-rich-layout.craft-platform-layout .craft-rich-col:nth-child(2) {
+      transform: none;
+    }
+
+    .craft-rich-layout.craft-platform-layout .craft-rich-col:nth-child(3) {
+      transform: translateX(-55px);
+    }
+
+    .craft-platform-mid {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 10px;
+      padding: 0;
+      transform: translateY(-46px);
+    }
+
+    .craft-platform-interactive {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .platform-bubble-section {
+      width: 100%;
+      min-height: 178px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .platform-bubble-section-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: #3f2b16;
+      text-align: center;
+    }
+
+    .platform-bubble-cloud {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-content: flex-start;
+      gap: 10px 12px;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+
+    .platform-bubble-ball {
+      border: 1px solid #bb9563;
+      background: radial-gradient(circle at 30% 30%, #fff8ea, #e6c89c 72%);
+      color: #4b341c;
+      border-radius: 999px;
+      min-width: 62px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.2;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(72, 50, 27, 0.16);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      animation: platformBallFloat var(--float-dur, 3.6s) ease-in-out var(--float-delay, 0s) infinite;
+      font-family: inherit;
+    }
+
+    .platform-bubble-ring {
+      position: relative;
+      width: 208px;
+      height: 208px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .platform-bubble-ring .platform-bubble-ball {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      min-width: 52px;
+      border-radius: 50%;
+      padding: 5px;
+      font-size: 10px;
+      line-height: 1.1;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translate(-50%, -50%);
+      animation: platformBallFloat var(--float-dur, 3.6s) ease-in-out var(--float-delay, 0s) infinite;
+    }
+
+    .platform-bubble-ball:hover,
+    .platform-bubble-ball:focus-visible {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 14px rgba(72, 50, 27, 0.24);
+      outline: none;
+    }
+
+    @keyframes platformBallFloat {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .platform-word-modal[hidden] {
+      display: none;
+    }
+
+    .platform-word-modal {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+    }
+
+    .platform-word-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(35, 23, 11, 0.42);
+    }
+
+    .platform-word-dialog {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(620px, calc(100% - 48px));
+      max-height: calc(100% - 44px);
+      overflow: auto;
+      background: #fff7e9;
+      border: 1px solid #cfaa79;
+      border-radius: 10px;
+      box-shadow: 0 14px 28px rgba(38, 26, 15, 0.32);
+      padding: 16px 18px 14px;
+      box-sizing: border-box;
+    }
+
+    .platform-word-close {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      border: 1px solid #be9662;
+      background: #f5e4c9;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #3e2a15;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .platform-word-title {
+      margin: 0 56px 8px 0;
+      font-size: 20px;
+      color: #3a2815;
+      line-height: 1.25;
+    }
+
+    .platform-word-text {
+      margin: 0 0 12px;
+      font-size: 14px;
+      line-height: 1.75;
+      color: #4a3823;
+      white-space: pre-wrap;
+    }
+
+    .platform-word-image-wrap {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(145, 104, 57, 0.35);
+      background: #f3eadc;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .platform-word-image {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .platform-word-image-fallback {
+      font-size: 14px;
+      color: #6c5333;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .craft-rich-layout.craft-brick-layout {
+      grid-template-columns: 1fr 0.66fr 1fr;
+      gap: 14px;
+    }
+
+    .craft-rich-layout.craft-roof-layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .craft-rich-layout.craft-roof-layout .craft-rich-col:nth-child(2) {
+      transform: none;
+    }
+
+    .craft-rich-layout.craft-rammed-layout {
+      grid-template-columns: 0.72fr 1fr 1fr;
+      gap: 14px;
+    }
+
+    .craft-rammed-media {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      padding-top: 6px;
+    }
+
+    .craft-rammed-image {
+      width: 90%;
+      max-width: 190px;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid rgba(145, 104, 57, 0.35);
+      background: rgba(255, 247, 232, 0.86);
+      box-shadow: 0 2px 8px rgba(52, 34, 17, 0.14);
+      display: block;
+    }
+
+    .craft-rich-layout.craft-waterproof-layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .craft-rich-layout.craft-waterproof-layout .craft-rich-col:nth-child(2) {
+      transform: none;
+    }
+
+    .craft-rich-layout.craft-carving-layout {
+      grid-template-columns: 0.88fr 0.72fr 0.88fr;
+      gap: 14px;
+    }
+
+    .craft-carving-media {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .craft-carving-image {
+      width: 100%;
+      max-width: 200px;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid rgba(145, 104, 57, 0.35);
+      background: rgba(255, 247, 232, 0.86);
+      box-shadow: 0 2px 8px rgba(52, 34, 17, 0.14);
+      display: block;
+    }
+
+    .craft-waterproof-gallery {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .craft-waterproof-figure {
+      margin: 0;
+      border: 1px solid rgba(145, 104, 57, 0.35);
+      border-radius: 8px;
+      background: rgba(255, 247, 232, 0.86);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(52, 34, 17, 0.14);
+    }
+
+    .craft-waterproof-figure img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .craft-waterproof-figure figcaption {
+      padding: 6px 8px;
+      font-size: 12px;
+      color: #402d18;
+      text-align: center;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .craft-brick-media {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .craft-brick-figure {
+      width: 100%;
+      max-width: 220px;
+      margin: 0;
+      border: 1px solid rgba(145, 104, 57, 0.35);
+      border-radius: 8px;
+      background: rgba(255, 247, 232, 0.86);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(52, 34, 17, 0.14);
+    }
+
+    .craft-brick-figure img {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .craft-brick-figure figcaption {
+      padding: 6px 8px;
+      font-size: 12px;
+      color: #402d18;
+      text-align: center;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .craft-joinery-gallery {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      height: 100%;
+      align-content: start;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .craft-joinery-figure {
+      margin: 0;
+      background: rgba(255, 247, 233, 0.9);
+      border: 1px solid rgba(140, 87, 42, 0.28);
+      border-radius: 8px;
+      padding: 6px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .craft-joinery-figure img {
+      width: 92px;
+      height: 92px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      border-radius: 6px;
+      max-height: none;
+    }
+
+    .craft-joinery-figure figcaption {
+      margin-top: 6px;
+      font-size: 12px;
+      line-height: 1.35;
+      color: #3f2d1a;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .craft-rich-subtitle {
+      margin: 8px 0 6px;
+      font-size: 14px;
+      color: #3b2b17;
+      font-weight: 700;
+    }
+
+    /* 翻页按钮 */
+    .craft-nav-btn {
+      flex: 0 0 40px;
+      width: 40px;
+      height: 40px;
+      border: 1px solid #8b572a;
+      background: #f3e7d2;
+      color: #3b2b17;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .craft-nav-btn:hover {
+      background: #e0c8a8;
+      box-shadow: 0 2px 6px rgba(59, 43, 23, 0.15);
+    }
+
+    .craft-nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    .craft-nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     @media (max-width: 900px) {
       .content-with-image {
         grid-template-columns: 1fr;
@@ -1385,12 +2103,21 @@
     </div>
 
     <section class="section active" id="jianzaogongyi">
-      <h3>建造工艺</h3>
-      <div class="content-with-image">
-        <div class="content-text">
-          <p>这里用于填写建造工艺的介绍内容。</p>
+      <!-- 虚线时间线导航栏 -->
+      <nav class="craft-timeline-nav">
+        <div class="craft-timeline-container">
+          <svg class="craft-timeline-line" viewBox="0 0 2000 60" preserveAspectRatio="none"></svg>
+          <div class="craft-timeline-items"></div>
         </div>
-        <div class="image-slot">建造工艺配图待补充</div>
+      </nav>
+      
+      <!-- 翻页容器 -->
+      <div class="craft-carousel-wrapper">
+        <button class="craft-nav-btn craft-nav-prev" type="button">‹</button>
+        <div class="craft-carousel">
+          <!-- 10个工艺项目 -->
+        </div>
+        <button class="craft-nav-btn craft-nav-next" type="button">›</button>
       </div>
     </section>
   </section>
@@ -1852,6 +2579,744 @@
         panels.forEach((panel) => panel.classList.remove('visible'));
       }
 
+      function initCraftPanel() {
+        const craftSection = document.getElementById('jianzaogongyi');
+        if (!craftSection || craftSection.dataset.initialized === 'true') return;
+
+        const craftItems = [
+          {
+            title: '木构架工艺',
+            html: `
+              <h4>木构架工艺</h4>
+              <div class="craft-rich-layout">
+                <img class="craft-rich-image" src="详细介绍图片/木构架工艺.png" alt="木构架工艺" />
+                <div class="craft-rich-col">
+                  <h5>一、木构架主要类型</h5>
+                  <p>抬梁式、穿斗式、井干式、干栏式、混合式</p>
+                  <h5>二、核心构件</h5>
+                  <p>柱：垂直承重（檐柱、金柱、瓜柱）</p>
+                  <p>梁：水平承荷（大梁、三架梁、五架梁）</p>
+                  <p>枋：柱间联系（额枋、穿枋、斗枋）</p>
+                  <p>檩：承椽拉接、纵向承重</p>
+                  <p>椽：密排承瓦、屋面支撑</p>
+                  <p>斗拱：传力、挑檐、减震、装饰</p>
+                  <p>榫卯：构件连接核心</p>
+                  <h5>三、核心连接：榫卯</h5>
+                  <p>原理：构件凹凸咬合</p>
+                  <p>特点：柔性连接、抗震、可微调、易拆装</p>
+                </div>
+                <div class="craft-rich-col">
+                  <h5>四、构建工序</h5>
+                  <p>选材备料：原木采伐、干燥处理</p>
+                  <p>构件加工：下料、刨削、榫卯制作</p>
+                  <p>框架组装：立柱→架梁→安枋→铺檩椽</p>
+                  <p>节点加固：榫卯咬合紧固、辅助防腐处理</p>
+                  <h5>五、优缺点</h5>
+                  <p>优点：抗震强、施工快、易修复、隔热保温、天然质感、空间灵活、柔性连接</p>
+                  <p>缺点：防火差、不耐腐、易虫蛀、耗材大、受潮易损</p>
+                </div>
+              </div>
+            `,
+          },
+          {
+            title: '榫卯',
+            html: `
+              <h4>榫卯</h4>
+              <div class="craft-rich-layout">
+                <div class="craft-joinery-gallery">
+                  <figure class="craft-joinery-figure">
+                    <img src="详细介绍图片/燕尾榫.png" alt="燕尾榫" />
+                    <figcaption>燕尾榫</figcaption>
+                  </figure>
+                  <figure class="craft-joinery-figure">
+                    <img src="详细介绍图片/粽角榫.png" alt="粽角榫" />
+                    <figcaption>粽角榫</figcaption>
+                  </figure>
+                  <figure class="craft-joinery-figure">
+                    <img src="详细介绍图片/抱肩榫.png" alt="抱肩榫" />
+                    <figcaption>抱肩榫</figcaption>
+                  </figure>
+                  <figure class="craft-joinery-figure">
+                    <img src="详细介绍图片/楔钉榫.png" alt="楔钉榫" />
+                    <figcaption>楔钉榫</figcaption>
+                  </figure>
+                </div>
+                <div class="craft-rich-col">
+                  <h5>一、基本定义</h5>
+                  <p>榫卯（sǔn mǎo）是中国传统木作工艺的核心连接技术，指在两个木构件上采用凹凸咬合的方式进行连接，无需钉子、胶水等辅助件即可形成稳固结构。</p>
+                  <p>榫（榫头）：构件上凸出的部分。</p>
+                  <p>卯（卯眼 / 卯槽）：构件上凹进的部分。</p>
+
+                  <h5>二、核心特点</h5>
+                  <p class="craft-rich-subtitle">1. 力学优势</p>
+                  <p>柔性连接：构件间留微小间隙，遇地震时可弹性变形、耗能减震，实现“墙倒屋不塌”。</p>
+                  <p>自锁稳固：燕尾榫等结构越拉越紧，靠摩擦力与几何限位形成刚性整体。</p>
+                  <p>受力均匀：荷载通过榫卯节点分散传递，提升结构整体强度。</p>
+                  <p class="craft-rich-subtitle">2. 工艺价值</p>
+                  <p>环保无钉：纯木材拼接，可拆卸、修复、重复利用。</p>
+                  <p>精度极高：传统手工误差可达毫米级，严丝合缝。</p>
+                  <p>耐久防腐：减少金属锈蚀隐患，适应木材热胀冷缩。</p>
+
+                  <h5>三、主要类型</h5>
+                  <p class="craft-rich-subtitle">1. 基础单榫</p>
+                  <p>直榫：最常用，90° 垂直连接，如桌腿与横枨。</p>
+                  <p>燕尾榫：榫头呈倒梯形，自锁防脱，用于抽屉、箱柜。</p>
+                  <p>圆榫：圆柱形，常用于定位连接，易加工。</p>
+                </div>
+                <div class="craft-rich-col">
+                  <p class="craft-rich-subtitle">家具经典榫卯</p>
+                  <p>夹头榫：桌腿与牙条连接，受力均匀。</p>
+                  <p>粽角榫：方桌、柜子转角，稳固简洁。</p>
+                  <p>楔钉榫：圆形构件拼接（圆桌、圈椅）。</p>
+                  <p class="craft-rich-subtitle">建筑专用榫卯</p>
+                  <p>斗拱：上承屋顶、下接梁柱，古建筑代表。</p>
+
+                  <h5>四、发展历史</h5>
+                  <p class="craft-rich-subtitle">1. 萌芽期（新石器时代）</p>
+                  <p>河姆渡遗址（约 7000 年前）：出土大量带榫卯的干栏式建筑木构件，是目前发现最早的榫卯实物，包含柱头榫、梁头榫等基础类型。</p>
+                  <p class="craft-rich-subtitle">2. 发展期（夏商 — 秦汉）</p>
+                  <p>青铜工具普及，榫卯从建筑扩展至家具，出现低矮木案、木箱等。</p>
+                  <p class="craft-rich-subtitle">3. 成熟期（唐宋）</p>
+                  <p>木构建筑技术鼎盛，榫卯类型丰富、精度提升，应用于殿堂、佛塔等大型建筑。</p>
+                  <p class="craft-rich-subtitle">4. 巅峰期（明清）</p>
+                  <p>形成明式家具体系，榫卯工艺极致精细，结构严谨、造型简洁，兼具力学与美学价值。</p>
+                </div>
+              </div>
+            `,
+          },
+          {
+            title: '台基与柱础',
+            html: `
+              <h4>台基与柱础</h4>
+              <div class="craft-rich-layout craft-platform-layout" data-platform-interactive>
+                <div class="craft-rich-col">
+                  <h5>台基：民居之基与等级之界</h5>
+                  <p>台基，古称“阶基”，是传统木构建筑矗立于大地的根基。它不仅是承载重量的物理平台，更是建筑礼制与地域适应性的集中体现。</p>
+
+                  <h5>1. 核心功能与构造逻辑</h5>
+                  <p>物理屏障与结构稳固：首要职能在于<strong>“抬高标高”</strong>，有效阻断地下潮气对木构件的侵蚀。同时，台基通过分层夯筑的核心基底，将建筑荷载均匀扩散，避免地基产生不均匀沉降。</p>
+                  <p>礼制象征与等级区分：在古代营造法式中，台基高度是宅邸等级的显性标志。从平民常用的素土/砖石贴面台基，到官宦豪门专属的须弥座台基（含圭角、束腰、压沿等精细构件），阶层尊卑一目了然。</p>
+
+                  <h5>2. 工艺要点与地域性格</h5>
+                  <p>营造精义：强调<strong>“分层夯筑”与“错缝砌筑”</strong>。基槽内须精准放线，利用灰土或碎石交替夯砸；表层利用条石或压沿石收边，配合抱角石加固转角，确保整体结构的刚性与耐久。</p>
+                  <p>因地制宜：北方民居台基偏厚重（30-60cm），旨在应对雪水积存；南方水乡台基则显著加高（可达1米以上），常结合驳岸设计以抵御洪涝漫灌；山区则依山就势，通过局部抬高适配复杂地形。</p>
+                </div>
+
+                <div class="craft-rich-col craft-platform-mid">
+                  <div class="platform-bubble-section">
+                    <div class="platform-bubble-ring" data-topic="taiji"></div>
+                  </div>
+                  <div class="platform-bubble-section">
+                    <div class="platform-bubble-ring" data-topic="zhuchu"></div>
+                  </div>
+                </div>
+
+                <div class="craft-rich-col">
+                  <h5>柱础：承托之艺与力学枢纽</h5>
+                  <p>柱础，又称柱下石，是连接立柱与台基的枢纽构件。它位于力学传导的最末端，亦是民居石刻艺术最为璀璨的方寸之地。</p>
+
+                  <h5>1. 结构使命与力学智慧</h5>
+                  <p>防腐隔潮：柱础充当木柱与土壤间的“绝缘层”，通过石材的致密性阻止水分上延，延缓柱脚腐朽。</p>
+                  <p>抗震消能：传统木构采用<strong>“平摆浮搁”</strong>的非刚性连接方式。在地震发生时，柱础能提供一定的水平滑动冗余，起到绝佳的缓冲消能作用，展现了古人的结构智慧。</p>
+
+                  <h5>2. 形制美学与工艺追求</h5>
+                  <p>造型嬗变：形制由简入繁，历经素平础、方座圆础、覆盆础，演进至线条圆润的<strong>鼓形础（瓜墩）</strong>及复杂的八角础。</p>
+                  <p>纹饰隐喻：础身常雕刻莲瓣纹、瑞兽纹（狮/鹿）或卷草祥云。这些纹样不仅是视觉的点缀，更寄托了“长寿、吉祥、生生不息”的家族祈愿。</p>
+                  <p>营造准则：讲究石木<strong>“严丝合缝”</strong>。石材须挑选无瑕原石，经手工精雕细琢后，确保柱础轴线与立柱轴线精准重合，实现压力受力的均匀传递。</p>
+                </div>
+
+                <div class="platform-word-modal" hidden>
+                  <div class="platform-word-backdrop" data-close-platform-modal></div>
+                  <div class="platform-word-dialog" role="dialog" aria-modal="true" aria-label="台基与柱础词条详情">
+                    <button class="platform-word-close" type="button" data-close-platform-modal>关闭</button>
+                    <h5 class="platform-word-title"></h5>
+                    <p class="platform-word-text"></p>
+                    <div class="platform-word-image-wrap">
+                      <img class="platform-word-image" alt="" />
+                      <div class="platform-word-image-fallback" hidden>图片待补充</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `,
+          },
+          {
+            title: '砖砌与叠涩',
+            html: `
+              <h4>砖砌与叠涩</h4>
+              <div class="craft-rich-layout craft-brick-layout">
+                <div class="craft-rich-col">
+                  <h5>一、砖砌：古建筑的“万能砖石工艺”</h5>
+                  <p><strong>定义：</strong>以砖为主要块材，搭配砂浆（或灰泥）砌筑成的整体构造体，是最传统、应用最广的砌体形式。</p>
+                  <p class="craft-rich-subtitle">核心特点：</p>
+                  <p>实用性：抗压、耐火、隔音还耐用，古代没有钢筋水泥时，它是建筑“主力军”。</p>
+                  <p>材料：砖和灰浆容易获取，造价低，不用复杂工具就能施工。</p>
+                  <p>缺点：较重，抗地震能力弱，传统黏土砖会占用耕地。</p>
+                  <p class="craft-rich-subtitle">常见分类：</p>
+                  <p>按配筋：无筋砖砌（纯砖 + 砂浆）、配筋砖砌（内置钢筋 / 网片增强）。</p>
+                  <p>按砖型：实心砖、多孔砖、空心砖砌体。</p>
+                  <p>按功能：承重墙（承重）、非承重墙 / 填充墙（围护、分隔）。</p>
+                  <p class="craft-rich-subtitle">中国古建筑里的应用：</p>
+                  <p>宏大建筑：明长城的砖墙、西安城墙的包砖、明清皇陵的红墙。</p>
+                  <p>日常建筑：民居的清水砖墙、园林里的景墙、寺院山门的承重墙。</p>
+                  <p>特殊构件：砖塔、汉魏时期的砖室墓、颐和园的砖拱桥。</p>
+                </div>
+
+                <div class="craft-brick-media">
+                  <figure class="craft-brick-figure">
+                    <img src="详细介绍图片/须弥座.png" alt="须弥寺图片" />
+                    <figcaption>须弥寺图片</figcaption>
+                  </figure>
+                  <figure class="craft-brick-figure">
+                    <img src="详细介绍图片/叠涩.png" alt="叠涩图片" />
+                    <figcaption>叠涩图片</figcaption>
+                  </figure>
+                </div>
+
+                <div class="craft-rich-col">
+                  <h5>二、叠涩：砖砌里的“巧思技法”</h5>
+                  <p><strong>定义：</strong>一种特殊砖砌 / 石砌技法：逐层水平向外挑出（或向内收进）、上块压下块，形成悬挑、拱、穹顶等构件，也称“假拱”。</p>
+                  <p class="craft-rich-subtitle">三大功能：</p>
+                  <p>向外挑：形成挑檐，保护墙体免受雨淋。</p>
+                  <p>向内缩：形成封顶。</p>
+                  <p>转角换：形成方圆过渡，解决空间异形连接。</p>
+                  <p class="craft-rich-subtitle">核心特点：</p>
+                  <p>结构优良：靠砖之间的压力和摩擦力承重，不用复杂模具。</p>
+                  <p>造型灵活：能做阶梯状，也能切出平滑曲线，兼顾实用和美观。</p>
+                  <p>局限性：跨度不能太大，一般不超过 2 米，需要厚实墙体支撑。</p>
+                  <p class="craft-rich-subtitle">古建筑里的常见场景：</p>
+                  <p>砖塔檐：每层往外挑，形成防雨遮阳的檐口。</p>
+                  <p>门窗过梁：代替拱券，给门窗上方做支撑。</p>
+                  <p>台基装饰：须弥座的分层挑出部分，增加层次感。</p>
+                  <p>穹顶 / 藻井：墓室或清真寺里，往里收形成圆形屋顶。</p>
+                  <p>民居装饰：房子转角即墀头的线脚，还会雕刻花卉图案。</p>
+                </div>
+              </div>
+            `,
+          },
+          {
+            title: '夯土工艺',
+            html: `
+              <h4>夯土工艺</h4>
+              <div class="craft-rich-layout craft-rammed-layout">
+                <div class="craft-rammed-media">
+                  <img class="craft-rammed-image" src="详细介绍图片/夯土墙1.png" alt="夯土墙1" />
+                  <img class="craft-rammed-image" src="详细介绍图片/夯土墙2.png" alt="夯土墙2" />
+                </div>
+
+                <div class="craft-rich-col">
+                  <p>古建筑民居的夯土工艺，是将生土或混合土置于模板内强力夯实形成墙体的传统建造技术，就地取材、低碳环保、冬暖夏凉，是世界最古老的营造技艺之一。</p>
+
+                  <h5>一、核心材料</h5>
+                  <p>夯土强度关键在于“土、砂、筋、黏合剂”的科学搭配：</p>
+                  <p>主料：优选壤土，过筛去杂质，含水率以“手握成团、落地即散”为宜。</p>
+                  <p>骨料与纤维：掺适量砂或石砾增强硬度，加稻草、麦秸或竹片防止开裂。</p>
+                  <p>改良黏合剂：通用“三七灰土”（黄土与石灰配比），南方防潮用“三合土”；福建土楼等精品建筑会掺糯米浆、红糖，提升黏结性和抗渗性。</p>
+
+                  <h5>二、传统工具</h5>
+                  <p>核心工具：杉木模板，控制墙体厚度；石夯或木夯，用于夯实土壤。</p>
+                  <p>辅助工具：夯杵、拍板、线坠（找直）、簸箕、铁锹（运土、铺土）。</p>
+
+                  <h5>三、施工工艺流程</h5>
+                  <p>地基处理：挖槽至坚实土层，铺卵石或块石做“石脚”，防止墙体受潮、沉降。</p>
+                  <p>支模固定：按墙体线路立好两侧模板，用木楔、横担固定牢固，保证垂直平整。</p>
+                  <p>分层夯筑：将拌好的土分层铺入模板，逐层用力夯实；适当铺竹片、木条拉结，上下层错缝摆放，增强墙体整体性。</p>
+                </div>
+
+                <div class="craft-rich-col">
+                  <p>拆模养护：夯筑完成后1-2天拆模，墙体需遮阳避雨阴干1-2周，避免快速干燥开裂。</p>
+                  <p>防水保护：屋顶做宽大出檐遮雨，墙体底部砌砖石或抹石灰护脚，延长使用寿命。</p>
+
+                  <h5>四、工艺特点与优势</h5>
+                  <p>生态低碳：就地取材、无需烧制，拆除后可回归自然，绿色环保。</p>
+                  <p>居住舒适：厚墙能蓄热调温，实现“冬暖夏凉”，且透气性能好，可调节室内湿度。</p>
+                  <p>坚固经济：工艺到位的夯土墙能保存数百年，材料和人工成本低廉。</p>
+
+                  <h5>五、经典代表</h5>
+                  <p>福建土楼：夯土技术的巅峰之作，厚墙搭配糯米浆配方，兼具抗震、抗风、防御功能。</p>
+                  <p>西北窑洞 / 黄土民居：利用黄土特性夯筑或挖洞建造，保温效果极佳。</p>
+                  <p>岭南夯土房：适配南方气候，多掺砂、高石基设计，重点解决防潮问题。</p>
+
+                  <h5>六、局限与古匠对策</h5>
+                  <p>怕水：通过高石基、大出檐、墙裙护脚、添加黏合剂改良。</p>
+                  <p>抗震弱：内置木柱 / 竹筋、墙体下宽上窄、分层错缝夯筑增强稳定性。</p>
+                  <p>开裂：添加纤维材料、控制土壤含水率、缓慢养护减少裂缝。</p>
+                </div>
+              </div>
+            `,
+          },
+          {
+            title: '屋面铺设',
+            html: `
+              <h4>屋面铺设</h4>
+              <div class="craft-rich-layout craft-roof-layout">
+                <div class="craft-rich-col">
+                  <h5>一、核心亮点：屋面曲线与屋顶形式</h5>
+                  <p>曲线实现：通过举架或举折，搭配翼角起翘打造，既方便排水又兼具美感。</p>
+                  <p>屋顶形式：民居主流为硬山顶、悬山顶；高等级建筑常用歇山顶、庑殿顶；亭台楼阁多采用攒尖顶。</p>
+
+                  <h5>二、分层构造</h5>
+                  <p>基层：主要由飞椽、圆椽搭配望板构成，简易版本会用苇箔、竹笆或荆笆替代。</p>
+                  <p>垫层：先铺护板灰封缝，再做麦秸泥与石灰混合的泥背层，官式建筑会额外添加麻刀灰背增强防水效果。</p>
+                  <p>瓦面层：作为核心防水层，材质选择和铺装工艺会根据地域不同有所区别。</p>
+
+                  <h5>三、瓦片材质与铺装工艺</h5>
+                  <p>小青瓦：又称阴阳瓦，是南方民居和祠堂的常用瓦片，采用合瓦方式铺装，由底瓦和盖瓦搭配，铺装后进行铺灰勾缝。</p>
+                  <p>筒瓦与板瓦组合：常见于北方官式建筑和富商民居，用筒瓦覆盖在两列板瓦的缝隙处，施工时做好捉节夹垄。</p>
+                  <p>琉璃瓦：专为宫殿、寺庙等建筑设计，有黄、绿、蓝等多种颜色，分色铺装后用铜丝固定。</p>
+                  <p>干槎瓦：适用于干旱地区，无需灌浆，依靠瓦片之间的叠压实现防水。</p>
+                </div>
+
+                <div class="craft-rich-col">
+                  <h5>四、屋脊与脊饰</h5>
+                  <p>正脊：采用瓦砌或专用脊瓦搭建，大式建筑会搭配吻兽，民居则多设翘脚；徽派建筑的正脊平直，搭配高出屋面的马头墙。</p>
+                  <p>垂脊与戗脊：主要作用是压住瓦片防止滑落，歇山顶、庑殿顶等建筑会在上面安装垂兽和走兽，走兽数量按建筑等级分为一到九个；闽南地区的燕尾脊曲线夸张，极具特色。</p>
+                  <p>其他脊饰：攒尖顶会安装宝顶，官式建筑的屋脊常见仙人走兽装饰。</p>
+                </div>
+              </div>
+            `,
+          },
+          {
+            title: '防水排水',
+            html: `
+              <h4>防水与排水</h4>
+              <div class="craft-rich-layout craft-waterproof-layout">
+                <div class="craft-rich-col">
+                  <p>中国古建筑的防水排水体系，核心遵循“以排为主、以防为辅、多道设防、刚柔并济”的理念，通过材料、构造、布局三位一体，实现了“导、堵、排、渗”的动态平衡，历经千年而不毁。</p>
+
+                  <h5>一、屋顶防水与排水——第一道防线</h5>
+                  <p>屋顶是防水的核心，通过材料、坡度、构件三重设计，实现快速排水。</p>
+                  <p class="craft-rich-subtitle">瓦作系统（材料防水）</p>
+                  <p>仰瓦盖瓦（冷摊瓦）：底瓦（仰瓦）凹面向上形成水槽，盖瓦（俯瓦）扣在其上，雨水沿瓦垄快速流下，不渗缝隙。南方民居常用此法，通风防潮。</p>
+                  <p>琉璃瓦：表面施釉，吸水率极低（&lt;3%），防水性极强，多用于宫殿。</p>
+                  <p>灰背层（复式防水）：木望板上分层铺设护板灰、麻刀泥、月白灰等，厚达15-30厘米，形成致密柔性防水层。</p>
+                  <p>锡背 / 铅皮：高等级建筑用铅锡合金熔化浇铸，整体无缝，防水耐久（如故宫钦安殿）。</p>
+                  <p class="craft-rich-subtitle">举架 / 举折（坡度设计）</p>
+                  <p>屋顶形成上陡下缓的凹曲面：上部陡坡（&gt;60°）加速水流，下部缓坡（&lt;30°）缓冲，使雨水“吐水疾而溜远”，远离墙基。</p>
+                  <p class="craft-rich-subtitle">檐口构件（精准导流）</p>
+                  <p>瓦当：筒瓦端头，保护檐口、固定瓦片。</p>
+                  <p>滴水：底瓦前端下垂成三角尖，引导雨水成线滴落，防止回流侵蚀墙体。</p>
+
+                  <h5>二、台基与墙体防水——第二道防线</h5>
+                  <p>核心是隔绝地下水、阻挡地面水、快速导离基础。</p>
+                  <p>高台基：普遍高出地面1米以上，抬高建筑，远离地下潮气与地面积水。</p>
+                  <p>台基排水：须弥座台基边缘设螭首（兽形吐水嘴），中空开孔。雨水从台面汇入，经螭首向外远抛，形成“千龙吐水”奇观。</p>
+                </div>
+
+                <div class="craft-rich-col">
+                  <p>散水：台基四周用砖、石铺成向外倾斜的坡面，将雨水导离墙基，防止冲刷。</p>
+                  <p class="craft-rich-subtitle">墙体防潮</p>
+                  <p>墙基：底部垫石板、砖或三合土，隔绝毛细水上升。</p>
+                  <p>墙面：砖墙外侧抹灰刷白，或涂桐油、漆，防水防腐。</p>
+                  <p>木构件：柱、梁等涂漆、桐油，甚至裹麻披灰，形成保护层。</p>
+
+                  <h5>三、庭院与地下排水系统——第三道防线</h5>
+                  <p>采用“明暗结合、纵横有序”的网络，确保雨水迅速排走。</p>
+                  <p>地面坡度：庭院地面中高边低，雨水自然向四周汇集。</p>
+                  <p>明沟与钱眼：明沟沿墙、路边设石 / 砖质沟槽导流；钱眼为地面铜钱状进水口，雨水由此渗入地下。</p>
+                  <p>地下暗渠：设干沟、支沟、涵洞，呈网格状；以砖石砌筑并设置合理纵坡，保证水流自净、不淤积；最终汇入内金水河、护城河或城市水系。</p>
+                  <p>渗排结合：地面用倒梯形青砖铺砌，砖缝下大上小，雨水快速渗入地下空腔储存或渗滤，地面无积水。</p>
+
+                  <h5>四、核心防水材料与工艺</h5>
+                  <p>灰浆类：石灰 + 麻刀 + 糯米浆 / 桐油 / 血料，分层夯实，强度高、防渗好。</p>
+                  <p>锡 / 铅背：金属整体防水层，耐腐耐久，用于高等级建筑。</p>
+                  <p>瓦作：筒瓦、板瓦、琉璃瓦，搭接严密，疏水不渗。</p>
+                  <p>石材 / 砖材：汉白玉、青石、青砖，用于台基、散水、沟渠，坚固耐水。</p>
+
+                  <h5>五、地域差异</h5>
+                  <p>北方（干燥寒冷）：厚灰背 + 琉璃瓦 + 高台基，侧重阻隔防潮。</p>
+                  <p>南方（多雨潮湿）：冷摊瓦 + 大出檐 + 通风架空，侧重快速疏导。</p>
+                </div>
+
+                <div class="craft-waterproof-gallery">
+                  <figure class="craft-waterproof-figure">
+                    <img src="详细介绍图片/台基螭首.jpg" alt="台基螭首" />
+                    <figcaption>台基螭首</figcaption>
+                  </figure>
+                  <figure class="craft-waterproof-figure">
+                    <img src="详细介绍图片/瓦当和滴水.jpg" alt="瓦当和滴水" />
+                    <figcaption>瓦当和滴水</figcaption>
+                  </figure>
+                  <figure class="craft-waterproof-figure">
+                    <img src="详细介绍图片/钱眼.jpg" alt="钱眼" />
+                    <figcaption>钱眼</figcaption>
+                  </figure>
+                  <figure class="craft-waterproof-figure">
+                    <img src="详细介绍图片/仰瓦盖瓦.png" alt="仰瓦盖瓦" />
+                    <figcaption>仰瓦盖瓦</figcaption>
+                  </figure>
+                </div>
+              </div>
+            `,
+          },
+          {
+            title: '三雕',
+            html: `
+              <h4>三雕</h4>
+              <div class="craft-rich-layout craft-carving-layout">
+                <div class="craft-rich-col">
+                  <h5>一、木雕</h5>
+                  <p class="craft-rich-subtitle">定义</p>
+                  <p>在木材构件上进行雕刻装饰，是建筑内部最主要的装饰手法。</p>
+
+                  <p class="craft-rich-subtitle">常用材料</p>
+                  <p>南方（徽州、湘南）：银杏、香樟、梓木、楠木、杉木等，质地细腻、防虫耐腐。</p>
+                  <p>北方 / 晋派：核桃木、榆木、松木等，偏粗犷坚实。</p>
+
+                  <p class="craft-rich-subtitle">应用部位</p>
+                  <p>梁枋、月梁、斗拱、雀替、门窗隔扇、窗棂、栏杆、挂落、家具（床、柜、桌、椅）等。</p>
+
+                  <p class="craft-rich-subtitle">技法</p>
+                  <p>浮雕、透雕、圆雕、线刻、多层镂雕。徽派木雕常不施彩绘，保留原木纹理与色泽，温润典雅。</p>
+
+                  <p class="craft-rich-subtitle">题材</p>
+                  <p>戏曲故事、历史典故、神话人物、祥禽瑞兽（龙凤、狮子）、花鸟博古、吉祥图案（福禄寿喜、百子图）。</p>
+
+                  <h5>二、石雕</h5>
+                  <p class="craft-rich-subtitle">定义</p>
+                  <p>以石材为载体的雕刻，坚固耐久，多用于建筑外露、承重或需防潮的部位。</p>
+
+                  <p class="craft-rich-subtitle">常用材料</p>
+                  <p>青灰石、黟县青石、茶园石、花岗岩、汉白玉。</p>
+
+                  <p class="craft-rich-subtitle">应用部位</p>
+                  <p>柱础、门枕石、石牌坊、石栏板、台阶、漏窗、石狮、碑刻。</p>
+
+                  <p class="craft-rich-subtitle">技法</p>
+                  <p>平雕、浅浮雕、深浮雕、圆雕、透雕、阴线刻，刀法刚劲、线条简练。</p>
+
+                  <p class="craft-rich-subtitle">题材</p>
+                  <p>狮子、龙凤、麒麟、卷草纹、暗八仙、云纹、几何纹、山水、历史人物。</p>
+
+                  <h5>三、砖雕</h5>
+                  <p class="craft-rich-subtitle">定义</p>
+                  <p>在特制水磨青砖上精雕细刻，主要装饰建筑外立面。</p>
+
+                  <p class="craft-rich-subtitle">材料</p>
+                  <p>细腻黏土烧制的青灰砖，质地坚密、色泽匀净。</p>
+
+                  <p class="craft-rich-subtitle">应用部位</p>
+                  <p>门楼、门罩、照壁、窗楣、山墙、屋檐、屋脊、牌坊。</p>
+
+                  <p class="craft-rich-subtitle">技法</p>
+                  <p>浮雕、透雕、镂空雕、线刻，层次分明、精细入微。</p>
+
+                  <p class="craft-rich-subtitle">题材</p>
+                  <p>吉祥纹样（蝙蝠、鹿、寿桃）、戏曲人物、渔樵耕读、花鸟山水、历史典故。</p>
+                </div>
+
+                <div class="craft-carving-media">
+                  <img class="craft-carving-image" src="详细介绍图片/木构架工艺.png" alt="木雕" />
+                  <img class="craft-carving-image" src="详细介绍图片/瑞兽纹础.png" alt="石雕" />
+                  <img class="craft-carving-image" src="详细介绍图片/叠涩.png" alt="砖雕" />
+                </div>
+
+                <div class="craft-rich-col">
+                  <h5>四、地域流派对比（最具代表性）</h5>
+                  <p class="craft-rich-subtitle">1. 徽州三雕（安徽 / 江西婺源）</p>
+                  <p>风格：精细雅致、构图严谨、层次丰富，"无宅不雕花"。</p>
+                  <p>木雕：多层镂空，人物神态生动（如宏村承志堂）。砖雕：门楼最华丽，多为整幅故事画。石雕：牌坊、柱础、抱鼓石，庄重古朴。</p>
+
+                  <p class="craft-rich-subtitle">2. 晋派三雕（山西）</p>
+                  <p>风格：雄浑厚重、刀法简练、大气磅礴，受商帮文化影响。</p>
+                  <p>木雕：多施彩绘（金漆木雕），富丽堂皇。砖雕：照壁、屋脊、花墙，题材以吉祥、戏曲为主。石雕：石狮、柱础、石牌楼，造型敦实有力。</p>
+
+                  <p class="craft-rich-subtitle">3. 岭南 / 潮汕三雕（广东、福建）</p>
+                  <p>风格：繁复精巧、金碧辉煌、镂空透雕，大量贴金、彩绘。</p>
+                  <p>木雕：金漆木雕著称，多层立体，"屋檐下的百科全书"。砖雕 / 石雕：嵌瓷、灰塑结合，色彩艳丽，装饰性极强。</p>
+
+                  <p class="craft-rich-subtitle">4. 江南 / 苏派三雕（江苏、浙江）</p>
+                  <p>风格：清秀淡雅、简洁流畅、文人气息浓。题材偏山水、花鸟、书卷，线条柔和，少繁复堆砌。</p>
+
+                  <h5>五、文化内涵与价值</h5>
+                  <p>实用与审美结合：木雕美化室内、保护木构件；石雕承重、防潮、辟邪；砖雕防水护墙、提升门第。</p>
+                  <p>伦理教化：用"二十四孝""忠义故事""渔樵耕读"传递儒家价值观。</p>
+                  <p>吉祥祈福：蝙蝠（福）、鹿（禄）、寿桃（寿）、喜鹊（喜）、狮子（镇宅）等符号。</p>
+                  <p>身份象征：雕刻越精美、题材越高端，代表屋主地位、财富与文化品位越高。</p>
+
+                  <h5>六、工艺流程</h5>
+                  <p>木雕：选料 → 画稿 → 打坯 → 出细 → 打磨→ 髹漆 / 贴金</p>
+                  <p>石雕：选石 → 荒料 → 粗雕 → 细雕 → 磨光</p>
+                  <p>砖雕：制砖→ 画稿 → 打坯 → 出细 → 拼合安装</p>
+                </div>
+              </div>
+            `,
+          },
+          { title: '彩绘与油漆', content: '彩绘即在建筑表面绘制图案和色彩，既起到保护木材的作用，也具有象征性和装饰性。油漆使用桐油、漆液等天然材料，刷涂在木构件表面形成保护膜。颜色选择遵循等级制度，红、金、蓝等颜色在皇家建筑中的应用有严格规定。彩绘与油漆的工艺复杂，需要多次涂刷和打磨。' },
+          { title: '铺地', content: '铺地是指用砖、石、瓷砖等材料铺装地面。不同等级的建筑采用不同的铺地材料和工艺。方砖、青砖用于普通民居和官署，瓷砖用于更高等级的建筑。铺地时需要找平、打灰、排砌，要求对称、整齐、质感统一。庭院铺地还要考虑排水坡度，是建筑与环境结合的重要部分。' },
+        ];
+
+        const platformBubbleData = {
+          taiji: [
+            {
+              term: '素土台基',
+              desc: '纯夯土分层筑成，无砖石贴面，表面简单找平。成本低、施工快，为平民简易民居、乡村土坯房专用，适配对防潮要求不高的场景。',
+              image: '详细介绍图片/素土台基.png',
+            },
+            {
+              term: '砖石贴面台基',
+              desc: '内部夯土基底，外部青砖 / 毛石错缝贴面，边角规整。民间主流样式，兼顾防水与规整度，北方四合院、南方普通宅院常用。',
+              image: '详细介绍图片/砖石贴面台基.png',
+            },
+            {
+              term: '须弥座台基',
+              desc: '分层砌筑（圭角、束腰、上下枋），部分带简单雕刻。高等级台基，仅用于望族宅院、宗族祠堂，彰显身份与气派。',
+              image: '详细介绍图片/须弥座台基.jpeg',
+            },
+            {
+              term: '带踏跺台基',
+              desc: '台基正面 / 侧面设踏跺（垂带式 / 如意式），解决出入不便问题。适配各类有高度的台基，兼顾实用与仪式感。',
+              image: '详细介绍图片/须弥座台基.jpeg',
+            },
+            {
+              term: '带抱角石台基',
+              desc: '四角嵌入整块抱角石加固，包裹转角。强化稳固性、防破损，常见于砖石贴面台基、须弥座台基等需长期保存的建筑。',
+              image: '详细介绍图片/带抱角石台基.png',
+            },
+          ],
+          zhuchu: [
+            {
+              term: '素平础',
+              desc: '方形 / 圆形整块石材，打磨平整无雕刻。工艺简、成本低，平民民居标配，聚焦隔潮承重核心功能。',
+              image: '详细介绍图片/素平础.png',
+            },
+            {
+              term: '方座圆础',
+              desc: '下部方形石座（增受力），上部圆形承柱（适配木柱）。兼顾稳定与适配性，中型民居常用。',
+              image: '详细介绍图片/方座圆础.webp',
+            },
+            {
+              term: '鼓形础（瓜墩）',
+              desc: '上窄下宽、中部鼓出，造型圆润无棱角。压力分散均匀，多见于江南水乡、北方四合院等中型院落。',
+              image: '详细介绍图片/鼓形础.png',
+            },
+            {
+              term: '覆盆础',
+              desc: '上部倒扣盆状，下部方 / 圆形底座，线条规整。比素平础具层次感，是简易与精美间的过渡样式。',
+              image: '详细介绍图片/覆盆础.png',
+            },
+            {
+              term: '莲瓣础',
+              desc: '覆盆表面刻莲瓣纹，寓意吉祥。兼具实用与雅致，江南民居、宗族支祠常用。',
+              image: '详细介绍图片/莲瓣础.png',
+            },
+            {
+              term: '八角础',
+              desc: '正八边形造型，表面平整或带简单线脚。稳定性强，适配开间较大房屋，北方中型宅院、南方商铺多见。',
+              image: '详细介绍图片/八角础.png',
+            },
+            {
+              term: '瑞兽纹础',
+              desc: '雕刻狮、鹿等瑞兽，工艺精细。高规格柱础，仅用于大户宅院、宗祠，彰显地位与财力。',
+              image: '详细介绍图片/瑞兽纹础.png',
+            },
+            {
+              term: '卷草纹础',
+              desc: '雕刻卷草、祥云等连续纹样，装饰性强。适配江南、岭南湿润地区，减少雨水积聚。',
+              image: '详细介绍图片/卷草纹础.png',
+            },
+          ],
+        };
+
+        function initPlatformBubbleScene(carouselRoot) {
+          const scene = carouselRoot.querySelector('[data-platform-interactive]');
+          if (!scene || scene.dataset.initialized === 'true') return;
+
+          const rings = scene.querySelectorAll('.platform-bubble-ring');
+          const modal = scene.querySelector('.platform-word-modal');
+          const titleEl = scene.querySelector('.platform-word-title');
+          const textEl = scene.querySelector('.platform-word-text');
+          const imageEl = scene.querySelector('.platform-word-image');
+          const fallbackEl = scene.querySelector('.platform-word-image-fallback');
+
+          if (!modal || !titleEl || !textEl || !imageEl || !fallbackEl) return;
+
+          const ringPositions = {
+            taiji: [
+              [40,12],
+              [25, 42],
+              [49, 49],
+              [45, 68],
+              [19, 70],
+            ],
+            zhuchu: [
+              [42, 20],
+              [20, 33],
+              [64, 33],
+              [14, 56],
+              [42, 50],
+              [72, 56],
+              [26, 78],
+              [58, 78],
+            ],
+          };
+
+          rings.forEach((ring) => {
+            const topic = ring.dataset.topic;
+            const entries = platformBubbleData[topic] || [];
+            ring.innerHTML = '';
+            const positions = ringPositions[topic] || [];
+
+            entries.forEach((entry, idx) => {
+              const button = document.createElement('button');
+              button.type = 'button';
+              button.className = 'platform-bubble-ball';
+              button.textContent = entry.term;
+              button.dataset.topic = topic;
+              button.dataset.index = String(idx);
+              button.style.setProperty('--float-dur', `${3 + (idx % 4) * 0.45}s`);
+              button.style.setProperty('--float-delay', `${(idx % 5) * 0.18}s`);
+
+              const fallbackX = 50 + ((idx % 3) - 1) * 16;
+              const fallbackY = 34 + Math.floor(idx / 3) * 18;
+              const x = positions[idx] ? positions[idx][0] : fallbackX;
+              const y = positions[idx] ? positions[idx][1] : fallbackY;
+              button.style.left = `${x}%`;
+              button.style.top = `${y}%`;
+
+              ring.appendChild(button);
+            });
+          });
+
+          function closeModal() {
+            modal.hidden = true;
+          }
+
+          scene.addEventListener('click', (event) => {
+            const closeTarget = event.target.closest('[data-close-platform-modal]');
+            if (closeTarget) {
+              closeModal();
+              return;
+            }
+
+            const ball = event.target.closest('.platform-bubble-ball');
+            if (!ball) return;
+
+            const topic = ball.dataset.topic;
+            const idx = Number(ball.dataset.index);
+            const item = (platformBubbleData[topic] || [])[idx];
+            if (!item) return;
+
+            titleEl.textContent = item.term;
+            textEl.textContent = item.desc;
+
+            fallbackEl.hidden = true;
+            imageEl.hidden = false;
+            imageEl.alt = item.term;
+            imageEl.onerror = function () {
+              imageEl.hidden = true;
+              fallbackEl.hidden = false;
+            };
+            imageEl.src = item.image || '';
+
+            modal.hidden = false;
+          });
+
+          scene.dataset.initialized = 'true';
+        }
+
+        // 清空并重建容器
+        const carousel = craftSection.querySelector('.craft-carousel');
+        const timelineItems = craftSection.querySelector('.craft-timeline-items');
+        const timelineLine = craftSection.querySelector('.craft-timeline-line');
+
+        if (!carousel || !timelineItems || !timelineLine) return;
+
+        // 使用每个点之间的虚线连接，不再绘制整条SVG虚线
+        timelineLine.style.display = 'none';
+
+        // 创建工艺项
+        carousel.innerHTML = '';
+        craftItems.forEach((item, idx) => {
+          const div = document.createElement('div');
+          div.className = 'craft-item' + (idx === 0 ? ' active' : '');
+          if (item.html) {
+            div.innerHTML = item.html;
+          } else {
+            div.innerHTML = `
+              <h4>${item.title}</h4>
+              <p>${item.content}</p>
+            `;
+          }
+          carousel.appendChild(div);
+        });
+
+        initPlatformBubbleScene(carousel);
+
+        // 创建时间线点和标签
+        timelineItems.innerHTML = '';
+        craftItems.forEach((item, idx) => {
+          const itemEl = document.createElement('div');
+          itemEl.className = 'craft-timeline-item' + (idx === 0 ? ' active' : '');
+          itemEl.innerHTML = `
+            <div class="craft-timeline-dot"></div>
+            <div class="craft-timeline-label">${item.title}</div>
+          `;
+          itemEl.addEventListener('click', () => {
+            goToSlide(idx);
+          });
+          timelineItems.appendChild(itemEl);
+        });
+
+        let currentIdx = 0;
+
+        function goToSlide(idx) {
+          if (idx < 0 || idx >= craftItems.length) return;
+
+          const items = carousel.querySelectorAll('.craft-item');
+          const tlItems = timelineItems.querySelectorAll('.craft-timeline-item');
+
+          items.forEach((item, i) => {
+            item.classList.remove('active', 'prev', 'next');
+            if (i === idx) {
+              item.classList.add('active');
+            } else if (i < idx) {
+              item.classList.add('prev');
+            } else {
+              item.classList.add('next');
+            }
+          });
+
+          tlItems.forEach((item, i) => {
+            item.classList.toggle('active', i === idx);
+          });
+
+          const activeTimelineItem = tlItems[idx];
+          if (activeTimelineItem) {
+            activeTimelineItem.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+
+          currentIdx = idx;
+          updateButtons();
+        }
+
+        function updateButtons() {
+          const prevBtn = craftSection.querySelector('.craft-nav-prev');
+          const nextBtn = craftSection.querySelector('.craft-nav-next');
+          if (prevBtn) prevBtn.disabled = currentIdx === 0;
+          if (nextBtn) nextBtn.disabled = currentIdx === craftItems.length - 1;
+        }
+
+        // 翻页按钮事件
+        const prevBtn = craftSection.querySelector('.craft-nav-prev');
+        const nextBtn = craftSection.querySelector('.craft-nav-next');
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => {
+            goToSlide(currentIdx - 1);
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => {
+            goToSlide(currentIdx + 1);
+          });
+        }
+
+        updateButtons();
+        craftSection.dataset.initialized = 'true';
+      }
+
       function openPanel(panelId) {
         const targetPanel = document.getElementById(panelId);
         if (!targetPanel) return;
@@ -1862,6 +3327,10 @@
 
         if (panelId === 'buildingStructurePanel') {
           showSection('zhutigoujia');
+        }
+
+        if (panelId === 'buildingCraftPanel') {
+          initCraftPanel();
         }
       }
 
