@@ -8,7 +8,7 @@
         padding: 0;
         width: 1527px;
         height: 740px;
-        overflow: hidden; /* 去掉滚动条，答辩更干净 */
+        overflow: hidden; 
       }
     </style>
     <meta charset="UTF-8">
@@ -169,99 +169,365 @@
             height: 100%;
             padding-top: 80px;
             display: flex;
-        }
-        
-        /* 左侧图片区域 */
-        .image-container {
-            width: 50%;
-            height: 100%;
-            display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            padding-left: 40px;
+            padding-right: 40px;
             overflow-y: auto;
-            padding: 20px;
         }
         
         /* 自定义滚动条 */
-        .image-container::-webkit-scrollbar {
-            width: 8px;
+        .content-section::-webkit-scrollbar {
+            width: 6px;
         }
         
-        .image-container::-webkit-scrollbar-track {
+        .content-section::-webkit-scrollbar-track {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
+            border-radius: 3px;
         }
         
-        .image-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 223, 160, 0.5);
-            border-radius: 4px;
+        .content-section::-webkit-scrollbar-thumb {
+            background: rgba(139, 90, 43, 0.4);
+            border-radius: 3px;
             transition: background 0.3s ease;
         }
         
-        .image-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 223, 160, 0.8);
+        .content-section::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 90, 43, 0.6);
         }
         
-        /* 图片样式 */
-        .文创-image {
-            width: 90%;
-            max-width: 600px;
-            margin-bottom: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+        /* 主标题区域 */
+        .hero-section {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
         }
         
-        .文创-image:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        .文创-title {
+            font-size: 48px;
+            font-weight: bold;
+            color: #5d3a1a;
+            margin-bottom: 15px;
+            letter-spacing: 4px;
         }
         
-        /* 右侧文字介绍区域 */
-        .text-container {
-            width: 50%;
-            height: 100%;
+        .slogan {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8b5a2b;
+            letter-spacing: 6px;
+            margin-top: 10px;
+        }
+        
+        /* 卡片网格布局 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto auto auto auto;
+            gap: 25px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: rgba(245, 232, 211, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-image {
+            width: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+        
+        .card:hover .card-image {
+            transform: scale(1.1);
+        }
+        
+        .card-image-wrapper {
+            overflow: hidden;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #5d3a1a;
+            margin-bottom: 10px;
+        }
+        
+        .card-description {
+            font-size: 14px;
+            color: #6b4423;
+            line-height: 1.5;
+        }
+        
+        /* 主图卡片 (1*2) */
+        .card-main {
+            grid-row: span 2;
+        }
+        
+        .card-main .card-image-wrapper {
+            height: 450px;
+        }
+        
+        .card-main .card-image {
+            height: 450px;
+        }
+        
+        .card-main .card-content {
+            padding: 15px;
+        }
+        
+        .card-main .card-title {
+            font-size: 24px;
+        }
+        
+        .card-main .card-description {
+            font-size: 16px;
+        }
+        
+        /* 三视图卡片 (1*3) */
+        .card-three-view {
+            grid-row: span 3;
+        }
+        
+        .card-three-view .card-image-wrapper {
+            height: 750px;
+        }
+        
+        .card-three-view .card-image {
+            height: 750px;
+        }
+        
+        .card-three-view .card-content {
+            padding: 15px;
+        }
+        
+        /* 小卡片 (1*1) */
+        .card-small {
+            grid-row: span 1;
+        }
+        
+        .card-small .card-image-wrapper {
+            height: 200px;
+        }
+        
+        .card-small .card-image {
+            height: 200px;
+        }
+        
+        .card-small .card-content {
+            padding: 15px;
+        }
+        
+        .card-small .card-title {
+            font-size: 16px;
+        }
+        
+        .card-small .card-description {
+            font-size: 12px;
+        }
+        
+        /* 完整生态卡片 (3*2) */
+        .card-complete {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+        
+        .card-complete .card-image-wrapper {
+            height: 450px;
+        }
+        
+        .card-complete .card-image {
+            height: 450px;
+        }
+        
+        .card-complete .card-content {
+            padding: 20px;
+        }
+        
+        .card-complete .card-title {
+            font-size: 20px;
+        }
+        
+        .card-complete .card-description {
+            font-size: 14px;
+        }
+        
+        /* 文字介绍区域 */
+        .text-section {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
             padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            position: relative;
+        }
+        
+        .text-content {
+            flex: 1;
+        }
+        
+        .text-images {
+            position: relative;
+            width: 300px;
             display: flex;
             flex-direction: column;
+            gap: 20px;
+            background: transparent;
+        }
+        
+        .text-image-item {
+            width: 100%;
+            border-radius: 0;
+            overflow: hidden;
+            background: transparent;
+            box-shadow: none;
+        }
+        
+        .text-image-item img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            background: transparent;
+            border-radius: 0;
+        }
+        
+        .image-container {
+            position: relative;
+        }
+        
+        .larger-image {
+            width: 105%;
+            height: auto;
+            margin-left: -2.5%;
+        }
+        
+        .download-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #8b5a2b;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            color: #6b4423;
-            text-shadow: none;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
         }
         
-        /* 标题样式 */
-        .文创-title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 30px;
+        .image-container:hover .download-button {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .download-button:hover {
+            background: #8b5a2b;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .letter-image {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            background: transparent;
+        }
+        
+        .letter-image img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            background: transparent;
+        }
+        
+        .text-section h2 {
+            font-size: 28px;
             color: #5d3a1a;
-            text-shadow: none;
-        }
-        
-        /* 段落样式 */
-        .文创-description {
-            font-size: 18px;
-            line-height: 1.6;
             margin-bottom: 20px;
+            border-bottom: 2px solid #8b5a2b;
+            padding-bottom: 10px;
         }
         
-        /* 强调文本 */
+        .text-section p {
+            font-size: 16px;
+            color: #6b4423;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
         .highlight {
             color: #8b5a2b;
             font-weight: bold;
         }
         
-        /* Slogan样式 */
-        .slogan {
-            font-size: 24px;
-            font-weight: bold;
-            margin-top: 5px;
-            margin-bottom: 20px;
+        /* 特色产品展示 */
+        .features-section {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        
+        .features-section h2 {
+            font-size: 28px;
             color: #5d3a1a;
+            margin-bottom: 20px;
             text-align: center;
-            text-shadow: none;
-            letter-spacing: 2px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .feature-title {
+            font-size: 16px;
+            color: #5d3a1a;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -333,42 +599,211 @@
         
         <!-- 内容区域 -->
         <div class="content-section">
-            <!-- 左侧图片区域 -->
-            <div class="image-container">
-                <img src="ip主图.jpg" alt="IP主图" class="文创-image">
-                <img src="ip3视图.png" alt="IP 3视图" class="文创-image">
-                <img src="ip文创1.jpg" alt="IP文创1" class="文创-image">
-                <img src="ip文创2.jpg" alt="IP文创2" class="文创-image">
-                <img src="ip文创3.jpg" alt="IP文创3" class="文创-image">
-                <img src="ip文创4.jpg" alt="IP文创4" class="文创-image">
-                <img src="ip文创5.jpg" alt="IP文创5" class="文创-image">
-                <img src="ip文创.png" alt="IP文创" class="文创-image">
+            <!-- 主标题区域 -->
+            <div class="hero-section">
+                <h1 class="文创-title">国风筑韵 · 文创周边</h1>
+                <p class="slogan">把榫卯，装进口袋里。</p>
             </div>
             
-            <!-- 右侧文字介绍区域 -->
-            <div class="text-container">
-                <h1 class="文创-title">国风筑韵 · 文创周边</h1>
-                <p class="文创-description">
-                    <span class="highlight">"卯卯"</span>，一个把中国榫卯变得可以被带走的IP。
-                </p>
-                <p class="文创-description">
-                    它不来源于某一座具体的建筑，而是提取自东方木构最核心的智慧——榫与卯的咬合关系。我们将原本复杂的结构语言，转译为一个圆润、治愈、没有棱角的萌系形象，让传统文化不再遥远，而是变得轻松、亲近、可以被日常拥有。
-                </p>
-                <p class="文创-description">
-                    <span class="highlight">"卯卯"</span>标志性的三段式身体，源于榫卯层层嵌合的构造逻辑；顶部的榫卯小顶冠，像一个被精巧锁住的秘密，强化了记忆点，也成为整个IP最具辨识度的视觉符号。每一处细节，都在用更柔软的方式，讲述坚固而精密的东方结构之美。
-                </p>
-                <p class="文创-description">
-                    在视觉上，<span class="highlight">"卯卯"</span>选择浅胡桃木与原木米白的低饱和色系，搭配柔和哑光质感，呈现出克制、温润的新中式气质——既有文化底蕴，又符合当代审美，天然适配家居、文创与生活方式场景。
-                </p>
-                <p class="文创-description">
-                    围绕<span class="highlight">"卯卯"</span>，我们构建了一套完整的文创产品生态：从随身携带的钥匙扣、徽章，到具有陪伴感的手办，再到融入日常的杯具、布艺与文具，让"榫卯"从建筑走入生活，从结构变成情绪价值。
-                </p>
-                <p class="文创-description">
-                    <span class="highlight">"卯卯"</span>不仅是一件产品，更是一种可以被触摸的东方美学。
-                </p>
-                <p class="slogan">
-                    把榫卯，装进口袋里。
-                </p>
+            <!-- 文字介绍区域 -->
+            <div class="text-section">
+                <div class="text-content">
+                    <h2>关于卯卯</h2>
+                    <p>
+                        <span class="highlight">"卯卯"</span>，一个把中国榫卯变得可以被带走的IP。
+                    </p>
+                    <p>
+                        它不来源于某一座具体的建筑，而是提取自东方木构最核心的智慧——榫与卯的咬合关系。我们将原本复杂的结构语言，转译为一个圆润、治愈、没有棱角的萌系形象，让传统文化不再遥远，而是变得轻松、亲近、可以被日常拥有。
+                    </p>
+                    <p>
+                        <span class="highlight">"卯卯"</span>标志性的三段式身体，源于榫卯层层嵌合的构造逻辑；顶部的榫卯小顶冠，像一个被精巧锁住的秘密，强化了记忆点，也成为整个IP最具辨识度的视觉符号。每一处细节，都在用更柔软的方式，讲述坚固而精密的东方结构之美。
+                    </p>
+                    <p>
+                        在视觉上，<span class="highlight">"卯卯"</span>选择浅胡桃木与原木米白的低饱和色系，搭配柔和哑光质感，呈现出克制、温润的新中式气质——既有文化底蕴，又符合当代审美，天然适配家居、文创与生活方式场景。
+                    </p>
+                    <p>
+                        围绕<span class="highlight">"卯卯"</span>，我们构建了一套完整的文创产品生态：从随身携带的钥匙扣、徽章，到具有陪伴感的手办，再到融入日常的杯具、布艺与文具，让"榫卯"从建筑走入生活，从结构变成情绪价值。
+                    </p>
+                    <p>
+                        <span class="highlight">"卯卯"</span>不仅是一件产品，更是一种可以被触摸的东方美学。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 卡片网格 -->
+            <div class="cards-grid">
+                <!-- 主图卡片 (1*2) -->
+                <div class="card card-main">
+                    <div class="card-image-wrapper">
+                        <img src="ip主图.jpg" alt="IP主图" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">IP主图（毛绒版）</h3>
+                        <p class="card-description">它是跨越千年的木头长出了柔软的心，在每一次拥抱里，为你锁住那些细碎而坚固的温柔。</p>
+                    </div>
+                </div>
+                
+                <!-- 右侧第一个小卡片 (1*1) -->
+                <div class="card card-small">
+                    <div class="card-image-wrapper">
+                        <img src="ip文创2.jpg" alt="IP文创2" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">陶瓷马克杯</h3>
+                        <p class="card-description">捧在手心的不止是一杯暖阳，还有那份克制而圆润的东方风骨，温润着每一个寻常的清晨。</p>
+                    </div>
+                </div>
+                
+                <!-- 右侧第二个小卡片 (1*1) -->
+                <div class="card card-small">
+                    <div class="card-image-wrapper">
+                        <img src="ip文创1.jpg" alt="IP文创1" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">金属徽章</h3>
+                        <p class="card-description">把这颗小小的"结构之魂"别在心口，像是带上了一个精巧的秘密，去奔赴每一场热气腾腾的日常。</p>
+                    </div>
+                </div>
+                
+                <!-- 三视图卡片 (1*3) -->
+                <div class="card card-three-view">
+                    <div class="card-image-wrapper">
+                        <img src="ip3视图.png" alt="IP 3视图" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">结构拆解三视图</h3>
+                        <p class="card-description">从一笔线条到层层嵌合的身体，我们拆解的是建筑逻辑，组装的是对东方美学的一心一意。</p>
+                    </div>
+                </div>
+                
+                <!-- 右侧第三个小卡片 (1*1) -->
+                <div class="card card-small">
+                    <div class="card-image-wrapper">
+                        <img src="ip文创3.jpg" alt="IP文创3" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">手办与贴纸</h3>
+                        <p class="card-description">它可以是案头的静默陪伴，也可以是随处贴下的奇思妙想，提醒你生活偶尔也需要一点"咬合"的智慧。</p>
+                    </div>
+                </div>
+                
+                <!-- 右侧第四个小卡片 (1*1) -->
+                <div class="card card-small">
+                    <div class="card-image-wrapper">
+                        <img src="ip文创4.jpg" alt="IP文创4" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">皮质书签吊坠</h3>
+                        <p class="card-description">借一抹原木色的温润，为你标记书页里的春秋，让阅读在每一次指尖触摸中变得更有质感。</p>
+                    </div>
+                </div>
+                
+                <!-- 右侧第五个小卡片 (1*1) -->
+                <div class="card card-small">
+                    <div class="card-image-wrapper">
+                        <img src="ip文创5.jpg" alt="IP文创5" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">木质餐具</h3>
+                        <p class="card-description">三餐四季的温情都在这一提一放之间，让古老的东方木艺，成为你餐桌上最柔软的守护。</p>
+                    </div>
+                </div>
+                
+                <!-- 完整生态卡片 (3*2) -->
+                <div class="card card-complete">
+                    <div class="card-image-wrapper">
+                        <img src="ip文创.png" alt="IP文创" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">全家福合照</h3>
+                        <p class="card-description">所谓向往的生活，就是让古老的"榫卯"走下飞檐，住进你的口袋，陪你虚度光阴。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 关于卯卯的深情文字 -->
+            <div class="text-section">
+                <div class="text-content">
+                    <h2>关于"卯卯"，关于长久的陪伴</h2>
+                    <p>
+                        在这个万物皆可更替的时代，谢谢你，愿意慢下来，锁住这一份温润。
+                    </p>
+                    <p>
+                        "卯卯"的诞生，其实源于一个很小的愿望：想让那些在古建筑脊梁上撑起千年的硬核智慧，也能化作你掌心里的一抹柔软。我们拆解了宏大的房梁，剔除了冰冷的棱角，只为了留住那份最赤诚的"咬合"——那是木头与木头之间无需言说的默契，也是我们想递给你的一份安全感。
+                    </p>
+                    <p>
+                        我们总在寻找那种"严丝合缝"的关系，不是吗？<br>
+                        是清晨推开窗时的恰好合拍，是深夜亮起灯时的心领神会。
+                    </p>
+                    <p>
+                        所以，我们把这份古老的东方守护，揉进了浅胡桃色的呼吸里，藏进了圆润治愈的曲线中。它不只是书桌上的一个点缀，更是你疲惫时的一颗"定心丸"；它不只是可以被带走的文创，更是跨越时空、只为你而来的情绪锚点。
+                    </p>
+                    <p>
+                        让"榫卯"从高耸的飞檐跳进你的口袋，去锁住那些细碎的、闪光的、值得被长久拥有的日常。
+                    </p>
+                    <p>
+                        现在啊，未来啊。
+                    </p>
+                    <p>
+                        愿这一份来自东方的长情，在无数花开与花落的时分陪伴你。
+                    </p>
+                </div>
+                <div class="text-images">
+                    <div class="text-image-item">
+                        <div class="image-container">
+                            <img src="卯卯日出图.jpg" alt="卯卯日出图" class="larger-image">
+                            <a href="卯卯日出图.jpg" download class="download-button">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="letter-image">
+                    <img src="一封信.jpg" alt="一封信">
+                </div>
+            </div>
+            
+            <!-- 特色产品展示 -->
+            <div class="features-section">
+                <h2>产品系列 - 正在陆续设计ing</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🔑</div>
+                        <div class="feature-title">钥匙扣</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎖️</div>
+                        <div class="feature-title">徽章</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🧸</div>
+                        <div class="feature-title">手办</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">☕</div>
+                        <div class="feature-title">杯具</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🧵</div>
+                        <div class="feature-title">布艺</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✏️</div>
+                        <div class="feature-title">文具</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🏠</div>
+                        <div class="feature-title">家居</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎁</div>
+                        <div class="feature-title">礼品</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
