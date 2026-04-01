@@ -571,11 +571,159 @@
       border-bottom: 1px solid #b89c72;
     }
 
+    .aesthetic-feature-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 96px;
+      height: 38px;
+      margin: 0 0 10px;
+      border: 1px solid #c7a777;
+      border-radius: 8px;
+      background: #f3e4cb;
+      color: #3b2b17;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .aesthetic-feature-btn:hover {
+      background: #e8d0aa;
+      transform: translateY(-1px);
+    }
+
+    .roof-intro-panel {
+      padding: 0;
+      border: none;
+      background: transparent;
+      font-family: "SimSun", "Songti SC", serif;
+    }
+
+    .roof-intro-topbar {
+      position: relative;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .roof-intro-back {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 1px solid #b89c72;
+      background: #f3e7d2;
+      color: #3b2b17;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: "SimSun", "Songti SC", serif;
+    }
+
+    .roof-intro-title {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1;
+      color: #2f2417;
+      font-family: "SimSun", "Songti SC", serif;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .roof-intro-canvas {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      min-height: 620px;
+      background: transparent;
+    }
+
+    .roof-intro-left {
+      padding: 8px 8px 18px 0;
+      color: #3f3020;
+      line-height: 1.85;
+      box-sizing: border-box;
+      max-width: 96%;
+      margin-right: auto;
+      margin-left: 56px;
+    }
+
+    .roof-intro-main-title {
+      margin: 0 0 10px;
+      font-size: 22px;
+      color: #352615;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .roof-intro-quote {
+      margin: 0 0 12px;
+      font-size: 20px;
+      color: #3b2a17;
+      font-family: "SimSun", "Songti SC", serif;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .roof-intro-text {
+      margin: 0 0 10px;
+      font-size: 16px;
+      text-align: justify;
+      text-indent: 2em;
+    }
+
+    .roof-intro-subtitle {
+      margin: 12px 0 8px;
+      font-size: 18px;
+      color: #2a1d0f;
+      font-weight: 700;
+    }
+
+    .roof-intro-right {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 4px 0 10px 14px;
+      box-sizing: border-box;
+    }
+
+    .roof-intro-figure {
+      margin: 0;
+      border: 1px solid rgba(145, 104, 57, 0.35);
+      border-radius: 8px;
+      background: rgba(255, 247, 232, 0.86);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(52, 34, 17, 0.14);
+    }
+
+    .roof-intro-figure img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .roof-intro-figure figcaption {
+      padding: 6px 8px;
+      font-size: 13px;
+      color: #402d18;
+      text-align: center;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
     #buildingCraftPanel {
-      background-image: url('详细介绍图片/建造工艺背景1.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background-image: url('详细介绍图片/红墙背景图1.png');
+      background-size: 100% auto;
+      background-position: top center;
+      background-repeat: repeat-y;
     }
 
     #buildingCraftPanel .panel-header {
@@ -1618,7 +1766,7 @@
 
     .platform-bubble-section {
       width: 100%;
-      min-height: 178px;
+      min-height: 196px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1663,9 +1811,10 @@
 
     .platform-bubble-ring {
       position: relative;
-      width: 208px;
-      height: 208px;
-      border-radius: 50%;
+      width: 100%;
+      max-width: 230px;
+      height: 196px;
+      border-radius: 14px;
       border: none;
       background: transparent;
       box-shadow: none;
@@ -1673,12 +1822,12 @@
 
     .platform-bubble-ring .platform-bubble-ball {
       position: absolute;
-      width: 52px;
-      height: 52px;
-      min-width: 52px;
+      width: 54px;
+      height: 54px;
+      min-width: 54px;
       border-radius: 50%;
       padding: 5px;
-      font-size: 10px;
+      font-size: 11px;
       line-height: 1.1;
       text-align: center;
       display: flex;
@@ -2587,11 +2736,156 @@
 
     <section class="section" id="pingmianbujv">
       <h3>平面布局</h3>
-      <div class="content-with-image">
-        <div class="content-text">
-          <p>这里用于填写平面布局的介绍内容。</p>
-        </div>
-        <div class="image-slot">平面布局配图待补充</div>
+      <div class="gable-layout">
+        <article class="gable-item">
+          <div class="gable-text">
+            <h4>合院式布局</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;以中心院落为空间核心，建筑沿四周有序围合，整体呈现严格的中轴线对称格局。空间层次分明、秩序严谨，高度体现传统礼制与家族伦理观念。院落兼具采光、通风、活动与景观核心功能，布局规整大气，是我国北方地区最具代表性的民居形式。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：北京四合院、晋派大院、北方乡村合院、曲阜孔府前院</p>
+          </div>
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/合院式布局"
+              data-src-fallbacks="单轴线对称_山西王家大院,十字对称_潮汕四点金"
+              alt="合院式布局示意图"
+            />
+          </div>
+        </article>
+
+        <article class="gable-item reverse">
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/天井式布局"
+              data-src-fallbacks="天井式布局"
+              alt="天井式布局示意图"
+            />
+          </div>
+          <div class="gable-text">
+            <h4>天井式布局</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;由房屋四面或三面围合形成尺度精巧的中心天井，空间布局紧凑集约。这一结构能高效化解南方湿热气候带来的困扰，通过天井实现自然采光与排水，让内部空间通透凉爽，实用性极强，成为江南及华南民居的主流模式。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：徽派民居、苏派民居、岭南民居、西关大屋、潮汕“四点金”</p>
+          </div>
+        </article>
+
+        <article class="gable-item">
+          <div class="gable-text">
+            <h4>环形围合布局</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;建筑以环形或弧形形态围绕中心庭院整体布置，形成封闭且内向的聚居空间。此类布局结构整体性强、防御性能突出，非常适合战乱环境下的大家族聚居。建筑强调内外有别与团结共生，是闽、粤客家地区极具地域特色的传统形制。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：福建土楼、粤派围龙屋、客家围楼、梅州四角楼、龙岩圆楼</p>
+          </div>
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/环形围合布局"
+              data-src-fallbacks="环形围合布局"
+              alt="环形围合布局示意图"
+            />
+          </div>
+        </article>
+
+        <article class="gable-item reverse">
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/山地自由布局"
+              data-src-fallbacks="山地自由布局,山地自由式布局"
+              alt="山地自由布局示意图"
+            />
+          </div>
+          <div class="gable-text">
+            <h4>山地自由布局</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;顺应山地起伏的自然地形灵活布置，建筑随坡就势、高低错落，不刻意追求对称轴线。通过错层、悬挑与台地处理适应地形高差，既减少了土方开挖成本，又与自然环境相融共生，是山区地形最自然实用的布局方式。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：川派山地民居、滇派一颗印、湘西吊脚楼、羌族碉楼村寨、贵州石板房</p>
+          </div>
+        </article>
+
+        <article class="gable-item">
+          <div class="gable-text">
+            <h4>窑洞式布局</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;依托黄土高原深厚土层条件，沿崖壁横向开挖或掘地成穴，建筑结构稳定且冬暖夏凉。布局多沿崖体成排分布或构成下沉式院落，内部拱券规整，外部顺势而为，几乎不占用平地耕地，是黄土高原独有的生态型民居布局。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：陕北靠崖窑、豫西地坑院、陇东窑洞、黄土高原崖居、山西土窑</p>
+          </div>
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/窑洞式布局"
+              data-src-fallbacks="陕北窑洞布局"
+              alt="窑洞式布局示意图"
+            />
+          </div>
+        </article>
+
+        <article class="gable-item reverse">
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/干栏式布局"
+              data-src-fallbacks="干栏式布局"
+              alt="干栏式布局示意图"
+            />
+          </div>
+          <div class="gable-text">
+            <h4>干栏式布局</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;以高木柱将建筑整体底层架空，上层作为主要居住空间，形成典型的“下空上住”结构。此布局能有效隔绝地面潮气与虫蛇侵扰，完美适配西南地区多雨湿热气候及坡地环境，空间轻盈通透，极具民族特色。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：傣族竹楼、桂北木楼、苗寨吊脚楼、侗族鼓楼民居、黎族船形屋</p>
+          </div>
+        </article>
+
+        <article class="gable-item">
+          <div class="gable-text">
+            <h4>多进多路并联合院</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;在单一合院基础上向纵向多进延伸、横向多路并联，形成规模宏大的建筑群组。内部主次分明、功能分区清晰，既满足大家族分支聚居的生活需求，又通过复杂的院落体系保持了传统秩序与礼制，是大型官宅与富商宅院的复杂布局典范。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：晋商大院（王家大院、乔家大院）、曲阜孔府民居、苏州拙政园住宅部分、扬州何园宅院群</p>
+          </div>
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/多进多路并联合院"
+              data-src-fallbacks="单轴线对称_山西王家大院"
+              alt="多进多路并联合院示意图"
+            />
+          </div>
+        </article>
+
+        <article class="gable-item reverse">
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/水乡枕水布局"
+              data-src-fallbacks="水乡枕水布局"
+              alt="水乡枕水布局示意图"
+            />
+          </div>
+          <div class="gable-text">
+            <h4>水乡枕水布局</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;建筑沿河道、水巷依水而建，形成“前街后河、依水筑屋”的独特格局。水路与街巷并行，既保障了交通便利，又赋予建筑灵动的滨水景观。建筑顺应水岸曲线自由排布，是江南水乡生活气息最浓厚的布局形式。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：江南水乡民居、乌镇古宅、周庄枕水建筑、同里临水民居、甪直水巷宅院</p>
+          </div>
+        </article>
+
+        <article class="gable-item">
+          <div class="gable-text">
+            <h4>碉房 / 碉楼式布局</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;以石砌或夯土构筑高层坚固主体，平面方正紧凑。外墙厚实、开窗窄小，集居住与防御功能于一体。整体建筑高耸稳固，视野开阔，能有效抵御外部匪患与恶劣气候，是高原与侨乡地区特色鲜明的防御型民居布局。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：藏族碉房、广东开平碉楼、羌族石楼、川西碉房、福建土楼碉楼</p>
+          </div>
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/碉楼式布局"
+              data-src-fallbacks="碉楼式布局"
+              alt="碉房 / 碉楼式布局示意图"
+            />
+          </div>
+        </article>
+
+        <article class="gable-item reverse">
+          <div class="gable-image">
+            <img
+              data-src-base="详细介绍图片/一字排开_联排式民居"
+              data-src-fallbacks="江南民居_南方变体"
+              alt="一字排开 / 联排式民居示意图"
+            />
+          </div>
+          <div class="gable-text">
+            <h4>一字排开 / 联排式民居</h4>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;建筑沿街道或河岸横向延展成线，多户并联、共用山墙，形成连续整齐的立面形态。户型多呈窄面宽、大进深的条状结构，常采用前店后宅、下店上宅的复合功能，既节约了用地成本，又利于沿街商贸往来。</p>
+            <p class="desc-text"><br><br>&nbsp;&nbsp;代表：北方村镇沿街民居、徽州沿街店宅、广东竹筒屋、江南水巷连屋、平遥古城沿街商铺</p>
+          </div>
+        </article>
       </div>
     </section>
   </section>
@@ -2683,11 +2977,932 @@
       <h3>建筑美学</h3>
       <div class="content-with-image">
         <div class="content-text">
+          <button class="aesthetic-feature-btn" type="button" data-panel-target="roofIntroPanel">屋顶</button>
+          <button class="aesthetic-feature-btn" type="button" data-panel-target="windowIntroPanel">门</button>
+          <button class="aesthetic-feature-btn" type="button" data-panel-target="windowPanel">窗</button>
+          <button class="aesthetic-feature-btn" type="button" data-panel-target="yardIntroPanel">院落</button>
           <p>这里用于填写建筑美学的介绍内容。</p>
         </div>
         <div class="image-slot">建筑美学配图待补充</div>
       </div>
     </section>
+  </section>
+
+  <section class="intro-panel roof-intro-panel" id="roofIntroPanel">
+    <div class="roof-intro-topbar">
+      <button class="roof-intro-back" type="button" data-close-panel>返回</button>
+      <h2 class="roof-intro-title">屋顶美学</h2>
+    </div>
+    <div class="roof-intro-canvas">
+      <div class="roof-intro-left">
+        <h3 class="roof-intro-main-title">壹·屋面美学</h3>
+        <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px; margin-top: 20px;">
+          <p class="roof-intro-quote">如鸟斯革，如翚斯飞</p>
+          <p class="roof-intro-text">民居屋顶多为凹曲缓和坡面，不似西方平直硬顶。屋面从中部向檐口缓缓下弯、檐角轻扬，线条柔和流动，消解建筑厚重感，生出轻盈升腾的气韵。</p>
+
+          <h4 class="roof-intro-subtitle">南北屋面气质差异</h4>
+          <p class="roof-intro-text">北方民居（四合院、晋派）：屋面坡度平缓、弧度收敛，线条端正沉稳，大气质朴，适配北方大风、严寒气候，视觉庄重均衡。</p>
+          <p class="roof-intro-text">江南苏浙、皖南民居：屋面陡缓相宜，檐部曲度舒展柔和，烟雨之下曲面层次朦胧，自带水墨写意美感。</p>
+          <p class="roof-intro-text">闽南潮汕民居：屋面大曲大折，弧度奔放夸张，张力极强。</p>
+
+          <h4 class="roof-intro-subtitle">反宇向阳巧构之美</h4>
+          <p class="roof-intro-text">屋顶内凹抬檐，既利于远排雨水、保护木构墙身；又能收拢天光、采光匀和，做到实用形态与视觉韵律合一。</p>
+        </div>
+      </div>
+      <div class="roof-intro-right">
+        <figure class="roof-intro-figure">
+          <img src="详细介绍图片/如鸟斯革.png" alt="如鸟斯革" />
+          <figcaption>如鸟斯革</figcaption>
+        </figure>
+        <figure class="roof-intro-figure">
+          <img src="详细介绍图片/闽南潮汕民居屋顶.jpg" alt="闽南潮汕民居屋顶" />
+          <figcaption>闽南潮汕民居屋顶</figcaption>
+        </figure>
+      </div>
+    </div>
+    <!-- 贰·屋顶形制 -->
+    <div style="position: relative; width: 100%; margin-top: 40px;">
+      <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: center; margin-bottom: 30px;">贰·屋顶形制</h3>
+      <div style="display: flex; justify-content: space-between; padding: 0 60px; box-sizing: border-box;">
+        <!-- 单檐屋顶 -->
+        <div style="width: 45%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px;">
+          <div style="width: 100%; height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 18px;">图片待补充</div>
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; text-align: center; margin-bottom: 15px;">单檐屋顶</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">民间普通民居最主流的形式，仅有一层屋檐，结构简洁实用。屋面多为两坡或四坡简单坡面，线条干净利落、质朴稳重，不事张扬，契合民居低调内敛的营造理念，整体呈现出平和、舒展、贴近生活的美感。在视觉上追求简约克制的秩序，以少胜多，体现出朴素自然、含蓄温润的东方审美特质。</p>
+        </div>
+        <!-- 重檐屋顶 -->
+        <div style="width: 45%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px;">
+          <div style="width: 100%; height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 18px;">图片待补充</div>
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; text-align: center; margin-bottom: 15px;">重檐屋顶</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">多见于大户宅院、宗祠、厅堂、门楼等重要建筑，在同一屋顶下设置两层或多层屋檐，屋脊与檐口层层叠加。重檐通过竖向层次的叠加，增强建筑的庄重感与气势，让屋顶轮廓更富变化，视觉上更显华丽规整，既提升了建筑威仪，也让整体造型更具秩序美与层次感。层层递进的檐线形成富有韵律的竖向节奏，彰显出庄重典雅、主次分明的礼制美学与仪式感。</p>
+        </div>
+      </div>
+    </div>
+    <!-- 叁·飞檐檐口 -->
+    <div style="position: relative; width: 100%; margin-top: 40px;">
+      <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: center; margin-bottom: 30px;">叁·飞檐檐口</h3>
+      <div style="display: flex; justify-content: space-between; padding: 0 60px; box-sizing: border-box;">
+        <!-- 左侧图片区域 -->
+        <div style="width: 48%; display: flex; flex-direction: column; gap: 20px;">
+          <!-- 上面两张图片 -->
+          <div style="display: flex; gap: 20px;">
+            <div style="flex: 1; height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px;">图片待补充</div>
+            <div style="flex: 1; height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px;">图片待补充</div>
+          </div>
+          <!-- 下面两张图片 -->
+          <div style="display: flex; gap: 20px;">
+            <div style="flex: 1; height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px;">图片待补充</div>
+            <div style="flex: 1; height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px;">图片待补充</div>
+          </div>
+        </div>
+        <!-- 右侧文字面板 -->
+        <div style="width: 48%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px;">
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px;">· 飞檐：屋顶的灵动标识</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 20px;">作为屋檐的核心形态，飞檐特指屋檐向外大幅伸出且檐角向上起翘的造型，是中国古民居屋顶最具辨识度的美学符号。其上扬的曲线既扩大了遮阳避雨范围，又让厚重的屋顶呈现出轻盈飞升的动态感，完美诠释了 "如翚斯飞" 的古典审美。</p>
+          
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px;">· 出檐深远，虚实相生</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 20px;">屋顶大幅外延出挑，檐下形成大面积阴影，与顶面的明朗形成强烈亮暗对比 —— 顶面日光明朗、檐下幽深静谧，层次立体分明，奠定了东方建筑 "留白""虚实相生" 的审美基调。</p>
+          
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px;">· 翘角律动之美</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 20px;">江南 "嫩戗发戗" 技法下，民居檐角微微上翘，打破水平线的呆板；平缓屋面与上扬檐角形成动静互补，动态舒展，让建筑天际线婉转优美，极具韵律感。</p>
+          
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px;">· 檐口秩序肌理</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 20px;">檐口整齐收边，瓦垄平行规整延伸，横向线条连贯统一，整体干净利落，在极简的排布中透出古典秩序之美。</p>
+          
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px;">· 檐下辅助构件（贴合屋檐核心）</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 15px;"><strong>搏风：</strong>位于檐角（翼角）端部，用于加固翼角、抵御风压的构件，造型与飞檐曲线呼应，既强化结构稳定性，又丰富檐口轮廓层次。</p>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 15px;"><strong>风铎：</strong>悬挂于檐角下的铃铛，风吹铃响，为静态的屋檐注入动态听觉美学，营造清幽雅致的氛围，是民居檐下极具意境的装饰。</p>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;"><strong>悬鱼与惹草：</strong>多悬挂于山墙与屋檐交接处的博风板下，悬鱼为木雕鱼形，惹草为配套花草纹雕刻。鱼属水，寓意防火平安，二者搭配既打破屋檐的厚重感，又象征生机绵长，是檐下细节装饰的经典组合。</p>
+        </div>
+      </div>
+    </div>
+    <!-- 肆·瓦作铺装肌理 -->
+    <div style="position: relative; width: 100%; margin-top: 40px;">
+      <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: center; margin-bottom: 30px;">肆·瓦作铺装肌理</h3>
+      <!-- 前两个板块：左右并列 -->
+      <div style="display: flex; justify-content: space-between; padding: 0 60px; box-sizing: border-box; margin-bottom: 40px;">
+        <!-- 左侧：黛瓦青灰的色调之美 -->
+        <div style="width: 48%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px;">
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 22px; margin-bottom: 15px;">黛瓦青灰的色调之美</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">民间屋顶清一色采用青板瓦、小灰瓦，色调素雅沉静；江南黛瓦暗沉温润，北方灰瓦朴拙厚重，低饱和的色彩与天地山水自然相融，呈现出内敛高级的东方色彩美学。</p>
+        </div>
+        <!-- 右侧：瓦垄排布的节奏秩序 -->
+        <div style="width: 48%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px;">
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 22px; margin-bottom: 15px;">瓦垄排布的节奏秩序</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">筒瓦、板瓦交错叠铺，一垄一沟纵向贯通，光影随坡面起伏流动；细密的纹路铺满屋顶，规整统一，自带重复构成的古典秩序感，视觉上和谐规整。</p>
+        </div>
+      </div>
+      <!-- 第三个板块：檐头核心构件 -->
+      <div style="padding: 0 60px; box-sizing: border-box;">
+        <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px;">
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 22px; margin-bottom: 15px;">檐头核心构件：瓦当与滴水</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 15px;"><strong>瓦当：</strong>屋顶最前端的圆形挡瓦，表面多雕刻云纹、卷草、吉祥文字或瑞兽纹样，小巧精致，既固定瓦片、防止脱落，又收束檐头线条，成为檐口细节的点睛之笔。</p>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 20px;"><strong>滴水：</strong>呈如意形或尖角造型，垂落于檐边瓦当下方，既是引导雨水定向滴落的功能节点（避免溅湿墙体），又以柔和的下垂曲线柔化了檐口的硬朗轮廓，细节精巧耐看。</p>
+          <!-- 预留两个图片位置 -->
+          <div style="display: flex; gap: 20px;">
+            <div style="flex: 1; height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px;">图片待补充</div>
+            <div style="flex: 1; height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px;">图片待补充</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 伍·屋脊与脊饰造型 -->
+    <div style="position: relative; width: 100%; margin-top: 40px;">
+      <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: center; margin-bottom: 30px;">伍·屋脊与脊饰造型</h3>
+      <!-- 上面三个板块 -->
+      <div style="display: flex; justify-content: space-between; padding: 0 60px; box-sizing: border-box; margin-bottom: 40px;">
+        <!-- 正脊 -->
+        <div style="width: 30%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px;">
+          <div style="height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 20px;">图片待补充</div>
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px; text-align: center;">正脊·平和端庄的视觉核心</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">民居正脊多为简洁素砌工艺，造型低调平缓，无皇家建筑的高崇繁复设计。作为屋顶的中轴线构件，其线性居中横贯屋顶全域，既稳定了整座建筑的视觉重心，又让屋顶造型更显舒展大气，以极简线条勾勒出端庄规整的基底美感。</p>
+        </div>
+        <!-- 鸱吻 -->
+        <div style="width: 30%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px;">
+          <div style="height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 20px;">图片待补充</div>
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px; text-align: center;">鸱吻·正脊两端的祈福点睛</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">安装于正脊两端的龙首鱼身构件，是屋顶最具辨识度的标志性脊饰。其 "口吞屋脊" 的独特造型，源自 "水形神兽镇火" 的传统寓意，象征以水克火、避灾祈福；造型凝练古朴，不事张扬却精准收束屋顶天际线，成为屋顶视觉的点睛之笔。</p>
+        </div>
+        <!-- 脊兽 -->
+        <div style="width: 30%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px;">
+          <div style="height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 20px;">图片待补充</div>
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px; text-align: center;">脊兽·垂戗脊上的等级与吉祥</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">多点缀于垂脊、戗脊的坡面之上，以狮、马、鹿等小型瑞兽陶塑为主，造型凝练古朴。既通过瑞兽的数量与种类暗合民间等级秩序，又承载着镇宅辟邪、吉祥安康的美好寓意，让原本简洁的斜脊线条更具细节，丰富了屋顶的立体层次。</p>
+        </div>
+      </div>
+      <!-- 下面三个板块 -->
+      <div style="display: flex; justify-content: space-between; padding: 0 60px; box-sizing: border-box;">
+        <!-- 脊刹 -->
+        <div style="width: 30%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px;">
+          <div style="height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 20px;">图片待补充</div>
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px; text-align: center;">脊刹·正脊顶端的视觉顶点</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">位于正脊最顶端的塔状或宝状收头构件，是屋顶的 "视觉制高点"。其造型简约庄重，部分雕刻云纹、花卉等吉祥纹样，既强化了屋顶的中心感与庄重感，又通过精巧的收头设计，让正脊线条更显完整，兼具装饰性与祈福功能。</p>
+        </div>
+        <!-- 垂脊与戗脊 -->
+        <div style="width: 30%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px;">
+          <div style="height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 20px;">图片待补充</div>
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px; text-align: center;">垂脊与戗脊·层次分明的韵律分割</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">坡屋顶的斜向垂脊顺势而下，自然将屋面划分为清晰的功能区域，构建出规整的屋顶格局；南方民居的垂脊、戗脊常点缀小型陶饰、卷草纹，线条错落婉转，在纵向延伸中形成柔和的韵律变化，进一步丰富了屋顶的立体层次与视觉细节。</p>
+        </div>
+        <!-- 闽南燕尾脊 -->
+        <div style="width: 30%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px;">
+          <div style="height: 180px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 20px;">图片待补充</div>
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px; text-align: center;">闽南燕尾脊·地域专属的浪漫曲线</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">仅见于闽南地区的特色脊型，屋脊两端分叉上扬如燕尾展翅，曲线凌厉飘逸、张力十足。作为南方民居屋顶独有的标志性轮廓，其高亢灵动的造型打破了传统脊型的平缓感，尽显地域建筑的浪漫美学与鲜明辨识度。</p>
+        </div>
+      </div>
+    </div>
+    <!-- 陆·屋顶意境哲学美 -->
+    <div style="position: relative; width: 100%; margin-top: 40px;">
+      <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: center; margin-bottom: 30px;">陆·屋顶意境哲学美</h3>
+      <div style="padding: 0 60px; box-sizing: border-box;">
+        <div style="max-width: 800px; margin: 0 auto; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 24px;">
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px; text-align: center;">天人合一</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 20px;">曲面屋顶、飞檐翘角顺应天际弧线，不生硬对抗自然，让建筑柔和嵌入山水天地之间，体现了人与自然和谐共生的理念。</p>
+          
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px; text-align: center;">礼制极简</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 20px;">民居只用硬山、悬山等低等级屋顶形制，无宫殿庑殿、歇山的奢华繁复，装饰与色彩均受礼制约束，克制素雅，彰显民间低调守礼的审美取向。</p>
+          
+          <h4 style="margin-top:0; color:#7a5c2e; font-size: 20px; margin-bottom: 15px; text-align: center;">光影写意</h4>
+          <p style="font-size:14px; color:#3a2815; line-height: 1.6;">坡面、翘檐、瓦垄在朝夕阴晴中不断变幻光影，让静态的屋顶生出动态氛围感，营造出东方独有的极简水墨意境，耐人寻味。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="intro-panel roof-intro-panel" id="windowPanel">
+    <div class="roof-intro-topbar">
+      <button class="roof-intro-back" type="button" data-close-panel>返回</button>
+      <h2 class="roof-intro-title">窗美学</h2>
+    </div>
+    <div style="position: relative; width: 100%; min-height: 1400px;">
+      <!-- 垂直白线 -->
+      <div style="position: absolute; left: 50%; top: 40px; bottom: 40px; width: 0; border-left: 3px solid #fff; z-index: 1;"></div>
+      <!-- 1. 花格窗（左文右图） -->
+      <div style="position: absolute; left: 0; top: 80px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+          <div style="width: 420px; margin-right: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">花格窗 —— 中式窗棂美学的核心代表</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：以木棂条拼接规整几何纹样的窗型，是中式窗棂美学的核心代表，兼具采光与装饰性。</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b>线条重复有序形成强烈韵律，镂空与实木棂条虚实相生，光影投射斑驳灵动；纹样融入吉祥寓意，形意兼具，尽显中式对称与秩序美。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;"><b>典型场景：</b>江南徽派 / 苏派民居、北方四合院厢房、古宅厅堂、园林配房。</div>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1;"></div>
+      </div>
+      <!-- 2. 漏窗（右文左图） -->
+      <div style="position: absolute; left: 0; top: 380px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1;"></div>
+        <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center;">
+          <div style="width: 420px; margin-left: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">漏窗 —— 园林造景的灵魂元素</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：院墙专属镂空装饰窗，无开启功能，以透景、框景为核心，是园林造景的灵魂元素。</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b>将庭院景物框入窗中形成天然画框，镂空与墙体虚实对比，光影柔和朦胧；纹样与自然呼应，营造“窗内有景、景外有窗”的含蓄意境。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;"><b>典型场景：</b>苏州园林、徽州宏村 / 西递古村、江南庭院隔墙、宅院游廊。</div>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 3. 半开窗（左文右图） -->
+      <div style="position: absolute; left: 0; top: 680px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+          <div style="width: 420px; margin-right: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">半开窗 —— 虚实平衡的分段式窗</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：上扇可支起、下扇可摘下的分段式窗，结构为“上窗棂 + 下实体”，兼顾实用与意境。</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b>一半通透一半封闭，实现虚实平衡与室内外温柔过渡；半透光质感营造柔和氛围，可支可摘的设计兼具功能美与动态感。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;"><b>典型场景：</b>江南水乡民居、临街小楼、徽派厢房、南北通用中型民宅。</div>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1;"></div>
+      </div>
+      <!-- 4. 直棂窗（右文左图） -->
+      <div style="position: absolute; left: 0; top: 980px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1;"></div>
+        <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center;">
+          <div style="width: 420px; margin-left: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">直棂窗 —— 最古老的实用窗型</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：最古老的窗型之一，以竖向密排木棂为核心结构，风格简洁刚直，实用性极强。</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b>竖向线条整齐划一，显刚直质朴之气；光影呈竖条韵律，简约不单调，体现“大道至简”的民间实用美学。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;"><b>典型场景：</b>北方四合院、客家民居、古寺配房、普通民宅、防风御寒场景。</div>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 5. 槛窗（左文右图） -->
+      <div style="position: absolute; left: 0; top: 1280px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+          <div style="width: 420px; margin-right: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">槛窗 —— 建筑整体美学的协调者</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：固定于槛墙之上的可开启窗型，常与隔扇门搭配，形制规整，适配建筑整体风格。</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b>与槛墙比例协调，符合中式审美中的均衡感；窗棂纹样简约适度，与建筑立面统一，实现局部与整体的美学融合。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;"><b>典型场景：</b>古建殿堂、王府厢房、大户宅院正房、宗祠配房。</div>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1;"></div>
+      </div>
+      <!-- 6. 什锦窗（右文左图） -->
+      <div style="position: absolute; left: 0; top: 1580px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1;"></div>
+        <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center;">
+          <div style="width: 420px; margin-left: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">什锦窗 —— 园林点睛的异形美学</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：园林专用异形窗，造型多样（桃形、扇形、瓶形、梅花形等），是造景点睛之笔。</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b>打破方、圆常规，造型灵动趣味；以异形轮廓框选景物，意境独特，为园林增添雅致情趣与视觉变化。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;"><b>典型场景：</b>皇家园林、苏州园林、私家花园、宅院游廊隔墙。</div>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 贰·窗纹 -->
+      <div style="position: absolute; left: 40px; top: 2100px; width: 100%; z-index: 2;">
+        <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: left; padding-right: 60px;">贰·窗纹</h3>
+        <!-- 第一行：1-5 -->
+        <div style="position: absolute; left: 0; top: 100px; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; box-sizing: border-box; z-index: 2;">
+          <!-- 步步锦 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">步步锦</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>以横竖棂条交错，形成 "步步递进" 的框格，中心常留出长条形或方形空当，整体对称规整。</li>
+              <li><strong>吉祥寓意：</strong>取 "步步锦绣、前程似锦" 之意，寄托家族步步高升、日子越过越好的美好期盼。</li>
+            </ul>
+          </div>
+          <!-- 亚字样 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">亚字样</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>以回折的棂条拼成 "亚" 字轮廓，中心常饰小花纹，整体对称、线条严谨，是变体万字纹的一种。</li>
+              <li><strong>吉祥寓意：</strong>谐音 "雅"，象征雅致端庄，同时取 "福寿绵长" 的回纹延伸意。</li>
+            </ul>
+          </div>
+          <!-- 冰裂纹 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">冰裂纹</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>以不规则的斜棂条交错，模拟冰面碎裂的自然纹理，中心可圆可方，线条灵动自由，打破了传统窗格的对称感。</li>
+              <li><strong>吉祥寓意：</strong>取 "破冰迎春" 之意，象征寒冬已过、春回大地，也暗含 "玉碎平安" 的祈福，同时因纹理繁复，也有 "岁岁平安" 的引申义。</li>
+            </ul>
+          </div>
+          <!-- 海棠纹 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">海棠纹</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>以棂条拼成四瓣或八瓣海棠花的轮廓，常为对称式，可单朵也可多朵连续排布，线条柔美雅致。</li>
+              <li><strong>吉祥寓意：</strong>谐音 "堂"，取 "玉堂富贵、满堂平安" 之意，海棠也象征温婉美好，常与牡丹、玉兰搭配，寓意 "金玉满堂"。</li>
+            </ul>
+          </div>
+          <!-- 一码三箭 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">一码三箭</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>典型的直棂窗样式，以竖向的棂条为主，再用三根横向短棂固定，整体简洁通透，采光好、易制作。</li>
+              <li><strong>吉祥寓意：</strong>取 "三箭齐发、连中三元" 之意，也有 "节节高升" 的朴素期盼，同时因结构简单，也象征安稳平实。</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 第二行：6-10 -->
+        <div style="position: absolute; left: 0; top: 500px; width: 100%; display: flex; justify-content: space-between; padding: 0 40px; box-sizing: border-box; z-index: 2;">
+          <!-- 万字纹 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">万字纹</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>以棂条拼成连续的 "卍" 字图案，线条回环不断，可无限延伸，也叫 "万字不到头"。</li>
+              <li><strong>吉祥寓意：</strong>卍字在传统文化中象征 "万福、万寿"，连续排布则寓意 "万福绵长、富贵不断头"，也有辟邪纳福的作用。</li>
+            </ul>
+          </div>
+          <!-- 方格纹 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">方格纹</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>以棂条拼成规则的方形或菱形网格，分为正方格和斜方格两种，结构简单、坚固耐用，是民间最朴素的窗格之一。</li>
+              <li><strong>吉祥寓意：</strong>象征方方正正、四平八稳，也暗含 "五谷丰登、衣食无忧" 的朴素期盼。</li>
+            </ul>
+          </div>
+          <!-- 回纹 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">回纹</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>线条呈 "回" 字形回折往复，是最古老的几何纹样之一，可单独使用，也可作为边框装饰搭配其他纹样。</li>
+              <li><strong>吉祥寓意：</strong>取 "吉利永长、富贵不断" 之意，也象征连绵不绝、生生不息，是传统纹样中 "吉祥延绵" 的代表。</li>
+            </ul>
+          </div>
+          <!-- 云纹 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">云纹</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>以棂条拼成卷曲的祥云图案，线条流畅婉转，可单朵排布，也可连续成 "祥云连绵" 的样式。</li>
+              <li><strong>吉祥寓意：</strong>象征祥云瑞气，寓意 "青云直上、步步高升"，也有 "吉祥如意、福运临门" 的含义。</li>
+            </ul>
+          </div>
+          <!-- 如意纹 -->
+          <div style="width: 17%; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 16px; display: flex; flex-direction: column; align-items: center;">
+            <div style="width: 100%; height: 120px; background: #f3f3f3; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; margin-bottom: 8px;">图片待补充</div>
+            <h4 style="margin-top:0; color:#7a5c2e; font-size: 16px; text-align: center;">如意纹</h4>
+            <ul style="font-size:12px; color:#3a2815; margin:4px 0 0 12px; padding:0; align-self: flex-start;">
+              <li><strong>形制特点：</strong>以棂条拼成如意头的轮廓，可单朵、也可连续排布，线条圆润柔和，常与海棠纹、回纹搭配使用。</li>
+              <li><strong>吉祥寓意：</strong>取 "称心如意、万事如意" 之意，是民间最受欢迎的祈福纹样之一，也象征平安顺遂。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="intro-panel roof-intro-panel" id="windowIntroPanel">
+    <div class="roof-intro-topbar">
+      <button class="roof-intro-back" type="button" data-close-panel>返回</button>
+    </div>
+    <div style="position: relative; width: 100%; min-height: 1200px;">
+      <!-- 垂直白线 -->
+      <div style="position: absolute; left: 50%; top: 40px; bottom: 40px; width: 0; border-left: 3px solid #fff; z-index: 1;"></div>
+      <!-- 第一个门：隔扇门（左文右图，靠近白线） -->
+      <div style="position: absolute; left: 0; top: 80px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+          <div style="width: 420px; margin-right: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">隔扇门（格扇门）——虚实相生的诗意隔断</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：可作门、窗与隔断，上棂下板，是传统民居最具文人气质的木构门型。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：厅堂、书房、厢房、园林建筑、中式院落室内外过渡空间</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>空间美学：平衡分隔与通透，上透光下私密，营造隔而不断、含蓄内敛的意境。</li>
+              <li>工艺美学：棂花多变且线条疏密有致，腰板裙板浮雕题材丰富，尽显木雕工艺之美。</li>
+              <li>光影美学：阳光穿棂而入，形成流动光影，让空间更富层次与动态美感。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1;"></div>
+      </div>
+      <!-- 第二个门：垂花门（右文左图，顶部与前一个区块中线对齐） -->
+      <div style="position: absolute; left: 0; top: 450px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1;"></div>
+        <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center;">
+          <div style="width: 420px; margin-left: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">垂花门 —— 古建门中的“华丽贵妇”</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：四合院内外宅分界的二门，以垂莲柱为标志，是宅院装饰最华丽的门。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：北京四合院、晋商大院、官宦宅邸、北方深宅院落</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>造型美学：垂莲柱悬空不落地，线条轻盈灵动，一改厚重门体的沉闷感。</li>
+              <li>装饰美学：梁枋雀替布满木雕彩绘，题材雅致，华丽而不失端庄气韵。</li>
+              <li>空间美学：作为空间转折节点，框景效果强烈，门后景致若隐若现，极具东方戏剧感。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 第三个门：月洞门（左文右图，顶部与前一个区块中线对齐） -->
+      <div style="position: absolute; left: 0; top: 880px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+          <div style="width: 420px; margin-right: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">月洞门（月亮门）——园林中的空灵画框</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：无门扇的圆形门洞，为园林庭院核心造景元素，以框景见长。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：江南园林、徽派民居庭院、苏州园林、私家花园</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>形态美学：正圆形线条极简流畅，象征圆满，与方墙形成方圆对比，极具形式美。</li>
+              <li>框景美学：以门为画框，收纳后方山石花木，实现步移景异的园林妙境。</li>
+              <li>意境美学：白墙黛瓦配圆门，简洁空灵，如水墨画卷，尽显中式诗意。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1;"></div>
+      </div>
+      <!-- 第四个门：如意门（右文左图，顶部与前一个区块中线对齐） -->
+      <div style="position: absolute; left: 0; top: 1220px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1;"></div>
+        <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center;">
+          <div style="width: 420px; margin-left: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">如意门 —— 内敛精致的平民风雅</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：北京四合院常见民居小门，以砖雕门头为特色，低调却讲究。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：北京普通四合院、民居宅院、胡同民居、中小型民宅</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>比例美学：造型小巧匀称，比例修长，与墙面和谐统一，低调不张扬。</li>
+              <li>装饰美学：门楣砖雕精巧，纹样吉祥细腻，于简约中体现民间审美。</li>
+              <li>气质美学：质朴内敛、文雅亲民，是普通民居中极具生活气息的经典门型。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 第五个门：影壁门（左文右图，顶部与前一个区块中线对齐） -->
+      <div style="position: absolute; left: 0; top: 1680px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+          <div style="width: 420px; margin-right: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">影壁门 —— 隐与显的空间仪式</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：门内设影壁，进门不见堂，曲径通幽，极具中式礼仪与空间仪式感。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：四合院、园林宅邸、宗祠、书院、祠堂</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>礼仪美学：影壁遮挡视线，入门先见壁，体现“曲则有情”的中式礼序。</li>
+              <li>空间美学：隔而不断，虚实相生，增强空间层次与神秘感。</li>
+              <li>装饰美学：影壁砖雕、石雕、彩绘丰富，成为门内重要的艺术景观。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1;"></div>
+      </div>
+      <!-- 第六个门：照壁门（右文左图，顶部与前一个区块中线对齐） -->
+      <div style="position: absolute; left: 0; top: 2020px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1;"></div>
+        <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center;">
+          <div style="width: 420px; margin-left: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">照壁门 —— 吉祥寓意的门面担当</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：门外正对照壁，常饰以吉祥图案，寓意驱邪纳福，是民居门前重要的装饰元素。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：北方四合院、南方宗祠、民居大门外</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>象征美学：照壁图案多为福禄寿喜、麒麟送子等吉祥题材，承载美好祝愿。</li>
+              <li>空间美学：照壁与大门相对，形成视觉缓冲，保护室内私密性。</li>
+              <li>色彩美学：多用彩绘、琉璃、砖雕等工艺，色彩明快，极具装饰性。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 第七个门：山门（左文右图，顶部与前一个区块中线对齐） -->
+      <div style="position: absolute; left: 0; top: 2440px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+          <div style="width: 420px; margin-right: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">山门 —— 庄重肃穆的仪式之门</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：寺庙、祠堂等建筑群入口的主门，常为三开间或牌楼式，象征空间的神圣与尊贵。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：佛寺、道观、宗祠、书院、陵园</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>仪式美学：高大门楼、三开间布局，营造庄严肃穆的空间氛围。</li>
+              <li>象征美学：门额题字、楹联、雕刻等，彰显建筑身份与文化内涵。</li>
+              <li>空间美学：门内外空间递进，强化进入感与神圣感。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1;"></div>
+      </div>
+      <!-- 第八个门：牌楼门（右文左图，顶部与前一个区块中线对齐） -->
+      <div style="position: absolute; left: 0; top: 2750px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1;"></div>
+        <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center;">
+          <div style="width: 420px; margin-left: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">牌楼门 —— 荣耀与纪念的象征</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：以木石结构高大门楼为主，雕梁画栋，常用于表彰功德、纪念人物或标志地界。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：古镇入口、祠堂、陵园、街巷节点、名人故里</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>纪念美学：门额题字、雕刻图案，承载历史记忆与荣耀。</li>
+              <li>结构美学：多层屋顶、斗拱、雀替等，结构复杂，造型壮观。</li>
+              <li>色彩美学：彩绘、琉璃瓦、金箔装饰，色彩华丽醒目。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 第九个门：花格门（左文右图，顶部与前一个区块中线对齐） -->
+      <div style="position: absolute; left: 0; top: 3190px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+          <div style="width: 420px; margin-right: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">花格门 —— 玲珑剔透的工艺之美</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：以精美木格花纹为主，门扇多见于园林、厅堂、廊道，兼具装饰与通透功能。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：江南园林、徽派民居、苏州古宅、廊道、厅堂</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>工艺美学：格心花纹繁复多变，榫卯精细，尽显木作工艺。</li>
+              <li>空间美学：门扇通透，虚实结合，营造灵动空间。</li>
+              <li>光影美学：阳光穿格投影，形成独特光影艺术。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex: 1;"></div>
+      </div>
+      <!-- 第十个门：屏门（右文左图，顶部与前一个区块中线对齐） -->
+      <div style="position: absolute; left: 0; top: 3460px; width: 100%; display: flex; justify-content: center; align-items: center; z-index: 2;">
+        <div style="flex: 1;"></div>
+        <div style="flex: 1; display: flex; justify-content: flex-start; align-items: center;">
+          <div style="width: 420px; margin-left: 40px; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px 28px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 26px;">屏门 —— 空间分隔的灵动屏障</h3>
+            <div style="font-size:15px; color:#3a2815; margin-bottom: 10px;">简介：多用于厅堂、廊道等空间的临时隔断，造型轻巧灵活，便于开合移动。</div>
+            <div style="font-size:14px; color:#5c4023; margin-bottom: 10px;">典型场景：厅堂、廊道、书房、卧室、园林小景</div>
+            <div style="margin-bottom: 8px;"><b>美学核心：</b></div>
+            <ul style="font-size:14px; color:#3a2815; margin:0 0 10px 18px; padding:0;">
+              <li>灵动美学：屏门可随意开合、移动，空间分隔灵活多变。</li>
+              <li>装饰美学：门扇多饰以彩绘、雕花、绢画，兼具实用与观赏。</li>
+              <li>空间美学：屏门分隔空间但不阻断视线，增强空间层次感。</li>
+            </ul>
+            <div style="margin-top:18px; text-align:center;">
+              <div style="width: 220px; height: 140px; background: #f3f3f3; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #aaa; font-size: 15px;">图片待补充</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="intro-panel roof-intro-panel" id="yardIntroPanel">
+    <div class="roof-intro-topbar">
+      <button class="roof-intro-back" type="button" data-close-panel>返回</button>
+      <h2 class="roof-intro-title">院落美学</h2>
+    </div>
+    <div style="position: relative; width: 100%; min-height: 1400px;">
+      <!-- 垂直白线 -->
+      <div style="position: absolute; left: 50%; top: 40px; bottom: 40px; width: 0; border-left: 3px solid #fff; z-index: 1;"></div>
+      <!-- 左侧标题和核心内容 -->
+      <div style="position: absolute; left: 0; top: 80px; width: 50%; padding-left: 80px; z-index: 2;">
+        <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px;">壹·院落细节</h3>
+        <p style="font-size:16px; color:#3a2815; margin-top: 10px;">核心：<strong>序列、层次、收放、遮露</strong>，决定空间节奏与心理感受</p>
+      </div>
+      <!-- 右侧五个面板 -->
+      <!-- 1. 入口影壁 -->
+      <div style="position: absolute; left: 50%; top: 80px; width: 40%; padding-right: 80px; z-index: 2;">
+        <div style="display: inline-block; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+          <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">1. 入口影壁</h3>
+          <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+            <li>形成 “欲扬先抑”，进门即挡、视线转折，避免一览无余。</li>
+            <li>空间从开放街道→窄门→影壁遮挡→豁然见院，张力极强。</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 2. 垂花门 / 二门 -->
+      <div style="position: absolute; left: 50%; top: 220px; width: 40%; padding-right: 80px; z-index: 2;">
+        <div style="display: inline-block; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+          <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">2. 垂花门 / 二门</h3>
+          <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+            <li>分隔内外院，是空间 “转捩点”。</li>
+            <li>前院疏朗、后院私密，形成由公共到私密的梯度空间。</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 3. 廊子环绕 -->
+      <div style="position: absolute; left: 50%; top: 359px; width: 40%; padding-right: 80px; z-index: 2;">
+        <div style="display: inline-block; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+          <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">3. 廊子环绕</h3>
+          <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+            <li>檐廊、抄手游廊串联各房，形成 “环形动线”。</li>
+            <li>廊下为半室内灰空间，虚实交错、光影变化丰富，行走体验连续流畅。</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 4. 高低错落 -->
+      <div style="position: absolute; left: 50%; top: 500px; width: 40%; padding-right: 80px; z-index: 2;">
+        <div style="display: inline-block; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+          <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">4. 高低错落</h3>
+          <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+            <li>正房高、厢房低、倒座更矮，形成向心式空间秩序。</li>
+            <li>屋檐层层跌落，视觉上稳定、庄重，又富有韵律。</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 5. 转角与过渡 -->
+      <div style="position: absolute; left: 50%; top: 640px; width: 40%; padding-right: 80px; z-index: 2;">
+        <div style="display: inline-block; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+          <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">5. 转角与过渡</h3>
+          <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+            <li>墙角圆润、廊子曲折，避免生硬切割。</li>
+            <li>空间 “软边界”，让院落更温润、更具包裹感。</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 贰·天井比例 -->
+      <div style="position: absolute; left: 0; top: 820px; width: 45%; padding-left: 80px; z-index: 2;">
+        <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px;">贰·天井比例</h3>
+        <p style="font-size:16px; color:#3a2815; margin-top: 10px;">高宽比 H/决定空间气质：压抑幽深亦或开阔舒展</p>
+      </div>
+      <!-- 高墙小院（左侧） -->
+      <div style="position: absolute; left: 0; top: 900px; width: 45%; padding-left: 80px; z-index: 2;">
+        <div style="display: inline-block; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px; width: 80%;">
+          <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">高墙小院</h3>
+          <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+            <li>典型比例：墙高 ∶ 天井宽 ≈ 2:1 ~ 3:1</li>
+            <li>空间感受：</li>
+            <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+              <li>高耸封闭，向上收缩，视线被引向天空</li>
+              <li>阴凉静谧、幽深内敛，营造 “坐井观天” 的内向意境</li>
+            </ul>
+            <li>功能特点：</li>
+            <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+              <li>遮阳、通风拔风、防雨、聚气，适应南方湿热气候</li>
+              <li>小而精，以小见大，空间压缩感强</li>
+            </ul>
+            <li>气质风格：</li>
+            <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+              <li>紧凑、含蓄、私密，兼具防御性与家族凝聚力</li>
+            </ul>
+            <li>代表实例：徽派民居、江南天井院</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 开敞大院（右侧） -->
+      <div style="position: absolute; left: 59%; top: 900px; width: 45%; padding-right: 80px; z-index: 2;">
+        <div style="display: inline-block; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px; width: 80%;">
+          <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">开敞大院</h3>
+          <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+            <li>典型比例：墙高 ∶ 院宽 ≈ 1:1.5 ~ 1:2.5</li>
+            <li>空间感受：</li>
+            <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+              <li>开阔明亮、舒展大气，向心而不压抑</li>
+              <li>充足日照，可满足活动、晾晒、礼仪往来需求</li>
+            </ul>
+            <li>功能特点：</li>
+            <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+              <li>适应北方寒冷干燥气候，利于采光通风</li>
+              <li>空间层次分明，适配家族聚居与公共活动</li>
+            </ul>
+            <li>气质风格：</li>
+            <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+              <li>庄重、秩序感强，礼制空间特征明显</li>
+            </ul>
+            <li>代表实例：北京四合院、晋商大院</li>
+          </ul>
+        </div>
+      </div>
+      <!-- 叁·围合程度 -->
+      <div style="position: absolute; left: 0; top: 1250px; width: 100%; padding-left: 20px; padding-right: 140px; z-index: 2;">
+        <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: right; padding-right: 60px;">叁·围合程度</h3>
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+          <!-- 1. 全围合·强封闭之美 -->
+          <div style="flex: 1; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px; margin-right: 20px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">全围合·强封闭之美</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>形态：四面建筑 / 高墙完整闭合，仅留一门出入。</li>
+              <li>代表：徽派天井、客家土楼、云南 "一颗印"。</li>
+              <li>美学感受：</li>
+              <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+                <li>强烈的包裹感，形成内向、安定的独立空间。</li>
+                <li>高墙壁立，将视线收束向天空，营造 "坐井观天" 的深邃意境。</li>
+              </ul>
+            </ul>
+          </div>
+          <!-- 2. 半围合·虚实相生之美 -->
+          <div style="flex: 1; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px; margin-right: 20px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">半围合·虚实相生之美</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>形态：三面建筑围合，一面以矮墙 / 栏杆 / 院门形成半开放界面。</li>
+              <li>代表：江南民居、园林化院落。</li>
+              <li>美学感受：</li>
+              <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+                <li>既围又透，空间在私密与开放之间过渡自然。</li>
+                <li>半开敞界面引入光影与外景，形成天然 "取景框"，让空间灵动不压抑。</li>
+              </ul>
+            </ul>
+          </div>
+          <!-- 3. 疏围合·意境悠远之美 -->
+          <div style="flex: 1; background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">疏围合·意境悠远之美</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>形态：以院墙、廊架、植物界定边界，无连续高墙。</li>
+              <li>代表：文人园林、江南私家庭院。</li>
+              <li>美学感受：</li>
+              <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+                <li>边界柔和模糊，空间向外自然延伸，通透而富有呼吸感。</li>
+                <li>弱化秩序感，强化人与自然的对话，营造步移景异的诗意体验。</li>
+              </ul>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 肆·园中留白 -->
+      <div style="position: absolute; left: 0; top: 1600px; width: 100%; padding-left: 40px; padding-right: 160px; z-index: 2;">
+        <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: right; padding-right: 60px;">肆·园中留白</h3>
+        <!-- 左侧板块 1 -->
+        <div style="position: absolute; left: 40px; top: 80px; width: 35%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">1. 庭院中心留白</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>指在院落的几何中心，刻意不建造建筑、不堆砌杂物，保留一片完整无遮挡的净地。</li>
+              <li>核心作用：</li>
+              <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+                <li>成为整个围合空间的视觉焦点与天然 "呼吸口"，引导视线向心汇聚。</li>
+                <li>化解四面建筑带来的封闭感，让空间 "围而不堵"，避免拥挤压抑。</li>
+              </ul>
+            </ul>
+          </div>
+        </div>
+        <!-- 右侧板块 2 -->
+        <div style="position: absolute; right: 160px; top: 80px; width: 35%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">2. 留白即 "气口"</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>传统建筑中，天井或院心被视为整个宅院的 "气口"，是风水与美学的交汇点。</li>
+              <li>核心意义：</li>
+              <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+                <li>风水上：是 "天光下临、地气上腾" 的枢纽，承载着藏风聚气的理念。</li>
+                <li>美学上：以空生境、以静生韵，让光影、风雨与四季流转都有了落脚的空间。</li>
+              </ul>
+            </ul>
+          </div>
+        </div>
+        <!-- 中间图片 -->
+        <div style="position: absolute; left: 47%; top: 80px; transform: translateX(-50%); z-index: 1; display: flex; flex-direction: column; align-items: center;">
+          <img src="详细介绍图片/留白1.jpg" style="width: 120px; height: 180px; border-radius: 8px; margin-bottom: 20px; object-fit: cover;">
+          <img src="详细介绍图片/留白2.jpeg" style="width: 120px; height: 180px; border-radius: 8px; object-fit: cover;">
+        </div>
+        <!-- 左侧板块 3 -->
+        <div style="position: absolute; left: 40px; top: 300px; width: 35%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">3. 疏密对比</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>通过建筑与庭院、檐下与院心的虚实反差，形成空间节奏的变化。</li>
+              <li>核心效果：</li>
+              <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+                <li>建筑密、庭院空；檐下密、院心疏，一张一弛间让空间层次更丰富。</li>
+                <li>留白越大，建筑越显整体庄重；留白越小，空间越显紧凑幽深。</li>
+              </ul>
+            </ul>
+          </div>
+        </div>
+        <!-- 右侧板块 4 -->
+        <div style="position: absolute; right: 160px; top: 300px; width: 35%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">4. 文人意境</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>将传统文人的审美情趣融入院落，以留白传递含蓄、雅致的东方美学。</li>
+              <li>核心内涵：</li>
+              <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+                <li>呼应 "室雅何须大，花香不在多" 的意境，留白即余韵，给人留下想象空间。</li>
+                <li>避免空间被过度填充的拥挤与俗气，让院落拥有宁静、空灵的气质。</li>
+              </ul>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 伍·院内树木 -->
+      <div style="position: absolute; left: 0; top: 2200px; width: 100%; padding-left: 40px; padding-right: 160px; z-index: 2;">
+        <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: right; padding-right: 60px;">伍·院内树木</h3>
+        <!-- 1. 单点孤植 -->
+        <div style="position: absolute; left: 40px; top: 80px; width: 50%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px; width: 80%;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">1. 单点孤植</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>在院落角落或一侧，单独种植单株树木（如石榴、海棠、桂花、玉兰、梧桐）。</li>
+              <li>核心特点：不扎堆、不对称，以 "孤" 为美，突出单株形态与气质。</li>
+              <li>美学价值：打破院落方正的几何单调感，软化建筑硬线条；形成视觉焦点，"一树即成一景"，让空间更显灵动雅致。</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 2. 对称种植 -->
+        <div style="position: absolute; right: 80px; top: 220px; width: 40%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px; width: 80%;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">2. 对称种植</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>在门前、廊下或中轴线两侧，对称栽种两株相同树木，形成均衡布局。</li>
+              <li>核心特点：遵循中轴线秩序，植株形态、大小保持一致，强化对称美感。</li>
+              <li>美学价值：呼应传统礼制观念，体现端庄、规整的空间气质，让院落更具仪式感与秩序感。</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 3. 尺度控制 -->
+        <div style="position: absolute; left: 40px; top: 360px; width: 40%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px; width: 80%;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">3. 尺度控制</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>根据院落大小选择树木体量，实现树与院的比例协调。</li>
+              <li>核心特点：小院配小树、大院植高树，避免 "树大欺院" 或 "树小显空"。</li>
+              <li>美学价值：保证空间通透不压抑，既不让树木遮挡采光，又能通过树木尺度衬托院落格局（小院显精巧，大院显宏大）。</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 4. 季相之美 -->
+        <div style="position: absolute; right: 80px; top: 500px; width: 40%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px; width: 80%;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">4. 季相之美</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>选择四季有景的树木（春桃、夏荷、秋桂、冬梅），让院落随季节呈现不同风貌。</li>
+              <li>核心特点：春发新芽、夏遮浓荫、秋结硕果、冬映疏枝，四季景观各异。</li>
+              <li>美学价值：为静态院落注入时间流动感；枝叶漏光形成斑驳光影，增强空间层次，营造诗意氛围。</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 5. 文化寓意 -->
+        <div style="position: absolute; left: 40px; top: 640px; width: 40%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px; width: 80%;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">5. 文化寓意</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li>通过特定树种的象征意义，赋予树木 "人格化" 内涵，传递文化期许。</li>
+              <li>核心特点：树种选择与吉祥寓意绑定，成为院落文化的隐性表达。</li>
+              <li>美学价值：玉兰 + 海棠喻 "金玉满堂"，石榴象征 "多子多福"，竹代表 "清雅气节"，让树木超越绿化功能，成为承载传统美学与生活愿景的景观符号。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 陆·水体设置 -->
+      <div style="position: absolute; left: 0; top: 3000px; width: 100%; padding-left: 40px; padding-right: 160px; z-index: 2;">
+        <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: right; padding-right: 60px;">陆·水体设置</h3>
+        <p style="text-align: right; padding-right: 60px; color:#3a2815; font-size:14px; margin-top:5px;">水在院落中是<span style="font-weight: bold;">灵气核心、调节微气候、象征财富</span></p>
+        <!-- 1. 小池 -->
+        <div style="position: absolute; left: 40px; top: 80px; width: 40%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">1. 小池</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li><strong>分布与形制：</strong>多见于江南、岭南及园林化民居，以浅池、半月池、方池为常见形式。</li>
+              <li><strong>空间与美学作用：</strong></li>
+              <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+                <li>水面如镜，映照天空与建筑倒影，以光影延伸视觉边界，巧妙扩大空间感。</li>
+                <li>静水带来柔和、清凉的氛围，让庭院多了一份宁静与温润。</li>
+              </ul>
+              <li><strong>文化寓意：</strong>契合传统风水中 "山主贵，水主财" 的理念，静水象征聚气纳财，藏风聚福。</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 2. 水缸 / 太平缸 -->
+        <div style="position: absolute; right: 80px; top: 80px; width: 40%; z-index: 2;">
+          <div style="background: rgba(255,255,255,0.85); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 20px 16px;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 18px;">2. 水缸 / 太平缸</h3>
+            <ul style="font-size:14px; color:#3a2815; margin:10px 0 0 16px; padding:0;">
+              <li><strong>分布与形制：</strong>北方四合院的典型配置，常置于廊下、院角，也被称为 "门海"。</li>
+              <li><strong>功能与美学作用：</strong></li>
+              <ul style="font-size:14px; color:#3a2815; margin:5px 0 0 16px; padding:0;">
+                <li>实用上可蓄水防火，是传统宅院的 "安全屏障"；也可养荷、养鱼，方寸之间营造 "一池江湖" 的意境。</li>
+                <li>圆形缸体柔化了方正院落的硬朗线条，形成 "方与圆" 的构图对比，增添灵动与变化。</li>
+              </ul>
+              <li><strong>文化寓意：</strong>"门海" 之名取 "门前有海，镇宅纳福" 之意，是实用功能与吉祥文化的结合。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <script>
@@ -2698,6 +3913,16 @@
       const structurePanel = document.getElementById('buildingStructurePanel');
       const navLinks = structurePanel.querySelectorAll('.top-nav a');
       const sections = structurePanel.querySelectorAll('.section');
+      // 新增：美学子面板（如屋顶、门、轴线与秩序）切换逻辑
+      const aestheticsPanel = document.getElementById('buildingAestheticsPanel');
+      const aestheticsSection = aestheticsPanel ? aestheticsPanel.querySelector('.section.active') : null;
+      const aestheticsFeatureBtns = aestheticsSection ? aestheticsSection.querySelectorAll('.aesthetic-feature-btn') : [];
+      const aestheticsSubPanels = [
+        document.getElementById('roofIntroPanel'),
+        document.getElementById('windowIntroPanel'),
+        document.getElementById('windowPanel'),
+        document.getElementById('yardIntroPanel'),
+      ].filter(Boolean);
       const EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
       const materialPanel = document.getElementById('buildingMaterialPanel');
       const materialFilterDrawer = document.getElementById('materialFilterDrawer');
@@ -3632,21 +4857,21 @@
 
           const ringPositions = {
             taiji: [
-              [40,12],
-              [25, 42],
-              [49, 49],
-              [45, 68],
-              [19, 70],
+              [14, 18],
+              [36, 10],
+              [58, 22],
+              [78, 12],
+              [88, 30],
             ],
             zhuchu: [
-              [42, 20],
-              [20, 33],
-              [64, 33],
-              [14, 56],
-              [42, 50],
-              [72, 56],
-              [26, 78],
-              [58, 78],
+              [12, 64],
+              [28, 82],
+              [44, 68],
+              [62, 86],
+              [78, 70],
+              [88, 84],
+              [36, 94],
+              [58, 96],
             ],
           };
 
@@ -3666,8 +4891,10 @@
               button.style.setProperty('--float-dur', `${3 + (idx % 4) * 0.45}s`);
               button.style.setProperty('--float-delay', `${(idx % 5) * 0.18}s`);
 
-              const fallbackX = 50 + ((idx % 3) - 1) * 16;
-              const fallbackY = 34 + Math.floor(idx / 3) * 18;
+              const fallbackX = 18 + (idx % 4) * 22;
+              const fallbackY = topic === 'taiji'
+                ? 14 + Math.floor(idx / 4) * 14
+                : 64 + Math.floor(idx / 4) * 14;
               const x = positions[idx] ? positions[idx][0] : fallbackX;
               const y = positions[idx] ? positions[idx][1] : fallbackY;
               button.style.left = `${x}%`;
@@ -4102,6 +5329,7 @@
         materialGalaxyBoard.dataset.initialized = 'true';
       }
 
+      // 主四大卡片切换
       openLinks.forEach((link) => {
         link.addEventListener('click', function (event) {
           event.preventDefault();
@@ -4109,10 +5337,44 @@
         });
       });
 
+      // 建筑美学下子面板切换（屋顶/门/轴线与秩序）
+      if (aestheticsFeatureBtns && aestheticsFeatureBtns.length > 0) {
+        aestheticsFeatureBtns.forEach((btn) => {
+          btn.addEventListener('click', function () {
+            // 隐藏所有子面板
+            aestheticsSubPanels.forEach(panel => panel && panel.classList.remove('visible'));
+            // 显示目标子面板
+            const target = btn.getAttribute('data-panel-target');
+            const panel = document.getElementById(target);
+            if (panel) {
+              panel.classList.add('visible');
+              document.body.classList.add('panel-mode');
+            }
+          });
+        });
+      }
+
+      // 子面板返回按钮
+      aestheticsSubPanels.forEach(panel => {
+        const backBtn = panel.querySelector('.roof-intro-back');
+        if (backBtn) {
+          backBtn.addEventListener('click', function () {
+            panel.classList.remove('visible');
+            document.body.classList.remove('panel-mode');
+          });
+        }
+      });
+
       closeButtons.forEach((button) => {
         button.addEventListener('click', function () {
           closePanels();
         });
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && document.body.classList.contains('panel-mode')) {
+          closePanels();
+        }
       });
 
       navLinks.forEach((link) => {
