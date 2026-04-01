@@ -53,6 +53,50 @@
             object-fit: cover;
         }
         
+        /* 视频选择器 */
+        #video-selector {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            z-index: 9500;
+        }
+        
+        /* 视频选择按钮 */
+        .video-btn {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .video-btn:last-child {
+            margin-bottom: 0;
+        }
+        
+        .video-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .video-btn.active {
+            background: var(--btn-primary);
+            border-color: var(--btn-primary);
+        }
+        
         /* 开始按钮容器 */
         #start-container {
             position: absolute;
@@ -357,6 +401,12 @@
                 </ul>
             </div>
         </nav>
+        <!-- 视频选择器 -->
+        <div id="video-selector">
+            <button class="video-btn active" data-video="intro-video.mp4">开场-宫墙</button>
+            <button class="video-btn" data-video="intro_video2.mp4">开场-园林</button>
+        </div>
+        
         <!-- 视频元素 -->
         <video id="intro-video" autoplay muted playsinline>
             <source src="intro-video.mp4" type="video/mp4">
@@ -376,6 +426,7 @@
             const introVideo = document.getElementById('intro-video');
             const startContainer = document.getElementById('start-container');
             const startBtn = document.getElementById('start-btn');
+            const videoButtons = document.querySelectorAll('.video-btn');
             
             // 视频结束事件处理
             introVideo.addEventListener('ended', () => {
@@ -390,6 +441,30 @@
             startBtn.addEventListener('click', () => {
                 // 跳转到加载页面
                 window.location.href = '加载页面.html';
+            });
+            
+            // 视频切换功能
+            videoButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 更新按钮状态
+                    videoButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // 获取视频路径
+                    const videoPath = button.getAttribute('data-video');
+                    
+                    // 更新视频源
+                    const source = introVideo.querySelector('source');
+                    source.setAttribute('src', videoPath);
+                    
+                    // 重新加载视频
+                    introVideo.load();
+                    introVideo.muted = true;
+                    introVideo.play();
+                    
+                    // 隐藏开始按钮
+                    startContainer.classList.remove('visible');
+                });
             });
         })();
         

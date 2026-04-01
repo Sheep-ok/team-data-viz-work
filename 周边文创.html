@@ -27,6 +27,42 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "SimSun", "宋体", serif;
+            cursor: none;
+        }
+        
+        /* 鼠标跟随容器 */
+        #mouse-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: visible;
+        }
+
+        /* 鼠标小圆点 */
+        #mouse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #8b5a2b;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        /* 鼠标圆圈 */
+        #mouse-circle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid #8b5a2b;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
         }
         
         /* 页面容器 */
@@ -533,6 +569,12 @@
     </style>
 </head>
 <body>
+    <!-- 鼠标跟随元素 -->
+    <div id="mouse-follower">
+        <div id="mouse-dot"></div>
+        <div id="mouse-circle"></div>
+    </div>
+    
     <div id="文创-container">
         <!-- 顶部导航栏 -->
         <nav id="top-nav">
@@ -813,5 +855,60 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        // ========== 鼠标跟随效果脚本 ==========
+        (function() {
+            const mouseFollower = document.getElementById('mouse-follower');
+            const mouseDot = document.getElementById('mouse-dot');
+            const mouseCircle = document.getElementById('mouse-circle');
+            
+            if (mouseFollower && mouseDot && mouseCircle) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let circleX = 0;
+                let circleY = 0;
+                
+                // 鼠标移动事件
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    // 直接更新小圆点位置
+                    mouseDot.style.left = mouseX + 'px';
+                    mouseDot.style.top = mouseY + 'px';
+                });
+                
+                // 动画循环，实现圆圈追逐圆点
+                function animate() {
+                    // 计算圆圈到圆点的距离
+                    const dx = mouseX - circleX;
+                    const dy = mouseY - circleY;
+                    
+                    // 平滑追逐效果
+                    circleX += dx * 0.1;
+                    circleY += dy * 0.1;
+                    
+                    // 更新圆圈位置
+                    mouseCircle.style.left = circleX + 'px';
+                    mouseCircle.style.top = circleY + 'px';
+                    
+                    // 继续动画
+                    requestAnimationFrame(animate);
+                }
+                
+                // 鼠标点击事件
+                document.addEventListener('click', () => {
+                    mouseCircle.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    setTimeout(() => {
+                        mouseCircle.style.transform = 'translate(-50%, -50%) scale(1)';
+                    }, 150);
+                });
+                
+                // 启动动画
+                animate();
+            }
+        })();
+    </script>
 </body>
 </html>

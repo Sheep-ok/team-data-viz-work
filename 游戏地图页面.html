@@ -330,6 +330,27 @@
             z-index: 1002;
         }
         
+        .info-close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .info-close-btn:hover {
+            color: #ff0;
+        }
+        
         .info-panel.active {
             display: flex;
         }
@@ -1144,10 +1165,19 @@
                     magnifier.style.display = 'block';
                     // 显示信息面板（一直显示在下面）
                     infoPanel.innerHTML = `
+                        <button class="info-close-btn">&times;</button>
                         <div class="info-title">${this.dataset.title}</div>
                         <div class="info-content">${this.dataset.content}</div>
                     `;
                     infoPanel.classList.add('active');
+                    
+                    // 绑定关闭按钮事件
+                    const closeBtn = infoPanel.querySelector('.info-close-btn');
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', function() {
+                            infoPanel.classList.remove('active');
+                        });
+                    }
                 });
                 
                 explorationPoints.appendChild(pointElement);
