@@ -2926,18 +2926,22 @@
       <div class="material-filter-drawer" id="materialFilterDrawer">
         <button class="material-filter-toggle" id="materialFilterToggle" type="button">筛选</button>
         <div class="material-filter-panel">
-          <p class="material-filter-title">结构设计筛选</p>
+          <p class="material-filter-title">材料筛选</p>
           <details class="filter-layer" open>
-            <summary>第一层：我想解决...（功能维度）</summary>
-            <div class="filter-tags" id="functionTagGroup"></div>
+            <summary>第一层：材料用途</summary>
+            <div class="filter-tags" id="purposeTagGroup"></div>
           </details>
           <details class="filter-layer" open>
-            <summary>第二层：我想寻找...（地域维度）</summary>
+            <summary>第二层：性能特点</summary>
+            <div class="filter-tags" id="featureTagGroup"></div>
+          </details>
+          <details class="filter-layer" open>
+            <summary>第三层：成本层级</summary>
+            <div class="filter-tags" id="costTagGroup"></div>
+          </details>
+          <details class="filter-layer" open>
+            <summary>第四层：地域代表性材料</summary>
             <div class="filter-tags" id="regionTagGroup"></div>
-          </details>
-          <details class="filter-layer" open>
-            <summary>第三层：我预算/等级是...（社会属性）</summary>
-            <div class="filter-tags" id="socialTagGroup"></div>
           </details>
         </div>
       </div>
@@ -2981,6 +2985,8 @@
           <button class="aesthetic-feature-btn" type="button" data-panel-target="windowIntroPanel">门</button>
           <button class="aesthetic-feature-btn" type="button" data-panel-target="windowPanel">窗</button>
           <button class="aesthetic-feature-btn" type="button" data-panel-target="yardIntroPanel">院落</button>
+          <button class="aesthetic-feature-btn" type="button" data-panel-target="axisIntroPanel">轴线与秩序</button>
+          <button class="aesthetic-feature-btn" type="button" data-panel-target="colorIntroPanel">色彩</button>
           <p>这里用于填写建筑美学的介绍内容。</p>
         </div>
         <div class="image-slot">建筑美学配图待补充</div>
@@ -3905,6 +3911,177 @@
     </div>
   </section>
 
+  <section class="intro-panel roof-intro-panel" id="colorIntroPanel">
+    <div class="roof-intro-topbar">
+      <button class="roof-intro-back" type="button" data-close-panel>返回</button>
+      <h2 class="roof-intro-title">色彩美学</h2>
+    </div>
+    <div style="position: relative; width: 100%; min-height: 1000px;">
+      <!-- 壹·古建色韵 -->
+      <div style="position: relative; width: 100%; margin-top: 40px;">
+        <h3 style="margin-top:0; color:#7a5c2e; font-size: 32px; text-align: center; margin-bottom: 30px;">壹·古建色韵</h3>
+        <div style="padding: 0 60px; box-sizing: border-box;">
+          <div style="max-width: 800px; margin: 0 auto; background: transparent; padding: 32px 28px;">
+            <p style="font-size:16px; color:#3a2815; line-height: 1.6; margin-bottom: 20px; text-align: center;">中国古建筑的色彩，是一幅由自然与文化交织而成的绚丽画卷。从皇家宫殿的金碧辉煌，到江南民居的粉墙黛瓦，每一种色彩都承载着深厚的历史文化底蕴，展现着独特的美学追求。</p>
+            <p style="font-size:16px; color:#3a2815; line-height: 1.6; margin-bottom: 20px; text-align: center;">色彩不仅是建筑的装饰，更是等级制度的象征、地域文化的表达、哲学思想的体现。它与建筑的形态、材料、环境相互融合，共同构成了中国古建筑特有的视觉美感。</p>
+          </div>
+        </div>
+      </div>
+      <!-- 色彩条交互组件 -->
+      <div style="position: relative; width: 100%; margin-top: 60px; padding: 0 60px; box-sizing: border-box;">
+        <div style="display: flex; width: 100%; gap: 40px; align-items: flex-start;" class="color-content-container">
+          <!-- 左侧色条 -->
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0; width: 50%; margin-top: 60px;" class="color-strip-container">
+            <div class="color-strip" data-color="#E6E6E6" style="width: 180px; height: 60px; background: #E6E6E6; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #000; margin-bottom: 5px;">老墙灰白</div>
+                <div style="font-size: 12px; color: #000; margin-bottom: 10px;">#E6E6E6</div>
+                <div style="font-size: 12px; color: #000;">用途：外墙、墙面</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#2C2C2C" style="width: 180px; height: 60px; background: #2C2C2C; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">新瓦青灰</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#2C2C2C</div>
+                <div style="font-size: 12px; color: #fff;">用途：屋顶、瓦面</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#1A1A1A" style="width: 180px; height: 60px; background: #1A1A1A; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">老瓦墨黑</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#1A1A1A</div>
+                <div style="font-size: 12px; color: #fff;">用途：屋面、旧瓦</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#6D4C41" style="width: 180px; height: 60px; background: #6D4C41; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">栗色</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#6D4C41</div>
+                <div style="font-size: 12px; color: #fff;">用途：门窗、梁柱</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#757575" style="width: 180px; height: 60px; background: #757575; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">青石冷灰</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#757575</div>
+                <div style="font-size: 12px; color: #fff;">用途：墙基、台阶、街巷、柱础</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#B71C1C" style="width: 180px; height: 60px; background: #B71C1C; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">朱红</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#B71C1C</div>
+                <div style="font-size: 12px; color: #fff;">用途：门框、楹联、灯笼</div>
+              </div>
+            </div>
+          </div>
+          <!-- 右侧徽派民居介绍 -->
+          <div style="width: 50%; background: transparent; padding: 0;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 24px; margin-bottom: 20px;">徽派民居</h3>
+            <div style="background: rgba(255,255,255,0.85); border-radius: 8px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+              <h4 style="margin-top:0; color:#7a5c2e; font-size: 18px; margin-bottom: 15px;">核心介绍</h4>
+              <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 20px;">徽派民居以粉墙黛瓦、错落马头墙和天井院落为标志性形态，整体色彩素雅克制，建筑线条干净利落，既顺应皖南山水环境形成天人合一的诗意画面，又以极简的黑白美学营造出如中国水墨画般的空灵意境，是东方含蓄美学与实用建筑完美融合的典范。</p>
+              <h4 style="margin-top:0; color:#7a5c2e; font-size: 18px; margin-bottom: 15px;">美学特点</h4>
+              <ol style="font-size:14px; color:#3a2815; margin:0 0 15px 20px; padding:0;">
+                <li style="margin-bottom: 10px;"><strong>极简黑白灰，对比温润不刺眼</strong>：高对比度 + 低饱和哑光质感，白 — 灰 — 黑自然过渡，柔和不张扬。</li>
+                <li style="margin-bottom: 10px;"><strong>水墨意境：留白 + 勾线</strong>：白墙为宣纸留白，映天光山色；黛瓦为墨线勾勒，定建筑轮廓，如流动水墨画。</li>
+                <li style="margin-bottom: 10px;"><strong>天人合一，藏露有致</strong>：色彩融入山水，契合自然；外观素净内敛，内部木构、三雕暗藏精致，外简内华。</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 闽南红砖民居 -->
+      <div style="position: relative; width: 100%; margin-top: 80px; padding: 0 60px; box-sizing: border-box;">
+        <div style="display: flex; width: 100%; gap: 40px; align-items: flex-start;" class="color-content-container-2">
+          <!-- 左侧闽南红砖民居介绍 -->
+          <div style="width: 50%; background: transparent; padding: 0;">
+            <h3 style="margin-top:0; color:#7a5c2e; font-size: 24px; margin-bottom: 20px;">闽南红砖民居</h3>
+            <div style="background: rgba(255,255,255,0.85); border-radius: 8px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+              <h4 style="margin-top:0; color:#7a5c2e; font-size: 18px; margin-bottom: 15px;">核心简介</h4>
+              <p style="font-size:14px; color:#3a2815; line-height: 1.6; margin-bottom: 20px;">闽南红砖民居以泉州古厝、永定土楼为代表，是闽南地区标志性建筑。整体以大面积红砖为主体，搭配白石基座与黑瓦屋顶，色彩温暖浓烈、对比明快，兼具中原礼制与海洋文化特色，风格粗犷大气、喜庆厚重，极具地域辨识度。</p>
+              <h4 style="margin-top:0; color:#7a5c2e; font-size: 18px; margin-bottom: 15px;">美学特点</h4>
+              <ol style="font-size:14px; color:#3a2815; margin:0 0 15px 20px; padding:0;">
+                <li style="margin-bottom: 10px;"><strong>暖红主调，热烈醒目</strong>：以红砖为核心暖色系，对比鲜明、视觉冲击力强，充满烟火气。</li>
+                <li style="margin-bottom: 10px;"><strong>红白石配，质朴厚重</strong>：红砖与白石、青石形成强烈色块对比，肌理粗粝自然，层次清晰。</li>
+                <li style="margin-bottom: 10px;"><strong>烟火厚重，热烈有序</strong>：色彩浓烈却排布规整，既有生活温度，又显沉稳大气，是土地与生活的本色表达。</li>
+              </ol>
+            </div>
+          </div>
+          <!-- 右侧色条 -->
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 0; width: 50%; margin-top: 60px;" class="color-strip-container-2">
+            <div class="color-strip" data-color="#BE412D" style="width: 180px; height: 60px; background: #BE412D; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">红砖主色</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#BE412D</div>
+                <div style="font-size: 12px; color: #fff;">用途：外墙、墙体、红砖厝主体</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#B45A3C" style="width: 180px; height: 60px; background: #B45A3C; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">旧砖红</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#B45A3C</div>
+                <div style="font-size: 12px; color: #fff;">用途：老砖墙、铺地红砖</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#DCDCDC" style="width: 180px; height: 60px; background: #DCDCDC; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #000; margin-bottom: 5px;">白石灰</div>
+                <div style="font-size: 12px; color: #000; margin-bottom: 10px;">#DCDCDC</div>
+                <div style="font-size: 12px; color: #000;">用途：墙基、柱础、出砖入石</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#8C8278" style="width: 180px; height: 60px; background: #8C8278; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">青石灰</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#8C8278</div>
+                <div style="font-size: 12px; color: #fff;">用途：台阶、基座、门框石</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#323232" style="width: 180px; height: 60px; background: #323232; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">黑瓦顶</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#323232</div>
+                <div style="font-size: 12px; color: #fff;">用途：屋顶、瓦面、屋脊</div>
+              </div>
+            </div>
+            <div class="color-strip" data-color="#6E4632" style="width: 180px; height: 60px; background: #6E4632; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; border-radius: 8px;">
+              <div style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.3s ease;">
+                <div style="font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 5px;">木构棕</div>
+                <div style="font-size: 12px; color: #fff; margin-bottom: 10px;">#6E4632</div>
+                <div style="font-size: 12px; color: #fff;">用途：门窗、梁柱、木构架</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>
+        .color-strip-container:hover .color-strip {
+          height: 40px;
+        }
+        .color-strip-container .color-strip:hover {
+          width: 180px !important;
+          height: 120px !important;
+          z-index: 10;
+        }
+        .color-strip-container .color-strip:hover > div {
+          opacity: 1 !important;
+        }
+        .color-strip-container-2:hover .color-strip {
+          height: 40px;
+        }
+        .color-strip-container-2 .color-strip:hover {
+          width: 180px !important;
+          height: 120px !important;
+          z-index: 10;
+        }
+        .color-strip-container-2 .color-strip:hover > div {
+          opacity: 1 !important;
+        }
+      </style>
+    </div>
+  </section>
+
   <script>
     (function () {
       const openLinks = document.querySelectorAll('[data-panel-target]');
@@ -3927,9 +4104,10 @@
       const materialPanel = document.getElementById('buildingMaterialPanel');
       const materialFilterDrawer = document.getElementById('materialFilterDrawer');
       const materialFilterToggle = document.getElementById('materialFilterToggle');
-      const functionTagGroup = document.getElementById('functionTagGroup');
+      const purposeTagGroup = document.getElementById('purposeTagGroup');
+      const featureTagGroup = document.getElementById('featureTagGroup');
+      const costTagGroup = document.getElementById('costTagGroup');
       const regionTagGroup = document.getElementById('regionTagGroup');
-      const socialTagGroup = document.getElementById('socialTagGroup');
       const materialGalaxyBoard = document.getElementById('materialGalaxyBoard');
       const materialClearFilter = document.getElementById('materialClearFilter');
       const materialRegionWatermark = document.getElementById('materialRegionWatermark');
@@ -3956,8 +4134,8 @@
           items: [
             {
               name: '杉木',
-              intro: '木质轻盈柔韧，结构稳定不易变形，天然自带防潮防虫、耐腐蚀的特性，加工简易，性价比高，是南方古建民居使用率最高的核心构架木料。',
-              represent: '徽派民居、江南民居、吊脚楼的梁柱构架',
+              intro: '最常用：梁柱、檩、椽、楼板、屋架，木质轻盈柔韧，结构稳定不易变形，天然自带防潮防虫、耐腐蚀的特性，加工简易，性价比高。',
+              represent: '徽派民居的梁柱构架',
             },
             {
               name: '松木',
@@ -4154,78 +4332,77 @@
       ];
 
       const MATERIAL_TAG_OPTIONS = {
-        function: [
-          '防潮耐腐', '保温御寒', '防火性', '耐盐碱', '耐干旱', '防霉变',
-          '结构承重', '抗震性', '抗裂性', '辅助支撑', '轻质',
-          '通风透气', '隔热性能', '防虫防蛀', '热惰性',
-          '屋面排水', '围护遮挡', '结构辅助', '结构支撑', '铺地耐磨', '屋面辅助',
-          '耐磨性', '透气性', '密封防风', '密封防漏', '黏合勾缝',
+        '材料用途': [
+          '主体结构', '围护墙体', '屋面材料', '基础地坪', '装饰构件', '粘结抹灰'
         ],
-        region: [
-          '苏派', '皖派', '晋派', '京派', '闽派', '粤派', '川派', '滇黔派', '西北派',
-          '陕派', '西南派', '全派系通用', '南方各派系',
+        '性能特点': [
+          '易加工', '耐腐蚀', '防虫蛀', '防潮耐候', '强度高', '质轻', '防水性好', '保温隔热', '易雕刻'
         ],
-        social: [
-          '体现身份', '名贵', '装饰性', '装饰精美', '易雕刻', '就地取材', '预算有限', '手艺核心',
+        '成本层级': [
+          '低成本', '中成本', '高成本'
+        ],
+        '地域代表性材料': [
+          '徽派', '晋派', '京派民居', '川派', '海派', '闽派', '粤派', '苏派', '西南地区', '西北地区', '江南地区'
         ],
       };
 
       const selectedTags = {
-        function: new Set(),
-        region: new Set(),
-        social: new Set(),
+        '材料用途': new Set(),
+        '性能特点': new Set(),
+        '成本层级': new Set(),
+        '地域代表性材料': new Set(),
       };
 
       const MATERIAL_CATEGORY_CLASS = {
         木材: 'cat-wood',
         石材: 'cat-stone',
         砖材: 'cat-brick',
-        土材: 'cat-earth',
-        灰材: 'cat-lime',
-        竹材: 'cat-bamboo',
-        瓦片: 'cat-tile',
+        瓦材: 'cat-tile',
+        '土灰 / 抹灰': 'cat-lime',
+        '土 / 三合土': 'cat-earth',
+        '其他辅料': 'cat-other',
       };
 
       const MATERIAL_TAG_MAP = {
-        杉木: { function: ['结构承重', '抗震性'], region: ['苏派', '皖派', '川派', '滇黔派'], social: ['手艺核心'], feature: ['主力用材', '易加工', '轻质'] },
-        松木: { function: ['结构承重', '耐干旱'], region: ['京派', '晋派'], social: [], feature: ['北方标配', '纹理直'] },
-        楠木: { function: ['结构承重', '防虫防蛀'], region: ['皖派', '苏派', '粤派'], social: ['体现身份', '名贵'], feature: ['宗祠用材'] },
-        柏木: { function: ['防潮耐腐'], region: ['川派', '滇黔派'], social: [], feature: ['稳定性', '湿热适配', '山区常用'] },
-        樟木: { function: ['防虫防蛀', '防霉变'], region: ['闽派', '粤派'], social: ['装饰性'], feature: ['自带香气', '门窗隔断'] },
-        榆木: { function: ['结构承重'], region: ['晋派', '京派'], social: [], feature: ['坚韧抗压', '硬木', '北方梁枋'] },
+        杉木: { '材料用途': ['主体结构', '围护墙体', '装饰构件'], '性能特点': ['易加工', '质轻', '防潮耐候'], '成本层级': ['低成本'], '地域代表性材料': [] },
+        松木: { '材料用途': ['主体结构', '围护墙体', '装饰构件'], '性能特点': ['易加工', '强度高'], '成本层级': ['低成本'], '地域代表性材料': [] },
+        榆木: { '材料用途': ['主体结构', '围护墙体', '装饰构件'], '性能特点': ['强度高', '易雕刻'], '成本层级': ['中成本'], '地域代表性材料': [] },
+        楠木: { '材料用途': ['主体结构', '围护墙体', '装饰构件'], '性能特点': ['耐腐蚀', '防虫蛀', '强度高'], '成本层级': ['高成本'], '地域代表性材料': [] },
+        樟木: { '材料用途': ['主体结构', '围护墙体', '装饰构件'], '性能特点': ['防虫蛀', '易雕刻'], '成本层级': ['中成本'], '地域代表性材料': ['川派', '粤派', '西南地区'] },
+        柏木: { '材料用途': ['主体结构', '围护墙体', '装饰构件'], '性能特点': ['耐腐蚀', '防潮耐候', '强度高'], '成本层级': ['中成本'], '地域代表性材料': [] },
 
-        花岗岩: { function: ['结构承重', '防潮耐腐', '耐盐碱'], region: ['闽派', '粤派'], social: [], feature: ['坚硬', '耐风化', '沿海标配'] },
-        青石: { function: ['辅助支撑', '易雕刻'], region: ['苏派', '皖派', '京派', '晋派'], social: ['装饰性', '易雕刻'], feature: ['细腻', '通用石材'] },
-        条石: { function: ['结构承重', '防潮耐腐'], region: ['晋派', '苏派', '川派'], social: [], feature: ['规整', '墙基专用'] },
-        毛石: { function: ['辅助支撑', '防潮耐腐'], region: ['川派', '滇黔派'], social: ['就地取材', '预算有限'], feature: ['粗粝'] },
-        汉白玉: { function: [], region: ['京派', '晋派'], social: ['装饰性', '体现身份', '名贵'], feature: ['洁白', '皇家/富商'] },
-        页岩: { function: ['屋面排水', '围护遮挡', '轻质'], region: ['滇黔派', '川派'], social: ['就地取材'], feature: ['轻薄', '石片房'] },
+        花岗岩: { '材料用途': ['基础地坪', '围护墙体'], '性能特点': ['耐腐蚀', '强度高', '防水性好'], '成本层级': ['高成本'], '地域代表性材料': ['晋派', '京派民居', '闽派', '西北地区'] },
+        青石: { '材料用途': ['基础地坪', '围护墙体'], '性能特点': ['易雕刻', '防潮耐候'], '成本层级': ['中成本'], '地域代表性材料': ['徽派', '西南地区'] },
+        条石: { '材料用途': ['基础地坪', '围护墙体'], '性能特点': ['强度高'], '成本层级': ['中成本'], '地域代表性材料': ['西北地区'] },
+        毛石: { '材料用途': ['基础地坪', '围护墙体'], '性能特点': ['强度高'], '成本层级': ['低成本'], '地域代表性材料': ['西南地区', '西北地区'] },
+        汉白玉: { '材料用途': ['装饰构件'], '性能特点': ['易雕刻'], '成本层级': ['高成本'], '地域代表性材料': ['京派民居'] },
+        页岩: { '材料用途': ['屋面材料', '围护墙体'], '性能特点': ['防水性好'], '成本层级': ['高成本'], '地域代表性材料': ['川派', '西南地区'] },
 
-        青砖: { function: ['围护遮挡', '防火性', '保温御寒'], region: ['全派系通用'], social: [], feature: ['核心墙材', '经久耐用'] },
-        方砖: { function: ['铺地耐磨', '结构承重'], region: ['苏派', '京派'], social: [], feature: ['平整', '高级室内'] },
-        条砖: { function: ['围护遮挡', '结构辅助'], region: ['苏派', '闽派'], social: [], feature: ['基础用砖', '隔墙'] },
-        望砖: { function: ['屋面辅助', '装饰性'], region: ['苏派', '皖派', '粤派'], social: ['装饰性'], feature: ['轻薄', '遮挡'] },
-        砖雕用料砖: { function: ['装饰性', '易雕刻'], region: ['皖派', '晋派'], social: ['手艺核心', '体现身份', '易雕刻'], feature: ['细腻'] },
+        青砖: { '材料用途': ['围护墙体', '基础地坪'], '性能特点': ['防潮耐候', '强度高'], '成本层级': ['低成本'], '地域代表性材料': ['晋派', '海派', '粤派', '西北地区'] },
+        条砖: { '材料用途': ['围护墙体', '基础地坪'], '性能特点': ['防潮耐候', '强度高'], '成本层级': ['低成本'], '地域代表性材料': ['京派民居', '海派'] },
+        方砖: { '材料用途': ['围护墙体', '基础地坪'], '性能特点': ['防潮耐候', '强度高'], '成本层级': ['中成本'], '地域代表性材料': ['海派'] },
+        望砖: { '材料用途': ['屋面材料'], '性能特点': ['质轻'], '成本层级': ['低成本'], '地域代表性材料': ['徽派', '苏派', '江南地区'] },
+        砖雕用料砖: { '材料用途': ['装饰构件'], '性能特点': ['易雕刻'], '成本层级': ['高成本'], '地域代表性材料': ['徽派', '晋派', '苏派', '江南地区'] },
 
-        夯土: { function: ['保温御寒', '热惰性', '围护遮挡'], region: ['闽派', '陕派', '滇黔派'], social: ['就地取材'], feature: ['厚重', '生态足迹'] },
-        生土坯: { function: ['保温御寒', '围护遮挡'], region: ['京派', '晋派', '西北派'], social: ['预算有限'], feature: ['非承重'] },
-        草筋土: { function: ['围护遮挡', '抗震性', '抗裂性'], region: ['川派', '滇黔派'], social: [], feature: ['韧性', '抗裂', '山区民居'] },
-        三合土: { function: ['防潮耐腐', '结构支撑'], region: ['闽派', '粤派'], social: [], feature: ['硬化地面', '沿海防潮'] },
+        夯土: { '材料用途': ['围护墙体', '基础地坪'], '性能特点': ['保温隔热'], '成本层级': ['低成本'], '地域代表性材料': ['川派', '西南地区', '西北地区'] },
+        生土坯: { '材料用途': ['围护墙体', '基础地坪'], '性能特点': ['保温隔热'], '成本层级': ['低成本'], '地域代表性材料': ['川派', '闽派', '西南地区', '西北地区'] },
+        草筋土: { '材料用途': ['围护墙体', '基础地坪'], '性能特点': ['保温隔热'], '成本层级': ['低成本'], '地域代表性材料': ['川派', '西南地区'] },
+        三合土: { '材料用途': ['基础地坪'], '性能特点': ['强度高', '防潮耐候'], '成本层级': ['低成本'], '地域代表性材料': [] },
 
-        石灰灰浆: { function: ['黏合勾缝', '防火性'], region: ['全派系通用'], social: [], feature: ['基础灰材'] },
-        纸筋灰: { function: ['装饰性', '密封防风'], region: ['苏派', '京派'], social: ['装饰性'], feature: ['洁白细腻', '内墙抹灰'] },
-        贝壳灰: { function: ['防潮耐腐', '耐盐碱', '黏合勾缝'], region: ['粤派', '闽派'], social: [], feature: ['地域特色', '高黏性'] },
-        麻刀灰: { function: ['抗裂性', '辅助支撑'], region: ['川派', '京派'], social: [], feature: ['韧性', '易损部位'] },
+        石灰灰浆: { '材料用途': ['粘结抹灰'], '性能特点': ['易加工'], '成本层级': ['低成本'], '地域代表性材料': [] },
+        麻刀灰: { '材料用途': ['粘结抹灰'], '性能特点': ['易加工'], '成本层级': ['低成本'], '地域代表性材料': ['海派', '江南地区'] },
+        纸筋灰: { '材料用途': ['粘结抹灰'], '性能特点': ['易加工'], '成本层级': ['低成本'], '地域代表性材料': ['海派', '江南地区'] },
+        贝壳灰: { '材料用途': ['粘结抹灰'], '性能特点': ['易加工'], '成本层级': ['高成本'], '地域代表性材料': ['闽派', '粤派'] },
 
-        毛竹: { function: ['辅助支撑', '通风透气', '透气性'], region: ['川派', '滇黔派', '粤派'], social: ['就地取材'], feature: ['轻便', '骨架'] },
-        '淡竹 / 水竹': { function: ['围护遮挡', '通风透气', '透气性', '轻质'], region: ['苏派', '川派'], social: [], feature: ['编织', '轻质隔断'] },
-        竹篾: { function: ['抗裂性', '结构辅助'], region: ['皖派', '西南派'], social: [], feature: ['柔韧', '抹灰骨架'] },
-        楠竹: { function: ['结构支撑', '耐磨性'], region: ['闽派', '滇黔派'], social: [], feature: ['坚硬', '地板楼梯'] },
+        毛竹: { '材料用途': ['围护墙体', '装饰构件'], '性能特点': ['易加工', '质轻'], '成本层级': ['低成本'], '地域代表性材料': ['川派', '闽派', '粤派', '西南地区'] },
+        楠竹: { '材料用途': ['围护墙体', '装饰构件'], '性能特点': ['易加工', '质轻'], '成本层级': ['低成本'], '地域代表性材料': ['川派', '西南地区'] },
+        '淡竹 / 水竹': { '材料用途': ['围护墙体', '装饰构件'], '性能特点': ['易加工', '质轻'], '成本层级': ['低成本'], '地域代表性材料': [] },
+        竹篾: { '材料用途': ['围护墙体', '装饰构件'], '性能特点': ['易加工', '质轻'], '成本层级': ['低成本'], '地域代表性材料': ['川派', '闽派', '粤派', '西南地区'] },
 
-        小青瓦: { function: ['屋面排水', '通风透气'], region: ['南方各派系'], social: [], feature: ['南方之魂', '铺设灵活'] },
-        筒瓦: { function: ['屋面排水', '密封防漏'], region: ['京派', '晋派', '粤派'], social: ['体现身份'], feature: ['等级象征', '厚重'] },
-        板瓦: { function: ['屋面排水', '保温御寒'], region: ['京派', '晋派'], social: [], feature: ['北方厚重', '稳固'] },
-        滴水瓦: { function: ['屋面排水', '装饰性'], region: ['苏派', '皖派'], social: ['装饰性'], feature: ['引导雨水', '檐口细节'] },
+        小青瓦: { '材料用途': ['屋面材料'], '性能特点': ['防水性好', '防潮耐候'], '成本层级': ['低成本'], '地域代表性材料': ['海派', '苏派', '西北地区', '江南地区'] },
+        板瓦: { '材料用途': ['屋面材料'], '性能特点': ['防水性好', '防潮耐候'], '成本层级': ['低成本'], '地域代表性材料': [] },
+        筒瓦: { '材料用途': ['屋面材料'], '性能特点': ['防水性好', '防潮耐候'], '成本层级': ['中成本'], '地域代表性材料': ['徽派', '晋派', '京派民居', '海派', '苏派', '西北地区', '江南地区'] },
+        滴水瓦: { '材料用途': ['屋面材料'], '性能特点': ['防水性好', '防潮耐候'], '成本层级': ['中成本'], '地域代表性材料': [] },
       };
 
       function loadAdaptiveImages() {
@@ -5097,7 +5274,7 @@
       }
 
       function getItemTags(itemName) {
-        return MATERIAL_TAG_MAP[itemName] || { function: [], region: [], social: [], feature: [] };
+        return MATERIAL_TAG_MAP[itemName] || { '材料用途': [], '性能特点': [], '成本层级': [], '地域代表性材料': [] };
       }
 
       function matchByDimension(itemTags, dimensionName) {
@@ -5113,20 +5290,14 @@
         if (!materialGalaxyBoard) return;
 
         const clusters = materialGalaxyBoard.querySelectorAll('.material-cluster');
-        const selectedRegionValues = Array.from(selectedTags.region);
-        const hasAnyFilter = selectedTags.function.size > 0 || selectedTags.region.size > 0 || selectedTags.social.size > 0;
+        const hasAnyFilter = selectedTags['材料用途'].size > 0 || selectedTags['性能特点'].size > 0 || selectedTags['成本层级'].size > 0 || selectedTags['地域代表性材料'].size > 0;
 
         if (materialClearFilter) {
           materialClearFilter.classList.toggle('visible', hasAnyFilter);
         }
 
         if (materialRegionWatermark) {
-          if (selectedRegionValues.length === 1) {
-            materialRegionWatermark.textContent = selectedRegionValues[0];
-            materialRegionWatermark.style.display = 'block';
-          } else {
-            materialRegionWatermark.style.display = 'none';
-          }
+          materialRegionWatermark.style.display = 'none';
         }
 
         clusters.forEach((cluster) => {
@@ -5146,8 +5317,8 @@
             node.style.pointerEvents = 'auto';
             node.style.opacity = '1';
 
-            const itemTags = node.__materialTags || { function: [], region: [], social: [], feature: [] };
-            const isMatch = matchByDimension(itemTags, 'function') && matchByDimension(itemTags, 'region') && matchByDimension(itemTags, 'social');
+            const itemTags = node.__materialTags || { '材料用途': [], '性能特点': [], '成本层级': [], '地域代表性材料': [] };
+            const isMatch = matchByDimension(itemTags, '材料用途') && matchByDimension(itemTags, '性能特点') && matchByDimension(itemTags, '成本层级') && matchByDimension(itemTags, '地域代表性材料');
 
             if (!hasAnyFilter) {
               if (line) {
@@ -5191,9 +5362,10 @@
 
       function createFilterTags() {
         const groups = [
-          { key: 'function', mount: functionTagGroup },
-          { key: 'region', mount: regionTagGroup },
-          { key: 'social', mount: socialTagGroup },
+          { key: '材料用途', mount: purposeTagGroup },
+          { key: '性能特点', mount: featureTagGroup },
+          { key: '成本层级', mount: costTagGroup },
+          { key: '地域代表性材料', mount: regionTagGroup },
         ];
 
         groups.forEach((groupItem) => {
