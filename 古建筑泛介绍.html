@@ -1409,10 +1409,13 @@
     }
 
     .material-modal-dialog {
-      position: relative;
+      position: fixed;
       z-index: 1;
-      width: min(620px, calc(100% - 40px));
-      margin: 8vh auto 0;
+      width: 620px;
+      height: 400px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       background: #f0f5eb;
       border: 1px solid #A8BF8F;
       border-radius: 12px;
@@ -1444,6 +1447,11 @@
       cursor: pointer;
       font-size: 14px;
       font-family: inherit;
+    }
+
+    .material-modal-content {
+      height: calc(100% - 50px);
+      overflow-y: auto;
     }
 
     .material-modal-content p {
@@ -4136,31 +4144,37 @@
               name: '杉木',
               intro: '最常用：梁柱、檩、椽、楼板、屋架，木质轻盈柔韧，结构稳定不易变形，天然自带防潮防虫、耐腐蚀的特性，加工简易，性价比高。',
               represent: '徽派民居的梁柱构架',
+              image: '详细介绍图片/杉木.png',
             },
             {
               name: '松木',
               intro: '纹理通直规整，硬度适中、结实耐用，山林储量大、就地取材十分方便，抗压抗折表现优秀，是北方传统民居通用的基础木料。',
               represent: '北京四合院、晋派大院木构架',
+              image: '详细介绍图片/松木.png',
             },
             {
               name: '楠木',
               intro: '木质紧实细腻、质地坚硬厚重，自带淡雅清香气味，能天然防虫防腐，档次极高，只用于高规格民居与宗族礼制建筑。',
               represent: '部分富商大院、宗祠大殿梁柱',
+              image: '详细介绍图片/楠木.png',
             },
             {
               name: '柏木',
               intro: '防潮抗腐能力出众，结构稳定性极强，不易开裂变形，耐阴耐潮，完美适配西南多雨潮湿的山地气候环境。',
               represent: '四川民居、川东吊脚楼',
+              image: '详细介绍图片/柏木.png',
             },
             {
               name: '樟木',
               intro: '自带浓郁天然香气，防虫防蛀效果极佳，纹理美观细腻，质地温润，适合精细雕花与室内小件木结构制作。',
               represent: '福建土楼内部门窗、隔断',
+              image: '详细介绍图片/樟木.png',
             },
             {
               name: '榆木',
               intro: '木质坚硬厚实、承载力强，纹理粗犷大气耐磨抗造，稳固性好，是北方民居重要的承重优质硬木材料。',
               represent: '山西大院、北方古民居',
+              image: '详细介绍图片/榆木.png',
             },
           ],
         },
@@ -5249,12 +5263,12 @@
         if (!materialModal || !materialModalTitle || !materialModalIntro || !materialModalRepresent || !materialModalTags) {
           return;
         }
-        const itemTags = MATERIAL_TAG_MAP[item.name] || { function: [], region: [], social: [], feature: [] };
+        const itemTags = MATERIAL_TAG_MAP[item.name] || { '材料用途': [], '性能特点': [], '成本层级': [], '地域代表性材料': [] };
         const tagList = [
-          ...itemTags.function,
-          ...itemTags.region,
-          ...itemTags.social,
-          ...itemTags.feature,
+          ...itemTags['材料用途'],
+          ...itemTags['性能特点'],
+          ...itemTags['成本层级'],
+          ...itemTags['地域代表性材料'],
         ];
         const uniqueTags = Array.from(new Set(tagList));
 
@@ -5262,6 +5276,16 @@
         materialModalIntro.textContent = '介绍：' + item.intro;
         materialModalRepresent.textContent = '代表：' + item.represent;
         materialModalTags.innerHTML = '';
+
+        // 处理图片
+        const materialModalImage = document.querySelector('.material-modal-image');
+        if (materialModalImage) {
+          if (item.image) {
+            materialModalImage.innerHTML = `<img src="${item.image}" alt="${item.name}" style="max-width: 100%; max-height: 180px; object-fit: contain;">`;
+          } else {
+            materialModalImage.innerHTML = '图片位置预留';
+          }
+        }
 
         uniqueTags.forEach((tag) => {
           const tagNode = document.createElement('span');
