@@ -811,19 +811,9 @@
                 }
             }
             
-            // 跳转到操作指南区域
+            // 跳转到操作指南页面
             function goToGuidePage() {
-                const loadingContainer = document.getElementById('loading-container');
-                const guideContainer = document.getElementById('guide-container');
-                loadingContainer.style.transition = 'opacity 0.4s ease';
-                loadingContainer.style.opacity = '0';
-                setTimeout(() => {
-                    loadingContainer.style.display = 'none';
-                    guideContainer.style.display = 'flex';
-                    // 触发 reflow 后设置 opacity 实现淡入
-                    guideContainer.offsetHeight;
-                    guideContainer.style.opacity = '1';
-                }, 400);
+                window.location.href = '操作指南.html';
             }
             
             if (readyBtn) {

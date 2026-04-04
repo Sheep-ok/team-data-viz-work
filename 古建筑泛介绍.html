@@ -1852,6 +1852,7 @@
       line-height: 1.8;
       color: #4a3a2a;
       text-align: justify;
+      text-indent: 2em;
     }
 
     .craft-item p:last-child {
@@ -2476,9 +2477,55 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(101, 67, 33, 0.8);
     }
+
+    /* 鼠标跟随效果样式 */
+    * {
+        cursor: none;
+    }
+
+    /* 鼠标跟随容器 */
+    #mouse-follower {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+        overflow: visible;
+    }
+
+    /* 鼠标小圆点 */
+    #mouse-dot {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: white;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10000;
+        mix-blend-mode: difference;
+    }
+
+    /* 鼠标圆圈 */
+    #mouse-circle {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border: 1px solid white;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        mix-blend-mode: difference;
+        transition: transform 0.1s ease;
+    }
   </style>
 </head>
 <body>
+    <!-- 鼠标跟随元素 -->
+    <div id="mouse-follower">
+        <div id="mouse-dot"></div>
+        <div id="mouse-circle"></div>
+    </div>
+    
     <!-- 顶部导航栏 -->
     <nav id="top-nav" style="position:absolute;top:0;left:0;width:100%;background:transparent;z-index:9000;">
         <div class="nav-container">
@@ -2674,7 +2721,7 @@
           </div>
           <div class="gable-image">
             <img
-              src="详细介绍图片/青砖实砌墙.png"
+              src="详细介绍图片/青砖石砌墙.png"
               alt="青砖实砌墙示意图"
               style="width: auto; height: auto; max-width: 100%; max-height: 320px; object-fit: contain;"
             />
@@ -2962,7 +3009,7 @@
           </div>
           <div class="gable-image" style="min-height: 320px; display: flex; align-items: center; justify-content: center;">
             <img
-              src="详细介绍图片/柱础"
+              src="详细介绍图片/柱础.png"
               alt="柱础示意图"
               style="width: auto; height: auto; max-width: 100%; max-height: 320px; object-fit: contain;"
             />
@@ -5423,6 +5470,7 @@
     (function () {
       const openLinks = document.querySelectorAll('[data-panel-target]');
       const closeButtons = document.querySelectorAll('[data-close-panel], #closeBuildingStructure');
+
       const panels = document.querySelectorAll('.intro-panel');
       const structurePanel = document.getElementById('buildingStructurePanel');
       const navLinks = structurePanel.querySelectorAll('.top-nav a');
@@ -5438,6 +5486,7 @@
         document.getElementById('doorIntroPanel'),
         document.getElementById('yardIntroPanel'),
         document.getElementById('axisIntroPanel'),
+        document.getElementById('colorIntroPanel'),
       ].filter(Boolean);
       const EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
       const materialPanel = document.getElementById('buildingMaterialPanel');
@@ -7096,6 +7145,56 @@
 
       loadAdaptiveImages();
       initMaterialPanel();
+    })();
+
+    // ========== 鼠标跟随效果脚本 ==========
+    (function() {
+        const mouseFollower = document.getElementById('mouse-follower');
+        const mouseDot = document.getElementById('mouse-dot');
+        const mouseCircle = document.getElementById('mouse-circle');
+        
+        if (mouseFollower && mouseDot && mouseCircle) {
+            let mouseX = 0;
+            let mouseY = 0;
+            let circleX = 0;
+            let circleY = 0;
+            
+            // 鼠标移动事件
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // 直接更新小圆点位置
+                mouseDot.style.left = mouseX + 'px';
+                mouseDot.style.top = mouseY + 'px';
+            });
+            
+            // 动画循环，实现圆圈追逐圆点
+            function animate() {
+                // 计算目标位置
+                circleX += (mouseX - circleX) * 0.15;
+                circleY += (mouseY - circleY) * 0.15;
+                
+                // 更新圆圈位置
+                mouseCircle.style.left = circleX + 'px';
+                mouseCircle.style.top = circleY + 'px';
+                
+                // 继续动画
+                requestAnimationFrame(animate);
+            }
+            
+            // 启动动画
+            animate();
+            
+            // 鼠标点击事件 - 圆圈缩放效果
+            document.addEventListener('mousedown', () => {
+                mouseCircle.style.transform = 'translate(-50%, -50%) scale(0.8)';
+            });
+            
+            document.addEventListener('mouseup', () => {
+                mouseCircle.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        }
     })();
   </script>
 </body>
