@@ -2458,6 +2458,24 @@
         padding: 4px 10px;
       }
     }
+
+    /* 自定义滚动条样式 */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(222, 215, 198, 0.6);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(139, 87, 42, 0.7);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(101, 67, 33, 0.8);
+    }
   </style>
 </head>
 <body>
@@ -2529,7 +2547,13 @@
             </ul>
         </div>
     </nav>
+  
   <div class="overview" id="overview">
+    <!-- 页面导航按钮 -->
+    <div style="position:absolute;top:20px;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;z-index:8000;padding:0 20px;box-sizing:border-box;">
+        <a href="数据可视页面.html" style="border:2px solid rgba(201,168,108,0.6);background:linear-gradient(135deg, rgba(245,240,232,0.7) 0%, rgba(232,220,192,0.7) 100%);color:#5c4a32;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:16px;font-family:'SimSun','宋体',serif;transition:all 0.3s ease;text-decoration:none;">返回数据可视化</a>
+        <a href="地图点位.html" style="border:2px solid rgba(201,168,108,0.6);background:linear-gradient(135deg, rgba(245,240,232,0.7) 0%, rgba(232,220,192,0.7) 100%);color:#5c4a32;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:16px;font-family:'SimSun','宋体',serif;transition:all 0.3s ease;text-decoration:none;">下一步</a>
+    </div>
     <div class="chinese-pattern pattern-top-left"></div>
     <div class="chinese-pattern pattern-top-right"></div>
     <div class="chinese-pattern pattern-bottom-left"></div>
