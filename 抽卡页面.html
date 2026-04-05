@@ -434,6 +434,36 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
+        
+        /* ========== 进入游戏地图按钮样式 ========== */
+        .game-map-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+            min-width: 120px;
+            text-align: center;
+            display: inline-block;
+            user-select: none;
+            pointer-events: auto;
+        }
+        
+        /* 进入游戏地图按钮悬停效果 */
+        .game-map-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
 
         /* ========== 顶部下拉菜单导航样式 ========== */
         /* 导航栏容器 */
@@ -683,6 +713,9 @@
         
         <!-- 跳过抽卡按钮 -->
         <button id="skip-draw-btn" class="skip-btn">跳过抽卡</button>
+        
+        <!-- 进入游戏地图按钮 -->
+        <button id="game-map-btn" class="game-map-btn">进入游戏地图</button>
 
     </div>
     
@@ -707,6 +740,9 @@
             
             // 跳过抽卡按钮
             const skipDrawBtn = document.getElementById('skip-draw-btn');
+            
+            // 进入游戏地图按钮
+            const gameMapBtn = document.getElementById('game-map-btn');
             
             // ========== 常量定义 ==========
             const cardCount = 8; // 卡牌数量
@@ -1118,6 +1154,12 @@
         
         // 绑定跳过抽卡按钮点击事件
         skipDrawBtn.addEventListener('click', function() {
+            // 打开卡牌详情页，默认显示第一张卡牌
+            openDetailPage(0);
+        });
+        
+        // 绑定进入游戏地图按钮点击事件
+        gameMapBtn.addEventListener('click', function() {
             window.location.href = '游戏地图页面.html';
         });
 
