@@ -647,6 +647,43 @@
       box-shadow: 0 4px 12px rgba(201, 168, 108, 0.3);
       transform: translateY(-2px);
     }
+    
+    .roof-intro-topbar .roof-intro-home {
+      position: absolute !important;
+      right: 0px !important;
+      top: 10px !important;
+      transform: none !important;
+      border: 2px solid #c9a86c;
+      background: linear-gradient(135deg, #f5f0e8 0%, #e8dcc0 100%);
+      color: #5c4a32;
+      border-radius: 8px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-size: 18px;
+      font-family: "SimSun", "宋体", serif;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1000;
+    }
+    
+    .roof-intro-topbar .roof-intro-home::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border: 1px solid rgba(201, 168, 108, 0.3);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+    
+    .roof-intro-topbar .roof-intro-home:hover {
+      background: linear-gradient(135deg, #e8dcc0 0%, #dcc9a8 100%);
+      box-shadow: 0 4px 12px rgba(201, 168, 108, 0.3);
+      transform: translateY(-2px);
+    }
 
     .image-container {
       width: 100%;
@@ -5278,6 +5315,7 @@
     <div class="roof-intro-topbar">
       <button class="roof-intro-back" type="button">返回</button>
       <h2 class="roof-intro-title">藻井美学</h2>
+      <button class="roof-intro-home" type="button">返回首页</button>
     </div>
     <div class="roof-intro-content">
       <div style="position: relative; width: 100%; min-height: 1000px;">
@@ -5795,6 +5833,7 @@
         document.getElementById('yardIntroPanel'),
         document.getElementById('axisIntroPanel'),
         document.getElementById('colorIntroPanel'),
+        document.getElementById('caissonIntroPanel'),
       ].filter(Boolean);
       const EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
       const materialPanel = document.getElementById('buildingMaterialPanel');
@@ -7429,6 +7468,15 @@
             // 保持panel-mode状态
           });
         }
+        
+        // 返回首页按钮
+        const homeBtn = panel.querySelector('.roof-intro-home');
+        if (homeBtn) {
+          homeBtn.addEventListener('click', function () {
+            // 跳转到首页并选中开场-藻井视频
+            window.location.href = 'index.html?video=intro_video3.mp4';
+          });
+        }
       });
 
       closeButtons.forEach((button) => {
@@ -7451,6 +7499,27 @@
         });
       });
 
+      // 处理URL哈希，跳转到指定面板
+      if (window.location.hash) {
+        const hash = window.location.hash.substring(1);
+        if (hash === 'caissonIntroPanel') {
+          // 先显示建筑美学面板
+          const aestheticsPanel = document.getElementById('buildingAestheticsPanel');
+          if (aestheticsPanel) {
+            hideAllPanels();
+            aestheticsPanel.classList.add('visible');
+            document.body.classList.add('panel-mode');
+            
+            // 然后显示藻井面板
+            const caissonPanel = document.getElementById('caissonIntroPanel');
+            if (caissonPanel) {
+              aestheticsPanel.classList.remove('visible');
+              caissonPanel.classList.add('visible');
+            }
+          }
+        }
+      }
+      
       loadAdaptiveImages();
       initMaterialPanel();
     })();

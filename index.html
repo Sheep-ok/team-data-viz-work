@@ -166,6 +166,83 @@
             transform: scale(0.95);
         }
         
+        /* ========== 问号图标样式 ========== */
+        #info-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 9600;
+            opacity: 0;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 问号图标显示状态 */
+        #info-icon.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* 问号图标悬停效果 */
+        #info-icon:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 信息框样式 */
+        #info-box {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 250px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            color: white;
+            font-size: 14px;
+            line-height: 1.5;
+            z-index: 9600;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        /* 信息框显示状态 */
+        #info-box.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* 信息框箭头 */
+        #info-box::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid rgba(0, 0, 0, 0.8);
+        }
+        
         /* ========== 鼠标跟随效果样式 ========== */
         /* 基础样式 */
         * {
@@ -414,6 +491,7 @@
         <!-- 视频选择器 -->
         <div id="video-selector">
             <button class="video-btn active" data-video="intro-video.mp4">开场-宫墙</button>
+            <button class="video-btn" data-video="intro_video3.mp4">开场-藻井</button>
             <button class="video-btn" data-video="intro_video2.mp4">开场-园林</button>
         </div>
         
@@ -424,6 +502,13 @@
         
         <!-- 开始按钮容器 -->
         <div id="start-container">
+            <!-- 问号图标 -->
+            <div id="info-icon">?</div>
+            <!-- 信息框 -->
+            <div id="info-box">
+                <p>所展示为故宫万春亭藻井，明代嘉靖年间所造，上圆下方，以榫卯斗拱层层叠筑，正中是贴金盘龙，龙口衔珠。它以龙凤、牡丹、星宿纹样装饰，金碧辉煌，暗合"天圆地方"的传统宇宙观。</p>
+                <button id="jump-to-caisson" style="margin-top: 15px; padding: 8px 16px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 4px; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s ease;">跳转介绍</button>
+            </div>
             <img id="title-image" src="大字标题.jpg" alt="大字标题">
             <h2 id="subtitle">——以古建筑中民居为主的数字化可视平台</h2>
             <button id="start-btn">启章</button>
@@ -438,6 +523,26 @@
             const startContainer = document.getElementById('start-container');
             const startBtn = document.getElementById('start-btn');
             const videoButtons = document.querySelectorAll('.video-btn');
+            const infoIcon = document.getElementById('info-icon');
+            const infoBox = document.getElementById('info-box');
+            
+            // 跟踪当前选择的视频
+            let currentVideo = 'intro-video.mp4';
+            
+            // 处理URL参数，自动选中指定视频
+            function handleUrlParams() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const videoParam = urlParams.get('video');
+                if (videoParam) {
+                    currentVideo = videoParam;
+                    // 找到对应的按钮并点击
+                    videoButtons.forEach(button => {
+                        if (button.getAttribute('data-video') === videoParam) {
+                            button.click();
+                        }
+                    });
+                }
+            }
             
             // 视频结束事件处理
             introVideo.addEventListener('ended', () => {
@@ -446,6 +551,14 @@
                 
                 // 显示开始按钮
                 startContainer.classList.add('visible');
+                
+                // 检查是否是藻井视频，如果是则显示问号图标
+                if (currentVideo === 'intro_video3.mp4') {
+                    infoIcon.classList.add('visible');
+                } else {
+                    infoIcon.classList.remove('visible');
+                    infoBox.classList.remove('visible');
+                }
             });
             
             // 开始按钮点击事件
@@ -453,6 +566,38 @@
                 // 跳转到加载页面
                 window.location.href = '加载页面.html';
             });
+            
+            // 问号图标点击事件
+            infoIcon.addEventListener('click', () => {
+                infoBox.classList.toggle('visible');
+            });
+            
+            // 点击页面其他地方关闭信息框
+            document.addEventListener('click', (e) => {
+                if (!infoIcon.contains(e.target) && !infoBox.contains(e.target)) {
+                    infoBox.classList.remove('visible');
+                }
+            });
+            
+            // 跳转介绍按钮点击事件
+            const jumpToCaissonBtn = document.getElementById('jump-to-caisson');
+            if (jumpToCaissonBtn) {
+                jumpToCaissonBtn.addEventListener('click', () => {
+                    // 跳转到古建筑泛介绍的藻井处
+                    window.location.href = '古建筑泛介绍.html#caissonIntroPanel';
+                });
+                
+                // 按钮悬停效果
+                jumpToCaissonBtn.addEventListener('mouseover', () => {
+                    jumpToCaissonBtn.style.background = 'rgba(255, 255, 255, 0.3)';
+                    jumpToCaissonBtn.style.transform = 'translateY(-2px)';
+                });
+                
+                jumpToCaissonBtn.addEventListener('mouseout', () => {
+                    jumpToCaissonBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+                    jumpToCaissonBtn.style.transform = 'translateY(0)';
+                });
+            }
             
             // 视频切换功能
             videoButtons.forEach(button => {
@@ -463,6 +608,7 @@
                     
                     // 获取视频路径
                     const videoPath = button.getAttribute('data-video');
+                    currentVideo = videoPath;
                     
                     // 更新视频源
                     const source = introVideo.querySelector('source');
@@ -475,8 +621,15 @@
                     
                     // 隐藏开始按钮
                     startContainer.classList.remove('visible');
+                    
+                    // 隐藏问号图标和信息框
+                    infoIcon.classList.remove('visible');
+                    infoBox.classList.remove('visible');
                 });
             });
+            
+            // 处理URL参数
+            handleUrlParams();
         })();
         
         // ========== 鼠标跟随效果脚本 ==========
