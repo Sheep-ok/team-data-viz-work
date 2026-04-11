@@ -1251,12 +1251,29 @@
                     const photoX = canvas.width - photoWidth - 125;
                     const photoY = 420;
                     
-                    // 绘制拍摄的照片
+                    // 绘制拍摄的照片（保持宽高比，居中裁剪）
                     const userPhoto = new Image();
                     userPhoto.src = capturedImageData;
                     await new Promise((resolve) => userPhoto.onload = resolve);
                     
-                    ctx.drawImage(userPhoto, photoX, photoY, photoWidth, photoHeight);
+                    // 计算居中裁剪区域，保持宽高比
+                    const srcRatio = userPhoto.width / userPhoto.height;
+                    const destRatio = photoWidth / photoHeight;
+                    
+                    let sx = 0, sy = 0, sWidth = userPhoto.width, sHeight = userPhoto.height;
+                    
+                    if (srcRatio > destRatio) {
+                        // 源图像更宽，裁剪左右两侧
+                        sWidth = userPhoto.height * destRatio;
+                        sx = (userPhoto.width - sWidth) / 2;
+                    } else {
+                        // 源图像更高，裁剪上下两侧
+                        sHeight = userPhoto.width / destRatio;
+                        sy = (userPhoto.height - sHeight) / 2;
+                    }
+                    
+                    // 使用裁剪方式绘制，保持宽高比
+                    ctx.drawImage(userPhoto, sx, sy, sWidth, sHeight, photoX, photoY, photoWidth, photoHeight);
                     
                     // 创建下载链接
                     const link = document.createElement('a');
