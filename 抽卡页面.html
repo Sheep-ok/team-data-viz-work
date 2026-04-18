@@ -590,6 +590,63 @@
             opacity: 1;
             visibility: visible;
         }
+        
+        /* ========== 悬浮球样式 ========== */
+        .floating-ball {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-image: url('agent/悬浮球图片.webp');
+            background-size: cover;
+            background-position: center;
+            cursor: grab;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                0 6px 20px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            z-index: 9998;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            transition: box-shadow 0.3s ease;
+            left: 250px;
+            top: 10px;
+        }
+        
+        .floating-ball:active {
+            cursor: grabbing;
+        }
+        
+        .floating-ball:hover {
+            box-shadow: 
+                0 6px 16px rgba(0, 0, 0, 0.35),
+                0 8px 25px rgba(0, 0, 0, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        .floating-ball.dragging {
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.4),
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* AI聊天弹窗原生光标样式 */
+        #ai-chat-modal,
+        #ai-chat-modal * {
+            cursor: default !important;
+        }
+        
+        #ai-chat-modal button,
+        #ai-chat-modal input,
+        #ai-chat-modal a {
+            cursor: pointer !important;
+        }
+        
+        #ai-chat-modal input[type="text"] {
+            cursor: text !important;
+        }
     </style>
 </head>
 <body>
@@ -598,6 +655,9 @@
         <div id="mouse-dot"></div>
         <div id="mouse-circle"></div>
     </div>
+    
+    <!-- 悬浮球 -->
+    <div class="floating-ball" id="floatingBall"></div>
     
     <!-- 抽卡页面 -->
     <div id="choose-card-container">
@@ -1457,6 +1517,452 @@
             animate();
         }
     })();
+    
+    // ========== 悬浮球脚本 ==========
+    class FloatingBall {
+        constructor(element, options = {}) {
+            this.element = element;
+            this.isDragging = false;
+            this.currentX = 0;
+            this.currentY = 0;
+            this.initialX = 0;
+            this.initialY = 0;
+            this.elementWidth = 60;
+            this.elementHeight = 60;
+            
+            this.initPosition();
+            this.bindEvents();
+            this.onClickCallback = options.onClick || (() => {});
+        }
+        
+        initPosition() {
+            const rect = this.element.getBoundingClientRect();
+            this.currentX = rect.left;
+            this.currentY = rect.top;
+            this.elementWidth = rect.width;
+            this.elementHeight = rect.height;
+        }
+        
+        bindEvents() {
+            this.element.addEventListener('mousedown', (e) => this.startDrag(e));
+            document.addEventListener('mousemove', (e) => this.drag(e));
+            document.addEventListener('mouseup', (e) => this.endDrag(e));
+            
+            this.element.addEventListener('touchstart', (e) => this.startDrag(e), { passive: false });
+            document.addEventListener('touchmove', (e) => this.drag(e), { passive: false });
+            document.addEventListener('touchend', (e) => this.endDrag(e));
+            
+            this.element.addEventListener('click', (e) => this.handleClick(e));
+        }
+        
+        startDrag(e) {
+            e.preventDefault();
+            
+            if (e.type === 'touchstart') {
+                this.initialX = e.touches[0].clientX - this.currentX;
+                this.initialY = e.touches[0].clientY - this.currentY;
+            } else {
+                this.initialX = e.clientX - this.currentX;
+                this.initialY = e.clientY - this.currentY;
+            }
+            
+            this.isDragging = false;
+            this.element.classList.add('dragging');
+            this.dragStartTime = Date.now();
+        }
+        
+        drag(e) {
+            if (this.initialX === 0 && this.initialY === 0) return;
+            
+            if (e.type === 'touchmove') {
+                e.preventDefault();
+            }
+            
+            let newX, newY;
+            
+            if (e.type === 'touchmove') {
+                newX = e.touches[0].clientX - this.initialX;
+                newY = e.touches[0].clientY - this.initialY;
+            } else {
+                newX = e.clientX - this.initialX;
+                newY = e.clientY - this.initialY;
+            }
+            
+            if (!this.isDragging) {
+                const dx = Math.abs(newX - this.currentX);
+                const dy = Math.abs(newY - this.currentY);
+                if (dx > 5 || dy > 5) {
+                    this.isDragging = true;
+                }
+            }
+            
+            const maxX = window.innerWidth - this.elementWidth;
+            const maxY = window.innerHeight - this.elementHeight;
+            
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+            
+            this.currentX = newX;
+            this.currentY = newY;
+            
+            this.element.style.right = 'auto';
+            this.element.style.bottom = 'auto';
+            this.element.style.left = `${this.currentX}px`;
+            this.element.style.top = `${this.currentY}px`;
+        }
+        
+        endDrag(e) {
+            this.element.classList.remove('dragging');
+            this.initialX = 0;
+            this.initialY = 0;
+        }
+        
+        handleClick(e) {
+            const dragDuration = Date.now() - this.dragStartTime;
+            
+            if (dragDuration > 200) {
+                return;
+            }
+            
+            console.log('悬浮球被点击');
+            
+            if (typeof this.onClickCallback === 'function') {
+                this.onClickCallback(e);
+            }
+        }
+        
+        setOnClick(callback) {
+            this.onClickCallback = callback;
+        }
+        
+        moveTo(x, y) {
+            const maxX = window.innerWidth - this.elementWidth;
+            const maxY = window.innerHeight - this.elementHeight;
+            
+            this.currentX = Math.max(0, Math.min(x, maxX));
+            this.currentY = Math.max(0, Math.min(y, maxY));
+            
+            this.element.style.right = 'auto';
+            this.element.style.bottom = 'auto';
+            this.element.style.left = `${this.currentX}px`;
+            this.element.style.top = `${this.currentY}px`;
+        }
+        
+        resetPosition() {
+            this.moveTo(200, 10);
+        }
+    }
+    
+    // 初始化悬浮球
+    const floatingBallElement = document.getElementById('floatingBall');
+    if (floatingBallElement) {
+        const ball = new FloatingBall(floatingBallElement, {
+            onClick: () => {
+                console.log('显示AI聊天弹窗');
+                showAIChatModal();
+            }
+        });
+        
+        window.floatingBall = ball;
+    }
+    
+    // ========== AI聊天弹窗 ==========
+    function showAIChatModal() {
+        // 如果弹窗已存在，直接显示
+        let modal = document.getElementById('ai-chat-modal');
+        if (modal) {
+            modal.style.display = 'block';
+            return;
+        }
+        
+        // 创建弹窗容器
+        modal = document.createElement('div');
+        modal.id = 'ai-chat-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 1527px;
+            height: 740px;
+            background: rgba(0, 0, 0, 0.7);
+            display: block;
+            z-index: 10001;
+        `;
+        
+        // 创建聊天容器（固定在页面中间）
+        const chatWrapper = document.createElement('div');
+        chatWrapper.style.cssText = `
+            position: absolute;
+            left: 313px;
+            top: 120px;
+            width: 900px;
+            height: 500px;
+        `;
+        
+        // 创建聊天内容
+        chatWrapper.innerHTML = `
+            <div style="
+                width: 100%;
+                height: 100%;
+                background-image: url('agent/ai背景.png');
+                background-size: cover;
+                background-position: center;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                position: relative;
+                cursor: default;
+            ">
+                <!-- 关闭按钮 -->
+                <button id="close-ai-chat" style="
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    width: 32px;
+                    height: 32px;
+                    background: rgba(139, 37, 0, 0.8);
+                    color: #fcf9f2;
+                    border: 1px solid #8b2500;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 18px;
+                    font-weight: bold;
+                    z-index: 10;
+                ">×</button>
+                
+                <!-- 标题 -->
+                <div style="
+                    padding: 20px;
+                    text-align: center;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                ">
+                    <h1 style="
+                        font-size: 32px;
+                        font-weight: normal;
+                        color: #fffdf0;
+                        letter-spacing: 6px;
+                        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                        margin: 0;
+                    ">古建灵犀</h1>
+                </div>
+                
+                <!-- 消息区域 -->
+                <div id="ai-chat-messages" style="
+                    flex: 1;
+                    overflow-y: auto;
+                    padding: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                ">
+                    <div style="
+                        max-width: 70%;
+                        padding: 10px 15px;
+                        line-height: 1.7;
+                        font-size: 14px;
+                        border-radius: 4px;
+                        background: rgba(252, 249, 242, 0.7);
+                        color: #1a1a1a;
+                        align-self: flex-start;
+                    ">欢迎来到「古建灵犀」智能向导，我是您的古建筑知识顾问，愿为君一二陈之。</div>
+                </div>
+                
+                <!-- 输入区域 -->
+                <div style="
+                    padding: 16px 20px;
+                    display: flex;
+                    align-items: center;
+                    gap: 14px;
+                    border-top: 1px solid rgba(255, 255, 255, 0.08);
+                ">
+                    <div style="flex: 1; position: relative;">
+                        <input type="text" id="ai-chat-input" placeholder="请输入您想了解的古建筑知识..." style="
+                            width: 100%;
+                            padding: 12px 0;
+                            background: transparent;
+                            border: none;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                            font-size: 14px;
+                            font-family: 'SimSun', '宋体', 'KaiTi', '楷体', serif;
+                            color: #222222;
+                            outline: none;
+                        ">
+                    </div>
+                    <button id="ai-chat-send" style="
+                        width: 42px;
+                        height: 42px;
+                        background: #8b2500;
+                        color: #fcf9f2;
+                        border: 1px solid #8b2500;
+                        border-radius: 6px 2px 8px 3px;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-family: 'KaiTi', 'STKaiti', 'LiSu', serif;
+                        font-weight: bold;
+                        letter-spacing: 2px;
+                    ">落墨</button>
+                </div>
+            </div>
+        `;
+        
+        modal.appendChild(chatWrapper);
+        document.body.appendChild(modal);
+        
+        // 绑定事件
+        document.getElementById('close-ai-chat').addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // 给弹窗区域禁用鼠标跟随效果
+        modal.style.pointerEvents = 'auto';
+        chatWrapper.style.pointerEvents = 'auto';
+        
+        // 给聊天区域启用原生光标（使用!important效果）
+        const chatContent = chatWrapper.querySelector('div');
+        chatContent.style.setProperty('cursor', 'default', 'important');
+        chatContent.style.setProperty('pointer-events', 'auto', 'important');
+        chatContent.style.pointerEvents = 'auto';
+        chatContent.style.cursor = 'default';
+        
+        // 设置所有子元素的光标
+        const allElements = chatContent.querySelectorAll('*');
+        allElements.forEach(el => {
+            el.style.setProperty('cursor', 'default', 'important');
+        });
+        
+        // 关闭按钮需要pointer光标
+        const closeBtn = document.getElementById('close-ai-chat');
+        closeBtn.style.cursor = 'pointer';
+        
+        const sendBtn = document.getElementById('ai-chat-send');
+        sendBtn.style.cursor = 'pointer';
+        
+        const inputField = document.getElementById('ai-chat-input');
+        inputField.style.cursor = 'text';
+        
+        // 给整个弹窗内容添加原生光标覆盖
+        chatWrapper.style.zIndex = '10002';
+        
+        // 强制在modal上禁用鼠标跟随
+        modal.addEventListener('mouseenter', function() {
+            document.body.style.setProperty('cursor', 'auto', 'important');
+            document.querySelectorAll('*').forEach(el => {
+                if (el.closest('#ai-chat-modal')) {
+                    el.style.setProperty('cursor', 'default', 'important');
+                }
+            });
+        });
+        
+        // 隐藏页面的鼠标跟随效果
+        const mouseFollower = document.getElementById('mouse-follower');
+        if (mouseFollower) {
+            mouseFollower.style.display = 'none';
+        }
+        
+        // 弹窗关闭时恢复鼠标跟随效果
+        document.getElementById('close-ai-chat').addEventListener('click', function() {
+            modal.style.display = 'none';
+            if (mouseFollower) {
+                mouseFollower.style.display = 'block';
+            }
+        });
+        
+        // 点击背景关闭弹窗时也恢复
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                if (mouseFollower) {
+                    mouseFollower.style.display = 'block';
+                }
+            }
+        });
+        
+        // 聊天功能
+        const aiReplies = [
+            "先生所言极是，容我思量一二...",
+            "此问颇有意趣，待我细述...",
+            "古建之道，博大精深，且听我慢慢道来...",
+            "此乃我中华建筑之精髓，容我详解...",
+            "先生/姑娘所问甚好，容我一二陈之..."
+        ];
+        
+        function getRandomReply() {
+            return aiReplies[Math.floor(Math.random() * aiReplies.length)];
+        }
+        
+        function scrollToBottom() {
+            const messages = document.getElementById('ai-chat-messages');
+            messages.scrollTop = messages.scrollHeight;
+        }
+        
+        function createUserMessage(text) {
+            const messages = document.getElementById('ai-chat-messages');
+            const msg = document.createElement('div');
+            msg.style.cssText = `
+                max-width: 70%;
+                padding: 10px 15px;
+                line-height: 1.7;
+                font-size: 14px;
+                border-radius: 4px;
+                background: rgba(30, 30, 30, 0.7);
+                color: #ffffff;
+                align-self: flex-end;
+            `;
+            msg.textContent = text;
+            messages.appendChild(msg);
+            scrollToBottom();
+        }
+        
+        function createAIMessage(text) {
+            const messages = document.getElementById('ai-chat-messages');
+            const msg = document.createElement('div');
+            msg.style.cssText = `
+                max-width: 70%;
+                padding: 10px 15px;
+                line-height: 1.7;
+                font-size: 14px;
+                border-radius: 4px;
+                background: rgba(252, 249, 242, 0.7);
+                color: #1a1a1a;
+                align-self: flex-start;
+            `;
+            msg.textContent = text;
+            messages.appendChild(msg);
+            scrollToBottom();
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('ai-chat-input');
+            const text = input.value.trim();
+            if (text === '') return;
+            
+            createUserMessage(text);
+            input.value = '';
+            
+            setTimeout(function() {
+                createAIMessage(getRandomReply());
+            }, 1000);
+        }
+        
+        document.getElementById('ai-chat-send').addEventListener('click', sendMessage);
+        document.getElementById('ai-chat-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // 自动聚焦
+        document.getElementById('ai-chat-input').focus();
+    }
     </script>
 </body>
 </html>
