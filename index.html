@@ -560,6 +560,160 @@
             <source src="intro-video.mp4" type="video/mp4">
         </video>
         
+        <!-- 方向箭头按钮容器 -->
+        <div id="direction-arrows" style="
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        ">
+            <!-- 左后方箭头 -->
+            <div class="arrow-group" style="position: absolute; left: 36%; top: 82%; display: flex; flex-direction: column; align-items: center;">
+                <button class="direction-arrow" data-direction="back-left" style="
+                    width: 50px;
+                    height: 50px;
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    pointer-events: auto;
+                    transform: rotate(-135deg);
+                    padding: 0;
+                ">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19V5M5 12l7-7 7 7"/>
+                    </svg>
+                </button>
+                <span class="arrow-label" style="
+                    margin-top: 8px;
+                    font-size: 16px;
+                    color: white;
+                    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+                    white-space: nowrap;
+                    opacity: 0;
+                ">前往互动探索</span>
+            </div>
+            
+            <!-- 右后方箭头 -->
+            <div class="arrow-group" style="position: absolute; right: 36%; top: 82%; display: flex; flex-direction: column; align-items: center;">
+                <button class="direction-arrow" data-direction="back-right" style="
+                    width: 50px;
+                    height: 50px;
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    pointer-events: auto;
+                    transform: rotate(135deg);
+                    padding: 0;
+                ">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19V5M5 12l7-7 7 7"/>
+                    </svg>
+                </button>
+                <span class="arrow-label" style="
+                    margin-top: 8px;
+                    font-size: 16px;
+                    color: white;
+                    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+                    white-space: nowrap;
+                    opacity: 0;
+                ">前往周边文创</span>
+            </div>
+            
+            <!-- 左前方箭头 -->
+            <div class="arrow-group" style="position: absolute; left: 55%; bottom: 20%; display: flex; flex-direction: column; align-items: center;">
+                <button class="direction-arrow" data-direction="front-left" style="
+                    width: 50px;
+                    height: 50px;
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    pointer-events: auto;
+                    transform: rotate(45deg);
+                    padding: 0;
+                ">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19V5M5 12l7-7 7 7"/>
+                    </svg>
+                </button>
+                <span class="arrow-label" style="
+                    margin-top: 8px;
+                    font-size: 16px;
+                    color: white;
+                    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+                    white-space: nowrap;
+                    opacity: 0;
+                ">前往数据可视化</span>
+            </div>
+            
+            <!-- 右前方箭头 -->
+            <div class="arrow-group" style="position: absolute; right: 55%; bottom: 20%; display: flex; flex-direction: column; align-items: center;">
+                <button class="direction-arrow" data-direction="front-right" style="
+                    width: 50px;
+                    height: 50px;
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    pointer-events: auto;
+                    transform: rotate(-45deg);
+                    padding: 0;
+                ">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 19V5M5 12l7-7 7 7"/>
+                    </svg>
+                </button>
+                <span class="arrow-label" style="
+                    margin-top: 8px;
+                    font-size: 16px;
+                    color: white;
+                    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+                    white-space: nowrap;
+                    opacity: 0;
+                ">前往建筑基因</span>
+            </div>
+            
+            <!-- 指向用户的箭头（屏幕前方） -->
+            <button class="direction-arrow" data-direction="front" style="
+                position: absolute;
+                bottom: 4%;
+                width: 100px;
+                height: 100px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                pointer-events: auto;
+                padding: 0;
+            ">
+                <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+            </button>
+        </div>
+        
         <!-- 开始按钮容器 -->
         <div id="start-container">
             <!-- 问号图标 -->
@@ -586,8 +740,27 @@
             const infoIcon = document.getElementById('info-icon');
             const infoBox = document.getElementById('info-box');
             
+            // 视频列表，按顺序循环播放
+            const videoList = ['intro-video.mp4', 'intro_video3.mp4', 'intro_video2.mp4'];
+            
             // 跟踪当前选择的视频
             let currentVideo = 'intro-video.mp4';
+            
+            // 获取并更新访问次数，实现循环播放
+            function getNextVideo() {
+                // 从localStorage获取访问次数
+                let visitCount = parseInt(localStorage.getItem('videoVisitCount') || '0');
+                
+                // 根据访问次数选择视频
+                const videoIndex = visitCount % videoList.length;
+                currentVideo = videoList[videoIndex];
+                
+                // 更新访问次数
+                visitCount++;
+                localStorage.setItem('videoVisitCount', visitCount.toString());
+                
+                return currentVideo;
+            }
             
             // 处理URL参数，自动选中指定视频
             function handleUrlParams() {
@@ -598,6 +771,15 @@
                     // 找到对应的按钮并点击
                     videoButtons.forEach(button => {
                         if (button.getAttribute('data-video') === videoParam) {
+                            button.click();
+                        }
+                    });
+                } else {
+                    // 如果没有URL参数，使用localStorage循环播放
+                    const nextVideo = getNextVideo();
+                    // 找到对应的按钮并点击
+                    videoButtons.forEach(button => {
+                        if (button.getAttribute('data-video') === nextVideo) {
                             button.click();
                         }
                     });
@@ -659,6 +841,94 @@
                 });
             }
             
+            // 获取方向箭头容器
+            const directionArrows = document.getElementById('direction-arrows');
+            const directionButtons = document.querySelectorAll('.direction-arrow');
+            const arrowLabels = document.querySelectorAll('.arrow-label');
+            
+            // 视频时间更新事件 - 宫墙视频特殊处理
+            let hasPausedAt1s = false;
+            let hasClickedFrontArrow = false; // 记录是否点击过指向用户的箭头
+            introVideo.addEventListener('timeupdate', () => {
+                // 只有宫墙视频且未在1秒处暂停过且未点击过指向用户的箭头
+                if (currentVideo === 'intro-video.mp4' && !hasPausedAt1s && !hasClickedFrontArrow && introVideo.currentTime >= 1) {
+                    introVideo.pause();
+                    hasPausedAt1s = true;
+                    // 显示方向箭头
+                    directionArrows.style.display = 'flex';
+                    // 添加淡入动画 - 箭头
+                    directionButtons.forEach((btn, index) => {
+                        btn.style.opacity = '0';
+                        btn.style.transform = btn.style.transform ? btn.style.transform + ' scale(0.5)' : 'scale(0.5)';
+                        setTimeout(() => {
+                            btn.style.transition = 'all 0.5s ease';
+                            btn.style.opacity = '1';
+                            btn.style.transform = btn.style.transform ? btn.style.transform.replace(' scale(0.5)', '') : 'scale(1)';
+                        }, index * 100);
+                    });
+                    // 添加淡入动画 - 文字标签
+                    arrowLabels.forEach((label, index) => {
+                        label.style.opacity = '0';
+                        label.style.transform = 'translateY(10px)';
+                        setTimeout(() => {
+                            label.style.transition = 'all 0.5s ease';
+                            label.style.opacity = '1';
+                            label.style.transform = 'translateY(0)';
+                        }, index * 100 + 200);
+                    });
+                }
+            });
+            
+            // 方向箭头悬停效果
+            directionButtons.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    btn.style.filter = 'drop-shadow(0 0 20px rgba(255, 255, 100, 1)) drop-shadow(0 0 40px rgba(255, 215, 0, 1)) drop-shadow(0 0 80px rgba(255, 180, 0, 0.8)) drop-shadow(0 0 120px rgba(255, 150, 0, 0.5))';
+                    // 同时让箭头本身变亮
+                    const svg = btn.querySelector('svg');
+                    if (svg) {
+                        svg.style.stroke = '#FFFF64';
+                    }
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.filter = 'none';
+                    // 恢复箭头原始颜色
+                    const svg = btn.querySelector('svg');
+                    if (svg) {
+                        svg.style.stroke = 'white';
+                    }
+                });
+            });
+            
+            // 方向箭头点击事件
+            directionButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const direction = btn.getAttribute('data-direction');
+                    // 根据不同方向跳转到对应页面
+                    switch(direction) {
+                        case 'back-left': // 左后方 - 前往互动探索
+                            window.location.href = '抽卡页面.html';
+                            break;
+                        case 'back-right': // 右后方 - 前往周边文创
+                            window.location.href = '周边文创.html';
+                            break;
+                        case 'front-left': // 左前方 - 前往数据可视化
+                            window.location.href = '数据可视页面.html';
+                            break;
+                        case 'front-right': // 右前方 - 前往建筑基因
+                            window.location.href = '古建筑泛介绍.html';
+                            break;
+                        case 'front': // 指向用户的箭头
+                            // 隐藏方向箭头
+                            directionArrows.style.display = 'none';
+                            // 继续播放视频
+                            introVideo.play();
+                            hasPausedAt1s = false;
+                            hasClickedFrontArrow = true; // 标记已点击过，本次会话不再显示箭头
+                            break;
+                    }
+                });
+            });
+            
             // 视频切换功能
             videoButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -669,6 +939,11 @@
                     // 获取视频路径
                     const videoPath = button.getAttribute('data-video');
                     currentVideo = videoPath;
+                    
+                    // 重置暂停标记（每次切换视频都重置，确保宫墙视频每次播放都会触发暂停）
+                    hasPausedAt1s = false;
+                    // 隐藏方向箭头
+                    directionArrows.style.display = 'none';
                     
                     // 更新视频源
                     const source = introVideo.querySelector('source');

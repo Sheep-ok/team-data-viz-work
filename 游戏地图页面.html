@@ -15,8 +15,13 @@
     <title>国风筑韵-九州</title>
     <style>
         body {
-            background: url('游戏地图.jpg') no-repeat center center;
-            background-size: cover;
+            /* 新增托底色：古风绢帛/旧纸张的颜色 */
+            background-color: #d4c4a8; 
+            background-image: url('游戏地图_底图.jpg');
+            background-repeat: no-repeat;
+            background-position: center center;
+            /* 关键修复：改为 100% 100%，确保左右卷轴完全显示 */
+            background-size: 100% 100%; 
             position: relative;
             font-family: "SimSun", "宋体", serif;
         }
@@ -151,18 +156,31 @@
             visibility: visible;
         }
         
-        /* 建筑物容器 */
+        /* ========== 建筑物容器与透明图标样式 ========== */
         .building-container {
             position: absolute;
             cursor: pointer;
             transition: transform 0.3s ease;
+            width: 100px;  /* 设置固定大小，可根据你的icon调整 */
+            height: 100px;
+            transform: translate(-50%, -50%); /* 确保原代码设定的坐标点在建筑正中心 */
+            z-index: 10;
         }
         
         .building-container:hover {
-            transform: scale(1.1);
+            transform: translate(-50%, -50%) scale(1.1); /* 保证放大时依然居中 */
         }
         
-        /* 气泡样式 */
+        /* 切片图标的样式 */
+        .building-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none; /* 防止图片拦截点击事件 */
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4)); /* 增加一点立体阴影 */
+        }
+        
+        /* 气泡样式 (微调了 top 值，适应新的容器高度) */
         .bubble {
             width: 30px;
             height: 30px;
@@ -170,7 +188,7 @@
             background: rgba(128, 128, 128, 0.6);
             border: 2px solid #fff;
             position: absolute;
-            top: -40px;
+            top: -20px; /* 调整气泡在建筑上方的位置 */
             left: 50%;
             transform: translateX(-50%);
             transition: all 0.3s ease;
@@ -213,10 +231,10 @@
             }
         }
         
-        /* 建筑物标签 */
+        /* 建筑物标签 (微调了 top 值，适应新的容器高度) */
         .building-label {
             position: absolute;
-            top: -35px;
+            top: -45px; /* 调整标签在气泡上方的位置 */
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.7);
@@ -464,6 +482,35 @@
             box-shadow: 0 0 15px rgba(101, 67, 33, 0.5);
         }
         
+        /* 视频遮罩层 */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
         /* 遮罩层 */
         .overlay {
             position: absolute;
@@ -715,6 +762,15 @@
     </style>
 </head>
 <body>
+    <!-- 视频遮罩层 -->
+    <div class="video-overlay" id="videoOverlay">
+        <div class="video-container">
+            <video id="introVideo" autoplay muted playsinline>
+                <source src="游戏视频.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    
     <!-- 鼠标跟随元素 -->
     <div id="mouse-follower">
         <div id="mouse-dot"></div>
@@ -835,42 +891,50 @@
     </div>
     
     <!-- 建筑物点位 -->
-    <div class="building-container" data-building="北京四合院" style="top: 210px; left: 921px;">
+    <div class="building-container" data-building="北京四合院" style="top: 180px; left: 800px;">
+        <img src="京icon.png" class="building-icon" alt="北京四合院">
         <div class="bubble"></div>
         <div class="building-label">北京四合院</div>
     </div>
     
-    <div class="building-container" data-building="山西大院" style="top: 300px; left: 805px;">
+    <div class="building-container" data-building="山西大院" style="top: 370px; left: 545px;">
+        <img src="晋icon.png" class="building-icon" alt="山西大院">
         <div class="bubble"></div>
         <div class="building-label">山西大院</div>
     </div>
     
-    <div class="building-container" data-building="川渝吊脚楼" style="top: 435px; left: 503px;">
+    <div class="building-container" data-building="川渝吊脚楼" style="top: 400px; left: 210px;">
+        <img src="川icon.png" class="building-icon" alt="川渝吊脚楼">
         <div class="bubble"></div>
         <div class="building-label">川渝吊脚楼</div>
     </div>
     
-    <div class="building-container" data-building="苏州庭院" style="top: 405px; left: 964px;">
+    <div class="building-container" data-building="苏州庭院" style="top: 365px; left: 890px;">
+        <img src="苏icon.png" class="building-icon" alt="苏州庭院">
         <div class="bubble"></div>
         <div class="building-label">苏州庭院</div>
     </div>
     
-    <div class="building-container" data-building="安徽马头墙" style="top: 282px; left: 1005px;">
+    <div class="building-container" data-building="安徽马头墙" style="top: 260px; left: 1200px;">
+        <img src="徽icon.png" class="building-icon" alt="安徽马头墙">
         <div class="bubble"></div>
         <div class="building-label">安徽马头墙</div>
     </div>
     
-    <div class="building-container" data-building="福建土楼" style="top: 518px; left: 1038px;">
+    <div class="building-container" data-building="福建土楼" style="top: 470px; left: 1120px;">
+        <img src="闽icon.png" class="building-icon" alt="福建土楼">
         <div class="bubble"></div>
         <div class="building-label">福建土楼</div>
     </div>
     
-    <div class="building-container" data-building="广东镬耳墙" style="top: 565px; left: 827px;">
+    <div class="building-container" data-building="广东镬耳墙" style="top: 510px; left: 750px;">
+        <img src="粤icon.png" class="building-icon" alt="广东镬耳墙">
         <div class="bubble"></div>
         <div class="building-label">广东镬耳墙</div>
     </div>
     
-    <div class="building-container" data-building="上海石库门" style="top: 384px; left: 1130px;">
+    <div class="building-container" data-building="上海石库门" style="top: 384px; left: 1280px;">
+        <img src="沪icon.png" class="building-icon" alt="上海石库门">
         <div class="bubble"></div>
         <div class="building-label">上海石库门</div>
     </div>
@@ -885,6 +949,22 @@
     </div>
     
     <script>
+        // 视频自动播放和隐藏逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoOverlay = document.getElementById('videoOverlay');
+            const introVideo = document.getElementById('introVideo');
+            
+            // 视频播放完成后隐藏视频遮罩层
+            introVideo.addEventListener('ended', function() {
+                videoOverlay.style.display = 'none';
+            });
+            
+            // 如果视频加载失败，也隐藏遮罩层
+            introVideo.addEventListener('error', function() {
+                videoOverlay.style.display = 'none';
+            });
+        });
+        
         // 获取DOM元素
         const overlay = document.getElementById('overlay');
         const triggerBox = document.getElementById('triggerBox');
