@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=1527, user-scalable=yes">
+    <style>
+      html, body {
+        
+        margin: 0;
+        padding: 0;
+        width: 1527px;
+        height: 740px;
+        overflow: hidden;
+      }
+    </style>
+    <meta charset="UTF-8">
+    <title>国风筑韵-矩要</title>
+    <style>
+        /* ========== 基础样式 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+            font-family: "SimSun", "宋体", serif;
+        }
+        
+        body {
+            overflow: hidden;
+        }
+
+        /* ========== 页面容器 ========== */
+        #guide-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1527px;
+            height: 740px;
+            background: url('加载背景.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        #guide-container.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* ========== 上半区：操作指南 ========== */
+        .guide-section {
+            width: 1450px;
+            height: 450px;
+            background: rgba(255, 253, 240, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 48px 58px 40px;
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(139, 69, 19, 0.15);
+            animation: sectionFadeIn 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+            box-sizing: border-box;
+        }
+
+        @keyframes sectionFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .guide-section h1 {
+            font-size: 30px;
+            font-weight: bold;
+            color: #5a3010;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .guide-text {
+            display: flex;
+            gap: 28px;
+        }
+
+        .guide-text p {
+            flex: 1;
+            font-size: 15px;
+            line-height: 1.9;
+            color: #5a4030;
+            text-indent: 2em;
+            margin: 0;
+        }
+
+        /* ========== 下半区：流程图 ========== */
+        .flow-section {
+            width: 1450px;
+            height: 650px;
+            background: rgba(255, 253, 240, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 24px 16px 20px;
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(139, 69, 19, 0.15);
+            opacity: 0;
+            transform: translateY(0);
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .flow-section h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #5a3010;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .flow-tip {
+            position: absolute;
+            top: 12px;
+            right: 25px;
+            font-size: 11px;
+            color: #a0522d;
+            font-weight: bold;
+        }
+
+        /* 树形流程容器 */
+        .flow-tree {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            align-items: start;
+            gap: 10px;
+            font-size: 12px;
+            line-height: 1.45;
+            color: #5a4030;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        /* 三列布局 */
+        .flow-col {
+            min-width: 0;
+            padding: 6px 8px;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+        }
+
+        /* 核心页面标题 */
+        .flow-title {
+            display: inline-block;
+            background: #8B4513;
+            color: #fffdf0;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 3px 12px;
+            border-radius: 6px;
+            margin: 3px 0 2px;
+        }
+
+        /* 操作步骤框 */
+        .flow-step {
+            background: rgba(139, 69, 19, 0.06);
+            border: 1.5px solid rgba(139, 69, 19, 0.2);
+            border-radius: 8px;
+            padding: 5px 9px;
+            margin: 2px 0 2px 12px;
+            position: relative;
+        }
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 12px;
+            width: 8px;
+            height: 1.5px;
+            background: #B8860B;
+        }
+
+        /* 子分支 */
+        .flow-branch {
+            margin-left: 12px;
+            padding-left: 8px;
+            border-left: 1.5px solid #B8860B;
+        }
+
+        /* 操作标签 */
+        .op { color: #B8860B; font-weight: bold; }
+        .note { color: #888; font-style: italic; font-size: 10px; }
+        .page-link { color: #8B4513; font-weight: bold; }
+        .arrow { color: #B8860B; margin: 0 2px; }
+
+        .flow-route {
+            font-size: 12px;
+            color: #7a4b1f;
+            background: rgba(184, 134, 11, 0.1);
+            border: 1px dashed rgba(139, 69, 19, 0.35);
+            border-radius: 8px;
+            padding: 6px 10px;
+            margin: 0 2px 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+    
+
+        /* ========== 鼠标跟随效果样式 ========== */
+        #mouse-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10001;
+            overflow: visible;
+        }
+
+        #mouse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10002;
+            mix-blend-mode: difference;
+        }
+
+        #mouse-circle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10001;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+
+        /* ========== 顶部下拉菜单导航样式 ========== */
+        #top-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            z-index: 9000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .nav-brand {
+            padding: 5px 0;
+            margin-right: 15px;
+        }
+
+        .nav-brand a {
+            color: #fffdf0;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .nav-brand a:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 12px 20px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9100;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-item {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 8px 12px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .dropdown-link:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* ========== 悬浮球样式 ========== */
+        .floating-ball {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-image: url('agent/悬浮球图片.webp');
+            background-size: cover;
+            background-position: center;
+            cursor: grab;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                0 6px 20px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            z-index: 9998;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            transition: box-shadow 0.3s ease;
+            left: 200px;
+            top: 10px;
+        }
+        
+        .floating-ball:active {
+            cursor: grabbing;
+        }
+        
+        .floating-ball:hover {
+            box-shadow: 
+                0 6px 16px rgba(0, 0, 0, 0.35),
+                0 8px 25px rgba(0, 0, 0, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        .floating-ball.dragging {
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.4),
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* AI聊天弹窗原生光标样式 */
+        #ai-chat-modal,
+        #ai-chat-modal * {
+            cursor: default !important;
+        }
+        
+        #ai-chat-modal button,
+        #ai-chat-modal input,
+        #ai-chat-modal a {
+            cursor: pointer !important;
+        }
+        
+        #ai-chat-modal input[type="text"] {
+            cursor: text !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 鼠标跟随元素 -->
+    <div id="mouse-follower">
+        <div id="mouse-dot"></div>
+        <div id="mouse-circle"></div>
+    </div>
+    
+    <!-- 悬浮球 -->
+    <div class="floating-ball" id="floatingBall"></div>
+
+    <div id="guide-container">
+        <!-- 顶部导航栏 -->
+        <nav id="top-nav-guide" style="position:absolute;top:0;left:0;width:100%;background:transparent;z-index:9000;">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <a href="index.html">国风筑韵</a>
+                </div>
+                <ul class="nav-menu">
+                    <!-- 首页 -->
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">首页</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="操作指南.html" class="dropdown-link">操作指南</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 互动探索 -->
+                    <li class="nav-item">
+                        <a href="抽卡页面.html" class="nav-link">互动探索</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="游戏地图页面.html" class="dropdown-link">古建筑探索</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">数据可视化</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- 建筑基因 -->
+                    <li class="nav-item">
+                        <a href="古建筑泛介绍.html" class="nav-link">建筑基因</a>
+                    </li>
+
+                    <!-- 地图点位 -->
+                    <li class="nav-item">
+                        <a href="地图点位.html" class="nav-link">地图点位</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="古今对比.html" class="nav-link">古今对比</a>
+                        <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=6" class="dropdown-link">当代延续</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 周边文创 -->
+                    <li class="nav-item">
+                        <a href="周边文创.html" class="nav-link">周边文创</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- 上半区：操作指南 -->
+        <div class="guide-section">
+            <h1>国风筑韵 · 作品使用手册</h1>
+            <div class="guide-text">
+                <p>本作品以"古建筑八大派系民居"为主题，对各派系的建筑结构特征、年代分布、地域分布、雕饰类型及文化内涵进行系统整理，并通过数据可视化图表与三维模型进行展示。进入主界面后，用户通过手势"抽卡"进入游戏地图页面。通过完成各点位任务，当收集度达到 8/8，可以得到能下载的成就图。在任务框中，可以进入数据可视页面，查看该派相关建筑数据。</p>
+                <p>每个页面包含多种数据图表，从时间、空间、结构与装饰等多维度呈现民居建筑信息，支持悬浮交互显示详细数据。点击页面中心查看3D按钮可进入浏览3D模型，帮助用户直观理解建筑形态。</p>
+                <p>完成派系浏览后，会先进入建筑基因页面，选择四个类别之一进行浏览学习，在各板块内部有筛选框，图文并茂。地图点位页面查看国保单位与传统村落分布，左上方也有筛选框。再进入古今对比页面了解保护与创新。最后进入周边文创，了解IP设计。<u>顶部导航栏可快速跳转目标页面，下方流程图给出新手推荐路线。</u></p>
+            </div>
+            <button id="show-flow-btn" style="display: block; margin: 120px auto 0; padding: 12px 48px; font-size: 18px; font-weight: bold; color: #fff; background: rgba(139, 69, 19, 0.85); border: none; border-radius: 28px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);">继续</button>
+            <style>
+                #show-flow-btn:hover {
+                    background: rgba(139, 69, 19, 1);
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 25px rgba(139, 69, 19, 0.55);
+                }
+                #show-flow-btn:active {
+                    transform: translateY(0);
+                }
+            </style>
+        </div>
+
+        <!-- 下半区：流程图 -->
+        <div class="flow-section" style="display: none; opacity: 0; transform: translateY(20px); transition: all 0.6s ease;">
+            <h2>操作流程图</h2>
+            <span class="flow-tip">★ 通过顶部导航栏也可以快速切换页面</span>
+
+            <div class="flow-route">推荐路线： 首页 <span class="arrow">→</span> 操作页面 <span class="arrow">→</span> 抽卡页面 <span class="arrow">→</span> 游戏地图页面 <span class="arrow">→</span> 数据可视化 <span class="arrow">→</span> 建筑基因 <span class="arrow">→</span> 地图点位 <span class="arrow">→</span> 古今对比 <span class="arrow">→</span> 周边文创</div>
+
+            <div class="flow-tree">
+                <div class="flow-col">
+                    <span class="flow-title">首页</span>
+                    <div class="flow-step">点击<span class="op">进入体验</span> <span class="arrow">→</span> <span class="page-link">操作页面</span></div>
+
+                    <span class="flow-title">操作指南（本页）</span>
+                    <div class="flow-step">点击<span class="op">准备好了</span> <span class="arrow">→</span> <span class="page-link">抽卡页面</span></div>
+                    <div class="flow-step note">首次进入可先阅读本页，再点下方按钮开始</div>
+
+                    <span class="flow-title">抽卡页面</span>
+                    <div class="flow-step">有摄像头：手势抽卡，查看派系卡牌</div>
+                    <div class="flow-step">无摄像头：点<span class="op">跳过抽卡</span></div>
+                    <div class="flow-step">点卡牌 <span class="arrow">→</span> <span class="page-link">游戏地图页面</span></div>
+                    <div class="flow-step">点<span class="op">返回卡池</span>可继续抽卡</div>
+
+                    <span class="flow-title">游戏地图页面</span>
+                    <div class="flow-step">探索灰色的所有点位</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">若从抽卡页面而来，有红色点位闪烁</div>
+                    </div>
+                    <div class="flow-step">完成指定任务</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">完成则显示黄色</div>
+                        <div class="flow-step">当全部完成时出现成就图</div>
+                    </div>
+                    <div class="flow-step">点击查看数据 <span class="arrow">→</span> <span class="page-link">数据可视化</span></div>
+                </div>
+
+                <div class="flow-col">
+                    <span class="flow-title">数据可视化页面</span>
+                    <div class="flow-step">看图表，悬浮查看详情</div>
+                    <div class="flow-step">点<span class="op">查看3D模型</span> <span class="arrow">→</span> 打开<span class="op">3D模型</span></div>
+                    <div class="flow-branch">
+                        <div class="flow-step">滚轮缩放，左键拖拽旋转</div>
+                        <div class="flow-step">点<span class="op">返回</span>关闭弹窗</div>
+                    </div>
+                    <div class="flow-step">浏览完成点<span class="op">下一步</span> <span class="arrow">→</span> <span class="page-link">建筑基因</span></div>
+                    <div class="flow-step">左下角<span class="op">返回抽卡</span>可回到抽卡页</div>
+
+                    <span class="flow-title">建筑基因</span>
+                    <div class="flow-step">点击选择板块浏览</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">内部有相关筛选按钮</div>
+                        <div class="flow-step">点击收起介绍，回到板块选择</div>
+                    </div>
+                    <div class="flow-step">点<span class="op">下一步</span> <span class="arrow">→</span> <span class="page-link">地图点位</span></div>
+                </div>
+
+                <div class="flow-col">
+                    <span class="flow-title">地图点位页面</span>
+                    <div class="flow-step">查看建筑地理分布与点位信息</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">左上角按钮框可选择筛选条件</div>
+                    </div>
+                    <div class="flow-step">点击点位可看详情或定位说明</div>
+                    <div class="flow-step">点<span class="op">下一步</span> <span class="arrow">→</span> <span class="page-link">古今对比页面</span></div>
+
+                    <span class="flow-title">古今对比页面</span>
+                    <div class="flow-step">看保护现状与数字创新图表</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">文化重心迁移</div>
+                        <div class="flow-step">古建筑总量分布</div>
+                        <div class="flow-step">保护单位与修缮对比</div>
+                        <div class="flow-step">数字创新与当代延续</div>
+                    </div>
+                    <div class="flow-step">点<span class="op">上一个 / 下一个</span>切换图表</div>
+                    <div class="flow-step">点<span class="op">下一步</span> <span class="arrow">→</span> <span class="page-link">周边文创</span></div>
+
+                    <span class="flow-title">周边文创</span>
+                    <div class="flow-step">上下滑动页面了解IP文创信息</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">可下载日出图片</div>
+                    </div>
+                    <div class="flow-step">点<span class="op">返回</span>可回到之前页面</div>
+
+                    <span class="flow-title">★ AI智能助手</span>
+                    <div class="flow-step">点击页面右下角<span class="op">悬浮球</span>打开对话</div>
+                    <div class="flow-step">在输入框输入问题，发送后可获得AI解答</div>
+                    <div class="flow-branch">
+                        <div class="flow-step">AI可回答古建筑相关问题</div>
+                        <div class="flow-step">点击<span class="op">×</span>或背景关闭弹窗</div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .action-btn {
+                    display: inline-block;
+                    padding: 12px 48px;
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: #fff;
+                    background: rgba(139, 69, 19, 0.85);
+                    border: none;
+                    border-radius: 28px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+                    pointer-events: auto;
+                    position: relative;
+                    z-index: 10;
+                }
+                .action-btn:hover {
+                    background: rgba(139, 69, 19, 1);
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 25px rgba(139, 69, 19, 0.6);
+                }
+                .action-btn:active {
+                    transform: translateY(0);
+                }
+                #prev-page-btn {
+                    margin-right: 20px;
+                }
+                .btn-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: -40px;
+                }
+            </style>
+            <div class="btn-container">
+                <button id="prev-page-btn" class="action-btn">上一页</button>
+                <button id="enter-btn" class="action-btn">进入体验</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载完成后显示操作指南
+        window.addEventListener('DOMContentLoaded', function() {
+            const guideContainer = document.getElementById('guide-container');
+            if (guideContainer) {
+                guideContainer.classList.add('visible');
+            }
+        });
+
+        // 跳转到抽卡页面
+        document.getElementById('enter-btn').addEventListener('click', function() {
+            window.location.href = '抽卡页面.html';
+        });
+
+        // 显示流程图
+        document.getElementById('show-flow-btn').addEventListener('click', function() {
+            const guideSection = document.querySelector('.guide-section');
+            const flowSection = document.querySelector('.flow-section');
+            
+            if (guideSection && flowSection) {
+                // 隐藏使用手册
+                guideSection.style.opacity = '0';
+                guideSection.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    guideSection.style.display = 'none';
+                    
+                    // 显示流程图
+                    flowSection.style.display = 'block';
+                    setTimeout(() => {
+                        flowSection.style.opacity = '1';
+                    }, 10);
+                }, 600);
+            }
+        });
+
+        // 回到操作手册页面
+        document.getElementById('prev-page-btn').addEventListener('click', function() {
+            const guideSection = document.querySelector('.guide-section');
+            const flowSection = document.querySelector('.flow-section');
+            
+            if (guideSection && flowSection) {
+                // 隐藏流程图
+                flowSection.style.opacity = '0';
+                setTimeout(() => {
+                    flowSection.style.display = 'none';
+                    
+                    // 显示使用手册
+                    guideSection.style.display = 'block';
+                    guideSection.style.transform = 'translateY(0)';
+                    setTimeout(() => {
+                        guideSection.style.opacity = '1';
+                    }, 10);
+                }, 600);
+            }
+        });
+
+        // ========== 鼠标跟随效果脚本 ==========
+        (function() {
+            const mouseFollower = document.getElementById('mouse-follower');
+            const mouseDot = document.getElementById('mouse-dot');
+            const mouseCircle = document.getElementById('mouse-circle');
+            
+            if (mouseFollower && mouseDot && mouseCircle) {
+                // 确保鼠标跟随元素不会干扰按钮的悬浮效果
+                mouseFollower.style.pointerEvents = 'none';
+                mouseDot.style.pointerEvents = 'none';
+                mouseCircle.style.pointerEvents = 'none';
+                
+                let mouseX = 0;
+                let mouseY = 0;
+                let circleX = 0;
+                let circleY = 0;
+                
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    mouseDot.style.left = mouseX + 'px';
+                    mouseDot.style.top = mouseY + 'px';
+                });
+                
+                function animate() {
+                    const dx = mouseX - circleX;
+                    const dy = mouseY - circleY;
+                    circleX += dx * 0.1;
+                    circleY += dy * 0.1;
+                    mouseCircle.style.left = circleX + 'px';
+                    mouseCircle.style.top = circleY + 'px';
+                    requestAnimationFrame(animate);
+                }
+                
+                document.addEventListener('click', () => {
+                    mouseCircle.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    setTimeout(() => {
+                        mouseCircle.style.transform = 'translate(-50%, -50%) scale(1)';
+                    }, 150);
+                });
+                
+                animate();
+            }
+        })();
+        
+        // ========== 悬浮球脚本 ==========
+        class FloatingBall {
+            constructor(element, options = {}) {
+                this.element = element;
+                this.isDragging = false;
+                this.currentX = 0;
+                this.currentY = 0;
+                this.initialX = 0;
+                this.initialY = 0;
+                this.elementWidth = 60;
+                this.elementHeight = 60;
+                
+                this.initPosition();
+                this.bindEvents();
+                this.onClickCallback = options.onClick || (() => {});
+            }
+            
+            initPosition() {
+                const rect = this.element.getBoundingClientRect();
+                this.currentX = rect.left;
+                this.currentY = rect.top;
+                this.elementWidth = rect.width;
+                this.elementHeight = rect.height;
+            }
+            
+            bindEvents() {
+                this.element.addEventListener('mousedown', (e) => this.startDrag(e));
+                document.addEventListener('mousemove', (e) => this.drag(e));
+                document.addEventListener('mouseup', (e) => this.endDrag(e));
+                
+                this.element.addEventListener('touchstart', (e) => this.startDrag(e), { passive: false });
+                document.addEventListener('touchmove', (e) => this.drag(e), { passive: false });
+                document.addEventListener('touchend', (e) => this.endDrag(e));
+                
+                this.element.addEventListener('click', (e) => this.handleClick(e));
+            }
+            
+            startDrag(e) {
+                e.preventDefault();
+                
+                if (e.type === 'touchstart') {
+                    this.initialX = e.touches[0].clientX - this.currentX;
+                    this.initialY = e.touches[0].clientY - this.currentY;
+                } else {
+                    this.initialX = e.clientX - this.currentX;
+                    this.initialY = e.clientY - this.currentY;
+                }
+                
+                this.isDragging = false;
+                this.element.classList.add('dragging');
+                this.dragStartTime = Date.now();
+            }
+            
+            drag(e) {
+                if (this.initialX === 0 && this.initialY === 0) return;
+                
+                if (e.type === 'touchmove') {
+                    e.preventDefault();
+                }
+                
+                let newX, newY;
+                
+                if (e.type === 'touchmove') {
+                    newX = e.touches[0].clientX - this.initialX;
+                    newY = e.touches[0].clientY - this.initialY;
+                } else {
+                    newX = e.clientX - this.initialX;
+                    newY = e.clientY - this.initialY;
+                }
+                
+                if (!this.isDragging) {
+                    const dx = Math.abs(newX - this.currentX);
+                    const dy = Math.abs(newY - this.currentY);
+                    if (dx > 5 || dy > 5) {
+                        this.isDragging = true;
+                    }
+                }
+                
+                const maxX = window.innerWidth - this.elementWidth;
+                const maxY = window.innerHeight - this.elementHeight;
+                
+                newX = Math.max(0, Math.min(newX, maxX));
+                newY = Math.max(0, Math.min(newY, maxY));
+                
+                this.currentX = newX;
+                this.currentY = newY;
+                
+                this.element.style.right = 'auto';
+                this.element.style.bottom = 'auto';
+                this.element.style.left = `${this.currentX}px`;
+                this.element.style.top = `${this.currentY}px`;
+            }
+            
+            endDrag(e) {
+                this.element.classList.remove('dragging');
+                this.initialX = 0;
+                this.initialY = 0;
+            }
+            
+            handleClick(e) {
+                const dragDuration = Date.now() - this.dragStartTime;
+                
+                if (dragDuration > 200) {
+                    return;
+                }
+                
+                console.log('悬浮球被点击');
+                
+                if (typeof this.onClickCallback === 'function') {
+                    this.onClickCallback(e);
+                }
+            }
+            
+            setOnClick(callback) {
+                this.onClickCallback = callback;
+            }
+            
+            moveTo(x, y) {
+                const maxX = window.innerWidth - this.elementWidth;
+                const maxY = window.innerHeight - this.elementHeight;
+                
+                this.currentX = Math.max(0, Math.min(x, maxX));
+                this.currentY = Math.max(0, Math.min(y, maxY));
+                
+                this.element.style.right = 'auto';
+                this.element.style.bottom = 'auto';
+                this.element.style.left = `${this.currentX}px`;
+                this.element.style.top = `${this.currentY}px`;
+            }
+            
+            resetPosition() {
+                this.moveTo(200, 10);
+            }
+        }
+        
+        // 初始化悬浮球
+        const floatingBallElement = document.getElementById('floatingBall');
+        if (floatingBallElement) {
+            const ball = new FloatingBall(floatingBallElement, {
+                onClick: () => {
+                    console.log('显示AI聊天弹窗');
+                    showAIChatModal();
+                }
+            });
+            
+            window.floatingBall = ball;
+        }
+        
+        // ========== AI聊天弹窗 ==========
+        function showAIChatModal() {
+            // 如果弹窗已存在，直接显示
+            let modal = document.getElementById('ai-chat-modal');
+            if (modal) {
+                modal.style.display = 'block';
+                return;
+            }
+            
+            // 创建弹窗容器
+            modal = document.createElement('div');
+            modal.id = 'ai-chat-modal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 1527px;
+                height: 740px;
+                background: rgba(0, 0, 0, 0.7);
+                display: block;
+                z-index: 10001;
+            `;
+            
+            // 创建聊天容器（固定在页面中间）
+            const chatWrapper = document.createElement('div');
+            chatWrapper.style.cssText = `
+                position: absolute;
+                left: 313px;
+                top: 120px;
+                width: 900px;
+                height: 500px;
+            `;
+            
+            // 创建聊天内容
+            chatWrapper.innerHTML = `
+                <div style="
+                    width: 100%;
+                    height: 100%;
+                    background-image: url('agent/ai背景.png');
+                    background-size: cover;
+                    background-position: center;
+                    border-radius: 8px;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    position: relative;
+                    cursor: default;
+                ">
+                    <!-- 关闭按钮 -->
+                    <button id="close-ai-chat" style="
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        width: 32px;
+                        height: 32px;
+                        background: rgba(139, 37, 0, 0.8);
+                        color: #fcf9f2;
+                        border: 1px solid #8b2500;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 18px;
+                        font-weight: bold;
+                        z-index: 10;
+                    ">×</button>
+                    
+                    <!-- 标题 -->
+                    <div style="
+                        padding: 20px;
+                        text-align: center;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                    ">
+                        <h1 style="
+                            font-size: 32px;
+                            font-weight: normal;
+                            color: #fffdf0;
+                            letter-spacing: 6px;
+                            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                            margin: 0;
+                        ">古建灵犀</h1>
+                    </div>
+                    
+                    <!-- 消息区域 -->
+                    <div id="ai-chat-messages" style="
+                        flex: 1;
+                        overflow-y: auto;
+                        padding: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                    ">
+                        <div style="
+                            max-width: 70%;
+                            padding: 10px 15px;
+                            line-height: 1.7;
+                            font-size: 14px;
+                            border-radius: 4px;
+                            background: rgba(252, 249, 242, 0.7);
+                            color: #1a1a1a;
+                            align-self: flex-start;
+                        ">欢迎来到「古建灵犀」智能向导，我是您的古建筑知识顾问，愿为君一二陈之。</div>
+                    </div>
+                    
+                    <!-- 输入区域 -->
+                    <div style="
+                        padding: 16px 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.08);
+                    ">
+                        <div style="flex: 1; position: relative;">
+                            <input type="text" id="ai-chat-input" placeholder="请输入您想了解的古建筑知识..." style="
+                                width: 100%;
+                                padding: 12px 0;
+                                background: transparent;
+                                border: none;
+                                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                                font-size: 14px;
+                                font-family: 'SimSun', '宋体', 'KaiTi', '楷体', serif;
+                                color: #222222;
+                                outline: none;
+                            ">
+                        </div>
+                        <button id="ai-chat-send" style="
+                            width: 42px;
+                            height: 42px;
+                            background: #8b2500;
+                            color: #fcf9f2;
+                            border: 1px solid #8b2500;
+                            border-radius: 6px 2px 8px 3px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-family: 'KaiTi', 'STKaiti', 'LiSu', serif;
+                            font-weight: bold;
+                            letter-spacing: 2px;
+                        ">落墨</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.appendChild(chatWrapper);
+            document.body.appendChild(modal);
+            
+            // 绑定事件
+            document.getElementById('close-ai-chat').addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // 给弹窗区域禁用鼠标跟随效果
+            modal.style.pointerEvents = 'auto';
+            chatWrapper.style.pointerEvents = 'auto';
+            
+            // 给聊天区域启用原生光标（使用!important效果）
+            const chatContent = chatWrapper.querySelector('div');
+            chatContent.style.setProperty('cursor', 'default', 'important');
+            chatContent.style.setProperty('pointer-events', 'auto', 'important');
+            chatContent.style.pointerEvents = 'auto';
+            chatContent.style.cursor = 'default';
+            
+            // 设置所有子元素的光标
+            const allElements = chatContent.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.style.setProperty('cursor', 'default', 'important');
+            });
+            
+            // 关闭按钮需要pointer光标
+            const closeBtn = document.getElementById('close-ai-chat');
+            closeBtn.style.cursor = 'pointer';
+            
+            const sendBtn = document.getElementById('ai-chat-send');
+            sendBtn.style.cursor = 'pointer';
+            
+            const inputField = document.getElementById('ai-chat-input');
+            inputField.style.cursor = 'text';
+            
+            // ========== API 配置 ==========
+            // 本地开发时使用：http://localhost:3000
+            // 部署到 Zeabur 后改为：https://你的项目名.zeabur.app
+            const API_BASE_URL = 'https://gujian-project.zeabur.app';
+            // ==============================
+
+            // 对话历史数组（存储上下文）
+            let conversationHistory = [];
+            
+            // 古风思考提示语（AI思考时显示）
+            const thinkingMessages = [
+                "先生所言极是，容我思量一二...",
+                "此问颇有意趣，待我细述...",
+                "古建之道，博大精深，且听我慢慢道来...",
+                "此乃我中华建筑之精髓，容我详解...",
+                "先生/姑娘所问甚好，容我一二陈之..."
+            ];
+            
+            function getRandomThinking() {
+                return thinkingMessages[Math.floor(Math.random() * thinkingMessages.length)];
+            }
+            
+            // 管理对话历史：超过10条删除最早的2条
+            function addToHistory(role, content) {
+                conversationHistory.push({ role: role, content: content });
+                
+                if (conversationHistory.length > 10) {
+                    conversationHistory.shift();
+                    conversationHistory.shift();
+                }
+            }
+            
+            function scrollToBottom() {
+                const messages = document.getElementById('ai-chat-messages');
+                messages.scrollTop = messages.scrollHeight;
+            }
+            
+            function createUserMessage(text) {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(30, 30, 30, 0.7);
+                    color: #ffffff;
+                    align-self: flex-end;
+                `;
+                msg.textContent = text;
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            function createAIMessage(text) {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(252, 249, 242, 0.7);
+                    color: #1a1a1a;
+                    align-self: flex-start;
+                `;
+                msg.innerHTML = text;
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            // 创建思考中的消息（带删除标记）
+            function createThinkingMessage() {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(252, 249, 242, 0.7);
+                    color: #1a1a1a;
+                    align-self: flex-start;
+                `;
+                msg.textContent = getRandomThinking();
+                msg.id = 'thinking-msg';
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            // 删除思考中的消息
+            function removeThinkingMessage() {
+                const thinkingMsg = document.getElementById('thinking-msg');
+                if (thinkingMsg) {
+                    thinkingMsg.remove();
+                }
+            }
+            
+            function sendMessage() {
+                const input = document.getElementById('ai-chat-input');
+                const sendBtn = document.getElementById('ai-chat-send');
+                const text = input.value.trim();
+                if (text === '') return;
+                
+                input.disabled = true;
+                sendBtn.disabled = true;
+                
+                addToHistory('user', text);
+                createUserMessage(text);
+                input.value = '';
+                
+                createThinkingMessage();
+                
+                fetch(API_BASE_URL + '/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: conversationHistory
+                    })
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    removeThinkingMessage();
+                    addToHistory('assistant', data.reply);
+                    createAIMessage(data.reply);
+                })
+                .catch(function(error) {
+                    removeThinkingMessage();
+                    createAIMessage('网络连接似乎有些问题，还望先生/姑娘稍后再试。');
+                })
+                .finally(function() {
+                    input.disabled = false;
+                    sendBtn.disabled = false;
+                    input.focus();
+                });
+            }
+            
+            document.getElementById('ai-chat-send').addEventListener('click', sendMessage);
+            document.getElementById('ai-chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 自动聚焦
+            document.getElementById('ai-chat-input').focus();
+        }
+    </script>
+</body>
+</html>

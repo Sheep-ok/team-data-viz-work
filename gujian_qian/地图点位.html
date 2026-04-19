@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=1527, user-scalable=yes">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 1527px;
+        height: 740px;
+        overflow: hidden;
+      }
+    </style>
+    <meta charset="UTF-8">
+    <title>国风筑韵-地舆</title>
+    <!-- 高德地图 API -->
+    <script src="https://webapi.amap.com/maps?v=2.0&key=eaba9ff3bd5d7410cd0628b70d6fd324"></script>
+    <!-- 高德地图UI插件 -->
+    <script src="https://webapi.amap.com/ui/1.1/main.js?v=1.1.1"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "SimSun", "宋体", serif;
+            background: url('古今对比背景.jpg') center/cover no-repeat;
+            width: 1527px;
+            height: 740px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 背景遮罩 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            z-index: -1;
+        }
+
+        /* 主容器 */
+        .container {
+            width: 1527px;
+            height: 740px;
+            display: flex;
+            position: relative;
+        }
+
+        /* 左侧地图区域 */
+        .map-section {
+            width: 1000px;
+            height: 80%;
+            position: relative;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            margin: 100px 20px 20px 40px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        #amap {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+
+        /* 右侧控制面板 */
+        .control-panel {
+            width: 527px;
+            height: 80%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.01);
+            backdrop-filter: blur(5px);
+            border-left: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 15px;
+            margin: 100px 40px 20px 0;
+        }
+
+        /* 标题 */
+        .panel-title {
+            font-size: 32px;
+            color: #d4af37;
+            text-align: center;
+            margin: auto;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            letter-spacing: 8px;
+            font-weight: bold;
+        }
+
+
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 25px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: #d4af37;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            z-index: 9100;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* 加载提示 */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #d4af37;
+            font-size: 18px;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-top-color: #d4af37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 导航栏容器 */
+        #top-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            z-index: 9000;
+        }
+
+        /* 导航内容容器 */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* 导航品牌 */
+        .nav-brand {
+            padding: 5px 0;
+            margin-right: 15px;
+        }
+
+        .nav-brand a {
+            color: #fffdf0;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .nav-brand a:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 导航菜单 */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 导航项 */
+        .nav-item {
+            position: relative;
+        }
+
+        /* 导航链接 */
+        .nav-link {
+            display: block;
+            padding: 12px 20px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 下拉菜单 */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            min-width: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9100;
+        }
+
+        /* 下拉菜单项 */
+        .dropdown-item {
+            list-style: none;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 8px 12px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .dropdown-link:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        /* 导航项悬停时显示下拉菜单 */
+        .nav-item:hover .dropdown-menu {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ========== 悬浮球样式 ========== */
+        .floating-ball {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-image: url('agent/悬浮球图片.webp');
+            background-size: cover;
+            background-position: center;
+            cursor: grab;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                0 6px 20px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            z-index: 9998;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            transition: box-shadow 0.3s ease;
+            left: 200px;
+            top: 10px;
+        }
+        
+        .floating-ball:active {
+            cursor: grabbing;
+        }
+        
+        .floating-ball:hover {
+            box-shadow: 
+                0 6px 16px rgba(0, 0, 0, 0.35),
+                0 8px 25px rgba(0, 0, 0, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        .floating-ball.dragging {
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.4),
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* ========== 鼠标跟随效果样式 ========== */
+        #mouse-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: visible;
+        }
+
+        #mouse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        #mouse-circle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+        
+        /* AI聊天弹窗原生光标样式 */
+        #ai-chat-modal,
+        #ai-chat-modal * {
+            cursor: default !important;
+        }
+        
+        #ai-chat-modal button,
+        #ai-chat-modal input,
+        #ai-chat-modal a {
+            cursor: pointer !important;
+        }
+        
+        #ai-chat-modal input[type="text"] {
+            cursor: text !important;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 鼠标跟随元素 -->
+    <div id="mouse-follower">
+        <div id="mouse-dot"></div>
+        <div id="mouse-circle"></div>
+    </div>
+    
+    <!-- 悬浮球 -->
+    <div class="floating-ball" id="floatingBall"></div>
+    
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <nav id="top-nav">
+            <div class="nav-container">
+                <!-- 标识 -->
+                <div class="nav-brand">
+                    <a href="index.html">国风筑韵</a>
+                </div>
+                
+                <!-- 导航菜单 -->
+                <ul class="nav-menu">
+                    <!-- 首页 -->
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">首页</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="操作指南.html" class="dropdown-link">操作指南</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 互动探索 -->
+                    <li class="nav-item">
+                        <a href="抽卡页面.html" class="nav-link">互动探索</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="游戏地图页面.html" class="dropdown-link">古建筑探索</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 数据可视化 -->
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">数据可视化</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 建筑基因 -->
+                    <li class="nav-item">
+                        <a href="古建筑泛介绍.html" class="nav-link">建筑基因</a>
+                    </li>
+                    
+                    <!-- 地图点位 -->
+                    <li class="nav-item">
+                        <a href="地图点位.html" class="nav-link">地图点位</a>
+                    </li>
+                    
+                    <!-- 古今对比 -->
+                    <li class="nav-item">
+                        <a href="古今对比.html" class="nav-link">古今对比</a>
+                        <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=6" class="dropdown-link">当代延续</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 周边文创 -->
+                    <li class="nav-item">
+                        <a href="周边文创.html" class="nav-link">周边文创</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <a href="古建筑泛介绍.html" class="back-btn">← 返回地图基因</a>
+        <div class="map-section">
+            <div id="amap"></div>
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <div>正在加载地图...</div>
+            </div>
+            <!-- 审图号 -->
+            <div style="position: absolute; bottom: 20px; left: 100px; z-index: 100; font-size: 12px; color: #333; background: rgba(255, 255, 255, 0.8); padding: 2px 6px; border-radius: 3px;">
+                审图号：GS(2025)5996号,本服务由高德地图API直接提供。
+            </div>
+        </div>
+        
+        <div class="control-panel" id="info-panel">
+            <!-- 国保单位信息 -->
+            <div id="culture-info" style="padding: 20px 0; color: #fffdf0; line-height: 1.8;">
+                <p style="margin-bottom: 15px; text-align: center; font-size: 22px; color: #d4af37; font-weight: bold;">
+                    全国重点文物保护单位空间分布概况介绍
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    本地图可视化展示了八批共 5058 处全国重点文物保护单位的空间分布与核心信息，涵盖了从古代遗址到近现代革命旧址的各类文化遗产。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    从分布格局来看，国保单位呈现出明显的区域集聚特征：
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    黄河流域与长江流域是核心密集区，对应中华文明起源与发展的核心地带，如陕西、河南、山西等省份集中了大量古遗址、古墓葬与古建筑；
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    东部沿海与沿江城市（如北京、上海、江苏、广东）则以近现代重要史迹、名人故居及工业遗产为主，反映了近代中国社会变革与城市发展脉络；
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    西南、西北边疆地区的国保单位多为少数民族特色建筑、宗教遗存与革命遗址，体现了多民族文化交融与红色历史印记。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    从类型构成上看，数据覆盖古遗址、古墓葬、古建筑、石窟寺及石刻、近现代重要史迹及代表性建筑等六大类别，其中古建筑占比最高，广泛分布于全国各地，是中国传统营造技艺与地域建筑文化的直观载体；近现代重要史迹则集中于革命老区与通商口岸城市，成为中国近代历史的重要见证。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    通过地理编码获取的经纬度坐标，本可视化实现了国保单位的精准落位，既展现了中华文明多元一体、绵延不绝的时空脉络，也为文化遗产保护、旅游开发与学术研究提供了直观的空间参考。
+                </p>
+            </div>
+            
+            <!-- 全部村落信息 -->
+            <div id="all-villages-info" style="padding: 20px 0; color: #fffdf0; line-height: 1.8; display: none;">
+                <p style="margin-bottom: 15px; text-align: center; font-size: 22px; color: #d4af37; font-weight: bold;">
+                    中国传统村落空间分布概况介绍
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    这张地图上散落的 6819 个中国传统村落，不仅是乡土社会的活态见证，更是中国传统建筑文化的基因库。这些依山傍水、聚族而居的村落，承载着从木构营造、砖石技艺到聚落布局的完整营造智慧，是中华建筑文明最鲜活的物质载体。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    在当代语境下，传统村落的保护与发展，本质上是对传统建筑生命的延续：
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    一方面，我们以"最小干预"为原则，对古民居、宗祠、戏台等核心建筑进行修缮加固，守住木构榫卯、飞檐斗拱、雕梁画栋的工艺精髓，避免过度商业化带来的风貌破坏，让老建筑在原真性保护中留存历史温度。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    另一方面，通过活化利用赋予传统建筑新功能——将闲置古宅改造为民宿、乡村书房、非遗工坊，让"青砖黛瓦"在现代生活中重焕生机，既守护了建筑肌理，又为村落注入可持续发展的活力。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    这些星罗棋布的村落与建筑，既是农耕文明的遗产坐标，也是连接过去与未来的文化纽带，在保护中发展、在发展中保护，方能让中国传统建筑的美学与智慧，在乡土大地上代代相传。
+                </p>
+            </div>
+            
+            <!-- 中国传统村落信息 -->
+            <div id="village-info" style="padding: 20px 0; color: #fffdf0; line-height: 1.8; display: none;">
+                <p style="margin-bottom: 15px; text-align: center; font-size: 22px; color: #d4af37; font-weight: bold;">
+                    八派建筑与传统村落的共生图景
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    这张地图聚焦于中国古建筑八大派系所覆盖省份的 762 个中国传统村落，直观展现了建筑流派与乡土聚落的深度共生关系。这些村落不仅是八大派系建筑技艺的活态容器，更是地域文化基因的物理载体：
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    空间分布特征：村落集群高度贴合八大派系的地理边界——晋派建筑所在的晋冀鲁豫地区、皖派与徽派扎根的皖南浙西、闽粤赣交界的客家聚居区、川派与藏派影响的西南山地，以及江南苏派、浙派覆盖的水乡地带，共同构成了与建筑流派高度耦合的文化地理格局。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    建筑文化承载：每个村落都是一座微型建筑博物馆，从晋派的青砖灰瓦、斗拱飞檐，到徽派的马头墙、天井院，再到闽粤的土楼、围龙屋，传统建筑的形制、材料与营造智慧，在村落肌理中完整留存，成为解读派系风格的鲜活样本。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    保护发展价值：在当代保护语境下，这些依附于传统村落的派系建筑，既面临着风貌消逝、功能退化的挑战，也迎来了活化利用的机遇。通过"村落整体保护 + 建筑功能更新"的模式，既能守住派系建筑的工艺精髓，又能让这些承载着地域记忆的老建筑，在民宿、非遗工坊等新场景中延续生命力，成为连接传统与现代的文化纽带。
+                </p>
+                <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
+                    这些 762 个村落，既是中国古建筑八大派系的地理锚点，也是乡土文明与建筑艺术共生共荣的生动见证，为我们带来独特视角。
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 数据切换框 -->
+    <div style="z-index: 20; position: absolute; top: 114px; left: 54px; background: rgba(0, 0, 0, 0.02); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px; min-width: 120px;">
+        <div style="color: #000000; font-size: 12px; font-weight: bold; margin-bottom: 8px; text-align: center;">数据切换</div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <div style="position: relative;">
+                <button id="btn-culture" style="padding: 6px 12px; font-size: 11px; color: #000000; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px; cursor: pointer; transition: all 0.3s ease; text-align: center; box-shadow: none; width: 100%;">国保单位</button>
+                <!-- 朝代筛选面板 -->
+                <div id="dynasty-filter" style="position: absolute; top: 100%; left: 0; margin-top: 5px; width: 100%; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; padding: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); display: none; z-index: 1000;">
+                    <div style="font-size: 11px; font-weight: bold; color: #333; margin-bottom: 8px; text-align: center;">朝代筛选</div>
+                    <div style="display: flex; flex-direction: column; gap: 4px; max-height: 200px; overflow-y: auto;">
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="dynasty-checkbox" value="全部" checked style="width: 10px; height: 10px;"> 全部
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="dynasty-checkbox" value="新石器时代" style="width: 10px; height: 10px;"> 新石器时代
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="dynasty-checkbox" value="夏商周" style="width: 10px; height: 10px;"> 夏商周
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="dynasty-checkbox" value="秦汉" style="width: 10px; height: 10px;"> 秦汉
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="dynasty-checkbox" value="魏晋南北朝" style="width: 10px; height: 10px;"> 魏晋南北朝
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="dynasty-checkbox" value="隋唐" style="width: 10px; height: 10px;"> 隋唐
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="dynasty-checkbox" value="宋元" style="width: 10px; height: 10px;"> 宋元
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="dynasty-checkbox" value="明清" style="width: 10px; height: 10px;"> 明清
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="dynasty-checkbox" value="近现代" style="width: 10px; height: 10px;"> 近现代
+                        </label>
+                    </div>
+                    <button id="apply-dynasty" style="margin-top: 8px; padding: 4px 8px; font-size: 10px; color: #333; background: rgba(212, 175, 55, 0.2); border: 1px solid rgba(212, 175, 55, 0.5); border-radius: 10px; cursor: pointer; width: 100%;">应用筛选</button>
+                </div>
+            </div>
+            <div style="position: relative;">
+                <button id="btn-all-villages" style="padding: 6px 12px; font-size: 11px; color: #000000; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px; cursor: pointer; transition: all 0.3s ease; text-align: center; box-shadow: none; width: 100%;">中国传统村落</button>
+                <!-- 地区筛选面板 -->
+                <div id="region-filter" style="position: absolute; top: 100%; left: 0; margin-top: 5px; width: 100%; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 10px; padding: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); display: none; z-index: 1000;">
+                    <div style="font-size: 11px; font-weight: bold; color: #333; margin-bottom: 8px; text-align: center;">地区筛选</div>
+                    <div style="display: flex; flex-direction: column; gap: 4px; max-height: 200px; overflow-y: auto;">
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="region-checkbox" value="全部" checked style="width: 10px; height: 10px;"> 全部
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="region-checkbox" value="华北" style="width: 10px; height: 10px;"> 华北
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="region-checkbox" value="华东" style="width: 10px; height: 10px;"> 华东
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="region-checkbox" value="华南" style="width: 10px; height: 10px;"> 华南
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="region-checkbox" value="华中" style="width: 10px; height: 10px;"> 华中
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="region-checkbox" value="东北" style="width: 10px; height: 10px;"> 东北
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="region-checkbox" value="西南" style="width: 10px; height: 10px;"> 西南
+                        </label>
+                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" class="region-checkbox" value="西北" style="width: 10px; height: 10px;"> 西北
+                        </label>
+                    </div>
+                    <button id="apply-region" style="margin-top: 8px; padding: 4px 8px; font-size: 10px; color: #333; background: rgba(212, 175, 55, 0.2); border: 1px solid rgba(212, 175, 55, 0.5); border-radius: 10px; cursor: pointer; width: 100%;">应用筛选</button>
+                </div>
+            </div>
+            <button id="btn-village" style="padding: 6px 12px; font-size: 11px; color: #000000; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px; cursor: pointer; transition: all 0.3s ease; text-align: center; box-shadow: none;">"八派"对应省传统村落</button>
+        </div>
+    </div>
+    
+    <!-- 下一步按钮 -->
+    <div style="z-index: 20; position: absolute; bottom: 14px; right: 14px;">
+        <a href="古今对比.html" style="padding: 10px 20px; font-size: 12px; font-weight: bold; color: #ffffff; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 25px; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: 0; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); text-decoration: none; display: inline-block;">下一步</a>
+    </div>
+
+    <script>
+        let map = null;
+        let currentMarkers = [];
+        let currentData = 'culture'; // culture, village, 或 allVillages
+        let selectedDynasties = ['全部']; // 默认选择全部朝代
+        let selectedRegions = ['全部']; // 默认选择全部地区
+        
+        // 地区省份映射
+        const regionProvinceMap = {
+            '华北': ['北京市', '天津市', '河北省', '山西省', '内蒙古自治区'],
+            '华东': ['上海市', '江苏省', '浙江省', '安徽省', '福建省', '江西省', '山东省'],
+            '华南': ['广东省', '广西壮族自治区', '海南省'],
+            '华中': ['河南省', '湖北省', '湖南省'],
+            '东北': ['辽宁省', '吉林省', '黑龙江省'],
+            '西南': ['重庆市', '四川省', '贵州省', '云南省', '西藏自治区'],
+            '西北': ['陕西省', '甘肃省', '青海省', '宁夏回族自治区', '新疆维吾尔自治区']
+        };
+        
+        // 初始化地图
+        function initMap() {
+            // 创建地图实例 - 设置为500公里比例尺（zoom级别为4）
+            map = new AMap.Map('amap', {
+                zoom: 4,
+                center: [105.0, 38.0],
+                viewMode: '2D',
+                mapStyle: 'amap://styles/normal',
+                features: ['bg', 'road', 'building', 'point']
+            });
+            
+            // 添加控件
+            AMap.plugin(['AMap.ToolBar', 'AMap.Scale', 'AMap.MapType'], function() {
+                map.addControl(new AMap.ToolBar({
+                    position: 'RB'
+                }));
+                map.addControl(new AMap.Scale());
+                map.addControl(new AMap.MapType({
+                    defaultType: 0
+                }));
+            });
+            
+            // 绑定数据切换按钮事件
+            document.getElementById('btn-culture').addEventListener('click', function() {
+                if (currentData !== 'culture') {
+                    currentData = 'culture';
+                    updateButtonStyles();
+                    updateInfoPanel();
+                    loadMapPoints('map_points.json');
+                }
+                // 切换到国保单位时显示朝代筛选面板
+                const dynastyFilter = document.getElementById('dynasty-filter');
+                dynastyFilter.style.display = 'block';
+            });
+            
+            document.getElementById('btn-village').addEventListener('click', function() {
+                if (currentData !== 'village') {
+                    currentData = 'village';
+                    updateButtonStyles();
+                    updateInfoPanel();
+                    loadMapPoints('village_points.json');
+                }
+                // 切换到其他数据时隐藏朝代筛选面板
+                const dynastyFilter = document.getElementById('dynasty-filter');
+                dynastyFilter.style.display = 'none';
+            });
+            
+            document.getElementById('btn-all-villages').addEventListener('click', function() {
+                if (currentData !== 'allVillages') {
+                    currentData = 'allVillages';
+                    updateButtonStyles();
+                    updateInfoPanel();
+                    loadMapPoints('all_villages.json');
+                }
+                // 切换到中国传统村落时显示地区筛选面板
+                const regionFilter = document.getElementById('region-filter');
+                regionFilter.style.display = 'block';
+                // 隐藏其他筛选面板
+                const dynastyFilter = document.getElementById('dynasty-filter');
+                dynastyFilter.style.display = 'none';
+            });
+            
+            // 朝代筛选面板事件
+            document.getElementById('btn-culture').addEventListener('mouseenter', function() {
+                if (currentData === 'culture') {
+                    const dynastyFilter = document.getElementById('dynasty-filter');
+                    dynastyFilter.style.display = 'block';
+                }
+            });
+            
+            // 地区筛选面板事件
+            document.getElementById('btn-all-villages').addEventListener('mouseenter', function() {
+                if (currentData === 'allVillages') {
+                    const regionFilter = document.getElementById('region-filter');
+                    regionFilter.style.display = 'block';
+                }
+            });
+            
+            // 点击其他地方关闭筛选面板
+            document.addEventListener('click', function(e) {
+                const dynastyFilter = document.getElementById('dynasty-filter');
+                const regionFilter = document.getElementById('region-filter');
+                const btnCulture = document.getElementById('btn-culture');
+                const btnAllVillages = document.getElementById('btn-all-villages');
+                
+                const isClickInsideDynasty = dynastyFilter.contains(e.target) || btnCulture.contains(e.target);
+                const isClickInsideRegion = regionFilter.contains(e.target) || btnAllVillages.contains(e.target);
+                
+                if (!isClickInsideDynasty && currentData === 'culture') {
+                    dynastyFilter.style.display = 'none';
+                }
+                if (!isClickInsideRegion && currentData === 'allVillages') {
+                    regionFilter.style.display = 'none';
+                }
+            });
+            
+            // 朝代复选框事件
+            document.querySelectorAll('.dynasty-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.value === '全部') {
+                        // 点击"全部"时，选中所有复选框
+                        if (this.checked) {
+                            document.querySelectorAll('.dynasty-checkbox').forEach(cb => {
+                                cb.checked = true;
+                            });
+                        }
+                    } else {
+                        // 点击其他朝代时，取消"全部"的选中状态
+                        if (this.checked) {
+                            document.querySelector('.dynasty-checkbox[value="全部"]').checked = false;
+                        }
+                    }
+                });
+            });
+            
+            // 地区复选框事件
+            document.querySelectorAll('.region-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.value === '全部') {
+                        // 点击"全部"时，选中所有复选框
+                        if (this.checked) {
+                            document.querySelectorAll('.region-checkbox').forEach(cb => {
+                                cb.checked = true;
+                            });
+                        }
+                    } else {
+                        // 点击其他地区时，取消"全部"的选中状态
+                        if (this.checked) {
+                            document.querySelector('.region-checkbox[value="全部"]').checked = false;
+                        }
+                    }
+                });
+            });
+            
+            // 应用筛选按钮事件
+            document.getElementById('apply-dynasty').addEventListener('click', function() {
+                // 获取选中的朝代
+                selectedDynasties = [];
+                document.querySelectorAll('.dynasty-checkbox:checked').forEach(checkbox => {
+                    selectedDynasties.push(checkbox.value);
+                });
+                
+                // 重新加载数据
+                if (currentData === 'culture') {
+                    loadMapPoints('map_points.json');
+                }
+                
+                // 关闭筛选面板
+                document.getElementById('dynasty-filter').style.display = 'none';
+            });
+            
+            // 应用地区筛选按钮事件
+            document.getElementById('apply-region').addEventListener('click', function() {
+                // 获取选中的地区
+                selectedRegions = [];
+                document.querySelectorAll('.region-checkbox:checked').forEach(checkbox => {
+                    selectedRegions.push(checkbox.value);
+                });
+                
+                // 重新加载数据
+                if (currentData === 'allVillages') {
+                    loadMapPoints('all_villages.json');
+                }
+                
+                // 关闭筛选面板
+                document.getElementById('region-filter').style.display = 'none';
+            });
+            
+            // 初始化按钮样式和信息面板
+            updateButtonStyles();
+            updateInfoPanel();
+            
+            // 加载默认点位数据
+            loadMapPoints('map_points.json');
+        }
+        
+        // 更新按钮样式
+        function updateButtonStyles() {
+            if (currentData === 'culture') {
+                document.getElementById('btn-culture').style.color = '#000000';
+                document.getElementById('btn-culture').style.background = 'rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-culture').style.border = '1px solid rgba(255, 255, 255, 0.4)';
+                document.getElementById('btn-culture').style.boxShadow = '0 0 15px rgba(212, 175, 55, 0.6)';
+                document.getElementById('btn-village').style.color = '#000000';
+                document.getElementById('btn-village').style.background = 'rgba(255, 255, 255, 0.1)';
+                document.getElementById('btn-village').style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-village').style.boxShadow = 'none';
+                document.getElementById('btn-all-villages').style.color = '#000000';
+                document.getElementById('btn-all-villages').style.background = 'rgba(255, 255, 255, 0.1)';
+                document.getElementById('btn-all-villages').style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-all-villages').style.boxShadow = 'none';
+            } else if (currentData === 'village') {
+                document.getElementById('btn-village').style.color = '#000000';
+                document.getElementById('btn-village').style.background = 'rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-village').style.border = '1px solid rgba(255, 255, 255, 0.4)';
+                document.getElementById('btn-village').style.boxShadow = '0 0 15px rgba(212, 175, 55, 0.6)';
+                document.getElementById('btn-culture').style.color = '#000000';
+                document.getElementById('btn-culture').style.background = 'rgba(255, 255, 255, 0.1)';
+                document.getElementById('btn-culture').style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-culture').style.boxShadow = 'none';
+                document.getElementById('btn-all-villages').style.color = '#000000';
+                document.getElementById('btn-all-villages').style.background = 'rgba(255, 255, 255, 0.1)';
+                document.getElementById('btn-all-villages').style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-all-villages').style.boxShadow = 'none';
+            } else if (currentData === 'allVillages') {
+                document.getElementById('btn-all-villages').style.color = '#000000';
+                document.getElementById('btn-all-villages').style.background = 'rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-all-villages').style.border = '1px solid rgba(255, 255, 255, 0.4)';
+                document.getElementById('btn-all-villages').style.boxShadow = '0 0 15px rgba(212, 175, 55, 0.6)';
+                document.getElementById('btn-culture').style.color = '#000000';
+                document.getElementById('btn-culture').style.background = 'rgba(255, 255, 255, 0.1)';
+                document.getElementById('btn-culture').style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-culture').style.boxShadow = 'none';
+                document.getElementById('btn-village').style.color = '#000000';
+                document.getElementById('btn-village').style.background = 'rgba(255, 255, 255, 0.1)';
+                document.getElementById('btn-village').style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                document.getElementById('btn-village').style.boxShadow = 'none';
+            }
+        }
+        
+        // 更新右侧信息面板内容
+        function updateInfoPanel() {
+            if (currentData === 'culture') {
+                document.getElementById('culture-info').style.display = 'block';
+                document.getElementById('village-info').style.display = 'none';
+                document.getElementById('all-villages-info').style.display = 'none';
+            } else if (currentData === 'village') {
+                document.getElementById('culture-info').style.display = 'none';
+                document.getElementById('village-info').style.display = 'block';
+                document.getElementById('all-villages-info').style.display = 'none';
+            } else if (currentData === 'allVillages') {
+                document.getElementById('culture-info').style.display = 'none';
+                document.getElementById('village-info').style.display = 'none';
+                document.getElementById('all-villages-info').style.display = 'block';
+            }
+        }
+        
+        // 加载地图点位数据
+        function loadMapPoints(dataFile) {
+            // 清除现有标记点
+            if (currentMarkers.length > 0) {
+                map.remove(currentMarkers);
+                currentMarkers = [];
+            }
+            
+            // 显示加载提示
+            document.getElementById('loading').style.display = 'block';
+            
+            // 根据数据文件确定颜色
+            let markerColor = '#d4af37'; // 默认黄色（国保单位）
+            if (dataFile === 'village_points.json') {
+                markerColor = '#87CEEB'; // 浅蓝色（"八派"对应省传统村落）
+            } else if (dataFile === 'all_villages.json') {
+                markerColor = '#228B22'; // 深绿色（中国传统村落）
+            }
+            
+            // 创建SVG图标
+            const svgIcon = `data:image/svg+xml;base64,${btoa('<svg xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="6" fill="' + markerColor + '" fill-opacity="0.8" stroke="#fff" stroke-width="1"/></svg>')}`;
+            
+            // 加载点聚合插件
+            AMapUI.load(['ui/overlay/SimpleMarker'], function(SimpleMarker) {
+                // 添加时间戳参数以避免浏览器缓存
+                const url = dataFile + '?t=' + new Date().getTime();
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        // 筛选数据（仅对国保单位应用朝代筛选）
+                        let filteredData = data;
+                        if (dataFile === 'map_points.json' && selectedDynasties.length > 0 && !selectedDynasties.includes('全部')) {
+                            filteredData = data.filter(point => {
+                                if (point.era) {
+                                    // 简化朝代匹配逻辑
+                                    const era = point.era;
+                                    return selectedDynasties.some(dynasty => {
+                                        switch(dynasty) {
+                                            case '新石器时代':
+                                                return era.includes('新石器');
+                                            case '夏商周':
+                                                return era.includes('夏') || era.includes('商') || era.includes('周') || era.includes('先秦');
+                                            case '秦汉':
+                                                return era.includes('秦') || era.includes('汉');
+                                            case '魏晋南北朝':
+                                                return era.includes('魏晋') || era.includes('南北朝') || era.includes('三国');
+                                            case '隋唐':
+                                                return era.includes('隋') || era.includes('唐');
+                                            case '宋元':
+                                                return era.includes('宋') || era.includes('元');
+                                            case '明清':
+                                                return era.includes('明') || era.includes('清');
+                                            case '近现代':
+                                                return era.includes('近代') || era.includes('现代') || era.includes('民国') || era.includes('中华人民共和国');
+                                            default:
+                                                return false;
+                                        }
+                                    });
+                                }
+                                return true;
+                            });
+                        }
+                        
+                        // 筛选数据（仅对中国传统村落应用地区筛选）
+                        if (dataFile === 'all_villages.json' && selectedRegions.length > 0 && !selectedRegions.includes('全部')) {
+                            filteredData = filteredData.filter(point => {
+                                if (point.province) {
+                                    // 检查省份是否在选中的地区中
+                                    return selectedRegions.some(region => {
+                                        if (regionProvinceMap[region]) {
+                                            return regionProvinceMap[region].includes(point.province);
+                                        }
+                                        return false;
+                                    });
+                                }
+                                return true;
+                            });
+                        }
+                        
+                        // 创建标记点
+                        filteredData.forEach(point => {
+                            const marker = new AMap.Marker({
+                                position: [point.lng, point.lat],
+                                title: point.name,
+                                icon: new AMap.Icon({
+                                    size: new AMap.Size(12, 12),
+                                    image: svgIcon,
+                                    imageOffset: new AMap.Pixel(0, 0),
+                                    imageSize: new AMap.Size(12, 12)
+                                }),
+                                extData: point
+                            });
+                            
+                            // 添加点击事件
+                            marker.on('click', function() {
+                                showInfoWindow(point);
+                            });
+                            
+                            currentMarkers.push(marker);
+                        });
+                        
+                        // 添加标记点到地图
+                        map.add(currentMarkers);
+                        
+                        // 隐藏加载提示
+                        document.getElementById('loading').style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('加载点位数据失败:', error);
+                        document.getElementById('loading').innerHTML = '<div style="color: red;">加载点位数据失败</div>';
+                    });
+            });
+        }
+        
+        // 显示信息窗口
+        function showInfoWindow(point) {
+            let content = '';
+            
+            if (point.type) { // 文物数据
+                content = `
+                    <div style="padding: 10px; min-width: 200px;">
+                        <h3 style="margin: 0 0 10px 0; color: #333;">${point.name}</h3>
+                        <p style="margin: 5px 0; color: #666;"><strong>地址：</strong>${point.address}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>省份：</strong>${point.province}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>城市：</strong>${point.city}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>类型：</strong>${point.type}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>时代：</strong>${point.era}</p>
+                        <p style="margin: 5px 0; color: #999; font-size: 12px;">经度：${point.lng.toFixed(6)}，纬度：${point.lat.toFixed(6)}</p>
+                    </div>
+                `;
+            } else if (point.village) { // 中国传统村落数据
+                content = `
+                    <div style="padding: 10px; min-width: 200px;">
+                        <h3 style="margin: 0 0 10px 0; color: #333;">${point.name}</h3>
+                        <p style="margin: 5px 0; color: #666;"><strong>省份：</strong>${point.province}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>城市：</strong>${point.city}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>区县：</strong>${point.district}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>乡镇：</strong>${point.town}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>村庄：</strong>${point.village}</p>
+                        <p style="margin: 5px 0; color: #999; font-size: 12px;">经度：${point.lng.toFixed(6)}，纬度：${point.lat.toFixed(6)}</p>
+                    </div>
+                `;
+            } else { // 全部村落数据
+                content = `
+                    <div style="padding: 10px; min-width: 200px;">
+                        <h3 style="margin: 0 0 10px 0; color: #333;">${point.name}</h3>
+                        <p style="margin: 5px 0; color: #666;"><strong>完整地址：</strong>${point.address}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>省份：</strong>${point.province}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>城市：</strong>${point.city}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>区县：</strong>${point.district}</p>
+                        <p style="margin: 5px 0; color: #666;"><strong>乡镇：</strong>${point.town}</p>
+                        <p style="margin: 5px 0; color: #999; font-size: 12px;">经度：${point.lng.toFixed(6)}，纬度：${point.lat.toFixed(6)}</p>
+                    </div>
+                `;
+            }
+            
+            const infoWindow = new AMap.InfoWindow({
+                content: content,
+                offset: new AMap.Pixel(0, -10)
+            });
+            
+            infoWindow.open(map, [point.lng, point.lat]);
+        }
+        
+        // 页面加载完成后初始化地图
+        window.onload = initMap;
+        
+        // ========== 鼠标跟随效果脚本 ==========
+        (function() {
+            const mouseFollower = document.getElementById('mouse-follower');
+            const mouseDot = document.getElementById('mouse-dot');
+            const mouseCircle = document.getElementById('mouse-circle');
+            
+            if (mouseFollower && mouseDot && mouseCircle) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let circleX = 0;
+                let circleY = 0;
+                
+                // 鼠标移动事件
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    // 直接更新小圆点位置
+                    mouseDot.style.left = mouseX + 'px';
+                    mouseDot.style.top = mouseY + 'px';
+                });
+                
+                // 动画循环，实现圆圈追逐圆点
+                function animate() {
+                    // 计算圆圈到圆点的距离
+                    const dx = mouseX - circleX;
+                    const dy = mouseY - circleY;
+                    
+                    // 平滑追逐效果
+                    circleX += dx * 0.1;
+                    circleY += dy * 0.1;
+                    
+                    // 更新圆圈位置
+                    mouseCircle.style.left = circleX + 'px';
+                    mouseCircle.style.top = circleY + 'px';
+                    
+                    // 继续动画
+                    requestAnimationFrame(animate);
+                }
+                
+                // 鼠标点击事件
+                document.addEventListener('click', () => {
+                    mouseCircle.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    setTimeout(() => {
+                        mouseCircle.style.transform = 'translate(-50%, -50%) scale(1)';
+                    }, 150);
+                });
+                
+                // 启动动画
+                animate();
+            }
+        })();
+        
+        // ========== 悬浮球脚本 ==========
+        class FloatingBall {
+            constructor(element, options = {}) {
+                this.element = element;
+                this.isDragging = false;
+                this.currentX = 0;
+                this.currentY = 0;
+                this.initialX = 0;
+                this.initialY = 0;
+                this.elementWidth = 60;
+                this.elementHeight = 60;
+                
+                this.initPosition();
+                this.bindEvents();
+                this.onClickCallback = options.onClick || (() => {});
+            }
+            
+            initPosition() {
+                const rect = this.element.getBoundingClientRect();
+                this.currentX = rect.left;
+                this.currentY = rect.top;
+                this.elementWidth = rect.width;
+                this.elementHeight = rect.height;
+            }
+            
+            bindEvents() {
+                this.element.addEventListener('mousedown', (e) => this.startDrag(e));
+                document.addEventListener('mousemove', (e) => this.drag(e));
+                document.addEventListener('mouseup', (e) => this.endDrag(e));
+                
+                this.element.addEventListener('touchstart', (e) => this.startDrag(e), { passive: false });
+                document.addEventListener('touchmove', (e) => this.drag(e), { passive: false });
+                document.addEventListener('touchend', (e) => this.endDrag(e));
+                
+                this.element.addEventListener('click', (e) => this.handleClick(e));
+            }
+            
+            startDrag(e) {
+                e.preventDefault();
+                
+                if (e.type === 'touchstart') {
+                    this.initialX = e.touches[0].clientX - this.currentX;
+                    this.initialY = e.touches[0].clientY - this.currentY;
+                } else {
+                    this.initialX = e.clientX - this.currentX;
+                    this.initialY = e.clientY - this.currentY;
+                }
+                
+                this.isDragging = false;
+                this.element.classList.add('dragging');
+                this.dragStartTime = Date.now();
+            }
+            
+            drag(e) {
+                if (this.initialX === 0 && this.initialY === 0) return;
+                
+                if (e.type === 'touchmove') {
+                    e.preventDefault();
+                }
+                
+                let newX, newY;
+                
+                if (e.type === 'touchmove') {
+                    newX = e.touches[0].clientX - this.initialX;
+                    newY = e.touches[0].clientY - this.initialY;
+                } else {
+                    newX = e.clientX - this.initialX;
+                    newY = e.clientY - this.initialY;
+                }
+                
+                if (!this.isDragging) {
+                    const dx = Math.abs(newX - this.currentX);
+                    const dy = Math.abs(newY - this.currentY);
+                    if (dx > 5 || dy > 5) {
+                        this.isDragging = true;
+                    }
+                }
+                
+                const maxX = window.innerWidth - this.elementWidth;
+                const maxY = window.innerHeight - this.elementHeight;
+                
+                newX = Math.max(0, Math.min(newX, maxX));
+                newY = Math.max(0, Math.min(newY, maxY));
+                
+                this.currentX = newX;
+                this.currentY = newY;
+                
+                this.element.style.right = 'auto';
+                this.element.style.bottom = 'auto';
+                this.element.style.left = `${this.currentX}px`;
+                this.element.style.top = `${this.currentY}px`;
+            }
+            
+            endDrag(e) {
+                this.element.classList.remove('dragging');
+                this.initialX = 0;
+                this.initialY = 0;
+            }
+            
+            handleClick(e) {
+                const dragDuration = Date.now() - this.dragStartTime;
+                
+                if (dragDuration > 200) {
+                    return;
+                }
+                
+                console.log('悬浮球被点击');
+                
+                if (typeof this.onClickCallback === 'function') {
+                    this.onClickCallback(e);
+                }
+            }
+            
+            setOnClick(callback) {
+                this.onClickCallback = callback;
+            }
+            
+            moveTo(x, y) {
+                const maxX = window.innerWidth - this.elementWidth;
+                const maxY = window.innerHeight - this.elementHeight;
+                
+                this.currentX = Math.max(0, Math.min(x, maxX));
+                this.currentY = Math.max(0, Math.min(y, maxY));
+                
+                this.element.style.right = 'auto';
+                this.element.style.bottom = 'auto';
+                this.element.style.left = `${this.currentX}px`;
+                this.element.style.top = `${this.currentY}px`;
+            }
+            
+            resetPosition() {
+                this.moveTo(200, 10);
+            }
+        }
+        
+        // 初始化悬浮球
+        const floatingBallElement = document.getElementById('floatingBall');
+        if (floatingBallElement) {
+            const ball = new FloatingBall(floatingBallElement, {
+                onClick: () => {
+                    console.log('显示AI聊天弹窗');
+                    showAIChatModal();
+                }
+            });
+            
+            window.floatingBall = ball;
+        }
+        
+        // ========== AI聊天弹窗 ==========
+        function showAIChatModal() {
+            // 如果弹窗已存在，直接显示
+            let modal = document.getElementById('ai-chat-modal');
+            if (modal) {
+                modal.style.display = 'block';
+                return;
+            }
+            
+            // 创建弹窗容器
+            modal = document.createElement('div');
+            modal.id = 'ai-chat-modal';
+            modal.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 1527px;
+                height: 740px;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10001;
+            `;
+            
+            // 创建聊天容器（固定在页面中间）
+            const chatWrapper = document.createElement('div');
+            chatWrapper.style.cssText = `
+                width: 900px;
+                height: 500px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            `;
+            
+            // 创建聊天内容
+            chatWrapper.innerHTML = `
+                <div style="
+                    width: 100%;
+                    height: 100%;
+                    background-image: url('agent/ai背景.png');
+                    background-size: cover;
+                    background-position: center;
+                    border-radius: 8px;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    position: relative;
+                    cursor: default;
+                ">
+                    <!-- 关闭按钮 -->
+                    <button id="close-ai-chat" style="
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        width: 32px;
+                        height: 32px;
+                        background: rgba(139, 37, 0, 0.8);
+                        color: #fcf9f2;
+                        border: 1px solid #8b2500;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 18px;
+                        font-weight: bold;
+                        z-index: 10;
+                    ">×</button>
+                    
+                    <!-- 标题 -->
+                    <div style="
+                        padding: 20px;
+                        text-align: center;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                    ">
+                        <h1 style="
+                            font-size: 32px;
+                            font-weight: normal;
+                            color: #fffdf0;
+                            letter-spacing: 6px;
+                            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                            margin: 0;
+                        ">古建灵犀</h1>
+                    </div>
+                    
+                    <!-- 消息区域 -->
+                    <div id="ai-chat-messages" style="
+                        flex: 1;
+                        overflow-y: auto;
+                        padding: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                    ">
+                        <div style="
+                            max-width: 70%;
+                            padding: 10px 15px;
+                            line-height: 1.7;
+                            font-size: 14px;
+                            border-radius: 4px;
+                            background: rgba(252, 249, 242, 0.7);
+                            color: #1a1a1a;
+                            align-self: flex-start;
+                        ">欢迎来到「古建灵犀」智能向导，我是您的古建筑知识顾问，愿为君一二陈之。</div>
+                    </div>
+                    
+                    <!-- 输入区域 -->
+                    <div style="
+                        padding: 16px 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.08);
+                    ">
+                        <div style="flex: 1; position: relative;">
+                            <input type="text" id="ai-chat-input" placeholder="请输入您想了解的古建筑知识..." style="
+                                width: 100%;
+                                padding: 12px 0;
+                                background: transparent;
+                                border: none;
+                                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                                font-size: 14px;
+                                font-family: 'SimSun', '宋体', 'KaiTi', '楷体', serif;
+                                color: #222222;
+                                outline: none;
+                            ">
+                        </div>
+                        <button id="ai-chat-send" style="
+                            width: 42px;
+                            height: 42px;
+                            background: #8b2500;
+                            color: #fcf9f2;
+                            border: 1px solid #8b2500;
+                            border-radius: 6px 2px 8px 3px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-family: 'KaiTi', 'STKaiti', 'LiSu', serif;
+                            font-weight: bold;
+                            letter-spacing: 2px;
+                        ">落墨</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.appendChild(chatWrapper);
+            document.body.appendChild(modal);
+            
+            // 绑定事件
+            document.getElementById('close-ai-chat').addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // 给弹窗区域禁用鼠标跟随效果
+            modal.style.pointerEvents = 'auto';
+            chatWrapper.style.pointerEvents = 'auto';
+            
+            // 给聊天区域启用原生光标
+            const chatContent = chatWrapper.querySelector('div');
+            chatContent.style.setProperty('cursor', 'default', 'important');
+            chatContent.style.setProperty('pointer-events', 'auto', 'important');
+            chatContent.style.pointerEvents = 'auto';
+            chatContent.style.cursor = 'default';
+            
+            // 设置所有子元素的光标
+            const allElements = chatContent.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.style.setProperty('cursor', 'default', 'important');
+            });
+            
+            // 关闭按钮需要pointer光标
+            const closeBtn = document.getElementById('close-ai-chat');
+            closeBtn.style.cursor = 'pointer';
+            
+            const sendBtn = document.getElementById('ai-chat-send');
+            sendBtn.style.cursor = 'pointer';
+            
+            const inputField = document.getElementById('ai-chat-input');
+            inputField.style.cursor = 'text';
+            
+            // 给整个弹窗内容添加原生光标覆盖
+            chatWrapper.style.zIndex = '10002';
+            
+            // 强制在modal上禁用鼠标跟随
+            modal.addEventListener('mouseenter', function() {
+                document.body.style.setProperty('cursor', 'auto', 'important');
+                document.querySelectorAll('*').forEach(el => {
+                    if (el.closest('#ai-chat-modal')) {
+                        el.style.setProperty('cursor', 'default', 'important');
+                    }
+                });
+            });
+            
+            // 隐藏页面的鼠标跟随效果
+            const mouseFollower = document.getElementById('mouse-follower');
+            if (mouseFollower) {
+                mouseFollower.style.display = 'none';
+            }
+            
+            // 弹窗关闭时恢复鼠标跟随效果
+            document.getElementById('close-ai-chat').addEventListener('click', function() {
+                modal.style.display = 'none';
+                if (mouseFollower) {
+                    mouseFollower.style.display = 'block';
+                }
+            });
+            
+            // 点击背景关闭弹窗时也恢复
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    if (mouseFollower) {
+                        mouseFollower.style.display = 'block';
+                    }
+                }
+            });
+            
+            // ========== API 配置 ==========
+            // 本地开发时使用：http://localhost:3000
+            // 部署到 Zeabur 后改为：https://你的项目名.zeabur.app
+            const API_BASE_URL = 'https://gujian-project.zeabur.app';
+            // ==============================
+
+            // 对话历史数组（存储上下文）
+            let conversationHistory = [];
+            
+            // 古风思考提示语（AI思考时显示）
+            const thinkingMessages = [
+                "先生所言极是，容我思量一二...",
+                "此问颇有意趣，待我细述...",
+                "古建之道，博大精深，且听我慢慢道来...",
+                "此乃我中华建筑之精髓，容我详解...",
+                "先生/姑娘所问甚好，容我一二陈之..."
+            ];
+            
+            function getRandomThinking() {
+                return thinkingMessages[Math.floor(Math.random() * thinkingMessages.length)];
+            }
+            
+            // 管理对话历史：超过10条删除最早的2条
+            function addToHistory(role, content) {
+                conversationHistory.push({ role: role, content: content });
+                
+                if (conversationHistory.length > 10) {
+                    conversationHistory.shift();
+                    conversationHistory.shift();
+                }
+            }
+            
+            function scrollToBottom() {
+                const messages = document.getElementById('ai-chat-messages');
+                messages.scrollTop = messages.scrollHeight;
+            }
+            
+            function createUserMessage(text) {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(30, 30, 30, 0.7);
+                    color: #ffffff;
+                    align-self: flex-end;
+                `;
+                msg.textContent = text;
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            function createAIMessage(text) {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(252, 249, 242, 0.7);
+                    color: #1a1a1a;
+                    align-self: flex-start;
+                `;
+                msg.innerHTML = text;
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            // 创建思考中的消息（带删除标记）
+            function createThinkingMessage() {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(252, 249, 242, 0.7);
+                    color: #1a1a1a;
+                    align-self: flex-start;
+                `;
+                msg.textContent = getRandomThinking();
+                msg.id = 'thinking-msg';
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            // 删除思考中的消息
+            function removeThinkingMessage() {
+                const thinkingMsg = document.getElementById('thinking-msg');
+                if (thinkingMsg) {
+                    thinkingMsg.remove();
+                }
+            }
+            
+            function sendMessage() {
+                const input = document.getElementById('ai-chat-input');
+                const sendBtn = document.getElementById('ai-chat-send');
+                const text = input.value.trim();
+                if (text === '') return;
+                
+                input.disabled = true;
+                sendBtn.disabled = true;
+                
+                addToHistory('user', text);
+                createUserMessage(text);
+                input.value = '';
+                
+                createThinkingMessage();
+                
+                fetch(API_BASE_URL + '/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: conversationHistory
+                    })
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    removeThinkingMessage();
+                    addToHistory('assistant', data.reply);
+                    createAIMessage(data.reply);
+                })
+                .catch(function(error) {
+                    removeThinkingMessage();
+                    createAIMessage('网络连接似乎有些问题，还望先生/姑娘稍后再试。');
+                })
+                .finally(function() {
+                    input.disabled = false;
+                    sendBtn.disabled = false;
+                    input.focus();
+                });
+            }
+            
+            document.getElementById('ai-chat-send').addEventListener('click', sendMessage);
+            document.getElementById('ai-chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 自动聚焦
+            document.getElementById('ai-chat-input').focus();
+        }
+    </script>
+</body>
+</html>

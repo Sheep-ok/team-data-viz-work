@@ -1,0 +1,2918 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=1527, user-scalable=yes">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 1527px;
+        height: 740px;
+        overflow: hidden; 
+      }
+    </style>
+    <meta charset="UTF-8">
+    <title>国风筑韵-展望</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        /* 页面容器 */
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('古今对比背景.jpg') center/cover no-repeat;
+           
+            height: 740px;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            color: #333;
+        }
+        
+        /* 背景遮罩 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            z-index: -1;
+        }
+        
+        /* 容器 */
+        .container {
+            width: 1527px;       
+            margin: 0 auto;
+            padding: 10px;
+            height: 740px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 上部分（空） */
+        .top-section {
+            height: 40%;
+        }
+        
+        /* 下部分（图表区域） */
+        .chart-section {
+            height: 57%;
+            position: relative;
+        }
+        
+        /* 图表容器 */
+        .chart-container {
+            width: 100%;
+            height: 85%;
+            position: absolute;
+            top: -50px;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+        
+        /* 活动图表 */
+        .chart-container.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* 切换按钮 */
+        .nav-buttons {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+            transform: translateY(-2px);
+        }
+        
+
+        
+
+        
+        /* 图表背景框 */
+        .chart-frame {
+            width: 46%;
+            height: 130%;
+            position: absolute;
+            top: 13%;
+            left: 24%;
+            transform: translate(-50%, -50%);
+            background: transparent;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1;
+            opacity: 0;
+            transition: all 1s ease-out;
+        }
+        
+        /* 图表容器 */
+        .chart-container {
+            width: 46%;
+            height: 110%;
+            position: absolute;
+            top: -180px;
+            left: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+
+        
+
+        
+        /* 活动图表 */
+        .chart-container.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* 活动图表对应的磨砂框 */
+        .chart-container.active + .chart-frame {
+            opacity: 1;
+        }
+        
+        /* 第五张图表布局容器 */
+        .digital-chart-section {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 20px;
+            padding: 20px 40px 60px 20px;
+            box-sizing: border-box;
+        }
+        
+        /* 第五张图表容器 */
+        #digitalChart {
+            width: 50%;
+            height: 120%;
+            position: relative;
+            top: -30%;
+            left: -2%;
+            z-index: 2;
+            margin-top: -40px;
+        }
+        
+        /* 第五张图表磨砂框 */
+        #digitalChart + .chart-frame {
+            width: 46%;
+            height: 123%;
+            position: absolute;
+            top: 20%;
+            left: 23.5%;
+            transform: translate(-50%, -50%);
+            background: transparent;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1;
+            opacity: 0;
+            transition: all 1s ease-out;
+        }
+        
+        /* 图表文案卡片通用样式 */
+        .chart-text {
+            width: 40%;
+            max-height: 130%;
+            position: relative;
+            top: -50%;
+            right: -5%;
+            transform: none;
+            color: #fff;
+            font-size: 18px;
+            line-height: 1.6;
+            padding: 30px;
+            background: transparent;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 1s ease-out;
+            margin-top: -30px;
+        }
+        
+        /* 第一张图表磨砂框特定样式 */
+        #heatmapChart + .chart-frame {
+            height: 130%;
+            top: 10%;
+        }
+        
+        /* 第一张图表文案卡片特定样式 */
+        #heatmapChart + .chart-frame + .chart-text {
+            position: absolute;
+            top: -220px;
+            right: 20px;
+            width: 37%;
+            max-height: 135%;
+            overflow-y: hidden;
+        }
+        
+        /* 第二张图表磨砂框特定样式 */
+        #barChart + .chart-frame {
+            height: 125%;
+        }
+        
+        /* 第二张图表文案卡片特定样式 */
+        #barChart + .chart-frame + .chart-text {
+            position: absolute;
+            top: -185px;
+            right: 20px;
+            width: 35%;
+            max-height: 120%;
+        }
+        
+        /* 第三张图表磨砂框特定样式 */
+        #polarChart + .chart-frame {
+            height: 130%;
+            top: 13%;
+        }
+        
+        /* 第三张图表文案卡片特定样式 */
+        #polarChart + .chart-frame + .chart-text {
+            position: absolute;
+            top: -200px;
+            right: 20px;
+            width: 35%;
+            max-height: 130%;
+            overflow-y: hidden;
+        }
+        
+        /* 第四张图表磨砂框特定样式 */
+        #pixelChart + .chart-frame {
+            height: 120%;
+            top: 8%;
+        }
+        
+        /* 第四张图表文案卡片特定样式 */
+        #pixelChart + .chart-frame + .chart-text {
+            position: absolute;
+            top: -210px;
+            right: 20px;
+            width: 35%;
+            max-height: 135%;
+            overflow-y: hidden;
+        }
+        
+        /* 自定义滚动条 */
+        .chart-text::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chart-text::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        
+        .chart-text::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        
+        .chart-text::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* 文案标题样式 */
+        .chart-text h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        
+        .chart-text h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+        }
+        
+        /* 当第一张图表激活时显示文案和磨砂框 */
+        #heatmapChart.active + .chart-frame {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        #heatmapChart.active + .chart-frame + .chart-text {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        /* 当第二张图表激活时显示文案和磨砂框 */
+        #barChart.active + .chart-frame {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        #barChart.active + .chart-frame + .chart-text {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        /* 当第三张图表激活时显示文案和磨砂框 */
+        #polarChart.active + .chart-frame {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        #polarChart.active + .chart-frame + .chart-text {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        /* 当第四张图表激活时显示文案和磨砂框 */
+        #pixelChart.active + .chart-frame {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        #pixelChart.active + .chart-frame + .chart-text {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        /* 当第五张图表激活时显示文案和磨砂框 */
+        #digitalChart.active + .chart-frame {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        #digitalChart.active + .chart-frame + .chart-text {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        /* 第五张图表文案卡片特定样式 */
+        #digitalChart + .chart-frame + .chart-text {
+            position: absolute;
+            top: -150px;
+            right: 20px;
+            width: 40%;
+            max-height: none;
+            overflow-y: visible;
+        }
+        
+        /* 当视频展示区域激活时显示文案和磨砂框 */
+        #videoContainer.active + .chart-frame {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        #videoContainer.active + .chart-frame + .chart-text {
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        /* 视频展示区域文案卡片特定样式 */
+        #videoContainer + .chart-frame + .chart-text {
+            position: absolute;
+            top: -220px;
+            right: 20px;
+            width: 37%;
+            max-height: 135%;
+            overflow-y: hidden;
+        }
+        
+        /* 淡入上移动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+
+        
+        /* 为文案添加首行缩进 */
+        .chart-text p {
+            text-indent: 2em;
+            margin: 0 0 5px 0;
+            line-height: 1.5;
+        }
+        
+        /* ========== 顶部下拉菜单导航样式 ========== */
+        /* 导航栏容器 */
+        #top-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            z-index: 9000;
+        }
+
+        /* 导航内容容器 */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* 导航品牌 */
+        .nav-brand {
+            padding: 5px 0;
+            margin-right: 15px;
+        }
+
+        .nav-brand a {
+            color: #fffdf0;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .nav-brand a:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 导航菜单 */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 导航项 */
+        .nav-item {
+            position: relative;
+        }
+
+        /* 导航链接 */
+        .nav-link {
+            display: block;
+            padding: 12px 20px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9100;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-item {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 8px 12px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .dropdown-link:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 按钮容器 */
+        #buttons-container {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 20;
+        }
+        
+        /* 返回按钮 */
+        #back-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        #back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        #back-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* 下一步按钮 */
+        #next-page-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        #next-page-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        #next-page-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .chart-container {
+                height: 400px;
+            }
+            
+            .card, .culture-section {
+                padding: 15px;
+            }
+        }
+        
+        /* ========== 鼠标跟随效果样式 ========== */
+        /* 基础样式 */
+        * {
+            cursor: none;
+        }
+
+        /* 鼠标跟随容器 */
+        #mouse-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: visible;
+        }
+
+        /* 鼠标小圆点 */
+        #mouse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        /* 鼠标圆圈 */
+        #mouse-circle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+        
+        /* ========== 顶部下拉菜单导航样式 ========== */
+        /* 导航栏容器 */
+        #top-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            z-index: 9000;
+        }
+
+        /* 导航内容容器 */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* 导航品牌 */
+        .nav-brand {
+            padding: 5px 0;
+            margin-right: 15px;
+        }
+
+        .nav-brand a {
+            color: #fffdf0;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .nav-brand a:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 导航菜单 */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 导航项 */
+        .nav-item {
+            position: relative;
+        }
+
+        /* 导航链接 */
+        .nav-link {
+            display: block;
+            padding: 12px 20px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9100;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-item {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 8px 12px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .dropdown-link:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* ========== 悬浮球样式 ========== */
+        .floating-ball {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-image: url('agent/悬浮球图片.webp');
+            background-size: cover;
+            background-position: center;
+            cursor: grab;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                0 6px 20px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            z-index: 9998;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            transition: box-shadow 0.3s ease;
+            left: 15px;
+            top: 15px;
+        }
+        
+        .floating-ball:active {
+            cursor: grabbing;
+        }
+        
+        .floating-ball:hover {
+            box-shadow: 
+                0 6px 16px rgba(0, 0, 0, 0.35),
+                0 8px 25px rgba(0, 0, 0, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        .floating-ball.dragging {
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.4),
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* AI聊天弹窗原生光标样式 */
+        #ai-chat-modal,
+        #ai-chat-modal * {
+            cursor: default !important;
+        }
+        
+        #ai-chat-modal button,
+        #ai-chat-modal input,
+        #ai-chat-modal a {
+            cursor: pointer !important;
+        }
+        
+        #ai-chat-modal input[type="text"] {
+            cursor: text !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 鼠标跟随元素 -->
+    <div id="mouse-follower">
+        <div id="mouse-dot"></div>
+        <div id="mouse-circle"></div>
+    </div>
+    
+    <!-- 悬浮球 -->
+    <div class="floating-ball" id="floatingBall"></div>
+    
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <nav id="top-nav-guide" style="position:absolute;top:0;left:0;width:100%;background:transparent;z-index:9000;">
+            <div class="nav-container">
+                <!-- 标识 -->
+                <div class="nav-brand">
+                    <a href="index.html">国风筑韵</a>
+                </div>
+                
+                <!-- 导航菜单 -->
+                <ul class="nav-menu">
+                    <!-- 首页 -->
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">首页</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="操作指南.html" class="dropdown-link">操作指南</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 互动探索 -->
+                    <li class="nav-item">
+                        <a href="抽卡页面.html" class="nav-link">互动探索</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="游戏地图页面.html" class="dropdown-link">古建筑探索</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 数据可视化 -->
+                    <li class="nav-item">
+                        <a href="数据可视页面.html" class="nav-link">数据可视化</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
+                            <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 建筑基因 -->
+                    <li class="nav-item">
+                        <a href="古建筑泛介绍.html" class="nav-link">建筑基因</a>
+                    </li>
+                    
+                    <!-- 地图点位 -->
+                    <li class="nav-item">
+                        <a href="地图点位.html" class="nav-link">地图点位</a>
+                    </li>
+                    
+                    <!-- 古今对比 -->
+                    <li class="nav-item">
+                        <a href="古今对比.html" class="nav-link">古今对比</a>
+                        <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=6" class="dropdown-link">当代延续</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- 周边文创 -->
+                    <li class="nav-item">
+                        <a href="周边文创.html" class="nav-link">周边文创</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- 上部分（空） -->
+        <div class="top-section">
+        </div>
+        
+        <!-- 下部分（图表区域） -->
+        <div class="chart-section">
+
+            
+            <!-- 热力图 -->
+            <div id="heatmapChart" class="chart-container active"></div>
+            <div class="chart-frame"></div>
+            <div class="chart-text">
+                <h3>文化重心迁徙下，<br>中国建筑的千年风格与文脉回响</h3>
+                <p>唐宋至现代，中国文化重心从北方黄河流域南移、向东部集聚的轨迹，在建筑风格演进中清晰可循。唐代北方文化占比 68%，长安大明宫 "雄阔大气" 的宫殿规制、洛阳城 "中轴对称" 的规整里坊，以夯土与木构彰显帝国气象；西部大雁塔的楼阁式造型、佛光寺的斗拱形制，留存着早期建筑的古朴厚重。</p>
+                <p>北宋后南方占比跃升至 72%，苏州拙政园 "虽由人作，宛自天开" 的山水园林风格，闽粤古厝 "精巧繁复" 的榫卯工艺、景德镇古窑址 "实用质朴" 的窑作肌理，让地域建筑风格各具韵味。元明清 "东南独大" 格局稳固，浙江乌镇民居 "临水而建" 的水乡格调、福建土楼 "围合聚族" 的夯土形制、江苏周庄 "小桥流水" 的街巷肌理，皆是文化繁荣的鲜活注脚。</p>
+                <p>现代东部以 72% 综合占比成绝对核心，北京故宫 "修旧如旧" 的古建活化、上海石库门 "中西合璧" 的海派风格、苏州平江路 "古今交融" 的风貌延续；南方广东陈家祠 "雕梁画栋" 的岭南特色、湖南岳麓书院 "典雅庄重" 的书院规制，传承中焕发新生。这些建筑风格的迭代，既是文化迁徙的见证，更是千年文脉的鲜活载体。</p>
+            </div>
+            
+            <!-- 柱状图 -->
+            <div id="barChart" class="chart-container"></div>
+            <div class="chart-frame"></div>
+            <div class="chart-text">
+                <h3>历史建筑认定总量趋势</h3>
+                <p>据央广网、央视网等权威媒体及住建部门官方发布，我国历史建筑认定总量稳步攀升：2021 年 9 月 4.27 万处，2022 年 9 月 5.95 万处，2023 年 10 月 6.35 万处，2024 年 8 月 6.72 万处，2025 年 10 月达 6.89 万处。</p>
+                <p>历史建筑是维系民众集体记忆、塑造城市独特标识的重要社会载体，其认定数量的持续增长，印证了我国历史文化遗产保护工作力度不断加大、保护体系日趋完善，更凸显出其深厚社会价值。</p>
+                <p>这一数据走势，体现出我国将历史建筑保护融入城乡发展全局，在守护城市精神根脉、凝聚社会文化共识、丰富公共文化生活上的扎实实践，为城乡高质量发展注入了持久的人文动力，让历史建筑成为滋养社会精神、赋能民生发展的重要支撑。</p>
+            </div>
+            
+            <!-- 极坐标堆叠图 -->
+            <div id="polarChart" class="chart-container"></div>
+            <div class="chart-frame"></div>
+            <div class="chart-text">
+                <h3>八大传统民居：<br>国保省保名录中的文化传承印记</h3>
+                <p>我国八大传统民居作为地域建筑的核心代表，其国家级/省级文物保护单位数量的背后，是对千年营造技艺与民俗文脉的珍视与守护。北京四合院以 7 处国保、46 处市级文保，留存着北方合院 "中轴对称、尊卑有序" 的规制；苏州园林坐拥 9 处国保、13 处省保，将 "山水写意" 的造园哲学推向极致。</p>
+                <p>徽派民居的马头墙最具规模，15 处国保与 220 处省保遍布皖南，白墙黛瓦间尽显 "内敛雅致" 的地域格调；山西大院以 9 处国保、22 处省保，见证晋商文化与北方院落的雄浑交融。福建土楼 3 处国保、53 处省保的 "围合聚族" 形制，广东镬耳墙 8 处国保、18 处省保的 "镬耳高昂" 风貌，川渝吊脚楼 4 处国保、41 处省保的 "依山傍水" 巧思，上海石库门 3 处国保、23 处省保的 "中西合璧" 特色，各具韵味。</p>
+                <p>这些分级保护的民居建筑，既是不可移动的文化遗产，更是地域风格的鲜活载体，国保省保名录的精准统计，为传统建筑的活态传承筑牢了坚实根基。</p>
+            </div>
+            
+            <!-- 像素图 -->
+            <div id="pixelChart" class="chart-container"></div>
+            <div class="chart-frame"></div>
+            <div class="chart-text">
+                <h3>传统村落保护的<br>数据变迁与实践成效</h3>
+                <p>据光明日报、住建部等权威渠道数据显示，我国传统村落保护历经 "危机应对 — 系统推进 — 全面焕新" 的转型，以精准举措筑牢文化根基。2010-2012 年，传统村落年消失率高达 11.1%，日均 3.0 个村落消亡，徽派马头墙、福建土楼、川渝吊脚楼等特色建筑面临存续危机。</p>
+                <p>此后，立法保障、名录认定、专项修缮等举措密集落地：国家级传统村落名录动态更新锁定保护对象，"修旧如旧" 原则守护建筑原真性，资金补贴与技术扶持覆盖核心修缮工程，文旅融合与活化利用实现 "保护 — 传承" 良性循环。多重举措下，颓势彻底扭转：2020-2024 年，年消失率降至不足 0.1%，日均消失量不足 0.02 个；国家级传统村落核心建筑修缮比例从 2012 年的不足 10%，稳步攀升至 2016 年 60%、2020 年 72%，2024 年达 96%。</p>
+                <p>从立法护航到技术赋能，从资金支持到活化利用，是我国对文化遗产的珍视，让传统村落既留住了建筑肌理，更延续了民俗文脉与乡愁记忆。</p>
+            </div>
+            
+            <!-- 建筑数字化落地量图表区域 -->
+        <div class="digital-chart-section">
+            <!-- 建筑数字化落地量图表 -->
+            <div id="digitalChart" class="chart-container"></div>
+            <div class="chart-frame"></div>
+            
+            <!-- 第五张图表文案卡片 -->
+            <div class="chart-text">
+                <h3>数字化创新落地成果</h3>
+                <p>据中国新闻网、新华网、人民网等权威媒体及住建部、国家数据局官方发布信息显示，国内重点城市依托数字化技术推进历史建筑保护利用创新落地，各城市结合地域建筑特色形成差异化实践成果：</p>
+                
+                <p><strong>广州</strong>：完成 815 处历史建筑三维数字化测绘建档，黄埔区同步实现 19 处历史建筑智能监控覆盖</p>
+                
+                <p><strong>苏州</strong>：聚焦古建筑数字孪生建设，完成 14 处古建筑三维模型搭建并汇聚 438 处文控保单位数字化信息</p>
+                
+                <p><strong>哈尔滨</strong>：推进历史文化建筑数字孪生规模化采集，已完成 581 栋建筑数据采集工作，同步获取 2mm 高精度点云数据累计 13312GB</p>
+                
+                <p><strong>西安</strong>：针对古建筑结构安全搭建智能监测体系，在城墙区域布设 3000 个监测点位、1300 个智能终端，实现古建筑健康数据实时捕捉与可视化管控</p>
+                
+                <p>各试点城市数字化创新实践，为全国历史建筑保护利用提供了技术落地与模式探索的典型示范。</p>
+            </div>
+        </div>
+        
+        <!-- 视频展示区域 -->
+        <div class="digital-chart-section">
+            <!-- 视频容器 -->
+            <div id="videoContainer" class="chart-container">
+                <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;">
+                    <!-- 视频标题 -->
+                    <h3 id="videoTopTitle" style="color: white; text-align: center; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">2026.03.20 焦点访谈 | 修缮乱象</h3>
+                    
+                    <!-- 视频播放器 -->
+                    <video id="videoPlayer" width="90%" height="400" controls style="background-color: black; z-index: 10; position: relative; outline: none;">
+                        <source src="古今对比_焦点访谈.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
+                    
+                    <!-- 视频切换按钮 -->
+                    <div style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);">
+                        <button id="prevVideoBtn" style="background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer;">←</button>
+                    </div>
+                    <div style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">
+                        <button id="nextVideoBtn" style="background: rgba(0, 0, 0, 0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer;">→</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-frame"></div>
+            
+            <!-- 视频文案卡片 -->
+            <div id="videoText" class="chart-text">
+                <h3>古建修缮视频集</h3>
+                <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; transition: all 0.3s ease;">
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在当代城市更新与文旅开发不断推进的背景下，古建筑修缮逐渐从单纯的技术问题，演变为涉及文化认知与价值判断的复杂议题。该视频通过多起典型案例，揭示了当前部分地区在古建修缮过程中存在的突出问题——以"修复"为名进行"重建"，甚至出现拆除原有结构、仿造新建筑的现象，使得原本承载历史信息的真实遗存被人为替代。这类"过度修缮"不仅破坏了文物本体，也在无形中削弱了古建筑作为历史见证的文化价值。</p>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">报道进一步强调，古建筑保护应遵循"最小干预、不改变原状"的基本原则，即在确保结构安全的前提下，尽可能保留原有材料、工艺与空间形态。这一理念体现了从"视觉更新"向"真实性保护"的转变，也反映出我国文物保护观念正逐步与国际通行标准接轨。与此同时，视频还指出当前监管机制与专业能力仍存在不足，一些工程在审批、施工及验收环节缺乏科学评估，导致修缮行为偏离保护初衷。</p>
+                    <p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">整体来看，该视频不仅呈现了古建筑修缮中的现实乱象，更通过问题的揭示，引出对"什么才是真正的保护"的深层思考，为古建筑在现代语境下的合理延续提供了重要的价值参照。</p>
+                </div>
+            </div>
+        </div>
+            
+            <!-- 切换按钮 -->
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn">← 上一个</button>
+                <button class="nav-btn" id="nextBtn">下一个 →</button>
+            </div>
+        </div>
+    </div>
+    
+    
+            <div class="nav-item" onclick="switchChart(1)">历史建筑总量</div>
+            <div class="nav-item" onclick="switchChart(2)">保护单位数量</div>
+            <div class="nav-item" onclick="switchChart(3)">消失与保护</div>
+            <div class="nav-item" onclick="switchChart(4)">数字创新落地</div>
+        </div>
+    </div>
+    
+    <!-- 按钮容器 -->
+    <div id="buttons-container">
+        <button id="back-btn" onclick="window.location.href='地图点位.html'">返回</button>
+    </div>
+    
+    <!-- 下一步按钮 -->
+    <div style="position: absolute; bottom: 20px; right: 20px; z-index: 20;">
+        <button id="next-page-btn" onclick="window.location.href='周边文创.html'">下一步</button>
+    </div>
+    
+    <script>
+        // ========== 鼠标跟随效果脚本 ==========
+        (function() {
+            const mouseFollower = document.getElementById('mouse-follower');
+            const mouseDot = document.getElementById('mouse-dot');
+            const mouseCircle = document.getElementById('mouse-circle');
+            
+            if (mouseFollower && mouseDot && mouseCircle) {
+                let mouseX = 0;
+                let mouseY = 0;
+                let circleX = 0;
+                let circleY = 0;
+                
+                // 鼠标移动事件
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    
+                    // 直接更新小圆点位置
+                    mouseDot.style.left = mouseX + 'px';
+                    mouseDot.style.top = mouseY + 'px';
+                });
+                
+                // 动画循环，实现圆圈追逐圆点
+                function animate() {
+                    // 计算圆圈到圆点的距离
+                    const dx = mouseX - circleX;
+                    const dy = mouseY - circleY;
+                    
+                    // 平滑追逐效果
+                    circleX += dx * 0.1;
+                    circleY += dy * 0.1;
+                    
+                    // 更新圆圈位置
+                    mouseCircle.style.left = circleX + 'px';
+                    mouseCircle.style.top = circleY + 'px';
+                    
+                    // 继续动画
+                    requestAnimationFrame(animate);
+                }
+                
+                // 鼠标点击事件
+                document.addEventListener('click', () => {
+                    mouseCircle.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    setTimeout(() => {
+                        mouseCircle.style.transform = 'translate(-50%, -50%) scale(1)';
+                    }, 150);
+                });
+                
+                // 启动动画
+                animate();
+            }
+        })();
+        
+        // 处理URL参数，切换到对应的图表
+        function handleUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const chartParam = urlParams.get('chart');
+            if (chartParam) {
+                const chartIndex = parseInt(chartParam) - 1;
+                if (chartIndex >= 0 && chartIndex < 6) {
+                    setTimeout(() => {
+                        switchChart(chartIndex);
+                    }, 100);
+                }
+            }
+        }
+        
+        // 初始化热力图
+        let heatmapChart = echarts.init(document.getElementById('heatmapChart'));
+        
+        // 热力图数据
+        const heatmapOption = {
+            backgroundColor: 'transparent',
+            title: {
+                text: '中国文化重心值热力图',
+                left: 'center',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 22
+                }
+            },
+            tooltip: {
+                position: 'top'
+            },
+            legend: {
+                data: ['唐宋', '元明', '清代', '现代'],
+                top: 30,
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 16
+                },
+                selectedMode: 'single',
+                selected: {
+                    '唐宋': true,
+                    '元明': false,
+                    '清代': false,
+                    '现代': false
+                }
+            },
+            grid: {
+                height: '50%',
+                top: '15%'
+            },
+            xAxis: {
+                type: 'category',
+                data: ['东', '南', '西', '北'],
+                splitArea: {
+                    show: true
+                },
+                axisLabel: {
+                    color: '#fff',
+                    fontSize: 16
+                }
+            },
+            yAxis: {
+                type: 'category',
+                data: ['东', '南', '西', '北'],
+                splitArea: {
+                    show: true
+                },
+                axisLabel: {
+                    color: '#fff',
+                    fontSize: 16
+                }
+            },
+            visualMap: {
+                min: 0,
+                max: 100,
+                calculable: true,
+                orient: 'horizontal',
+                left: 'center',
+                bottom: '10%',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 14
+                },
+                inRange: {
+                    color: ['rgba(255, 215, 0, 0.6)', 'rgba(139, 0, 0, 0.9)']
+                }
+            },
+            series: [
+                {
+                    name: '唐宋',
+                    type: 'heatmap',
+                    data: [ 
+                      [0, 0, 86], [0, 1, 92], [0, 2, 18], [0, 3, 42],
+                      [1, 0, 92], [1, 1, 95], [1, 2, 12], [1, 3, 38],
+                      [2, 0, 18], [2, 1, 12], [2, 2, 36], [2, 3, 25], 
+                      [3, 0, 42], [3, 1, 38], [3, 2, 25], [3, 3, 68] 
+                    ],
+                    label: {
+                        show: true,
+                        color: '#fff',
+                        fontSize: 16
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                },
+                {
+                    name: '元明',
+                    type: 'heatmap',
+                    data: [
+                      [0, 0, 100], [0, 1, 100], [0, 2, 56], [0, 3, 52],
+                      [1, 0, 100], [1, 1, 100], [1, 2, 56], [1, 3, 52],
+                      [2, 0, 56], [2, 1, 56], [2, 2, 11], [2, 3, 7],
+                      [3, 0, 52], [3, 1, 52], [3, 2, 7], [3, 3, 0]
+                    ],
+                    label: {
+                        show: true,
+                        color: '#fff',
+                        fontSize: 16
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                },
+                {
+                    name: '清代',
+                    type: 'heatmap',
+                    data: [
+                  [0, 0, 100], [0, 1, 98], [0, 2, 50], [0, 3, 61],
+                  [1, 0, 98], [1, 1, 97], [1, 2, 48], [1, 3, 59],
+                  [2, 0, 50], [2, 1, 48], [2, 2, 0], [2, 3, 11],
+                  [3, 0, 61], [3, 1, 59],[3, 2, 11], [3, 3, 22]
+                ],
+                // 现代文化重心热力图最终版（东0-南1-西2-北3，仅正西[2,2]为0，交叉区辐射赋值）
+
+                    label: {
+                        show: true,
+                        color: '#fff',
+                        fontSize: 16
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                },
+                {
+                    name: '现代',
+                    type: 'heatmap',
+                    data: [ 
+                      [0, 0, 100], [0, 1, 95], [0, 2, 50], [0, 3, 78], 
+                      [1, 0, 95], [1, 1, 34], [1, 2, 17], [1, 3, 45], 
+                      [2, 0, 50], [2, 1, 17], [2, 2, 0], [2, 3, 28], 
+                      [3, 0, 78], [3, 1, 45], [3, 2, 28], [3, 3, 55] 
+],
+                    label: {
+                        show: true,
+                        color: '#fff',
+                        fontSize: 16
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '91%',
+                    style: {
+                        text: '* 数据参考于《中国文化地理》《唐宋诗歌版图的空间分布与位移》、《历史时期中国文化重心的演变和风俗区域特色》、\n《基于唐宋文人足迹集聚性分析的中心文化城市变迁》、《中国历代文学家之地理分布 》、《清朝进士题名录》、\n国家统计局、教育部、《中国省域居民文化消费时空特征及影响因素分析》等，为估算计算值',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 15,
+                        textAlign: 'center'
+                    }
+                },
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '75%',
+                    style: {
+                        text: 'tips:点击朝代旁小框可以切换年代数据',
+                        fill: '#fff',
+                        fontSize: 12,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
+            ]
+        };
+        
+        // 渲染图表
+        heatmapChart.setOption(heatmapOption);
+        
+        // 初始化极坐标堆叠图
+        let polarChart = echarts.init(document.getElementById('polarChart'));
+        
+        // 添加图例点击事件监听器
+        polarChart.on('legendselectchanged', function(params) {
+            // 创建新的选中状态对象
+            const newSelected = {};
+            let maxValue = 250; 
+            if (params.name === '国家级') {
+                if (params.selected['国家级']) {
+                    // 如果点击并选中了国家级，只选中国家级
+                    newSelected['国家级'] = true;
+                    newSelected['省级'] = false;
+                    maxValue = 20;
+                } else {
+                    // 如果点击并取消了国家级，保持省级的当前状态
+                    newSelected['国家级'] = false;
+                    newSelected['省级'] = params.selected['省级'];
+                    if (params.selected['省级']) {
+                        maxValue = 250; 
+                    }
+                }
+            } else if (params.name === '省级') {
+                if (params.selected['省级']) {
+                    
+                    newSelected['国家级'] = false;
+                    newSelected['省级'] = true;
+                    maxValue = 250; 
+                } else {
+                    // 如果点击并取消了省级，保持国家级的当前状态
+                    newSelected['国家级'] = params.selected['国家级'];
+                    newSelected['省级'] = false;
+                    if (params.selected['国家级']) {
+                        maxValue = 20; 
+                    }
+                }
+            }
+            
+            // 使用setOption更新图例状态和半径轴最大值
+            polarChart.setOption({
+                legend: {
+                    selected: newSelected
+                },
+                radiusAxis: {
+                    max: maxValue
+                }
+            });
+        });
+        
+// 柱状图数据
+        const barOption = {
+            backgroundColor: 'transparent',
+            title: {
+                text: '全国历史建筑总量数据',
+                left: 'center',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 22
+                }
+            },
+            animation: true,
+            animationDuration: 2000,
+            animationEasing: 'linear',
+            animationDelay: function(idx) {
+                return idx * 150; // 从左到右依次动画
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: function(params) {
+                    return params[0].name + '<br/>' + params[0].marker + '总量: ' + params[0].value + '万处';
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                top: '20%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: ['2021年', '2022年', '2023年', '2024年', '2025年'],
+                axisLabel: {
+                    color: '#fff',
+                    fontSize: 14
+                }
+            },
+            yAxis: {
+                type: 'value',
+                name: '数量（万处）',
+                nameTextStyle: {
+                    color: '#fff',
+                    fontSize: 16,
+                    padding: [0, 0, 0, 40]
+                },
+                axisLabel: {
+                    color: '#fff',
+                    fontSize: 14
+                }
+            },
+            series: [{
+                name: '历史建筑总量',
+                type: 'bar',
+                data: [4.27, 5.95, 6.35, 6.72, 6.89],
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(255, 38, 38, 0.9)' },
+                        { offset: 1, color: 'rgba(255, 204, 127, 0.9)' }
+                    ]),
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)',
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 5,
+                    opacity: 0.9
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(255, 38, 38, 1)' },
+                            { offset: 1, color: 'rgba(255, 204, 127, 1)' }
+                        ]),
+                        shadowBlur: 15,
+                        shadowColor: 'rgba(0, 0, 0, 0.4)',
+                        shadowOffsetX: 3,
+                        shadowOffsetY: 8
+                    }
+                },
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#fff',
+                    fontSize: 14,
+                    formatter: '{c}万处'
+                },
+                animationDelay: function(idx) {
+                    return idx * 100; // 从左到右依次动画
+                }
+            }, {
+                name: '总量趋势',
+                type: 'line',
+                data: [4.27, 5.95, 6.35, 6.72, 6.89],
+                smooth: true,
+                lineStyle: {
+                    color: '#fff',
+                    width: 3
+                },
+                itemStyle: {
+                    color: '#fff',
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                symbol: 'circle',
+                symbolSize: 8,
+                animation: true,
+                animationDuration: 2000,
+                animationEasing: 'easeOutCubic',
+                animationDelay: 0,
+                animationDurationUpdate: 1000,
+                animationType: 'path',
+                // 添加线条的路径动画效果
+                lineStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 1,
+                        y2: 0,
+                        colorStops: [{
+                            offset: 0, color: 'rgba(255, 255, 255, 0.3)'
+                        }, {
+                            offset: 1, color: 'rgba(255, 255, 255, 1)'
+                        }]
+                    },
+                    width: 5,
+                    shadowColor: 'rgba(255, 255, 255, 0.5)',
+                    shadowBlur: 10,
+                    shadowOffsetY: 5
+                },
+                // 为标记点添加动画效果
+                symbol: 'circle',
+                symbolSize: function(dataIndex) {
+                    return 8 + dataIndex * 0.5; // 点的大小略有变化
+                },
+                // 点的动画效果
+                itemStyle: {
+                    color: function(params) {
+                        return new echarts.graphic.RadialGradient(0.5, 0.5, 0.5, [
+                            { offset: 0, color: 'rgba(255, 255, 255, 1)' },
+                            { offset: 1, color: 'rgba(255, 165, 0, 0.8)' }
+                        ]);
+                    },
+                    borderColor: '#fff',
+                    borderWidth: 2,
+                    shadowColor: 'rgba(255, 255, 255, 0.8)',
+                    shadowBlur: 10
+                }
+            }],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '98%',
+                    style: {
+                        text: '* 数据来源于央广网、央视网、人民日报、中国网、江苏省住房和城乡建设厅',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
+            ]
+        };
+
+
+        // 极坐标堆叠图数据
+        const polarOption = {
+            backgroundColor: 'transparent',
+            title: {
+                text: '八大传统民居 国保/省保 数量总览',
+                left: 'center',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 20
+                }
+            },
+            animation: true,
+            animationDuration: 2500,
+            animationEasing: 'cubicOut',
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                data: ['国家级', '省级'],
+                bottom: 400,
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 14
+                },
+                selected: {
+                    '国家级': true,
+                    '省级': false
+                }
+            },
+            grid: {
+                top: '30%',
+                bottom: '35%'
+            },
+            polar: {
+                radius: ['30%', '60%']
+            },
+            angleAxis: {
+                type: 'category',
+                data: ['北京四合院', '苏州园林', '安徽马头墙', '山西大院', '福建土楼', '广东镬耳墙', '川渝吊脚楼', '上海石库门'],
+                axisLabel: {
+                    color: '#fff',
+                    fontSize: 14
+                }
+            },
+            radiusAxis: {
+                angle: 5,
+                max: 20,
+                axisLabel: {
+                    color: '#fff',
+                    fontSize: 14
+                }
+            },
+            series: [
+                {
+                    name: '国家级',
+                    type: 'bar',
+                    data: [7, 9, 15, 9, 3, 8, 4, 3],
+                    coordinateSystem: 'polar',
+                    stack: '总量',
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    itemStyle: {
+                        color: 'rgba(203, 82, 62, 0.85)',
+                        shadowColor: 'rgba(203, 82, 62, 0.5)',
+                        shadowBlur: 10,
+                        shadowOffsetY: 5
+                    },
+                    animation: true,
+                    animationDuration: 2000,
+                    animationEasing: 'cubicOut',
+                    animationDelay: function(idx) {
+                        return idx * 150;
+                    },
+                    // 确保从0开始的动画效果
+                    animationType: 'scale',
+                    animationOrigin: 'start',
+                    // 添加初始值为0的动画
+                    universalTransition: {
+                        enabled: true
+                    }
+                },
+                {
+                    name: '省级',
+                    type: 'bar',
+                    data: [46, 13, 220, 22, 53, 18, 41, 23],
+                    coordinateSystem: 'polar',
+                    stack: '总量',
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    itemStyle: {
+                        color: 'rgba(232, 133, 59, 0.85)',
+                        shadowColor: 'rgba(232, 133, 59, 0.5)',
+                        shadowBlur: 10,
+                        shadowOffsetY: 5
+                    },
+                    animation: true,
+                    animationDuration: 2000,
+                    animationEasing: 'cubicOut',
+                    animationDelay: function(idx) {
+                        return 800 + idx * 150;
+                    },
+                    // 确保从0开始的动画效果
+                    animationType: 'scale',
+                    animationOrigin: 'start',
+                    // 添加初始值为0的动画
+                    universalTransition: {
+                        enabled: true
+                    }
+                }
+            ],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '88%',
+                    style: {
+                        text: '* 数据来源于国务院、北京市文物局、江苏省人民政府、安徽省文化和旅游厅、\n山西省文物局、福建省人民政府、广东省文化和旅游厅局、\n重庆市文化和旅游发展委员会、四川省人民政府、上海市公共数据开放平台',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                },
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '85%',
+                    style: {
+                        text: 'tips:  点击国家级/省级旁边小框切换展示数据',
+                        fill: '#fff',
+                        fontSize: 12,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
+            ]
+        };
+        
+        // 初始化逐渐消失的像素图
+        let pixelChart = echarts.init(document.getElementById('pixelChart'));
+        
+        // 古村落消失与保护数据
+        const pixelOption = {
+            backgroundColor: 'transparent',
+            title: {
+                text: '古村落消失与修缮',
+                left: 'center',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 22
+                }
+            },
+            grid: {
+                left: '10%',
+                right: '10%',
+                top: '20%',
+                bottom: '25%'
+            },
+            animation: true,
+            animationDuration: 1500,
+            animationEasing: 'easeOutQuart',
+            tooltip: {
+                trigger: 'axis',
+                formatter: function(params) {
+                    let result = params[0].name + '<br/>';
+                    params.forEach(function(item) {
+                        let unit = '';
+                        if (item.seriesName === '年消失率' || item.seriesName === '核心建筑修缮比例') {
+                            unit = '%';
+                        } else if (item.seriesName === '日均消失数量') {
+                            unit = '个';
+                        }
+                        result += item.marker + item.seriesName + ': ' + item.value + unit + '<br/>';
+                    });
+                    return result;
+                }
+            },
+            legend: {
+                data: ['年消失率', '日均消失数量', '核心建筑修缮比例'],
+                bottom: 50,
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 16
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: ['2010', '2012', '2016', '2020', '2024'],
+                axisLabel: {
+                    color: '#fff',
+                    fontSize: 14,
+                    rotate: 45
+                }
+            },
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '消失率 (%)',
+                    min: 0,
+                    max: 100,
+                    position: 'left',
+                    nameTextStyle: {
+                        color: '#fff',
+                        fontSize: 16
+                    },
+                    axisLabel: {
+                        formatter: '{value}%',
+                        color: '#fff',
+                        fontSize: 14
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '修缮比例 (%)',
+                    min: 0,
+                    max: 100,
+                    position: 'right',
+                    nameTextStyle: {
+                        color: '#fff',
+                        fontSize: 16
+                    },
+                    axisLabel: {
+                        formatter: '{value}%',
+                        color: '#fff',
+                        fontSize: 14
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '年消失率',
+                    type: 'line',
+                    data: [7.3, 11.1, 1.2, 0.3, 0.1],
+                    smooth: true,
+                    animation: true,
+                    animationDuration: 3000,
+                    animationEasing: 'easeOutCubic',
+                    animationDelay: 0,
+                    animationDurationUpdate: 1000,
+                    animationType: 'path',
+                    showSymbol: true,
+                    // 添加线条的路径动画效果
+                    lineStyle: {
+                        color: '#91AD70',
+                        width: 6,
+                        shadowColor: 'rgba(145, 173, 112, 0.7)',
+                        shadowBlur: 10,
+                        shadowOffsetY: 5,
+                        opacity: 1
+                    },
+                    // 添加线条的初始状态
+                    initialAnimation: true,
+                    // 添加线条绘制动画效果
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    // 为标记点添加动画效果
+                    symbol: 'circle',
+                    symbolSize: 10,
+                    // 点的动画效果
+                    itemStyle: {
+                        color: '#91AD70',
+                        borderColor: '#fff',
+                        borderWidth: 3,
+                        shadowColor: 'rgba(145, 173, 112, 0.8)',
+                        shadowBlur: 10
+                    }
+                },
+                {
+                    name: '日均消失数量',
+                    type: 'line',
+                    data: [1.6, 3.0, 0.2, 0.05, 0.02],
+                    smooth: true,
+                    animation: true,
+                    animationDuration: 3000,
+                    animationEasing: 'easeOutCubic',
+                    animationDelay: 0,
+                    animationDurationUpdate: 1000,
+                    animationType: 'path',
+                    showSymbol: true,
+                    // 添加线条的路径动画效果
+                    lineStyle: {
+                        color: '#E8853B',
+                        width: 6,
+                        shadowColor: 'rgba(232, 133, 59, 0.5)',
+                        shadowBlur: 10,
+                        shadowOffsetY: 5
+                    },
+                    // 为标记点添加动画效果
+                    symbol: 'circle',
+                    symbolSize: 10,
+                    // 点的动画效果
+                    itemStyle: {
+                        color: '#E8853B',
+                        borderColor: '#fff',
+                        borderWidth: 3,
+                        shadowColor: 'rgba(232, 133, 59, 0.8)',
+                        shadowBlur: 10
+                    }
+                },
+                {
+                    name: '核心建筑修缮比例',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [null, 10, 60, 72, 96],
+                    smooth: true,
+                    animation: true,
+                    animationDuration: 3000,
+                    animationEasing: 'easeOutCubic',
+                    animationDelay: 0,
+                    animationDurationUpdate: 1000,
+                    animationType: 'path',
+                    showSymbol: true,
+                    // 添加线条的路径动画效果
+                    lineStyle: {
+                        color: '#C64D31',
+                        width: 6,
+                        shadowColor: 'rgba(198, 77, 49, 0.5)',
+                        shadowBlur: 10,
+                        shadowOffsetY: 5
+                    },
+                    // 为标记点添加动画效果
+                    symbol: 'circle',
+                    symbolSize: 10,
+                    // 点的动画效果
+                    itemStyle: {
+                        color: '#C64D31',
+                        borderColor: '#fff',
+                        borderWidth: 3,
+                        shadowColor: 'rgba(198, 77, 49, 0.8)',
+                        shadowBlur: 10
+                    }
+                }
+            ],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '90%',
+                    style: {
+                        text: '* 数据来源于：国务院新闻办公室、 中华人民共和国住房和城乡建设部、央视网、\n央广网、中国新闻网、 中华人民共和国住房和城乡建设部、《立法保护传统村落文化迫在眉睫》、\n《中国传统村落保护调查报告（2017）》、《中国传统村落研究2024年度报告》等',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
+            ]
+        };
+
+
+        // 建筑数字化落地量图表数据
+        const digitalOption = {
+            backgroundColor: 'transparent',
+            title: {
+                text: '重点试点城市历史建筑数字化创新落地数据',
+                left: 'center',
+                top: '0%',
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 22
+                }
+            },
+            animation: true,
+            animationDuration: 2000,
+            animationEasing: 'easeOutCubic',
+            animationDelay: function(idx) {
+                return idx * 100; // 从左到右依次动画
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: function(params) {
+                    let result = params[0].name + '<br/>';
+                    
+                    // 建筑数字化落地量指标说明
+                    const buildingDesc = {
+                        '广州': '三维数字化测绘建档历史建筑',
+                        '苏州': '古建筑数字孪生建模',
+                        '哈尔滨': '数字孪生数据采集完成历史建筑',
+                        '西安': '无建筑单体数字化量，核心为监测设施'
+                    };
+                    
+                    // 配套数字化设施量指标说明
+                    const facilityDesc = {
+                        '广州': '智能监控覆盖历史建筑',
+                        '苏州': '文控保单位数字化信息建档',
+                        '哈尔滨': '高精度点云数据采集总量',
+                        '西安': '古建筑智能监测点位、古建筑智能监测终端'
+                    };
+                    
+                    // 配套数字化设施量单位
+                    const facilityUnit = {
+                        '广州': '处',
+                        '苏州': '处',
+                        '哈尔滨': 'GB',
+                        '西安': '个'
+                    };
+                    
+                    params.forEach(function(item) {
+                        if (item.seriesName === '建筑数字化落地量') {
+                            if (item.value !== null) {
+                                result += item.marker + buildingDesc[item.name] + ': ' + item.value + '处/栋<br/>';
+                            } else {
+                                result += item.marker + buildingDesc[item.name] + ': -<br/>';
+                            }
+                        } else if (item.seriesName === '配套数字化设施量') {
+                            result += item.marker + facilityDesc[item.name] + ': ' + item.value + facilityUnit[item.name] + '<br/>';
+                        }
+                    });
+                    
+                    return result;
+                }
+            },
+            grid: {
+                left: '8%',
+                right: '8%',
+                bottom: '15%',
+                top: '25%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: ['广州', '苏州', '哈尔滨', '西安'],
+                axisLabel: {
+                    color: '#fff',
+                    fontSize: 18
+                }
+            },
+            yAxis: {
+                type: 'log',
+                name: '数量',
+                nameTextStyle: {
+                    color: '#fff',
+                    fontSize: 16
+                },
+                // 设置自定义刻度
+                axisTick: {
+                    alignWithLabel: true
+                },
+                // 设置自定义刻度间隔
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                // 设置刻度范围
+                min: 1,
+                max: 15000,
+                // 自定义刻度标签
+                axisLabel: {
+                    color: '#fff',
+                    fontSize: 16,
+                    formatter: function(value) {
+                        if (value === 1) return '0';
+                        if (value === 10) return '10';
+                        if (value === 100) return '100';
+                        if (value === 500) return '500';
+                        if (value === 1000) return '1k';
+                        if (value === 5000) return '5k';
+                        if (value === 10000) return '10k';
+                        if (value === 15000) return '15k';
+                        return '';
+                    }
+                }
+            },
+            series: [{
+                name: '建筑数字化落地量',
+                type: 'bar',
+                data: [815, 14, 581, null],
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(255, 38, 38, 0.9)' },
+                        { offset: 1, color: 'rgba(255, 204, 127, 0.9)' }
+                    ]),
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)',
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 5,
+                    opacity: 0.9
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(255, 38, 38, 1)' },
+                            { offset: 1, color: 'rgba(255, 204, 127, 1)' }
+                        ]),
+                        shadowBlur: 15,
+                        shadowColor: 'rgba(0, 0, 0, 0.4)',
+                        shadowOffsetX: 3,
+                        shadowOffsetY: 8
+                    }
+                },
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#fff',
+                    fontSize: 14
+                },
+                animationDelay: function(idx) {
+                    return idx * 100; // 从左到右依次动画
+                }
+            }, {
+                name: '配套数字化设施量',
+                type: 'bar',
+                data: [19, 438, 13312, 4300],
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(247, 195, 35, 0.9)' },
+                        { offset: 1, color: 'rgba(128, 184, 2, 0.9)' }
+                    ]),
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)',
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 5,
+                    opacity: 0.9
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(247, 195, 35, 1)' },
+                            { offset: 1, color: 'rgba(128, 184, 2, 1)' }
+                        ]),
+                        shadowBlur: 15,
+                        shadowColor: 'rgba(0, 0, 0, 0.4)',
+                        shadowOffsetX: 3,
+                        shadowOffsetY: 8
+                    }
+                },
+                label: {
+                    show: true,
+                    position: 'top',
+                    color: '#fff',
+                    fontSize: 14
+                },
+                animationDelay: function(idx) {
+                    return 400 + idx * 100; // 从左到右依次动画
+                }
+            }],
+            graphic: [
+                {
+                    type: 'text',
+                    left: 'center',
+                    top: '90%',
+                    style: {
+                        text: '* 数据来源于中华人民共和国住房和城乡建设部、国家数据局、人民网、新华网、南方日报、广州日报等',
+                        fill: '#fff',
+                        fontSize: 10,
+                        lineHeight: 13,
+                        textAlign: 'center'
+                    }
+                }
+            ]
+        };
+        
+        // 初始化图表实例
+        let barChart = echarts.init(document.getElementById('barChart'));
+        let digitalChart = echarts.init(document.getElementById('digitalChart'));
+        
+        // 渲染图表
+        polarChart.setOption(polarOption);
+        pixelChart.setOption(pixelOption);
+        barChart.setOption(barOption);
+        digitalChart.setOption(digitalOption);
+        
+        // 图表切换功能
+        let currentChartIndex = 0;
+        let charts = [heatmapChart, barChart, polarChart, pixelChart, digitalChart, null];
+        const chartContainers = document.querySelectorAll('.chart-container');
+        
+        // 切换到指定图表
+        function switchToChart(index) {
+            // 隐藏所有图表
+            chartContainers.forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // 显示指定图表
+            chartContainers[index].classList.add('active');
+            currentChartIndex = index;
+        }
+        
+        // 为图表添加透明度动画效果
+        function addOpacityAnimation(chart, option) {
+            // 先设置所有元素为透明
+            if (option.series) {
+                option.series.forEach(series => {
+                    if (series.type === 'line') {
+                        series.lineStyle = series.lineStyle || {};
+                        series.lineStyle.opacity = 0;
+                        series.itemStyle = series.itemStyle || {};
+                        series.itemStyle.opacity = 0;
+                    } else if (series.type === 'bar') {
+                        series.itemStyle = series.itemStyle || {};
+                        series.itemStyle.opacity = 0;
+                    }
+                });
+            }
+            
+            // 设置图表选项
+            chart.setOption(option);
+            
+            // 逐渐增加透明度
+            let opacity = 0;
+            const interval = setInterval(() => {
+                opacity += 0.1;
+                if (opacity >= 1) {
+                    opacity = 1;
+                    clearInterval(interval);
+                }
+                
+                // 更新透明度
+                const updateOption = {
+                    series: option.series.map(series => {
+                        if (series.type === 'line') {
+                            return {
+                                lineStyle: {
+                                    opacity: opacity
+                                },
+                                itemStyle: {
+                                    opacity: opacity
+                                }
+                            };
+                        } else if (series.type === 'bar') {
+                            return {
+                                itemStyle: {
+                                    opacity: opacity
+                                }
+                            };
+                        }
+                        return {};
+                    })
+                };
+                chart.setOption(updateOption);
+            }, 50);
+        }
+        
+        // 切换图表函数
+        function switchChart(index) {
+            // 隐藏所有图表
+            chartContainers.forEach((container, i) => {
+                container.classList.remove('active');
+            });
+            
+            // 更新当前索引
+            currentChartIndex = index;
+            
+            // 先显示图表容器，再触发动画
+            chartContainers[index].classList.add('active');
+            
+            // 触发当前图表的动画
+            if (index === 0) { // 热力图索引
+                heatmapChart.clear();
+                setTimeout(() => {
+                    addOpacityAnimation(heatmapChart, heatmapOption);
+                    // 调整图表大小
+                    setTimeout(() => {
+                        heatmapChart.resize();
+                    }, 200);
+                }, 100);
+            } else if (index === 1) { // 柱状图索引
+                barChart.clear();
+                setTimeout(() => {
+                    addOpacityAnimation(barChart, barOption);
+                    // 调整图表大小
+                    setTimeout(() => {
+                        barChart.resize();
+                    }, 200);
+                }, 100);
+            } else if (index === 2) { // 堆叠图索引
+                polarChart.clear();
+                setTimeout(() => {
+                    addOpacityAnimation(polarChart, polarOption);
+                    // 调整图表大小
+                    setTimeout(() => {
+                        polarChart.resize();
+                    }, 200);
+                }, 100);
+            } else if (index === 3) { // 折线图索引
+                pixelChart.clear();
+                setTimeout(() => {
+                    addOpacityAnimation(pixelChart, pixelOption);
+                    // 调整图表大小
+                    setTimeout(() => {
+                        pixelChart.resize();
+                    }, 200);
+                }, 100);
+            } else if (index === 4) { // 建筑数字化落地量图表索引
+                digitalChart.clear();
+                setTimeout(() => {
+                    addOpacityAnimation(digitalChart, digitalOption);
+                    // 调整图表大小
+                    setTimeout(() => {
+                        digitalChart.resize();
+                    }, 200);
+                }, 100);
+            } else if (index === 5) { // 视频展示索引
+                // 视频部分不需要ECharts图表，直接显示
+            }
+        }
+        
+        // 绑定左右按钮事件
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            let newIndex = currentChartIndex - 1;
+            if (newIndex < 0) {
+                newIndex = charts.length - 1;
+            }
+            switchChart(newIndex);
+        });
+        
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            let newIndex = currentChartIndex + 1;
+            if (newIndex >= charts.length) {
+                newIndex = 0;
+            }
+            switchChart(newIndex);
+        });
+        
+        // 绑定键盘事件
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                let newIndex = currentChartIndex - 1;
+                if (newIndex < 0) {
+                    newIndex = charts.length - 1;
+                }
+                switchChart(newIndex);
+            } else if (e.key === 'ArrowRight') {
+                let newIndex = currentChartIndex + 1;
+                if (newIndex >= charts.length) {
+                    newIndex = 0;
+                }
+                switchChart(newIndex);
+            }
+        });
+        
+        // 响应式处理
+        window.addEventListener('resize', function() {
+            charts[currentChartIndex].resize();
+        });
+        
+        // 页面加载完成后处理URL参数
+        window.addEventListener('load', function() {
+            handleUrlParams();
+            // 设置初始视频文字内容
+            switchVideo(currentVideoIndex);
+        });
+        
+        // 视频切换功能
+        let currentVideoIndex = 0;
+        const videos = [
+            {
+                src: '古今对比_焦点访谈.mp4',
+                title: '2026.03.20 焦点访谈 | 修缮乱象',
+                cardTitle: '修缮失序：古建筑保护的现实困境',
+                content: '<p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在当代城市更新与文旅开发不断推进的背景下，古建筑修缮逐渐从单纯的技术问题，演变为涉及文化认知与价值判断的复杂议题。该视频通过多起典型案例，揭示了当前部分地区在古建修缮过程中存在的突出问题——以"修复"为名进行"重建"，甚至出现拆除原有结构、仿造新建筑的现象，使得原本承载历史信息的真实遗存被人为替代。这类"过度修缮"不仅破坏了文物本体，也在无形中削弱了古建筑作为历史见证的文化价值。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">报道进一步强调，古建筑保护应遵循"最小干预、不改变原状"的基本原则，即在确保结构安全的前提下，尽可能保留原有材料、工艺与空间形态。这一理念体现了从"视觉更新"向"真实性保护"的转变，也反映出我国文物保护观念正逐步与国际通行标准接轨。与此同时，视频还指出当前监管机制与专业能力仍存在不足，一些工程在审批、施工及验收环节缺乏科学评估，导致修缮行为偏离保护初衷。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">整体来看，该视频不仅呈现了古建筑修缮中的现实乱象，更通过问题的揭示，引出对"什么才是真正的保护"的深层思考，为古建筑在现代语境下的合理延续提供了重要的价值参照。</p>'
+            },
+            {
+                src: '古今对比_新闻直播间.mp4',
+                title: '2026.03.21 新闻直播间 | 记者调查：古建修缮莫“任性”',
+                cardTitle: '修缮失序：古建筑保护的现实困境',
+                content: '<p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在当代城市更新与文旅开发不断推进的背景下，古建筑修缮逐渐从单纯的技术问题，演变为涉及文化认知与价值判断的复杂议题。该视频通过多起典型案例，揭示了当前部分地区在古建修缮过程中存在的突出问题——以"修复"为名进行"重建"，甚至出现拆除原有结构、仿造新建筑的现象，使得原本承载历史信息的真实遗存被人为替代。这类"过度修缮"不仅破坏了文物本体，也在无形中削弱了古建筑作为历史见证的文化价值。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">报道进一步强调，古建筑保护应遵循"最小干预、不改变原状"的基本原则，即在确保结构安全的前提下，尽可能保留原有材料、工艺与空间形态。这一理念体现了从"视觉更新"向"真实性保护"的转变，也反映出我国文物保护观念正逐步与国际通行标准接轨。与此同时，视频还指出当前监管机制与专业能力仍存在不足，一些工程在审批、施工及验收环节缺乏科学评估，导致修缮行为偏离保护初衷。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">整体来看，该视频不仅呈现了古建筑修缮中的现实乱象，更通过问题的揭示，引出对"什么才是真正的保护"的深层思考，为古建筑在现代语境下的合理延续提供了重要的价值参照。</p>'
+            },
+            {
+                src: '古今对比_养心殿修复.mp4',
+                title: '2025.12.27 一问到底 | 养心殿是何格局？大修后陈列有何亮点？',
+                cardTitle: '科学守护：古建筑修复的当代路径',
+                content: '<p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">与前者所呈现的问题视角不同，养心殿修缮案例则展示了一种更为科学、系统的古建筑保护路径。作为故宫最具历史意义的核心建筑之一，养心殿历经数百年使用与环境影响，出现了木构件损坏、虫害侵蚀、湿度失衡等多种复杂病害。在此背景下，故宫启动了持续十年的"研究性保护修缮工程"，通过前期详尽的测绘记录与病害分析，为后续修复提供科学依据。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在具体实施过程中，该项目并未简单追求外观复原，而是强调对建筑本体与附属文物的整体保护。例如，对大量纸质"贴落画"的修复，需要同时应对虫害与霉菌问题；对地下古代烟道系统的重新勘察，则不仅揭示了历史营造智慧，也为改善室内环境提供了新的思路。更值得关注的是，现代技术手段被有机融入传统修缮之中，如三维扫描、数字建模与3D打印等技术的应用，在提升修复效率的同时，也为后续研究与展示积累了完整的数据资料。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">此外，"数字养心殿"的建设，使这一历史空间突破了物理限制，以虚拟方式向公众开放，实现了从"保护实体"到"拓展体验"的转变。这不仅延续了古建筑的文化生命，也标志着传统遗产在数字时代中的再生路径。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">通过这一案例可以看到，古建筑保护正在从经验性修补，转向以科学研究为基础的系统工程；从单一修缮行为，拓展为涵盖展示、传播与再利用的综合实践。这种转变，正是古建筑在现代社会中实现持续发展的关键所在。</p>'
+            },
+            {
+                src: '古今对比_养心殿大修.mp4',
+                title: '2025.12.27 一问到底 | 何为"研究性保护修复"？包含哪些工作？',
+                cardTitle: '科学守护：古建筑修复的当代路径',
+                content: '<p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">与前者所呈现的问题视角不同，养心殿修缮案例则展示了一种更为科学、系统的古建筑保护路径。作为故宫最具历史意义的核心建筑之一，养心殿历经数百年使用与环境影响，出现了木构件损坏、虫害侵蚀、湿度失衡等多种复杂病害。在此背景下，故宫启动了持续十年的"研究性保护修缮工程"，通过前期详尽的测绘记录与病害分析，为后续修复提供科学依据。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">在具体实施过程中，该项目并未简单追求外观复原，而是强调对建筑本体与附属文物的整体保护。例如，对大量纸质"贴落画"的修复，需要同时应对虫害与霉菌问题；对地下古代烟道系统的重新勘察，则不仅揭示了历史营造智慧，也为改善室内环境提供了新的思路。更值得关注的是，现代技术手段被有机融入传统修缮之中，如三维扫描、数字建模与3D打印等技术的应用，在提升修复效率的同时，也为后续研究与展示积累了完整的数据资料。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">此外，"数字养心殿"的建设，使这一历史空间突破了物理限制，以虚拟方式向公众开放，实现了从"保护实体"到"拓展体验"的转变。这不仅延续了古建筑的文化生命，也标志着传统遗产在数字时代中的再生路径。</p><p style="font-size: 16px; line-height: 1.5; margin-bottom: 10px;">通过这一案例可以看到，古建筑保护正在从经验性修补，转向以科学研究为基础的系统工程；从单一修缮行为，拓展为涵盖展示、传播与再利用的综合实践。这种转变，正是古建筑在现代社会中实现持续发展的关键所在。</p>'
+            }
+        ];
+        
+        // 切换视频函数
+        function switchVideo(index) {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoTopTitle = document.getElementById('videoTopTitle');
+            const videoContent = document.querySelector('#videoText > div');
+            const videoCardTitle = document.querySelector('#videoText > h3');
+            
+            // 更新视频源
+            videoPlayer.src = videos[index].src;
+            videoPlayer.controls = true;
+            videoPlayer.load();
+            
+            // 更新标题
+            videoTopTitle.textContent = videos[index].title;
+            
+            // 更新卡片标题
+            videoCardTitle.textContent = videos[index].cardTitle;
+            
+            // 更新文字内容
+            videoContent.innerHTML = videos[index].content;
+            
+            // 更新当前视频索引
+            currentVideoIndex = index;
+        }
+        
+        // 绑定视频切换按钮事件
+        document.getElementById('prevVideoBtn').addEventListener('click', function() {
+            let newIndex = currentVideoIndex - 1;
+            if (newIndex < 0) {
+                newIndex = videos.length - 1;
+            }
+            switchVideo(newIndex);
+        });
+        
+        document.getElementById('nextVideoBtn').addEventListener('click', function() {
+            let newIndex = currentVideoIndex + 1;
+            if (newIndex >= videos.length) {
+                newIndex = 0;
+            }
+            switchVideo(newIndex);
+        });
+        
+        // ========== 悬浮球脚本 ==========
+        class FloatingBall {
+            constructor(element, options = {}) {
+                this.element = element;
+                this.isDragging = false;
+                this.currentX = 0;
+                this.currentY = 0;
+                this.initialX = 0;
+                this.initialY = 0;
+                this.elementWidth = 60;
+                this.elementHeight = 60;
+                
+                this.initPosition();
+                this.bindEvents();
+                this.onClickCallback = options.onClick || (() => {});
+            }
+            
+            initPosition() {
+                const rect = this.element.getBoundingClientRect();
+                this.currentX = rect.left;
+                this.currentY = rect.top;
+                this.elementWidth = rect.width;
+                this.elementHeight = rect.height;
+            }
+            
+            bindEvents() {
+                this.element.addEventListener('mousedown', (e) => this.startDrag(e));
+                document.addEventListener('mousemove', (e) => this.drag(e));
+                document.addEventListener('mouseup', (e) => this.endDrag(e));
+                
+                this.element.addEventListener('touchstart', (e) => this.startDrag(e), { passive: false });
+                document.addEventListener('touchmove', (e) => this.drag(e), { passive: false });
+                document.addEventListener('touchend', (e) => this.endDrag(e));
+                
+                this.element.addEventListener('click', (e) => this.handleClick(e));
+            }
+            
+            startDrag(e) {
+                e.preventDefault();
+                
+                if (e.type === 'touchstart') {
+                    this.initialX = e.touches[0].clientX - this.currentX;
+                    this.initialY = e.touches[0].clientY - this.currentY;
+                } else {
+                    this.initialX = e.clientX - this.currentX;
+                    this.initialY = e.clientY - this.currentY;
+                }
+                
+                this.isDragging = false;
+                this.element.classList.add('dragging');
+                this.dragStartTime = Date.now();
+            }
+            
+            drag(e) {
+                if (this.initialX === 0 && this.initialY === 0) return;
+                
+                if (e.type === 'touchmove') {
+                    e.preventDefault();
+                }
+                
+                let newX, newY;
+                
+                if (e.type === 'touchmove') {
+                    newX = e.touches[0].clientX - this.initialX;
+                    newY = e.touches[0].clientY - this.initialY;
+                } else {
+                    newX = e.clientX - this.initialX;
+                    newY = e.clientY - this.initialY;
+                }
+                
+                if (!this.isDragging) {
+                    const dx = Math.abs(newX - this.currentX);
+                    const dy = Math.abs(newY - this.currentY);
+                    if (dx > 5 || dy > 5) {
+                        this.isDragging = true;
+                    }
+                }
+                
+                const maxX = window.innerWidth - this.elementWidth;
+                const maxY = window.innerHeight - this.elementHeight;
+                
+                newX = Math.max(0, Math.min(newX, maxX));
+                newY = Math.max(0, Math.min(newY, maxY));
+                
+                this.currentX = newX;
+                this.currentY = newY;
+                
+                this.element.style.right = 'auto';
+                this.element.style.bottom = 'auto';
+                this.element.style.left = `${this.currentX}px`;
+                this.element.style.top = `${this.currentY}px`;
+            }
+            
+            endDrag(e) {
+                this.element.classList.remove('dragging');
+                this.initialX = 0;
+                this.initialY = 0;
+            }
+            
+            handleClick(e) {
+                const dragDuration = Date.now() - this.dragStartTime;
+                
+                if (dragDuration > 200) {
+                    return;
+                }
+                
+                console.log('悬浮球被点击');
+                
+                if (typeof this.onClickCallback === 'function') {
+                    this.onClickCallback(e);
+                }
+            }
+            
+            setOnClick(callback) {
+                this.onClickCallback = callback;
+            }
+            
+            moveTo(x, y) {
+                const maxX = window.innerWidth - this.elementWidth;
+                const maxY = window.innerHeight - this.elementHeight;
+                
+                this.currentX = Math.max(0, Math.min(x, maxX));
+                this.currentY = Math.max(0, Math.min(y, maxY));
+                
+                this.element.style.right = 'auto';
+                this.element.style.bottom = 'auto';
+                this.element.style.left = `${this.currentX}px`;
+                this.element.style.top = `${this.currentY}px`;
+            }
+            
+            resetPosition() {
+                this.moveTo(15, 15);
+            }
+        }
+        
+        // 初始化悬浮球
+        const floatingBallElement = document.getElementById('floatingBall');
+        if (floatingBallElement) {
+            const ball = new FloatingBall(floatingBallElement, {
+                onClick: () => {
+                    console.log('显示AI聊天弹窗');
+                    showAIChatModal();
+                }
+            });
+            
+            window.floatingBall = ball;
+        }
+        
+        // ========== AI聊天弹窗 ==========
+        function showAIChatModal() {
+            // 如果弹窗已存在，直接显示
+            let modal = document.getElementById('ai-chat-modal');
+            if (modal) {
+                modal.style.display = 'block';
+                return;
+            }
+            
+            // 创建弹窗容器
+            modal = document.createElement('div');
+            modal.id = 'ai-chat-modal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 1527px;
+                height: 740px;
+                background: rgba(0, 0, 0, 0.7);
+                display: block;
+                z-index: 10001;
+            `;
+            
+            // 创建聊天容器（固定在页面中间）
+            const chatWrapper = document.createElement('div');
+            chatWrapper.style.cssText = `
+                position: absolute;
+                left: 313px;
+                top: 120px;
+                width: 900px;
+                height: 500px;
+            `;
+            
+            // 创建聊天内容
+            chatWrapper.innerHTML = `
+                <div style="
+                    width: 100%;
+                    height: 100%;
+                    background-image: url('agent/ai背景.png');
+                    background-size: cover;
+                    background-position: center;
+                    border-radius: 8px;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    position: relative;
+                    cursor: default;
+                ">
+                    <!-- 关闭按钮 -->
+                    <button id="close-ai-chat" style="
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        width: 32px;
+                        height: 32px;
+                        background: rgba(139, 37, 0, 0.8);
+                        color: #fcf9f2;
+                        border: 1px solid #8b2500;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 18px;
+                        font-weight: bold;
+                        z-index: 10;
+                    ">×</button>
+                    
+                    <!-- 标题 -->
+                    <div style="
+                        padding: 20px;
+                        text-align: center;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                    ">
+                        <h1 style="
+                            font-size: 32px;
+                            font-weight: normal;
+                            color: #fffdf0;
+                            letter-spacing: 6px;
+                            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                            margin: 0;
+                        ">古建灵犀</h1>
+                    </div>
+                    
+                    <!-- 消息区域 -->
+                    <div id="ai-chat-messages" style="
+                        flex: 1;
+                        overflow-y: auto;
+                        padding: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                    ">
+                        <div style="
+                            max-width: 70%;
+                            padding: 10px 15px;
+                            line-height: 1.7;
+                            font-size: 14px;
+                            border-radius: 4px;
+                            background: rgba(252, 249, 242, 0.7);
+                            color: #1a1a1a;
+                            align-self: flex-start;
+                        ">欢迎来到「古建灵犀」智能向导，我是您的古建筑知识顾问，愿为君一二陈之。</div>
+                    </div>
+                    
+                    <!-- 输入区域 -->
+                    <div style="
+                        padding: 16px 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.08);
+                    ">
+                        <div style="flex: 1; position: relative;">
+                            <input type="text" id="ai-chat-input" placeholder="请输入您想了解的古建筑知识..." style="
+                                width: 100%;
+                                padding: 12px 0;
+                                background: transparent;
+                                border: none;
+                                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                                font-size: 14px;
+                                font-family: 'SimSun', '宋体', 'KaiTi', '楷体', serif;
+                                color: #222222;
+                                outline: none;
+                            ">
+                        </div>
+                        <button id="ai-chat-send" style="
+                            width: 42px;
+                            height: 42px;
+                            background: #8b2500;
+                            color: #fcf9f2;
+                            border: 1px solid #8b2500;
+                            border-radius: 6px 2px 8px 3px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-family: 'KaiTi', 'STKaiti', 'LiSu', serif;
+                            font-weight: bold;
+                            letter-spacing: 2px;
+                        ">落墨</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.appendChild(chatWrapper);
+            document.body.appendChild(modal);
+            
+            // 绑定事件
+            document.getElementById('close-ai-chat').addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // 给弹窗区域禁用鼠标跟随效果
+            modal.style.pointerEvents = 'auto';
+            chatWrapper.style.pointerEvents = 'auto';
+            
+            // 给聊天区域启用原生光标（使用!important效果）
+            const chatContent = chatWrapper.querySelector('div');
+            chatContent.style.setProperty('cursor', 'default', 'important');
+            chatContent.style.setProperty('pointer-events', 'auto', 'important');
+            chatContent.style.pointerEvents = 'auto';
+            chatContent.style.cursor = 'default';
+            
+            // 设置所有子元素的光标
+            const allElements = chatContent.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.style.setProperty('cursor', 'default', 'important');
+            });
+            
+            // 关闭按钮需要pointer光标
+            const closeBtn = document.getElementById('close-ai-chat');
+            closeBtn.style.cursor = 'pointer';
+            
+            const sendBtn = document.getElementById('ai-chat-send');
+            sendBtn.style.cursor = 'pointer';
+            
+            const inputField = document.getElementById('ai-chat-input');
+            inputField.style.cursor = 'text';
+            
+            // 给整个弹窗内容添加原生光标覆盖
+            chatWrapper.style.zIndex = '10002';
+            
+            // 强制在modal上禁用鼠标跟随
+            modal.addEventListener('mouseenter', function() {
+                document.body.style.setProperty('cursor', 'auto', 'important');
+                document.querySelectorAll('*').forEach(el => {
+                    if (el.closest('#ai-chat-modal')) {
+                        el.style.setProperty('cursor', 'default', 'important');
+                    }
+                });
+            });
+            
+            // 隐藏页面的鼠标跟随效果
+            const mouseFollower = document.getElementById('mouse-follower');
+            if (mouseFollower) {
+                mouseFollower.style.display = 'none';
+            }
+            
+            // 弹窗关闭时恢复鼠标跟随效果
+            document.getElementById('close-ai-chat').addEventListener('click', function() {
+                modal.style.display = 'none';
+                if (mouseFollower) {
+                    mouseFollower.style.display = 'block';
+                }
+            });
+            
+            // 点击背景关闭弹窗时也恢复
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    if (mouseFollower) {
+                        mouseFollower.style.display = 'block';
+                    }
+                }
+            });
+            
+            // 聊天功能
+            // ========== API 配置 ==========
+            const API_BASE_URL = 'https://gujian-project.zeabur.app';
+            // ==============================
+
+            // 对话历史数组（存储上下文）
+            let conversationHistory = [];
+            
+            // 古风思考提示语
+            const thinkingMessages = [
+                "先生所言极是，容我思量一二...",
+                "此问颇有意趣，待我细述...",
+                "古建之道，博大精深，且听我慢慢道来...",
+                "此乃我中华建筑之精髓，容我详解...",
+                "先生/姑娘所问甚好，容我一二陈之..."
+            ];
+            
+            function getRandomThinking() {
+                return thinkingMessages[Math.floor(Math.random() * thinkingMessages.length)];
+            }
+            
+            // 管理对话历史
+            function addToHistory(role, content) {
+                conversationHistory.push({ role: role, content: content });
+                if (conversationHistory.length > 10) {
+                    conversationHistory.shift();
+                    conversationHistory.shift();
+                }
+            }
+            
+            function scrollToBottom() {
+                const messages = document.getElementById('ai-chat-messages');
+                messages.scrollTop = messages.scrollHeight;
+            }
+            
+            function createUserMessage(text) {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(30, 30, 30, 0.7);
+                    color: #ffffff;
+                    align-self: flex-end;
+                `;
+                msg.textContent = text;
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            function createAIMessage(text) {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(252, 249, 242, 0.7);
+                    color: #1a1a1a;
+                    align-self: flex-start;
+                `;
+                msg.innerHTML = text;
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            function createThinkingMessage() {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(252, 249, 242, 0.7);
+                    color: #1a1a1a;
+                    align-self: flex-start;
+                `;
+                msg.textContent = getRandomThinking();
+                msg.id = 'thinking-msg';
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            function removeThinkingMessage() {
+                const thinkingMsg = document.getElementById('thinking-msg');
+                if (thinkingMsg) {
+                    thinkingMsg.remove();
+                }
+            }
+            
+            function sendMessage() {
+                const input = document.getElementById('ai-chat-input');
+                const sendBtn = document.getElementById('ai-chat-send');
+                const text = input.value.trim();
+                if (text === '') return;
+                
+                input.disabled = true;
+                sendBtn.disabled = true;
+                
+                addToHistory('user', text);
+                createUserMessage(text);
+                input.value = '';
+                
+                createThinkingMessage();
+                
+                fetch(API_BASE_URL + '/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: conversationHistory
+                    })
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    removeThinkingMessage();
+                    addToHistory('assistant', data.reply);
+                    createAIMessage(data.reply);
+                })
+                .catch(function(error) {
+                    removeThinkingMessage();
+                    createAIMessage('网络连接似乎有些问题，还望先生/姑娘稍后再试。');
+                })
+                .finally(function() {
+                    input.disabled = false;
+                    sendBtn.disabled = false;
+                    input.focus();
+                });
+            }
+            
+            document.getElementById('ai-chat-send').addEventListener('click', sendMessage);
+            document.getElementById('ai-chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 自动聚焦
+            document.getElementById('ai-chat-input').focus();
+        }
+    </script>
+</body>
+</html>
