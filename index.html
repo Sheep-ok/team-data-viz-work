@@ -1066,56 +1066,17 @@
                 el.style.setProperty('cursor', 'default', 'important');
             });
             
-            // 关闭按钮需要pointer光标
-            const closeBtn = document.getElementById('close-ai-chat');
-            closeBtn.style.cursor = 'pointer';
+            // ========== API 配置 ==========
+            // 本地开发时使用：http://localhost:3000
+            // 部署到 Zeabur 后改为：https://你的项目名.zeabur.app
+            const API_BASE_URL = 'https://gujian-project.zeabur.app';
+            // ==============================
+
+            // 对话历史数组（存储上下文）
+            let conversationHistory = [];
             
-            const sendBtn = document.getElementById('ai-chat-send');
-            sendBtn.style.cursor = 'pointer';
-            
-            const inputField = document.getElementById('ai-chat-input');
-            inputField.style.cursor = 'text';
-            
-            // 给整个弹窗内容添加原生光标覆盖
-            chatWrapper.style.zIndex = '10002';
-            
-            // 强制在modal上禁用鼠标跟随
-            modal.addEventListener('mouseenter', function() {
-                document.body.style.setProperty('cursor', 'auto', 'important');
-                document.querySelectorAll('*').forEach(el => {
-                    if (el.closest('#ai-chat-modal')) {
-                        el.style.setProperty('cursor', 'default', 'important');
-                    }
-                });
-            });
-            
-            // 隐藏首页的鼠标跟随效果
-            const mouseFollower = document.getElementById('mouse-follower');
-            if (mouseFollower) {
-                mouseFollower.style.display = 'none';
-            }
-            
-            // 弹窗关闭时恢复鼠标跟随效果
-            const originalClose = document.getElementById('close-ai-chat').onclick;
-            document.getElementById('close-ai-chat').addEventListener('click', function() {
-                modal.style.display = 'none';
-                if (mouseFollower) {
-                    mouseFollower.style.display = 'block';
-                }
-            });
-            
-            // 点击背景关闭弹窗时也恢复
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                    if (mouseFollower) {
-                        mouseFollower.style.display = 'block';
-                    }
-                }
-            });
-            
-            // 聊天功能
-            const aiReplies = [
+            // 古风思考提示语（AI思考时显示）
+            const thinkingMessages = [
                 "先生所言极是，容我思量一二...",
                 "此问颇有意趣，待我细述...",
                 "古建之道，博大精深，且听我慢慢道来...",
@@ -1123,8 +1084,19 @@
                 "先生/姑娘所问甚好，容我一二陈之..."
             ];
             
-            function getRandomReply() {
-                return aiReplies[Math.floor(Math.random() * aiReplies.length)];
+            function getRandomThinking() {
+                return thinkingMessages[Math.floor(Math.random() * thinkingMessages.length)];
+            }
+            
+            // 管理对话历史：超过10条删除最早的2条
+            function addToHistory(role, content) {
+                conversationHistory.push({ role: role, content: content });
+                
+                // 如果超过10条，删除最早的2条
+                if (conversationHistory.length > 10) {
+                    conversationHistory.shift();
+                    conversationHistory.shift();
+                }
             }
             
             function scrollToBottom() {
@@ -1163,33 +1135,140 @@
                     color: #1a1a1a;
                     align-self: flex-start;
                 `;
-                msg.textContent = text;
+                msg.innerHTML = text;  // 使用 innerHTML 支持 HTML 加粗标签
                 messages.appendChild(msg);
                 scrollToBottom();
             }
             
+            // 创建思考中的消息（带删除标记）
+            function createThinkingMessage() {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(252, 249, 242, 0.7);
+                    color: #1a1a1a;
+                    align-self: flex-start;
+                `;
+                msg.textContent = getRandomThinking();
+                msg.id = 'thinking-msg';
+                messages.appendChild(msg);
+                scrollToBottom();
+                return msg;
+            }
+            
+            // 删除思考中的消息
+            function removeThinkingMessage() {
+                const thinkingMsg = document.getElementById('thinking-msg');
+                if (thinkingMsg) {
+                    thinkingMsg.remove();
+                }
+            }
+            
             function sendMessage() {
                 const input = document.getElementById('ai-chat-input');
+                const sendBtn = document.getElementById('ai-chat-send');
                 const text = input.value.trim();
                 if (text === '') return;
                 
+                // 禁用输入和按钮
+                input.disabled = true;
+                sendBtn.disabled = true;
+                
+                // 添加到对话历史
+                addToHistory('user', text);
+                
+                // 显示用户消息
                 createUserMessage(text);
                 input.value = '';
                 
-                setTimeout(function() {
-                    createAIMessage(getRandomReply());
-                }, 1000);
+                // 显示思考中提示
+                createThinkingMessage();
+                
+                // 调用后端 API
+                fetch(API_BASE_URL + '/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: conversationHistory
+                    })
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    // 删除思考中提示
+                    removeThinkingMessage();
+                    
+                    // 添加 AI 回复到历史
+                    addToHistory('assistant', data.reply);
+                    
+                    // 显示 AI 回复
+                    createAIMessage(data.reply);
+                })
+                .catch(function(error) {
+                    // 删除思考中提示
+                    removeThinkingMessage();
+                    
+                    // 显示错误消息
+                    createAIMessage('网络连接似乎有些问题，还望先生/姑娘稍后再试。');
+                    console.error('API 调用错误:', error);
+                })
+                .finally(function() {
+                    // 恢复输入和按钮
+                    input.disabled = false;
+                    sendBtn.disabled = false;
+                    input.focus();
+                });
             }
             
-            document.getElementById('ai-chat-send').addEventListener('click', sendMessage);
-            document.getElementById('ai-chat-input').addEventListener('keypress', function(e) {
+            // 获取关闭按钮和其他元素
+            const closeBtn = document.getElementById('close-ai-chat');
+            const sendBtn = document.getElementById('ai-chat-send');
+            const inputField = document.getElementById('ai-chat-input');
+            const mouseFollower = document.getElementById('mouse-follower');
+            
+            // 设置关闭按钮样式和事件
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.addEventListener('click', function() {
+                conversationHistory = [];
+                modal.style.display = 'none';
+                if (mouseFollower) {
+                    mouseFollower.style.display = 'block';
+                }
+            });
+            
+            // 设置发送按钮样式
+            sendBtn.style.cursor = 'pointer';
+            sendBtn.addEventListener('click', sendMessage);
+            
+            // 设置输入框样式
+            inputField.style.cursor = 'text';
+            inputField.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     sendMessage();
                 }
             });
             
+            // 点击背景关闭弹窗时也清空历史
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    conversationHistory = [];
+                    modal.style.display = 'none';
+                    if (mouseFollower) {
+                        mouseFollower.style.display = 'block';
+                    }
+                }
+            });
+            
             // 自动聚焦
-            document.getElementById('ai-chat-input').focus();
+            inputField.focus();
         }
     </script>
 </body>
