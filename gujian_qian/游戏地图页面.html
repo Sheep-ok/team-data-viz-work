@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=1527, user-scalable=yes">
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 1527px;
+        height: 740px;
+        overflow: hidden; 
+      }
+    </style>
+    <meta charset="UTF-8">
+    <title>国风筑韵-九州</title>
+    <style>
+        body {
+            background: url('游戏地图.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            font-family: "SimSun", "宋体", serif;
+        }
+
+        * {
+            font-family: inherit;
+        }
+        
+        /* ========== 顶部下拉菜单导航样式 ========== */
+        /* 导航栏容器 */
+        #top-nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            z-index: 9000;
+        }
+
+        /* 导航内容容器 */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* 导航品牌 */
+        .nav-brand {
+            padding: 5px 0;
+            margin-right: 15px;
+        }
+
+        .nav-brand a {
+            color: #fffdf0;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .nav-brand a:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        /* 导航菜单 */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 导航项 */
+        .nav-item {
+            position: relative;
+        }
+
+        /* 导航链接 */
+        .nav-link {
+            display: block;
+            padding: 12px 20px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            background: transparent;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(101, 67, 33, 0.5);
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9100;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-item {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 8px 12px;
+            color: #fffdf0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .dropdown-link:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #fff;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* 建筑物容器 */
+        .building-container {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .building-container:hover {
+            transform: scale(1.1);
+        }
+        
+        /* 气泡样式 */
+        .bubble {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(128, 128, 128, 0.6);
+            border: 2px solid #fff;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .bubble.active {
+            background: rgba(255, 204, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
+        }
+        
+        /* 闪烁动画 */
+        .bubble.pulse {
+            animation: pulse 1s infinite;
+        }
+        
+        /* 固定橙红色状态 */
+        .bubble.orange {
+            background: rgba(255, 69, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.8);
+        }
+        
+        @keyframes pulse {
+            0% {
+                background: rgba(255, 107, 107, 0.6);
+                box-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                background: rgba(255, 69, 0, 0.8);
+                box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+                transform: translateX(-50%) scale(1.2);
+            }
+            100% {
+                background: rgba(255, 107, 107, 0.6);
+                box-shadow: 0 0 10px rgba(255, 107, 107, 0.6);
+                transform: translateX(-50%) scale(1);
+            }
+        }
+        
+        /* 建筑物标签 */
+        .building-label {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .building-container:hover .building-label {
+            opacity: 1;
+        }
+        
+        /* 触发框样式 */
+        .trigger-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid #654321;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(101, 67, 33, 0.5);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .trigger-box.active {
+            display: flex;
+        }
+        
+        .trigger-box-header {
+            padding: 20px;
+            border-bottom: 1px solid #654321;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .trigger-box-title {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+        }
+        
+        .trigger-box-content-intro {
+            color: #fff;
+            font-size: 16px;
+            line-height: 1.4;
+            margin: 10px 0 0 0;
+            padding: 0;
+            width: 100%;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(101, 67, 33, 0.2);
+        }
+        
+        .close-btn:hover {
+            color: #654321;
+            background: rgba(101, 67, 33, 0.4);
+        }
+        
+        .trigger-box-content {
+            flex: 1;
+            padding: 20px;
+            color: #fff;
+            overflow-y: auto;
+            display: flex;
+            gap: 20px;
+            position: relative;
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            border-radius: 10px;
+            z-index: 1002;
+        }
+        
+        .info-close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .info-close-btn:hover {
+            color: #ff0;
+        }
+        
+        .info-panel.active {
+            display: flex;
+        }
+        
+        .info-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .info-content {
+            font-size: 14px;
+            color: #ddd;
+            line-height: 1.4;
+        }
+        
+        .image-container {
+            position: relative;
+            flex: 1;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .building-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .magnifier {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            background-repeat: no-repeat;
+            background-size: 500% 500%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: none;
+            pointer-events: none;
+        }
+        
+        .exploration-points {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .exploration-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff0;
+            border-radius: 50%;
+            background: rgba(255, 255, 0, 0.3);
+            pointer-events: auto;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .exploration-point:hover {
+            transform: scale(1.2);
+            background: rgba(255, 255, 0, 0.6);
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+        }
+        
+        .trigger-box-footer {
+            padding: 20px;
+            border-top: 1px solid #654321;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .complete-btn {
+            padding: 10px 20px;
+            background: #654321;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .complete-btn:hover {
+            background: #8B4513;
+            box-shadow: 0 0 15px rgba(101, 67, 33, 0.5);
+        }
+        
+        .data-btn {
+            padding: 10px 20px;
+            background: #654321;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .data-btn:hover {
+            background: #8B4513;
+            box-shadow: 0 0 15px rgba(101, 67, 33, 0.5);
+        }
+        
+        /* 遮罩层 */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1527px;
+            height: 740px;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        /* 任务进度指示器 */
+        .progress-indicator {
+            position: absolute;
+            top: 80px;
+            right: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid #654321;
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(101, 67, 33, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-indicator .progress-text {
+            white-space: nowrap;
+        }
+        
+        .progress-indicator span {
+            color: #fff;
+            margin: 0 5px;
+        }
+        
+        /* 下载成就图按钮 */
+        .download-achievement-btn {
+            padding: 5px 15px;
+            background: #654321;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: none;
+        }
+        
+        .download-achievement-btn.show {
+            display: inline-block;
+        }
+        
+        .download-achievement-btn:hover {
+            background: #8B4513;
+            box-shadow: 0 0 10px rgba(101, 67, 33, 0.8);
+        }
+        
+        /* 成功图片弹窗 */
+        .success-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 3px solid #654321;
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 50px rgba(101, 67, 33, 0.8);
+            max-width: 60vw;
+            max-height: 60vh;
+        }
+        
+        .success-modal.active {
+            display: flex;
+        }
+        
+        /* ========== 鼠标跟随效果样式 ========== */
+        /* 基础样式 */
+        * {
+            cursor: none;
+        }
+
+        /* 鼠标跟随容器 */
+        #mouse-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: visible;
+        }
+
+        /* 鼠标小圆点 */
+        #mouse-dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        /* 鼠标圆圈 */
+        #mouse-circle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 1px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+        
+        /* ========== 悬浮球样式 ========== */
+        .floating-ball {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-image: url('agent/悬浮球图片.webp');
+            background-size: cover;
+            background-position: center;
+            cursor: grab;
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.3),
+                0 6px 20px rgba(0, 0, 0, 0.2),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            z-index: 9998;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            transition: box-shadow 0.3s ease;
+            left: 15px;
+            top: 15px;
+        }
+        
+        .floating-ball:active {
+            cursor: grabbing;
+        }
+        
+        .floating-ball:hover {
+            box-shadow: 
+                0 6px 16px rgba(0, 0, 0, 0.35),
+                0 8px 25px rgba(0, 0, 0, 0.25),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        .floating-ball.dragging {
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.4),
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* AI聊天弹窗原生光标样式 */
+        #ai-chat-modal,
+        #ai-chat-modal * {
+            cursor: default !important;
+        }
+        
+        #ai-chat-modal button,
+        #ai-chat-modal input,
+        #ai-chat-modal a {
+            cursor: pointer !important;
+        }
+        
+        #ai-chat-modal input[type="text"] {
+            cursor: text !important;
+        }
+        
+        .success-image {
+            max-width: 55vw;
+            max-height: 55vh;
+            border-radius: 10px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .download-btn {
+            position: absolute;
+            top: 10px;
+            right: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #654321;
+            border: 1px solid #654321;
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .download-btn:hover {
+            background: rgba(101, 67, 33, 0.3);
+            box-shadow: 0 0 15px rgba(101, 67, 33, 0.8);
+        }
+        
+        .close-success-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(101, 67, 33, 0.2);
+        }
+        
+        .close-success-btn:hover {
+            color: #654321;
+            background: rgba(101, 67, 33, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- 鼠标跟随元素 -->
+    <div id="mouse-follower">
+        <div id="mouse-dot"></div>
+        <div id="mouse-circle"></div>
+    </div>
+    
+    <!-- 悬浮球 -->
+    <div class="floating-ball" id="floatingBall"></div>
+    
+    <!-- 顶部导航栏 -->
+    <nav id="top-nav">
+        <div class="nav-container">
+            <!-- 标识 -->
+            <div class="nav-brand">
+                <a href="index.html">国风筑韵</a>
+            </div>
+            
+            <!-- 导航菜单 -->
+            <ul class="nav-menu">
+                <!-- 首页 -->
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">首页</a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a href="操作指南.html" class="dropdown-link">操作指南</a></li>
+                    </ul>
+                </li>
+                
+                <!-- 互动探索 -->
+                <li class="nav-item">
+                    <a href="抽卡页面.html" class="nav-link">互动探索</a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a href="游戏地图页面.html" class="dropdown-link">古建筑探索</a></li>
+                    </ul>
+                </li>
+                
+                <!-- 数据可视化 -->
+                <li class="nav-item">
+                    <a href="数据可视页面.html" class="nav-link">数据可视化</a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=0" class="dropdown-link" data-index="1">京派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=1" class="dropdown-link" data-index="2">粤派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=2" class="dropdown-link" data-index="3">徽派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=3" class="dropdown-link" data-index="4">苏派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=4" class="dropdown-link" data-index="5">晋派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=5" class="dropdown-link" data-index="6">闽派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=6" class="dropdown-link" data-index="7">海派</a></li>
+                        <li class="dropdown-item"><a href="数据可视页面.html?cardIndex=7" class="dropdown-link" data-index="8">川派</a></li>
+                    </ul>
+                </li>
+                
+                <!-- 建筑基因 -->
+                <li class="nav-item">
+                    <a href="古建筑泛介绍.html" class="nav-link">建筑基因</a>
+                </li>
+                
+                <!-- 地图点位 -->
+                <li class="nav-item">
+                    <a href="地图点位.html" class="nav-link">地图点位</a>
+                </li>
+                
+                <!-- 古今对比 -->
+                <li class="nav-item">
+                    <a href="古今对比.html" class="nav-link">古今对比</a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item"><a href="古今对比.html?chart=1" class="dropdown-link">文化重心</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=2" class="dropdown-link">古建筑总量</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=3" class="dropdown-link">保护单位</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=4" class="dropdown-link">消失与修缮</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=5" class="dropdown-link">数字创新</a></li>
+                        <li class="dropdown-item"><a href="古今对比.html?chart=6" class="dropdown-link">当代延续</a></li>
+                    </ul>
+                </li>
+                
+                <!-- 周边文创 -->
+                <li class="nav-item">
+                    <a href="周边文创.html" class="nav-link">周边文创</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- 任务进度指示器 -->
+    <div class="progress-indicator" id="progressIndicator">
+        <div class="progress-text">完成 <span id="completedCount">0</span>/<span id="totalCount">8</span></div>
+        <button id="resetProgressBtn" style="padding: 5px 15px; background: #654321; color: #fff; border: none; border-radius: 15px; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; margin-top: 5px;">清除所有已探索点</button>
+        <a href="收集成功图.jpg" class="download-achievement-btn" id="downloadAchievementBtn" download="收集成功图.jpg">下载成就图</a>
+    </div>
+    
+    <!-- 成功图片弹窗 -->
+    <div class="success-modal" id="successModal">
+        <a href="收集成功图.jpg" class="download-btn" download="收集成功图.jpg">下载</a>
+        <button class="close-success-btn" id="closeSuccessBtn">&times;</button>
+        <img src="收集成功图.jpg" alt="收集成功" class="success-image">
+    </div>
+    
+    <!-- 触发框 -->
+    <div class="trigger-box" id="triggerBox">
+        <button class="close-btn" id="closeBtn">&times;</button>
+        <div class="trigger-box-header">
+            <h3 class="trigger-box-title" id="boxTitle">建筑物详情</h3>
+            <p class="trigger-box-content-intro" id="boxContentIntro"></p>
+        </div>
+        <div class="trigger-box-content" id="boxContent">
+            <div class="image-container">
+                <img class="building-image" id="buildingImage" src="" alt="建筑物图片">
+                <div class="magnifier" id="magnifier"></div>
+                <div class="exploration-points" id="explorationPoints"></div>
+            </div>
+        </div>
+        <div class="info-panel" id="infoPanel"></div>
+        <div class="trigger-box-footer">
+            <button class="data-btn" id="dataBtn">查看数据</button>
+            <button class="complete-btn" id="completeBtn">完成任务</button>
+        </div>
+    </div>
+    
+    <!-- 建筑物点位 -->
+    <div class="building-container" data-building="北京四合院" style="top: 210px; left: 921px;">
+        <div class="bubble"></div>
+        <div class="building-label">北京四合院</div>
+    </div>
+    
+    <div class="building-container" data-building="山西大院" style="top: 300px; left: 805px;">
+        <div class="bubble"></div>
+        <div class="building-label">山西大院</div>
+    </div>
+    
+    <div class="building-container" data-building="川渝吊脚楼" style="top: 435px; left: 503px;">
+        <div class="bubble"></div>
+        <div class="building-label">川渝吊脚楼</div>
+    </div>
+    
+    <div class="building-container" data-building="苏州庭院" style="top: 405px; left: 964px;">
+        <div class="bubble"></div>
+        <div class="building-label">苏州庭院</div>
+    </div>
+    
+    <div class="building-container" data-building="安徽马头墙" style="top: 282px; left: 1005px;">
+        <div class="bubble"></div>
+        <div class="building-label">安徽马头墙</div>
+    </div>
+    
+    <div class="building-container" data-building="福建土楼" style="top: 518px; left: 1038px;">
+        <div class="bubble"></div>
+        <div class="building-label">福建土楼</div>
+    </div>
+    
+    <div class="building-container" data-building="广东镬耳墙" style="top: 565px; left: 827px;">
+        <div class="bubble"></div>
+        <div class="building-label">广东镬耳墙</div>
+    </div>
+    
+    <div class="building-container" data-building="上海石库门" style="top: 384px; left: 1130px;">
+        <div class="bubble"></div>
+        <div class="building-label">上海石库门</div>
+    </div>
+    
+    <!-- 底部按钮 -->
+    <div style="position: absolute; bottom: 20px; left: 20px; z-index: 100;">
+        <button id="back-to-draw-btn" style="padding: 10px 20px; font-size: 14px; font-weight: bold; color: #fff; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 2px solid #654321; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">返回抽卡</button>
+    </div>
+    
+    <div style="position: absolute; bottom: 20px; right: 20px; z-index: 100;">
+        <button id="go-to-data-btn" style="padding: 10px 20px; font-size: 14px; font-weight: bold; color: #fff; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 2px solid #654321; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">前往数据页面</button>
+    </div>
+    
+    <script>
+        // 获取DOM元素
+        const overlay = document.getElementById('overlay');
+        const triggerBox = document.getElementById('triggerBox');
+        const boxTitle = document.getElementById('boxTitle');
+        const boxContentIntro = document.getElementById('boxContentIntro');
+        const boxContent = document.getElementById('boxContent');
+        const closeBtn = document.getElementById('closeBtn');
+        const completeBtn = document.getElementById('completeBtn');
+        const dataBtn = document.getElementById('dataBtn');
+        const buildingContainers = document.querySelectorAll('.building-container');
+        const backToDrawBtn = document.getElementById('back-to-draw-btn');
+        const goToDataBtn = document.getElementById('go-to-data-btn');
+        const progressIndicator = document.getElementById('progressIndicator');
+        const completedCountElement = document.getElementById('completedCount');
+        const totalCountElement = document.getElementById('totalCount');
+        const successModal = document.getElementById('successModal');
+        const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+        const downloadAchievementBtn = document.getElementById('downloadAchievementBtn');
+        const resetProgressBtn = document.getElementById('resetProgressBtn');
+        
+        let currentBuilding = null;
+        
+        // 初始化总任务数
+        const totalBuildings = buildingContainers.length;
+        totalCountElement.textContent = totalBuildings;
+        
+        // 保存任务状态到本地存储
+        function saveProgress() {
+            const completedBuildings = [];
+            buildingContainers.forEach((container, index) => {
+                const bubble = container.querySelector('.bubble');
+                if (bubble.classList.contains('active')) {
+                    completedBuildings.push(container.dataset.building);
+                }
+            });
+            localStorage.setItem('completedBuildings', JSON.stringify(completedBuildings));
+        }
+        
+        // 重置所有任务
+        function resetProgress() {
+            buildingContainers.forEach(container => {
+                const bubble = container.querySelector('.bubble');
+                bubble.classList.remove('active');
+            });
+            localStorage.removeItem('completedBuildings');
+            updateProgress();
+        }
+        
+        // 从本地存储加载任务状态
+        function loadProgress() {
+            // 检查是否是通过链接跳转来的页面
+            if (document.referrer) {
+                // 是通过链接跳转，从本地存储加载进度
+                const completedBuildings = JSON.parse(localStorage.getItem('completedBuildings') || '[]');
+                buildingContainers.forEach(container => {
+                    if (completedBuildings.includes(container.dataset.building)) {
+                        const bubble = container.querySelector('.bubble');
+                        bubble.classList.add('active');
+                    }
+                });
+            } else {
+                // 是直接访问或刷新，重置所有任务
+                resetProgress();
+            }
+        }
+        
+        // 更新进度函数
+        function updateProgress() {
+            const completedBuildings = document.querySelectorAll('.bubble.active').length;
+            completedCountElement.textContent = completedBuildings;
+            
+            // 保存进度到本地存储
+            saveProgress();
+            
+            // 检查是否完成所有任务
+            if (completedBuildings === totalBuildings) {
+                // 10秒后显示成功图片弹窗
+                setTimeout(() => {
+                    // 显示成功图片弹窗
+                    successModal.classList.add('active');
+                    // 显示下载成就图按钮
+                    downloadAchievementBtn.classList.add('show');
+                }, 10000);
+            } else {
+                // 隐藏下载成就图按钮
+                downloadAchievementBtn.classList.remove('show');
+            }
+        }
+        
+        // 从本地存储加载进度
+        loadProgress();
+        // 初始化进度
+        updateProgress();
+        
+        // 检查URL参数，处理从抽卡页面跳转过来的情况
+        function checkUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cardIndex = urlParams.get('cardIndex');
+            
+            if (cardIndex !== null) {
+                // 根据cardIndex找到对应的建筑物
+                const buildingOrder = [
+                    '北京四合院', // 京派 - 索引0
+                    '广东镬耳墙', // 粤派 - 索引1
+                    '安徽马头墙', // 徽派 - 索引2
+                    '苏州庭院',   // 苏派 - 索引3
+                    '山西大院',   // 晋派 - 索引4
+                    '福建土楼',   // 闽派 - 索引5
+                    '上海石库门', // 海派 - 索引6
+                    '川渝吊脚楼'  // 川派 - 索引7
+                ];
+                
+                const buildingName = buildingOrder[parseInt(cardIndex)];
+                if (buildingName) {
+                    // 找到对应的建筑物容器
+                    const buildingContainer = document.querySelector(`[data-building="${buildingName}"]`);
+                    if (buildingContainer) {
+                        // 获取对应的气泡
+                        const bubble = buildingContainer.querySelector('.bubble');
+                        if (bubble) {
+                            // 添加闪烁动画效果
+                            bubble.classList.add('pulse');
+                            
+                            // 2秒后停止闪烁，变成固定橙红色
+                            setTimeout(() => {
+                                bubble.classList.remove('pulse');
+                                bubble.classList.add('orange');
+                            }, 2000);
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 调用检查URL参数的函数
+        checkUrlParams();
+        
+        // 建筑物数据
+        const buildingData = {
+            '北京四合院': {
+                title: '北京四合院',
+                content: '中国北方典型合院式民居，以中轴对称、院落围合为特征，承载着传统礼制与居住秩序。',
+                image: '游戏_京派.jpg',
+                explorationPoints: [
+                    {
+                        x: 50, // 相对于图片宽度的百分比
+                        y: 45, // 相对于图片高度的百分比
+                        title: '雕花门窗',
+                        content: '北京四合院的门窗多采用精美的雕花工艺，图案多为吉祥如意的象征，如牡丹、蝙蝠等，体现了中国传统建筑的装饰艺术。'
+                    },
+                    {
+                        x: 75,
+                        y: 55,
+                        title: '朱漆大门',
+                        content: '四合院的大门通常为朱红色，象征着喜庆和吉祥。门上装有门环和门钉，门钉数量和排列有严格的等级规定。'
+                    },
+                    {
+                        x: 30,
+                        y: 8,
+                        title: '灰色瓦顶',
+                        content: '四合院的屋顶多采用灰色瓦片，坡度适中，有利于排水。瓦当和滴水檐也有精美的图案装饰。'
+                    }
+                ]
+            },
+            '山西大院': {
+                title: '山西大院',
+                content: '晋商豪宅代表，高墙深院、三雕精美，布局严谨气派，彰显晋商财富与儒商文化。',
+                image: '游戏_晋派.jpg',
+                explorationPoints: [
+                    {
+                        x: 40,
+                        y: 35,
+                        title: '砖雕',
+                        content: '两侧砖柱从上到下布满雕刻，包括：上部：几何纹、回纹，寓意 “富贵不断头”。中部：凤穿牡丹或花鸟纹样，象征 “富贵吉祥”。下部：与基座石雕呼应，形成完整的装饰序列。'
+                    },
+                    {
+                        x: 60,
+                        y: 35,
+                        title: '门簪（门替）',
+                        content: '门楣下方突出的木构件，既用于固定门扇，也做装饰，图中可见4根门簪，是明清时期的典型样式。'
+                    }
+                ]
+            },
+            '川渝吊脚楼': {
+                title: '川渝吊脚楼',
+                content: '西南山地干栏式民居，底层架空、依山而建，适应潮湿地形，是川渝少数民族与山地居民的经典居所。',
+                image: '游戏_川派.jpg',
+                explorationPoints: [
+                    {
+                        x: 30,
+                        y: 18,
+                        title: '曲线翘角',
+                        content: '屋顶为歇山顶或悬山顶，屋檐向外大幅挑出，檐角微微上翘，形似飞鸟展翅，既美观又能有效遮雨护墙。'
+                    },
+                    {
+                        x: 65,
+                        y: 40,
+                        title: '小青瓦',
+                        content: '吊脚楼的屋顶多覆盖小青瓦，色泽古朴，与周围的自然环境和谐统一。'
+                    },
+                    {
+                        x: 75,
+                        y: 80,
+                        title: '挑廊',
+                        content: '楼层向外延伸的木质走廊，供晾晒、休憩，栏杆多为直棂或梳齿状。'
+                    }
+                ]
+            },
+            '苏州庭院': {
+                title: '苏州庭院',
+                content: '江南文人园林典范，以小中见大、移步换景、漏窗曲廊营造含蓄雅致的山水意境。',
+                image: '游戏_苏派.jpg',
+                explorationPoints: [
+                    {
+                        x: 30,
+                        y: 20,
+                        title: '漏窗（花窗）',
+                        content: '形制与功能：又称 "花窗""漏窗"，是江南园林的标志性符号，兼具通风采光、框景造景、私密屏障三重功能。窗洞将窗外的竹石、树木框成天然画卷，实现 "一步一景" 的视觉体验。'
+                    },
+                    {
+                        x: 80,
+                        y: 75,
+                        title: '抄手游廊（回廊）',
+                        content: '沿建筑或园林边界延伸，连接亭台楼阁，是园林中供人漫步、赏景的线性空间。且有半廊设计——一侧靠墙（或建筑），一侧面向园林，既保证行走安全，又最大化观景视野。'
+                    },
+                    {
+                        x: 60,
+                        y: 20,
+                        title: '卷棚顶',
+                        content: '曲线柔和的小青瓦屋面，檐角微微上翘，形成 "飞檐" 效果，轻盈灵动。'
+                    }
+                ]
+            },
+            '安徽马头墙': {
+                title: '安徽马头墙',
+                content: '徽派建筑标志性封火墙，阶梯式叠落形似马头，兼具防火防风与等级象征意义。',
+                image: '游戏_徽派.jpg',
+                explorationPoints: [
+                    {
+                        x: 30,
+                        y: 25,
+                        title: '马头墙',
+                        content: '马头墙是徽派建筑的标志性元素，造型如马头，具有防火和装饰的双重功能，体现了徽派建筑的独特风格。'
+                    },
+                    {
+                        x: 70,
+                        y: 40,
+                        title: '墀头（chí tóu）',
+                        content: '等级象征：马头墙的层数、高度与雕刻精细度，曾是家族地位与财富的直观体现，层数越多代表地位越高。'
+                    }
+                ]
+            },
+            '福建土楼': {
+                title: '福建土楼',
+                content: '客家聚居式巨型夯土建筑，环形封闭、聚族而居，兼具居住、防御与宗族文化功能。',
+                image: '游戏_闽派.jpg',
+                explorationPoints: [
+                    {
+                        x: 25,
+                        y: 10,
+                        title: '木构梁架',
+                        content: '穿斗式木结构：以立柱、穿枋串联成框架，不依赖大型斗拱，结构简洁、抗震性强，适合山地地形。楼层出挑：上层木构向外悬挑形成廊檐，既扩大使用空间，又为下层夯土墙遮雨，避免墙体被雨水侵蚀坍塌。'
+                    },
+                    {
+                        x: 85,
+                        y: 45,
+                        title: '夯土墙（生土墙）',
+                        content: '墙体以黄泥 + 砂石 + 稻草 / 竹筋分层夯筑而成，厚度可达 50–80cm，保温隔热、隔音效果极佳，是南方山区应对昼夜温差与多雨气候的关键。墙体内嵌石块加固，表面粗糙斑驳，局部长满青苔，体现岁月沉淀与自然共生的质感。'
+                    },
+                    {
+                        x: 50,
+                        y: 55,
+                        title: '直棂木窗',
+                        content: '样式：简洁的竖棂 + 横撑格栅，无复杂雕花，以实用为主，保证通风采光同时兼顾防盗与私密性。构造：木质窗扇以合页固定，可向内或向外开启，窗框与夯土墙紧密咬合。'
+                    }
+                ]
+            },
+            '广东镬耳墙': {
+                title: '广东镬耳墙',
+                content: '岭南广府特色民居，以锅耳状山墙为标志，通风防火，是功名与家族地位的象征。',
+                image: '游戏_粤派.jpg',
+                explorationPoints: [
+                    {
+                        x: 70,
+                        y: 8,
+                        title: '镬耳山墙',
+                        content: '镬耳造型：山墙顶部呈弧形隆起，形似铁锅的双耳，因此得名 "镬耳屋"。这种造型是广府建筑最具辨识度的符号。功能：高耸的镬耳墙可有效阻断火势蔓延，起到封火墙作用；同时能引导穿堂风，增强建筑通风，适应岭南炎热潮湿气候。等级象征：镬耳的数量与高度曾是家族功名与财富的象征，只有取得科举功名或官宦身份的家族才能建造，寓意 "独占鳌头、步步高升"。'
+                    },
+                    {
+                        x: 40,
+                        y: 60,
+                        title: '镬耳墙雕刻',
+                        content: '镬耳边缘布满高浮雕 + 透雕，图中可见双凤戏珠纹样，凤凰为岭南吉祥瑞兽，寓意 "太平盛世、家族兴旺"。周围环绕卷草纹、忍冬纹、云纹，线条流畅繁复，是广府砖雕的典型风格，工艺精湛，立体感极强。'
+                    },
+                    {
+                        x: 76,
+                        y: 53,
+                        title: '灰塑装饰',
+                        content: '屋脊与山墙交界处点缀灰塑彩塑（图中可见带彩釉的小构件），题材多为人物故事、花鸟瑞兽，色彩虽经岁月褪去，仍能看出当年的华丽。灰塑是岭南特有的工艺，以石灰、稻草、纸筋为原料，塑形后上色，耐风雨腐蚀，适合岭南湿热气候。'
+                    },
+                    {
+                        x: 20,
+                        y: 60,
+                        title: '小青瓦坡屋面',
+                        content: '采用 "仰合瓦" 铺设，瓦垄整齐，排水顺畅，适应岭南多雨天气。檐口瓦当与滴水造型规整，部分带有简单纹饰，是实用与装饰的结合。'
+                    }
+                ]
+            },
+            '上海石库门': {
+                title: '上海石库门',
+                content: '近代上海中西合璧里弄住宅，石框木门融合中式仪门与西式装饰，是海派文化的代表。',
+                image: '游戏_海派.jpg',
+                explorationPoints: [
+                    {
+                        x: 35,
+                        y: 50,
+                        title: '立柱石雕',
+                        content: '柱头：雕刻涡卷纹 + 花卉，模仿西方古典柱式（科林斯柱 / 爱奥尼柱）的装饰元素。柱身：竖向浮雕缠枝莲 / 牡丹纹，寓意 "富贵绵长"，是中式吉祥题材与西式构图的结合。'
+                    },
+                    {
+                        x: 65,
+                        y: 60,
+                        title: '石库门门头',
+                        content: '石框木门：以整块花岗岩 / 青石砌筑门框，搭配厚重的实木双开大门，是 "石库门" 名称的由来。中西合璧形制：中式内核：承袭江南民居的 "仪门" 形制，强调门第秩序。西式装饰：门楣、立柱大量运用巴洛克、洛可可风格的卷草纹、涡卷纹，是近代西风东渐的直接体现。'
+                    },
+                    {
+                        x: 35,
+                        y: 10,
+                        title: '小瓦披檐',
+                        content: '门楣上方的中式小青瓦披檐，用于遮雨护墙，是江南传统建筑的实用主义智慧。'
+                    },
+                    {
+                        x: 65,
+                        y: 5,
+                        title: '花格窗',
+                        content: '门上方的石框窗，采用几何纹 + 卷草纹铁花格栅，是西式铁艺与中式纹样的结合，兼具通风与防盗功能。'
+                    }
+                ]
+            }
+        };
+        
+        // 获取图片、放大镜和信息面板元素
+        const buildingImage = document.getElementById('buildingImage');
+        const magnifier = document.getElementById('magnifier');
+        const imageContainer = document.querySelector('.image-container');
+        const explorationPoints = document.getElementById('explorationPoints');
+        const infoPanel = document.getElementById('infoPanel');
+        
+        // 初始化探索点
+        function initExplorationPoints(buildingName) {
+            // 清空现有探索点
+            explorationPoints.innerHTML = '';
+            
+            // 隐藏信息面板
+            infoPanel.classList.remove('active');
+            
+            // 获取当前建筑物的探索点数据
+            const points = buildingData[buildingName].explorationPoints;
+            
+            // 为每个探索点创建元素
+            points.forEach(point => {
+                const pointElement = document.createElement('div');
+                pointElement.className = 'exploration-point';
+                pointElement.style.left = point.x + '%';
+                pointElement.style.top = point.y + '%';
+                pointElement.dataset.title = point.title;
+                pointElement.dataset.content = point.content;
+                
+                // 添加鼠标悬停事件 - 关闭放大镜
+                pointElement.addEventListener('mouseenter', function() {
+                    magnifier.style.display = 'none';
+                });
+                
+                // 添加鼠标离开事件 - 恢复放大镜
+                pointElement.addEventListener('mouseleave', function() {
+                    magnifier.style.display = 'block';
+                });
+                
+                // 添加点击事件 - 显示文字，探索点消失，放大镜出现
+                pointElement.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // 隐藏该探索点
+                    this.style.display = 'none';
+                    // 显示放大镜
+                    magnifier.style.display = 'block';
+                    // 显示信息面板（一直显示在下面）
+                    infoPanel.innerHTML = `
+                        <button class="info-close-btn">&times;</button>
+                        <div class="info-title">${this.dataset.title}</div>
+                        <div class="info-content">${this.dataset.content}</div>
+                    `;
+                    infoPanel.classList.add('active');
+                    
+                    // 绑定关闭按钮事件
+                    const closeBtn = infoPanel.querySelector('.info-close-btn');
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', function() {
+                            infoPanel.classList.remove('active');
+                        });
+                    }
+                });
+                
+                explorationPoints.appendChild(pointElement);
+            });
+        }
+        
+        // 为每个建筑物添加点击事件
+        buildingContainers.forEach(container => {
+            container.addEventListener('click', function() {
+                const buildingName = this.dataset.building;
+                currentBuilding = this;
+                
+                // 标记任务完成，气泡变亮
+                const bubble = this.querySelector('.bubble');
+                // 移除orange类，添加active类（黄色）
+                bubble.classList.remove('orange');
+                bubble.classList.add('active');
+                
+                // 更新进度
+                updateProgress();
+                
+                // 更新触发框内容
+                boxTitle.textContent = buildingData[buildingName].title;
+                boxContentIntro.textContent = buildingData[buildingName].content;
+                buildingImage.src = buildingData[buildingName].image;
+                
+                // 初始化探索点
+                initExplorationPoints(buildingName);
+                
+                // 显示遮罩层和触发框
+                overlay.classList.add('active');
+                triggerBox.classList.add('active');
+            });
+        });
+        
+        // 放大镜功能
+        imageContainer.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // 计算鼠标在图片上的位置
+            const imgRect = buildingImage.getBoundingClientRect();
+            const imgX = x - (imgRect.left - rect.left);
+            const imgY = y - (imgRect.top - rect.top);
+            
+            // 确保鼠标在图片范围内
+            if (imgX >= 0 && imgX <= imgRect.width && imgY >= 0 && imgY <= imgRect.height) {
+                // 显示放大镜
+                magnifier.style.display = 'block';
+                
+                // 计算放大镜位置（居中）
+                magnifier.style.left = (x - 75) + 'px';
+                magnifier.style.top = (y - 75) + 'px';
+                
+                // 计算背景图片位置（2倍放大）
+                const bgX = (imgX / imgRect.width) * 100;
+                const bgY = (imgY / imgRect.height) * 100;
+                
+                magnifier.style.backgroundImage = `url('${buildingImage.src}')`;
+                magnifier.style.backgroundPosition = `${bgX}% ${bgY}%`;
+            } else {
+                // 鼠标移出图片范围，隐藏放大镜
+                magnifier.style.display = 'none';
+            }
+        });
+        
+        // 鼠标离开容器时隐藏放大镜
+        imageContainer.addEventListener('mouseleave', function() {
+            magnifier.style.display = 'none';
+        });
+        
+        // 关闭按钮事件
+        closeBtn.addEventListener('click', function() {
+            overlay.classList.remove('active');
+            triggerBox.classList.remove('active');
+            currentBuilding = null;
+            // 清空探索点
+            explorationPoints.innerHTML = '';
+            // 隐藏信息面板
+            infoPanel.classList.remove('active');
+        });
+        
+        // 完成任务按钮事件
+        completeBtn.addEventListener('click', function() {
+            // 直接关闭触发框，因为任务已经在点击气泡时完成
+            overlay.classList.remove('active');
+            triggerBox.classList.remove('active');
+            currentBuilding = null;
+            // 清空探索点
+            explorationPoints.innerHTML = '';
+            // 隐藏信息面板
+            infoPanel.classList.remove('active');
+        });
+        
+        // 查看数据按钮事件
+        dataBtn.addEventListener('click', function() {
+            if (currentBuilding) {
+                const buildingName = currentBuilding.dataset.building;
+                // 建筑物名称到cardIndex的映射
+                const buildingToCardIndex = {
+                    '北京四合院': 0, // 京派
+                    '广东镬耳墙': 1, // 粤派
+                    '安徽马头墙': 2, // 徽派
+                    '苏州庭院': 3,   // 苏派
+                    '山西大院': 4,   // 晋派
+                    '福建土楼': 5,   // 闽派
+                    '上海石库门': 6, // 海派
+                    '川渝吊脚楼': 7  // 川派
+                };
+                
+                const cardIndex = buildingToCardIndex[buildingName];
+                if (cardIndex !== undefined) {
+                    // 跳转到对应派别的数据可视页面
+                    window.location.href = '数据可视页面.html?cardIndex=' + cardIndex;
+                }
+            }
+        });
+        
+        // 点击遮罩层关闭
+        overlay.addEventListener('click', function() {
+            overlay.classList.remove('active');
+            triggerBox.classList.remove('active');
+            currentBuilding = null;
+            // 清空探索点
+            explorationPoints.innerHTML = '';
+            // 隐藏信息面板
+            infoPanel.classList.remove('active');
+        });
+        
+        // 阻止触发框内部点击事件冒泡
+        triggerBox.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // 绑定返回抽卡按钮点击事件
+        backToDrawBtn.addEventListener('click', function() {
+            window.location.href = '抽卡页面.html';
+        });
+        
+        // 绑定前往数据页面按钮点击事件
+        goToDataBtn.addEventListener('click', function() {
+            window.location.href = '数据可视页面.html';
+        });
+        
+        // 关闭成功图片弹窗
+        closeSuccessBtn.addEventListener('click', function() {
+            successModal.classList.remove('active');
+        });
+        
+        // 清除所有已探索点按钮事件
+        resetProgressBtn.addEventListener('click', function() {
+            resetProgress();
+        });
+        
+        // ========== 鼠标跟随效果JS ==========
+        const mouseFollower = document.getElementById('mouse-follower');
+        const mouseDot = document.getElementById('mouse-dot');
+        const mouseCircle = document.getElementById('mouse-circle');
+        
+        let mouseX = 0, mouseY = 0;
+        let circleX = 0, circleY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // 更新小圆点位置（立即跟随）
+            mouseDot.style.left = mouseX + 'px';
+            mouseDot.style.top = mouseY + 'px';
+        });
+        
+        // 圆圈动画循环
+        function animateCircle() {
+            // 平滑跟随效果
+            circleX += (mouseX - circleX) * 0.15;
+            circleY += (mouseY - circleY) * 0.15;
+            
+            mouseCircle.style.left = circleX + 'px';
+            mouseCircle.style.top = circleY + 'px';
+            
+            requestAnimationFrame(animateCircle);
+        }
+        animateCircle();
+        
+        // ========== 悬浮球JS ==========
+        const floatingBall = document.getElementById('floatingBall');
+        let isDragging = false;
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+        let startX = 0;
+        let startY = 0;
+        let startTime = 0;
+        
+        // 鼠标/触摸开始
+        function onStart(e) {
+            isDragging = true;
+            floatingBall.classList.add('dragging');
+            
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            
+            dragOffsetX = clientX - floatingBall.offsetLeft;
+            dragOffsetY = clientY - floatingBall.offsetTop;
+            startX = clientX;
+            startY = clientY;
+            startTime = Date.now();
+            
+            e.preventDefault();
+        }
+        
+        // 鼠标/触摸移动
+        function onMove(e) {
+            if (!isDragging) return;
+            
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            
+            let newX = clientX - dragOffsetX;
+            let newY = clientY - dragOffsetY;
+            
+            // 边界限制
+            const maxX = window.innerWidth - 60;
+            const maxY = window.innerHeight - 60;
+            newX = Math.max(0, Math.min(newX, maxX));
+            newY = Math.max(0, Math.min(newY, maxY));
+            
+            floatingBall.style.left = newX + 'px';
+            floatingBall.style.top = newY + 'px';
+            
+            e.preventDefault();
+        }
+        
+        // 鼠标/触摸结束
+        function onEnd(e) {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            floatingBall.classList.remove('dragging');
+            
+            const clientX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX);
+            const clientY = e.clientY || (e.changedTouches && e.changedTouches[0].clientY);
+            
+            const distance = Math.sqrt(Math.pow(clientX - startX, 2) + Math.pow(clientY - startY, 2));
+            const duration = Date.now() - startTime;
+            
+            // 判断为点击（移动距离小且时间短）
+            if (distance < 10 && duration < 300) {
+                // 打开AI聊天弹窗
+                showAIChatModal();
+            }
+        }
+        
+        // 绑定鼠标事件
+        floatingBall.addEventListener('mousedown', onStart);
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+        
+        // 绑定触摸事件
+        floatingBall.addEventListener('touchstart', onStart, { passive: false });
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onEnd);
+        
+        // ========== AI聊天弹窗 ==========
+        function showAIChatModal() {
+            // 如果弹窗已存在，直接显示
+            let modal = document.getElementById('ai-chat-modal');
+            if (modal) {
+                modal.style.display = 'block';
+                return;
+            }
+            
+            // 创建弹窗容器
+            modal = document.createElement('div');
+            modal.id = 'ai-chat-modal';
+            modal.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 1527px;
+                height: 740px;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10001;
+            `;
+            
+            // 创建聊天容器（固定在页面中间）
+            const chatWrapper = document.createElement('div');
+            chatWrapper.style.cssText = `
+                width: 900px;
+                height: 500px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            `;
+            
+            // 创建聊天内容
+            chatWrapper.innerHTML = `
+                <div style="
+                    width: 100%;
+                    height: 100%;
+                    background-image: url('agent/ai背景.png');
+                    background-size: cover;
+                    background-position: center;
+                    border-radius: 8px;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    position: relative;
+                    cursor: default;
+                ">
+                    <!-- 关闭按钮 -->
+                    <button id="close-ai-chat" style="
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        width: 32px;
+                        height: 32px;
+                        background: rgba(139, 37, 0, 0.8);
+                        color: #fcf9f2;
+                        border: 1px solid #8b2500;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 18px;
+                        font-weight: bold;
+                        z-index: 10;
+                    ">×</button>
+                    
+                    <!-- 标题 -->
+                    <div style="
+                        padding: 20px;
+                        text-align: center;
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                    ">
+                        <h1 style="
+                            font-size: 32px;
+                            font-weight: normal;
+                            color: #fffdf0;
+                            letter-spacing: 6px;
+                            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                            margin: 0;
+                        ">古建灵犀</h1>
+                    </div>
+                    
+                    <!-- 消息区域 -->
+                    <div id="ai-chat-messages" style="
+                        flex: 1;
+                        overflow-y: auto;
+                        padding: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 12px;
+                    ">
+                        <div style="
+                            max-width: 70%;
+                            padding: 10px 15px;
+                            line-height: 1.7;
+                            font-size: 14px;
+                            border-radius: 4px;
+                            background: rgba(252, 249, 242, 0.7);
+                            color: #1a1a1a;
+                            align-self: flex-start;
+                        ">欢迎来到「古建灵犀」智能向导，我是您的古建筑知识顾问，愿为君一二陈之。</div>
+                    </div>
+                    
+                    <!-- 输入区域 -->
+                    <div style="
+                        padding: 16px 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        border-top: 1px solid rgba(255, 255, 255, 0.08);
+                    ">
+                        <div style="flex: 1; position: relative;">
+                            <input type="text" id="ai-chat-input" placeholder="请输入您想了解的古建筑知识..." style="
+                                width: 100%;
+                                padding: 12px 0;
+                                background: transparent;
+                                border: none;
+                                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+                                font-size: 14px;
+                                font-family: 'SimSun', '宋体', 'KaiTi', '楷体', serif;
+                                color: #222222;
+                                outline: none;
+                            ">
+                        </div>
+                        <button id="ai-chat-send" style="
+                            width: 42px;
+                            height: 42px;
+                            background: #8b2500;
+                            color: #fcf9f2;
+                            border: 1px solid #8b2500;
+                            border-radius: 6px 2px 8px 3px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-family: 'KaiTi', 'STKaiti', 'LiSu', serif;
+                            font-weight: bold;
+                            letter-spacing: 2px;
+                        ">落墨</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.appendChild(chatWrapper);
+            document.body.appendChild(modal);
+            
+            // 绑定事件
+            document.getElementById('close-ai-chat').addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // 给弹窗区域禁用鼠标跟随效果
+            modal.style.pointerEvents = 'auto';
+            chatWrapper.style.pointerEvents = 'auto';
+            
+            // 给聊天区域启用原生光标（使用!important效果）
+            const chatContent = chatWrapper.querySelector('div');
+            chatContent.style.setProperty('cursor', 'default', 'important');
+            chatContent.style.setProperty('pointer-events', 'auto', 'important');
+            chatContent.style.pointerEvents = 'auto';
+            chatContent.style.cursor = 'default';
+            
+            // 设置所有子元素的光标
+            const allElements = chatContent.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.style.setProperty('cursor', 'default', 'important');
+            });
+            
+            // 关闭按钮需要pointer光标
+            const closeBtn = document.getElementById('close-ai-chat');
+            closeBtn.style.cursor = 'pointer';
+            
+            const sendBtn = document.getElementById('ai-chat-send');
+            sendBtn.style.cursor = 'pointer';
+            
+            const inputField = document.getElementById('ai-chat-input');
+            inputField.style.cursor = 'text';
+            
+            // 给整个弹窗内容添加原生光标覆盖
+            chatWrapper.style.zIndex = '10002';
+            
+            // 强制在modal上禁用鼠标跟随
+            modal.addEventListener('mouseenter', function() {
+                document.body.style.setProperty('cursor', 'auto', 'important');
+                document.querySelectorAll('*').forEach(el => {
+                    if (el.closest('#ai-chat-modal')) {
+                        el.style.setProperty('cursor', 'default', 'important');
+                    }
+                });
+            });
+            
+            // 隐藏页面的鼠标跟随效果
+            const mouseFollower = document.getElementById('mouse-follower');
+            if (mouseFollower) {
+                mouseFollower.style.display = 'none';
+            }
+            
+            // 弹窗关闭时恢复鼠标跟随效果
+            document.getElementById('close-ai-chat').addEventListener('click', function() {
+                modal.style.display = 'none';
+                if (mouseFollower) {
+                    mouseFollower.style.display = 'block';
+                }
+            });
+            
+            // 点击背景关闭弹窗时也恢复
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    if (mouseFollower) {
+                        mouseFollower.style.display = 'block';
+                    }
+                }
+            });
+            
+            // ========== API 配置 ==========
+            // 本地开发时使用：http://localhost:3000
+            // 部署到 Zeabur 后改为：https://你的项目名.zeabur.app
+            const API_BASE_URL = 'https://gujian-project.zeabur.app';
+            // ==============================
+
+            // 对话历史数组（存储上下文）
+            let conversationHistory = [];
+            
+            // 古风思考提示语（AI思考时显示）
+            const thinkingMessages = [
+                "先生所言极是，容我思量一二...",
+                "此问颇有意趣，待我细述...",
+                "古建之道，博大精深，且听我慢慢道来...",
+                "此乃我中华建筑之精髓，容我详解...",
+                "先生/姑娘所问甚好，容我一二陈之..."
+            ];
+            
+            function getRandomThinking() {
+                return thinkingMessages[Math.floor(Math.random() * thinkingMessages.length)];
+            }
+            
+            // 管理对话历史：超过10条删除最早的2条
+            function addToHistory(role, content) {
+                conversationHistory.push({ role: role, content: content });
+                
+                if (conversationHistory.length > 10) {
+                    conversationHistory.shift();
+                    conversationHistory.shift();
+                }
+            }
+            
+            function scrollToBottom() {
+                const messages = document.getElementById('ai-chat-messages');
+                messages.scrollTop = messages.scrollHeight;
+            }
+            
+            function createUserMessage(text) {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(30, 30, 30, 0.7);
+                    color: #ffffff;
+                    align-self: flex-end;
+                `;
+                msg.textContent = text;
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            function createAIMessage(text) {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(252, 249, 242, 0.7);
+                    color: #1a1a1a;
+                    align-self: flex-start;
+                `;
+                msg.innerHTML = text;
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            // 创建思考中的消息（带删除标记）
+            function createThinkingMessage() {
+                const messages = document.getElementById('ai-chat-messages');
+                const msg = document.createElement('div');
+                msg.style.cssText = `
+                    max-width: 70%;
+                    padding: 10px 15px;
+                    line-height: 1.7;
+                    font-size: 14px;
+                    border-radius: 4px;
+                    background: rgba(252, 249, 242, 0.7);
+                    color: #1a1a1a;
+                    align-self: flex-start;
+                `;
+                msg.textContent = getRandomThinking();
+                msg.id = 'thinking-msg';
+                messages.appendChild(msg);
+                scrollToBottom();
+            }
+            
+            // 删除思考中的消息
+            function removeThinkingMessage() {
+                const thinkingMsg = document.getElementById('thinking-msg');
+                if (thinkingMsg) {
+                    thinkingMsg.remove();
+                }
+            }
+            
+            function sendMessage() {
+                const input = document.getElementById('ai-chat-input');
+                const sendBtn = document.getElementById('ai-chat-send');
+                const text = input.value.trim();
+                if (text === '') return;
+                
+                input.disabled = true;
+                sendBtn.disabled = true;
+                
+                addToHistory('user', text);
+                createUserMessage(text);
+                input.value = '';
+                
+                createThinkingMessage();
+                
+                fetch(API_BASE_URL + '/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: conversationHistory
+                    })
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    removeThinkingMessage();
+                    addToHistory('assistant', data.reply);
+                    createAIMessage(data.reply);
+                })
+                .catch(function(error) {
+                    removeThinkingMessage();
+                    createAIMessage('网络连接似乎有些问题，还望先生/姑娘稍后再试。');
+                })
+                .finally(function() {
+                    input.disabled = false;
+                    sendBtn.disabled = false;
+                    input.focus();
+                });
+            }
+            
+            document.getElementById('ai-chat-send').addEventListener('click', sendMessage);
+            document.getElementById('ai-chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // 自动聚焦
+            document.getElementById('ai-chat-input').focus();
+        }
+    </script>
+</body>
+</html>
