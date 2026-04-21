@@ -252,85 +252,247 @@
             opacity: 1;
         }
         
-        /* 触发框样式 */
+        /* 触发框样式 - 全屏覆盖 */
         .trigger-box {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 700px;
-            height: 600px;
+            top: 0;
+            left: 0;
+            width: 1527px;
+            height: 740px;
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 2px solid #654321;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(101, 67, 33, 0.5);
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
             z-index: 1000;
             display: none;
-            flex-direction: column;
+            flex-direction: row;
+            padding-top: 62px;
+            box-sizing: border-box;
         }
         
         .trigger-box.active {
             display: flex;
         }
         
+        /* 左侧三分之一预留区域 - 用于3D效果 */
+        .trigger-box-left {
+            width: 33.33%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            border-right: 2px solid #654321;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .trigger-box-left-placeholder {
+            color: rgba(101, 67, 33, 0.8);
+            font-size: 18px;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        /* 右侧三分之二区域 */
+        .trigger-box-right {
+            width: 66.67%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
         .trigger-box-header {
             padding: 20px;
-            border-bottom: 1px solid #654321;
+            border-bottom: none;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            background: rgba(255, 255, 255, 0.3);
         }
         
         .trigger-box-title {
-            color: #fff;
-            font-size: 20px;
+            color: #654321;
+            font-size: 24px;
             font-weight: bold;
             margin: 0 0 10px 0;
         }
         
         .trigger-box-content-intro {
-            color: #fff;
+            color: #654321;
             font-size: 16px;
             line-height: 1.4;
-            margin: 10px 0 0 0;
+            margin: 0;
             padding: 0;
             width: 100%;
         }
         
         .close-btn {
-            background: none;
+            background: rgba(101, 67, 33, 0.2);
             border: none;
-            color: #fff;
+            color: #654321;
             font-size: 24px;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             position: absolute;
-            top: 15px;
+            top: 90px;
             right: 20px;
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: rgba(101, 67, 33, 0.2);
+            z-index: 99999;
+            pointer-events: auto;
+            display: none;
+        }
+        
+        .close-btn.active {
+            display: flex;
         }
         
         .close-btn:hover {
-            color: #654321;
             background: rgba(101, 67, 33, 0.4);
+            color: #654321;
         }
         
         .trigger-box-content {
             flex: 1;
-            padding: 20px;
-            color: #fff;
-            overflow-y: auto;
             display: flex;
-            gap: 20px;
+            flex-direction: row;
             position: relative;
+            overflow: hidden;
+        }
+        
+        /* 中间图片区域 - 右边三分之二中的三分之二 */
+        .image-area {
+            width: 66.67%;
+            height: 100%;
+            position: relative;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 60px;
+            box-sizing: border-box;
+        }
+        
+        .image-area img {
+            flex: 1;
+            max-width: 100%;
+            max-height: calc(100% - 60px);
+            object-fit: contain;
+        }
+        
+        .image-tip {
+            position: absolute;
+            bottom: 70px;
+            right: 10px;
+            color: #654321;
+            font-size: 14px;
+            text-align: right;
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            z-index: 1000;
+        }
+        
+        .initial-poetry {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .poetry-line {
+            display: flex;
+            flex-direction: column;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-size: 16px;
+            line-height: 2;
+            color: #654321;
+            margin: 0 10px;
+        }
+        
+        .poetry-left {
+            margin-top: -2em;
+        }
+        
+        /* 右侧文字展示区域 - 右边三分之一 */
+        .text-area {
+            width: 33.33%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            border-left: none;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .text-area::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #654321, transparent);
+            opacity: 0.6;
+        }
+        
+        .text-area::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .text-area::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .text-area::-webkit-scrollbar-thumb {
+            background: rgba(101, 67, 33, 0.8);
+            border-radius: 3px;
+        }
+        
+        .text-item {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #654321;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            animation: slideInFromBottom 0.3s ease;
+        }
+        
+        @keyframes slideInFromBottom {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .text-item-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #654321;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(101, 67, 33, 0.3);
+            padding-bottom: 5px;
+        }
+        
+        .text-item-content {
+            font-size: 14px;
+            color: #654321;
+            line-height: 1.6;
         }
         
         .info-panel {
@@ -443,11 +605,17 @@
         }
         
         .trigger-box-footer {
-            padding: 20px;
-            border-top: 1px solid #654321;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 20px;
+            border-top: none;
             display: flex;
             justify-content: flex-end;
             gap: 10px;
+            background: transparent;
+            box-sizing: border-box;
         }
         
         .complete-btn {
@@ -484,11 +652,11 @@
         
         /* 视频遮罩层 */
         .video-overlay {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 1527px;
+            height: 740px;
             background: #000;
             z-index: 9999;
             display: flex;
@@ -497,17 +665,17 @@
         }
 
         .video-container {
-            width: 100%;
-            height: 100%;
+            width: 1527px;
+            height: 740px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .video-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            width: 1527px;
+            height: 740px;
+            object-fit: cover;
             pointer-events: none;
         }
 
@@ -871,72 +1039,87 @@
     
     <!-- 触发框 -->
     <div class="trigger-box" id="triggerBox">
-        <button class="close-btn" id="closeBtn">&times;</button>
-        <div class="trigger-box-header">
-            <h3 class="trigger-box-title" id="boxTitle">建筑物详情</h3>
-            <p class="trigger-box-content-intro" id="boxContentIntro"></p>
-        </div>
-        <div class="trigger-box-content" id="boxContent">
-            <div class="image-container">
-                <img class="building-image" id="buildingImage" src="" alt="建筑物图片">
-                <div class="magnifier" id="magnifier"></div>
-                <div class="exploration-points" id="explorationPoints"></div>
+        <!-- 左侧三分之一预留区域 - 用于3D效果 -->
+        <div class="trigger-box-left" id="triggerBoxLeft">
+            <div class="trigger-box-left-placeholder">
+                3D展示区域<br>（预留）
             </div>
         </div>
-        <div class="info-panel" id="infoPanel"></div>
-        <div class="trigger-box-footer">
-            <button class="data-btn" id="dataBtn">查看数据</button>
-            <button class="complete-btn" id="completeBtn">完成任务</button>
+        
+        <!-- 右侧三分之二区域 -->
+        <div class="trigger-box-right">
+            <div class="trigger-box-header">
+                <h3 class="trigger-box-title" id="boxTitle">建筑物详情</h3>
+                <p class="trigger-box-content-intro" id="boxContentIntro"></p>
+            </div>
+            <div class="trigger-box-content" id="boxContent">
+                <!-- 中间图片区域 -->
+                <div class="image-area">
+                    <img class="building-image" id="buildingImage" src="" alt="建筑物图片">
+                    <div class="magnifier" id="magnifier"></div>
+                    <div class="exploration-points" id="explorationPoints"></div>
+                    <div class="image-tip">* 点击黄色按钮获取详情介绍</div>
+                    <div class="trigger-box-footer">
+                        <button class="data-btn" id="dataBtn">查看数据</button>
+                        <button class="complete-btn" id="completeBtn">完成任务</button>
+                    </div>
+                </div>
+                <!-- 右侧文字展示区域 -->
+                <div class="text-area" id="textArea">
+                    <div class="initial-poetry" id="initialPoetry"></div>
+                </div>
+            </div>
         </div>
+        <button class="close-btn" id="closeBtn">&times;</button>
     </div>
     
     <!-- 建筑物点位 -->
     <div class="building-container" data-building="北京四合院" style="top: 180px; left: 800px;">
-        <img src="京icon.png" class="building-icon" alt="北京四合院">
+        <img src="京icon.png" class="building-icon" alt="京派·北京四合院">
         <div class="bubble"></div>
-        <div class="building-label">北京四合院</div>
+        <div class="building-label">京派·北京四合院</div>
     </div>
     
     <div class="building-container" data-building="山西大院" style="top: 370px; left: 545px;">
-        <img src="晋icon.png" class="building-icon" alt="山西大院">
+        <img src="晋icon.png" class="building-icon" alt="晋派·山西大院">
         <div class="bubble"></div>
-        <div class="building-label">山西大院</div>
+        <div class="building-label">晋派·山西大院</div>
     </div>
     
     <div class="building-container" data-building="川渝吊脚楼" style="top: 400px; left: 210px;">
-        <img src="川icon.png" class="building-icon" alt="川渝吊脚楼">
+        <img src="川icon.png" class="building-icon" alt="川派·川渝吊脚楼">
         <div class="bubble"></div>
-        <div class="building-label">川渝吊脚楼</div>
+        <div class="building-label">川派·川渝吊脚楼</div>
     </div>
     
     <div class="building-container" data-building="苏州庭院" style="top: 365px; left: 890px;">
-        <img src="苏icon.png" class="building-icon" alt="苏州庭院">
+        <img src="苏icon.png" class="building-icon" alt="苏派·苏州庭院">
         <div class="bubble"></div>
-        <div class="building-label">苏州庭院</div>
+        <div class="building-label">苏派·苏州庭院</div>
     </div>
     
     <div class="building-container" data-building="安徽马头墙" style="top: 260px; left: 1200px;">
-        <img src="徽icon.png" class="building-icon" alt="安徽马头墙">
+        <img src="徽icon.png" class="building-icon" alt="徽派·安徽马头墙">
         <div class="bubble"></div>
-        <div class="building-label">安徽马头墙</div>
+        <div class="building-label">徽派·安徽马头墙</div>
     </div>
     
     <div class="building-container" data-building="福建土楼" style="top: 470px; left: 1120px;">
-        <img src="闽icon.png" class="building-icon" alt="福建土楼">
+        <img src="闽icon.png" class="building-icon" alt="闽派·福建土楼">
         <div class="bubble"></div>
-        <div class="building-label">福建土楼</div>
+        <div class="building-label">闽派·福建土楼</div>
     </div>
     
     <div class="building-container" data-building="广东镬耳墙" style="top: 510px; left: 750px;">
-        <img src="粤icon.png" class="building-icon" alt="广东镬耳墙">
+        <img src="粤icon.png" class="building-icon" alt="粤派·广东镬耳墙">
         <div class="bubble"></div>
-        <div class="building-label">广东镬耳墙</div>
+        <div class="building-label">粤派·广东镬耳墙</div>
     </div>
     
     <div class="building-container" data-building="上海石库门" style="top: 384px; left: 1280px;">
-        <img src="沪icon.png" class="building-icon" alt="上海石库门">
+        <img src="沪icon.png" class="building-icon" alt="海派·上海石库门">
         <div class="bubble"></div>
-        <div class="building-label">上海石库门</div>
+        <div class="building-label">海派·上海石库门</div>
     </div>
     
     <!-- 底部按钮 -->
@@ -1102,10 +1285,46 @@
         // 调用检查URL参数的函数
         checkUrlParams();
         
+        // 派别介绍文字
+        const poetryData = {
+            '北京四合院': [
+                '轻点朱门黛瓦，静阅古都风华',
+                '庭院深深，尽藏京畿气度'
+            ],
+            '山西大院': [
+                '轻探深宅古院，细观砖刻匠心',
+                '雕梁错落，载满晋商春秋'
+            ],
+            '川渝吊脚楼': [
+                '轻倚依山吊楼，慢赏巴渝烟霞',
+                '枕山临水，尽染蜀地风流'
+            ],
+            '苏州庭院': [
+                '轻游园中水榭，浅赏江南雅致',
+                '亭台婉转，自带烟雨诗情'
+            ],
+            '安徽马头墙': [
+                '轻抚马头高墙，遥览徽岳烟云',
+                '飞檐错落，沉淀徽州文脉'
+            ],
+            '福建土楼': [
+                '轻观圆楼环宇，品读山居古韵',
+                '围楼藏聚，凝结客家乡情'
+            ],
+            '广东镬耳墙': [
+                '轻点檐间古韵，细览匠造风华',
+                '砖瓦诉说，皆是岭南旧事'
+            ],
+            '上海石库门': [
+                '轻叩石库旧门，回望沪上流年',
+                '弄巷遗存，交融中西风华'
+            ]
+        };
+        
         // 建筑物数据
         const buildingData = {
             '北京四合院': {
-                title: '北京四合院',
+                title: '京派·北京四合院',
                 content: '中国北方典型合院式民居，以中轴对称、院落围合为特征，承载着传统礼制与居住秩序。',
                 image: '游戏_京派.jpg',
                 explorationPoints: [
@@ -1130,7 +1349,7 @@
                 ]
             },
             '山西大院': {
-                title: '山西大院',
+                title: '晋派·山西大院',
                 content: '晋商豪宅代表，高墙深院、三雕精美，布局严谨气派，彰显晋商财富与儒商文化。',
                 image: '游戏_晋派.jpg',
                 explorationPoints: [
@@ -1149,7 +1368,7 @@
                 ]
             },
             '川渝吊脚楼': {
-                title: '川渝吊脚楼',
+                title: '川派·川渝吊脚楼',
                 content: '西南山地干栏式民居，底层架空、依山而建，适应潮湿地形，是川渝少数民族与山地居民的经典居所。',
                 image: '游戏_川派.jpg',
                 explorationPoints: [
@@ -1174,7 +1393,7 @@
                 ]
             },
             '苏州庭院': {
-                title: '苏州庭院',
+                title: '苏派·苏州庭院',
                 content: '江南文人园林典范，以小中见大、移步换景、漏窗曲廊营造含蓄雅致的山水意境。',
                 image: '游戏_苏派.jpg',
                 explorationPoints: [
@@ -1199,7 +1418,7 @@
                 ]
             },
             '安徽马头墙': {
-                title: '安徽马头墙',
+                title: '徽派·安徽马头墙',
                 content: '徽派建筑标志性封火墙，阶梯式叠落形似马头，兼具防火防风与等级象征意义。',
                 image: '游戏_徽派.jpg',
                 explorationPoints: [
@@ -1218,7 +1437,7 @@
                 ]
             },
             '福建土楼': {
-                title: '福建土楼',
+                title: '闽派·福建土楼',
                 content: '客家聚居式巨型夯土建筑，环形封闭、聚族而居，兼具居住、防御与宗族文化功能。',
                 image: '游戏_闽派.jpg',
                 explorationPoints: [
@@ -1243,7 +1462,7 @@
                 ]
             },
             '广东镬耳墙': {
-                title: '广东镬耳墙',
+                title: '粤派·广东镬耳墙',
                 content: '岭南广府特色民居，以锅耳状山墙为标志，通风防火，是功名与家族地位的象征。',
                 image: '游戏_粤派.jpg',
                 explorationPoints: [
@@ -1274,7 +1493,7 @@
                 ]
             },
             '上海石库门': {
-                title: '上海石库门',
+                title: '海派·上海石库门',
                 content: '近代上海中西合璧里弄住宅，石框木门融合中式仪门与西式装饰，是海派文化的代表。',
                 image: '游戏_海派.jpg',
                 explorationPoints: [
@@ -1309,29 +1528,49 @@
         // 获取图片、放大镜和信息面板元素
         const buildingImage = document.getElementById('buildingImage');
         const magnifier = document.getElementById('magnifier');
-        const imageContainer = document.querySelector('.image-container');
+        const imageArea = document.querySelector('.image-area');
         const explorationPoints = document.getElementById('explorationPoints');
-        const infoPanel = document.getElementById('infoPanel');
+        const textArea = document.getElementById('textArea');
         
         // 初始化探索点
         function initExplorationPoints(buildingName) {
             // 清空现有探索点
             explorationPoints.innerHTML = '';
             
-            // 隐藏信息面板
-            infoPanel.classList.remove('active');
+            // 显示初始派别介绍文字
+            textArea.innerHTML = '';
+            const initialPoetry = document.createElement('div');
+            initialPoetry.className = 'initial-poetry';
+            
+            // 获取当前建筑物的派别介绍
+            const poetry = poetryData[buildingName];
+            if (poetry) {
+                const leftLine = document.createElement('div');
+                leftLine.className = 'poetry-line poetry-left';
+                leftLine.textContent = poetry[0];
+                
+                const rightLine = document.createElement('div');
+                rightLine.className = 'poetry-line';
+                rightLine.textContent = poetry[1];
+                
+                initialPoetry.appendChild(leftLine);
+                initialPoetry.appendChild(rightLine);
+            }
+            
+            textArea.appendChild(initialPoetry);
             
             // 获取当前建筑物的探索点数据
             const points = buildingData[buildingName].explorationPoints;
             
             // 为每个探索点创建元素
-            points.forEach(point => {
+            points.forEach((point, index) => {
                 const pointElement = document.createElement('div');
                 pointElement.className = 'exploration-point';
                 pointElement.style.left = point.x + '%';
                 pointElement.style.top = point.y + '%';
                 pointElement.dataset.title = point.title;
                 pointElement.dataset.content = point.content;
+                pointElement.dataset.index = index;
                 
                 // 添加鼠标悬停事件 - 关闭放大镜
                 pointElement.addEventListener('mouseenter', function() {
@@ -1343,32 +1582,55 @@
                     magnifier.style.display = 'block';
                 });
                 
-                // 添加点击事件 - 显示文字，探索点消失，放大镜出现
+                // 添加点击事件 - 文字显示在右侧区域，探索点变暗但保留
                 pointElement.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    // 隐藏该探索点
-                    this.style.display = 'none';
-                    // 显示放大镜
-                    magnifier.style.display = 'block';
-                    // 显示信息面板（一直显示在下面）
-                    infoPanel.innerHTML = `
-                        <button class="info-close-btn">&times;</button>
-                        <div class="info-title">${this.dataset.title}</div>
-                        <div class="info-content">${this.dataset.content}</div>
-                    `;
-                    infoPanel.classList.add('active');
+                    // 探索点变暗（表示已点击）
+                    this.style.opacity = '0.3';
+                    this.style.pointerEvents = 'none';
                     
-                    // 绑定关闭按钮事件
-                    const closeBtn = infoPanel.querySelector('.info-close-btn');
-                    if (closeBtn) {
-                        closeBtn.addEventListener('click', function() {
-                            infoPanel.classList.remove('active');
-                        });
+                    // 移除初始派别介绍文字（只在第一次点击时移除）
+                    const initialPoetry = textArea.querySelector('.initial-poetry');
+                    if (initialPoetry) {
+                        textArea.innerHTML = '';
                     }
+                    
+                    // 在右侧文字区域添加新的文字项（添加到最后面，实现从上到下排列）
+                    const textItem = document.createElement('div');
+                    textItem.className = 'text-item';
+                    textItem.innerHTML = `
+                        <div class="text-item-title">${this.dataset.title}</div>
+                        <div class="text-item-content">${this.dataset.content}</div>
+                    `;
+                    textArea.appendChild(textItem);
+                    
+                    // 自动滚动到最底部，确保新添加的文字项可见
+                    textArea.scrollTop = textArea.scrollHeight;
                 });
                 
                 explorationPoints.appendChild(pointElement);
             });
+            
+            // 调整探索点容器的大小和位置，使其与图片一致
+            buildingImage.onload = function() {
+                const imgRect = buildingImage.getBoundingClientRect();
+                const containerRect = imageArea.getBoundingClientRect();
+                
+                // 计算图片在容器中的位置
+                const imgLeft = (containerRect.width - imgRect.width) / 2;
+                const imgTop = (containerRect.height - imgRect.height) / 2;
+                
+                // 调整探索点容器的大小和位置
+                explorationPoints.style.width = imgRect.width + 'px';
+                explorationPoints.style.height = imgRect.height + 'px';
+                explorationPoints.style.left = imgLeft + 'px';
+                explorationPoints.style.top = imgTop + 'px';
+            };
+            
+            // 触发一次图片加载事件，确保位置正确
+            if (buildingImage.complete) {
+                buildingImage.onload();
+            }
         }
         
         // 为每个建筑物添加点击事件
@@ -1394,14 +1656,22 @@
                 // 初始化探索点
                 initExplorationPoints(buildingName);
                 
-                // 显示遮罩层和触发框
+                // 显示遮罩层、触发框和关闭按钮
                 overlay.classList.add('active');
                 triggerBox.classList.add('active');
+                closeBtn.classList.add('active');
+                // 修改导航栏背景，使其与触发框背景一致
+                const topNav = document.getElementById('top-nav');
+                topNav.style.background = 'rgba(255, 255, 255, 0.3)';
+                topNav.style.backdropFilter = 'blur(10px)';
+                topNav.style.webkitBackdropFilter = 'blur(10px)';
+                topNav.style.borderBottom = 'none';
+                topNav.style.boxShadow = 'none';
             });
         });
         
         // 放大镜功能
-        imageContainer.addEventListener('mousemove', function(e) {
+        imageArea.addEventListener('mousemove', function(e) {
             const rect = this.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
@@ -1433,19 +1703,27 @@
         });
         
         // 鼠标离开容器时隐藏放大镜
-        imageContainer.addEventListener('mouseleave', function() {
+        imageArea.addEventListener('mouseleave', function() {
             magnifier.style.display = 'none';
         });
         
         // 关闭按钮事件
-        closeBtn.addEventListener('click', function() {
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('关闭按钮被点击');
             overlay.classList.remove('active');
             triggerBox.classList.remove('active');
+            closeBtn.classList.remove('active');
+            // 恢复导航栏原始背景
+            document.getElementById('top-nav').style.background = 'transparent';
+            document.getElementById('top-nav').style.backdropFilter = 'none';
+            document.getElementById('top-nav').style.webkitBackdropFilter = 'none';
             currentBuilding = null;
             // 清空探索点
             explorationPoints.innerHTML = '';
-            // 隐藏信息面板
-            infoPanel.classList.remove('active');
+            // 清空右侧文字区域
+            textArea.innerHTML = '';
         });
         
         // 完成任务按钮事件
@@ -1453,11 +1731,16 @@
             // 直接关闭触发框，因为任务已经在点击气泡时完成
             overlay.classList.remove('active');
             triggerBox.classList.remove('active');
+            closeBtn.classList.remove('active');
+            // 恢复导航栏原始背景
+            document.getElementById('top-nav').style.background = 'transparent';
+            document.getElementById('top-nav').style.backdropFilter = 'none';
+            document.getElementById('top-nav').style.webkitBackdropFilter = 'none';
             currentBuilding = null;
             // 清空探索点
             explorationPoints.innerHTML = '';
-            // 隐藏信息面板
-            infoPanel.classList.remove('active');
+            // 清空右侧文字区域
+            textArea.innerHTML = '';
         });
         
         // 查看数据按钮事件
@@ -1491,8 +1774,8 @@
             currentBuilding = null;
             // 清空探索点
             explorationPoints.innerHTML = '';
-            // 隐藏信息面板
-            infoPanel.classList.remove('active');
+            // 清空右侧文字区域
+            textArea.innerHTML = '';
         });
         
         // 阻止触发框内部点击事件冒泡
