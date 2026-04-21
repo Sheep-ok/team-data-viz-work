@@ -15,6 +15,15 @@
     <title>国风筑韵-九州</title>
     <style>
         body {
+            background-color: #fff;
+            position: relative;
+            font-family: "SimSun", "宋体", serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* 主内容容器 */
+        #main-container {
             /* 新增托底色：古风绢帛/旧纸张的颜色 */
             background-color: #d4c4a8; 
             background-image: url('游戏地图_底图.jpg');
@@ -23,7 +32,10 @@
             /* 关键修复：改为 100% 100%，确保左右卷轴完全显示 */
             background-size: 100% 100%; 
             position: relative;
-            font-family: "SimSun", "宋体", serif;
+            width: 1527px;
+            height: 740px;
+            margin: 0 auto;
+            overflow: hidden;
         }
 
         * {
@@ -946,7 +958,9 @@
     <!-- 悬浮球 -->
     <div class="floating-ball" id="floatingBall"></div>
     
-    <!-- 顶部导航栏 -->
+    <!-- 主内容容器 -->
+    <div id="main-container">
+        <!-- 顶部导航栏 -->
     <nav id="top-nav">
         <div class="nav-container">
             <!-- 标识 -->
@@ -2287,5 +2301,6 @@
             document.getElementById('ai-chat-input').focus();
         }
     </script>
+    </div><!-- 主内容容器结束 -->
 </body>
 </html>
