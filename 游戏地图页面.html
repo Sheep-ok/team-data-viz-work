@@ -3,13 +3,137 @@
 <head>
     <meta name="viewport" content="width=1527, user-scalable=yes">
     <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        width: 1527px;
-        height: 740px;
-        overflow: hidden; 
-      }
+      html, body { margin: 0; padding: 0; width: 1527px; height: 740px; overflow: hidden; background: #fff; }
+    
+        /* ========== 宣纸卷轴边框效果 ========== */
+        .scroll-frame {
+            position: relative;
+            width: 100%; height: 100%;
+            background: #f7f3e2;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .scroll-frame::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 3px solid transparent;
+            border-image: linear-gradient(
+                180deg,
+                #c9a84c 0%,
+                #e8d5a3 15%,
+                #d4af37 30%,
+                #f9e076 45%,
+                #d4af37 60%,
+                #e8d5a3 75%,
+                #c9a84c 100%
+            ) 1;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.85;
+        }
+        .scroll-frame::after {
+            content: '';
+            position: absolute;
+            top: 6px; left: 6px; right: 6px; bottom: 6px;
+            border: 1px solid rgba(196, 168, 72, 0.3);
+            border-radius: 2px;
+            pointer-events: none;
+            z-index: 2;
+        }
+        /* 卷轴木轴装饰 */
+        .scroll-roller {
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 14px;
+            background: linear-gradient(90deg, #5c3a1e, #8b5a2b, #a0703a, #8b5a2b, #5c3a1e);
+            z-index: 3;
+            pointer-events: none;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.3), 2px 0 6px rgba(0,0,0,0.2);
+        }
+        .scroll-roller.left { left: 0; border-radius: 2px 0 0 2px; }
+        .scroll-roller.right { right: 0; border-radius: 0 2px 2px 0; }
+        .scroll-roller::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px; height: 40px;
+            background: linear-gradient(180deg, #d4af37, #f9e076, #d4af37);
+            border-radius: 3px;
+            box-shadow: 0 0 4px rgba(212,175,55,0.6);
+        }
+
+        /* 视频云雾渐显 */
+        #buildingVideo {
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #buildingVideo.revealed {
+            opacity: 1;
+        }
+
+        /* ========== 水波纹Canvas ========== */
+        #water-ripple-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 4;
+            opacity: 0.45;
+            mix-blend-mode: soft-light;
+        }
+
+        /* ========== 漂移云层 ========== */
+        #cloud-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            overflow: hidden;
+        }
+        .drift-cloud {
+            position: absolute;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.05) 50%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+            pointer-events: none;
+        }
+        .drift-cloud-1 {
+            width: 300px; height: 120px;
+            top: 15%; left: -300px;
+            animation: driftRight 60s linear infinite;
+        }
+        .drift-cloud-2 {
+            width: 450px; height: 160px;
+            top: 35%; left: -450px;
+            animation: driftRight 80s linear infinite;
+            animation-delay: -20s;
+        }
+        .drift-cloud-3 {
+            width: 250px; height: 100px;
+            top: 55%; left: -250px;
+            animation: driftRight 50s linear infinite;
+            animation-delay: -35s;
+        }
+        .drift-cloud-4 {
+            width: 380px; height: 140px;
+            top: 25%; left: -380px;
+            animation: driftRight 70s linear infinite;
+            animation-delay: -10s;
+        }
+        .drift-cloud-5 {
+            width: 200px; height: 80px;
+            top: 70%; left: -200px;
+            animation: driftRight 45s linear infinite;
+            animation-delay: -5s;
+        }
+        @keyframes driftRight {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(2500px + 600px)); }
+        }
+
     </style>
     <meta charset="UTF-8">
     <title>国风筑韵-九州</title>
@@ -168,28 +292,87 @@
             visibility: visible;
         }
         
-        /* ========== 建筑物容器与透明图标样式 ========== */
-        .building-container {
+        /* 沉浸式动态聚光灯遮罩 (核心技术) */
+        #global-dimmer {
             position: absolute;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            width: 100px;  /* 设置固定大小，可根据你的icon调整 */
-            height: 100px;
-            transform: translate(-50%, -50%); /* 确保原代码设定的坐标点在建筑正中心 */
-            z-index: 10;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 40;
+            background: rgba(15, 10, 5, 0.75); 
+        }
+
+        /* ========== 比赛级：灵动卷轴层 ========== */
+        #map-viewport {
+            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0;
+            z-index: 1; overflow: hidden; cursor: grab; user-select: none;
+            will-change: transform;
+        }
+
+        #map-layer {
+            width: 2500px; height: 100%;
+            background-image: url('游戏地图_底图.jpg');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            position: absolute; top: 0; left: 0;
+            will-change: transform;
+        }
+
+        /* 粒子系统 Canvas */
+        #fireflies-canvas {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 5;
+            mix-blend-mode: screen;
+        }
+
+        /* ========== 比赛级：动态 3D 视差悬浮系统 ========== */
+        .building-container {
+            position: absolute; cursor: pointer; width: 120px; height: 120px; 
+            z-index: 10; perspective: 1200px; transform-style: preserve-3d;
+            transition: z-index 0.3s;
+            animation: gentleBreath 4.5s ease-in-out infinite;
+        }
+
+        .building-container:nth-child(even) { animation-delay: -1.5s; }
+        .building-container:nth-child(3n) { animation-delay: -3s; }
+        
+        @keyframes gentleBreath {
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, calc(-50% - 6px)); }
+        }
+
+        /* 3D 全息法阵底座 */
+        .building-container::before {
+            content: ''; position: absolute; bottom: 10px; left: 50%; width: 70px; height: 70px;
+            transform: translateX(-50%) rotateX(75deg) translateZ(-20px);
+            border: 2px dashed rgba(212, 175, 55, 0); border-radius: 50%;
+            box-shadow: 0 0 0 rgba(212, 175, 55, 0);
+            transition: all 0.6s cubic-bezier(0.2, 1.2, 0.4, 1);
+            pointer-events: none; z-index: -1;
+        }
+
+        .building-container:hover { z-index: 50; animation-play-state: paused; }
+        .building-container:hover::before {
+            border-color: rgba(212, 175, 55, 0.8);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6), inset 0 0 15px rgba(212, 175, 55, 0.4);
+            transform: translateX(-50%) rotateX(75deg) translateZ(-20px) scale(1.6);
+            animation: spinRing 8s linear infinite;
+        }
+
+        @keyframes spinRing {
+            from { transform: translateX(-50%) rotateX(75deg) translateZ(-20px) rotateZ(0deg); }
+            to { transform: translateX(-50%) rotateX(75deg) translateZ(-20px) rotateZ(360deg); }
         }
         
-        .building-container:hover {
-            transform: translate(-50%, -50%) scale(1.1); /* 保证放大时依然居中 */
-        }
-        
-        /* 切片图标的样式 */
+        /* 建筑图标层 */
         .building-icon {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            pointer-events: none; /* 防止图片拦截点击事件 */
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4)); /* 增加一点立体阴影 */
+            width: 100%; height: 100%; object-fit: contain; pointer-events: none;
+            filter: drop-shadow(0 4px 6px rgba(101, 67, 33, 0.3));
+            transition: all 0.6s cubic-bezier(0.2, 1.2, 0.4, 1);
+            transform-origin: center center; will-change: transform, filter;
         }
         
         /* 气泡样式 (微调了 top 值，适应新的容器高度) */
@@ -263,6 +446,86 @@
         .building-container:hover .building-label {
             opacity: 1;
         }
+
+        /* 点击震荡波纹 */
+        .gold-ripple {
+            position: absolute; top: 50%; left: 50%; width: 20px; height: 20px;
+            background: transparent; border: 2px solid rgba(255, 215, 0, 0.8);
+            border-radius: 50%; transform: translate(-50%, -50%);
+            animation: rippleExpand 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            pointer-events: none; z-index: 60;
+        }
+        @keyframes rippleExpand {
+            0% { width: 20px; height: 20px; opacity: 1; border-width: 6px; box-shadow: 0 0 10px rgba(255,215,0,0.8); }
+            100% { width: 400px; height: 400px; opacity: 0; border-width: 1px; box-shadow: 0 0 50px rgba(255,215,0,0); }
+        }
+
+        /* ========== 渔夫动态样式 ========== */
+        .fisherman-container {
+            position: absolute;
+            z-index: 8; 
+            width: 225px; 
+            height: auto;
+            pointer-events: none; 
+            animation: boatBobbing 8s ease-in-out infinite;
+            filter: drop-shadow(0 6px 8px rgba(10, 20, 10, 0.4)); 
+        }
+
+        .fisherman-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes boatBobbing {
+            0% { transform: translate(0, 0) rotate(-1deg); }
+            25% { transform: translate(10px, -4px) rotate(0deg); }
+            50% { transform: translate(20px, 0) rotate(1deg); }
+            75% { transform: translate(10px, 4px) rotate(0deg); }
+            100% { transform: translate(0, 0) rotate(-1deg); }
+        }
+
+        /* ========== 拨云见日特效 (纯SVG矢量渲染层) ========== */
+        .cloud-parting {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 99990;
+            pointer-events: none;
+            display: flex;
+            visibility: hidden;
+        }
+        .cloud-parting.active {
+            visibility: visible;
+        }
+        .cloud-half {
+            width: 50%; height: 100%;
+            position: relative;
+            opacity: 1;
+            background-color: rgba(247, 243, 226, 1);
+            overflow: hidden;
+        }
+        
+        .cloud-parting.active .cloud-left { transform: translateX(0); transition: none; }
+        .cloud-parting.active .cloud-right { transform: translateX(0); transition: none; }
+        
+        .cloud-parting.open .cloud-left { 
+            transform: translateX(-100%); 
+            opacity: 0; 
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.2s ease 0.3s; 
+        }
+        .cloud-parting.open .cloud-right { 
+            transform: translateX(100%); 
+            opacity: 0; 
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.2s ease 0.3s; 
+        }
+        
+        /* 视频优化：使用 object-fit: contain 保证完整显示 */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #f7f3e2;
+        }
         
         /* 触发框样式 - 全屏覆盖 */
         .trigger-box {
@@ -290,19 +553,38 @@
         .trigger-box-left {
             width: 33.33%;
             height: 100%;
-            background: rgba(247, 243, 226, 0.85);
+            background: #fff;
             border-right: 2px solid #654321;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            overflow: hidden;
         }
         
         .trigger-box-left-placeholder {
-            color: rgba(101, 67, 33, 0.8);
+            color: rgba(255, 255, 255, 0.8);
             font-size: 18px;
             text-align: center;
             padding: 20px;
+            z-index: 2;
+            position: absolute;
+        }
+        
+        /* 视频优化：使用 object-fit: contain 保证完整显示，配合黑边填充 */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #f7f3e2;
+        }
+        #buildingVideo { 
+            position: relative;
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain;
+            z-index: 1; 
         }
         
         /* 右侧三分之二区域 */
@@ -960,6 +1242,8 @@
     
     <!-- 主内容容器 -->
     <div id="main-container">
+        <div id="global-dimmer"></div>
+        
         <!-- 顶部导航栏 -->
     <nav id="top-nav">
         <div class="nav-container">
@@ -1051,10 +1335,67 @@
     
     <!-- 触发框 -->
     <div class="trigger-box" id="triggerBox">
+        
+        <div class="cloud-parting" id="cloudParting">
+            <div class="cloud-half cloud-left">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block;">
+                    <defs>
+                        <filter id="cloudShadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="5" dy="0" stdDeviation="12" flood-color="#654321" flood-opacity="0.2"/>
+                        </filter>
+                        <linearGradient id="cloudGrad" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#fdfbf5"/>
+                            <stop offset="100%" stop-color="#f4ebd8"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="400" height="800" fill="#f7f3e2"/>
+                    <path d="M0,800 L250,800 C370,750 370,650 250,600 C370,550 370,450 250,400 C370,350 370,250 250,200 C370,150 370,50 250,0 L0,0 Z" fill="url(#cloudGrad)" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="4"/>
+                    <path d="M250,750 C330,750 330,650 250,650 C180,650 180,720 250,720 C290,720 290,680 250,680" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M250,550 C330,550 330,450 250,450 C180,450 180,520 250,520 C290,520 290,480 250,480" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M250,350 C330,350 330,250 250,250 C180,250 180,320 250,320 C290,320 290,280 250,280" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M250,150 C330,150 330,50 250,50 C180,50 180,120 250,120 C290,120 290,80 250,80" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M0,800 L120,800 C220,730 220,670 120,620 C220,530 220,470 120,420 C220,330 220,270 120,220 C220,130 220,70 120,20 L0,0 Z" fill="#fffdf0" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="3"/>
+                    <path d="M120,730 C180,730 180,670 120,670 C70,670 70,710 120,710 C150,710 150,685 120,685" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M120,530 C180,530 180,470 120,470 C70,470 70,510 120,510 C150,510 150,485 120,485" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M120,330 C180,330 180,270 120,270 C70,270 70,310 120,310 C150,310 150,285 120,285" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M120,130 C180,130 180,70 120,70 C70,70 70,110 120,110 C150,110 150,85 120,85" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="cloud-half cloud-right">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block; transform: scaleX(-1);">
+                    <defs>
+                        <filter id="cloudShadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="5" dy="0" stdDeviation="12" flood-color="#654321" flood-opacity="0.2"/>
+                        </filter>
+                        <linearGradient id="cloudGrad" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#fdfbf5"/>
+                            <stop offset="100%" stop-color="#f4ebd8"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="400" height="800" fill="#f7f3e2"/>
+                    <path d="M0,800 L250,800 C370,750 370,650 250,600 C370,550 370,450 250,400 C370,350 370,250 250,200 C370,150 370,50 250,0 L0,0 Z" fill="url(#cloudGrad)" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="4"/>
+                    <path d="M250,750 C330,750 330,650 250,650 C180,650 180,720 250,720 C290,720 290,680 250,680" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M250,550 C330,550 330,450 250,450 C180,450 180,520 250,520 C290,520 290,480 250,480" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M250,350 C330,350 330,250 250,250 C180,250 180,320 250,320 C290,320 290,280 250,280" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M250,150 C330,150 330,50 250,50 C180,50 180,120 250,120 C290,120 290,80 250,80" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M0,800 L120,800 C220,730 220,670 120,620 C220,530 220,470 120,420 C220,330 220,270 120,220 C220,130 220,70 120,20 L0,0 Z" fill="#fffdf0" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="3"/>
+                    <path d="M120,730 C180,730 180,670 120,670 C70,670 70,710 120,710 C150,710 150,685 120,685" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M120,530 C180,530 180,470 120,470 C70,470 70,510 120,510 C150,510 150,485 120,485" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M120,330 C180,330 180,270 120,270 C70,270 70,310 120,310 C150,310 150,285 120,285" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M120,130 C180,130 180,70 120,70 C70,70 70,110 120,110 C150,110 150,85 120,85" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+
         <!-- 左侧三分之一预留区域 - 用于3D效果 -->
         <div class="trigger-box-left" id="triggerBoxLeft">
-            <div class="trigger-box-left-placeholder">
-                3D展示区域<br>（预留）
+            <div class="scroll-frame">
+                <div class="scroll-roller left"></div>
+                <div class="scroll-roller right"></div>
+                <div class="video-wrapper">
+                    <video id="buildingVideo" autoplay loop muted playsinline></video>
+                </div>
+                <div class="trigger-box-left-placeholder" id="videoPlaceholder">3D展示区域<br>（预留）</div>
             </div>
         </div>
         
@@ -1085,54 +1426,63 @@
         <button class="close-btn" id="closeBtn">&times;</button>
     </div>
     
-    <!-- 建筑物点位 -->
-    <div class="building-container" data-building="北京四合院" style="top: 180px; left: 800px;">
-        <img src="京icon.png" class="building-icon" alt="京派·北京四合院">
-        <div class="bubble"></div>
-        <div class="building-label">京派·北京四合院</div>
-    </div>
-    
-    <div class="building-container" data-building="山西大院" style="top: 370px; left: 545px;">
-        <img src="晋icon.png" class="building-icon" alt="晋派·山西大院">
-        <div class="bubble"></div>
-        <div class="building-label">晋派·山西大院</div>
-    </div>
-    
-    <div class="building-container" data-building="川渝吊脚楼" style="top: 400px; left: 210px;">
-        <img src="川icon.png" class="building-icon" alt="川派·川渝吊脚楼">
-        <div class="bubble"></div>
-        <div class="building-label">川派·川渝吊脚楼</div>
-    </div>
-    
-    <div class="building-container" data-building="苏州庭院" style="top: 365px; left: 890px;">
-        <img src="苏icon.png" class="building-icon" alt="苏派·苏州庭院">
-        <div class="bubble"></div>
-        <div class="building-label">苏派·苏州庭院</div>
-    </div>
-    
-    <div class="building-container" data-building="安徽马头墙" style="top: 260px; left: 1200px;">
-        <img src="徽icon.png" class="building-icon" alt="徽派·安徽马头墙">
-        <div class="bubble"></div>
-        <div class="building-label">徽派·安徽马头墙</div>
-    </div>
-    
-    <div class="building-container" data-building="福建土楼" style="top: 470px; left: 1120px;">
-        <img src="闽icon.png" class="building-icon" alt="闽派·福建土楼">
-        <div class="bubble"></div>
-        <div class="building-label">闽派·福建土楼</div>
-    </div>
-    
-    <div class="building-container" data-building="广东镬耳墙" style="top: 510px; left: 750px;">
-        <img src="粤icon.png" class="building-icon" alt="粤派·广东镬耳墙">
-        <div class="bubble"></div>
-        <div class="building-label">粤派·广东镬耳墙</div>
-    </div>
-    
-    <div class="building-container" data-building="上海石库门" style="top: 384px; left: 1280px;">
-        <img src="沪icon.png" class="building-icon" alt="海派·上海石库门">
-        <div class="bubble"></div>
-        <div class="building-label">海派·上海石库门</div>
-    </div>
+    <div id="map-viewport">
+            <div id="map-layer">
+                <canvas id="fireflies-canvas"></canvas>
+                <canvas id="water-ripple-canvas"></canvas>
+                <div id="cloud-layer">
+                    <div class="drift-cloud drift-cloud-1"></div>
+                    <div class="drift-cloud drift-cloud-2"></div>
+                    <div class="drift-cloud drift-cloud-3"></div>
+                    <div class="drift-cloud drift-cloud-4"></div>
+                    <div class="drift-cloud drift-cloud-5"></div>
+                </div>
+
+                <div class="fisherman-container" style="top: 480px; left: 1300px;">
+                    <img src="渔夫.png" alt="江上渔翁">
+                </div>
+
+                <div class="building-container" data-building="北京四合院" style="top: 180px; left: 1310px;">
+                    <img src="京icon.png" class="building-icon" alt="京派·北京四合院">
+                    <div class="bubble"></div><div class="building-label">京派·北京四合院</div>
+                </div>
+                
+                <div class="building-container" data-building="山西大院" style="top: 370px; left: 892px;">
+                    <img src="晋icon.png" class="building-icon" alt="晋派·山西大院">
+                    <div class="bubble"></div><div class="building-label">晋派·山西大院</div>
+                </div>
+                
+                <div class="building-container" data-building="川渝吊脚楼" style="top: 400px; left: 344px;">
+                    <img src="川icon.png" class="building-icon" alt="川派·川渝吊脚楼">
+                    <div class="bubble"></div><div class="building-label">川派·川渝吊脚楼</div>
+                </div>
+                
+                <div class="building-container" data-building="苏州庭院" style="top: 365px; left: 1457px;">
+                    <img src="苏icon.png" class="building-icon" alt="苏派·苏州庭院">
+                    <div class="bubble"></div><div class="building-label">苏派·苏州庭院</div>
+                </div>
+                
+                <div class="building-container" data-building="安徽马头墙" style="top: 260px; left: 1965px;">
+                    <img src="徽icon.png" class="building-icon" alt="徽派·安徽马头墙">
+                    <div class="bubble"></div><div class="building-label">徽派·安徽马头墙</div>
+                </div>
+                
+                <div class="building-container" data-building="福建土楼" style="top: 470px; left: 1834px;">
+                    <img src="闽icon.png" class="building-icon" alt="闽派·福建土楼">
+                    <div class="bubble"></div><div class="building-label">闽派·福建土楼</div>
+                </div>
+                
+                <div class="building-container" data-building="广东镬耳墙" style="top: 510px; left: 1228px;">
+                    <img src="粤icon.png" class="building-icon" alt="粤派·广东镬耳墙">
+                    <div class="bubble"></div><div class="building-label">粤派·广东镬耳墙</div>
+                </div>
+                
+                <div class="building-container" data-building="上海石库门" style="top: 384px; left: 2096px;">
+                    <img src="沪icon.png" class="building-icon" alt="海派·上海石库门">
+                    <div class="bubble"></div><div class="building-label">海派·上海石库门</div>
+                </div>
+            </div>
+        </div>
     
     <!-- 底部按钮 -->
     <div style="position: absolute; bottom: 20px; left: 20px; z-index: 100;">
@@ -1144,21 +1494,278 @@
     </div>
     
     <script>
-        // 视频自动播放和隐藏逻辑
-        document.addEventListener('DOMContentLoaded', function() {
-            const videoOverlay = document.getElementById('videoOverlay');
-            const introVideo = document.getElementById('introVideo');
-            
-            // 视频播放完成后隐藏视频遮罩层
-            introVideo.addEventListener('ended', function() {
-                videoOverlay.style.display = 'none';
+        // ========== 1. 核心特效 A：全局流光萤火系统 (Canvas) ==========
+        const canvas = document.getElementById('fireflies-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = 2500; 
+        let height = canvas.height = 740;
+        
+        let fireflies = [];
+        const firefliesCount = 150; 
+
+        class Firefly {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.s = Math.random() * 2 + 1; 
+                this.ang = Math.random() * 2 * Math.PI;
+                this.v = this.s * this.s / 4; 
+                this.opacity = Math.random();
+                this.fadeRate = Math.random() * 0.02 + 0.005;
+                this.fadingOut = Math.random() > 0.5;
+            }
+            update() {
+                this.x += Math.cos(this.ang) * this.v;
+                this.y += Math.sin(this.ang) * this.v;
+                
+                if(this.fadingOut) {
+                    this.opacity -= this.fadeRate;
+                    if(this.opacity < 0) { this.fadingOut = false; this.opacity = 0; }
+                } else {
+                    this.opacity += this.fadeRate;
+                    if(this.opacity > 1) { this.fadingOut = true; this.opacity = 1; }
+                }
+                
+                if(this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.s, 0, 2 * Math.PI);
+                ctx.fillStyle = `rgba(255, 215, 0, ${this.opacity * 0.8})`;
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.s * 3, 0, 2 * Math.PI);
+                ctx.fillStyle = `rgba(255, 165, 0, ${this.opacity * 0.2})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < firefliesCount; i++) fireflies.push(new Firefly());
+
+        function animateFireflies() {
+            ctx.clearRect(0, 0, width, height);
+            fireflies.forEach(f => { f.update(); f.draw(); });
+            requestAnimationFrame(animateFireflies);
+        }
+        animateFireflies();
+
+        // ========== 2. 核心特效 B & C：3D 视差追踪 + 电影聚光灯 + 金箔波纹 ==========
+        const dimmer = document.getElementById('global-dimmer');
+
+        document.querySelectorAll('.building-container').forEach(container => {
+            const icon = container.querySelector('.building-icon');
+            const bubble = container.querySelector('.bubble');
+            const label = container.querySelector('.building-label');
+
+            container.addEventListener('click', (e) => {
+                const ripple = document.createElement('div');
+                ripple.className = 'gold-ripple';
+                container.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 1000);
             });
-            
-            // 如果视频加载失败，也隐藏遮罩层
-            introVideo.addEventListener('error', function() {
-                videoOverlay.style.display = 'none';
+
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((centerY - y) / centerY) * 20;
+                const rotateY = ((x - centerX) / centerX) * 20;
+
+                icon.style.transition = 'transform 0.1s ease-out, filter 0.1s ease-out';
+                icon.style.transform = `translateY(-20px) scale(1.15) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                
+                const shadowX = -rotateY * 0.8; 
+                const shadowY = rotateX * 0.8 + 15; 
+                icon.style.filter = `drop-shadow(${shadowX}px ${shadowY}px 15px rgba(255, 215, 0, 0.4)) brightness(1.1)`;
+
+                if(bubble) bubble.style.transform = `translateX(-50%) translateY(-25px) translateZ(30px) rotateX(${rotateX * 0.5}deg) rotateY(${rotateY * 0.5}deg)`;
+                if(label) label.style.transform = `translateX(-50%) translateY(-25px) translateZ(30px) rotateX(${rotateX * 0.5}deg) rotateY(${rotateY * 0.5}deg)`;
+
+                dimmer.style.background = `radial-gradient(circle at ${e.clientX}px ${e.clientY}px, transparent 5%, rgba(10, 5, 0, 0.85) 60%)`;
+            });
+
+            container.addEventListener('mouseenter', () => {
+                dimmer.style.opacity = '1';
+            });
+
+            container.addEventListener('mouseleave', () => {
+                icon.style.transition = 'all 0.6s cubic-bezier(0.2, 1.2, 0.4, 1)';
+                icon.style.transform = `translateY(0) scale(1) rotateX(0) rotateY(0)`;
+                icon.style.filter = `drop-shadow(0 4px 6px rgba(101, 67, 33, 0.3)) brightness(1)`;
+
+                if(bubble) bubble.style.transform = `translateX(-50%)`;
+                if(label) label.style.transform = `translateX(-50%)`;
+                
+                dimmer.style.opacity = '0';
             });
         });
+
+        // ========== 3. 比赛级平滑拖拽与智能巡视动画系统 ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            const mapViewport = document.getElementById('map-viewport');
+            const mapLayer = document.getElementById('map-layer');
+            
+            let isDraggingMap = false;
+            let isHoveringElement = false; 
+            
+            let currentTranslateX = 0; 
+            let targetTranslateX = 0;  
+            const maxTranslateX = 2500 - 1527; 
+            
+            let startMouseX = 0;
+            let startTranslateX = 0;
+            
+            let autoMoveSpeed = 0.3; 
+            let scrollDirection = -1; 
+
+            document.querySelectorAll('.building-container').forEach(el => {
+                el.addEventListener('mouseenter', () => isHoveringElement = true);
+                el.addEventListener('mouseleave', () => isHoveringElement = false);
+            });
+
+            function animateMap() {
+                if (!isDraggingMap && !isHoveringElement) {
+                    targetTranslateX += autoMoveSpeed * scrollDirection;
+                    if (targetTranslateX <= -maxTranslateX) {
+                        targetTranslateX = -maxTranslateX;
+                        scrollDirection = 1;
+                    } else if (targetTranslateX >= 0) {
+                        targetTranslateX = 0;
+                        scrollDirection = -1;
+                    }
+                }
+
+                currentTranslateX += (targetTranslateX - currentTranslateX) * 0.1;
+                if (currentTranslateX > 0) currentTranslateX = 0;
+                if (currentTranslateX < -maxTranslateX) currentTranslateX = -maxTranslateX;
+                mapLayer.style.transform = `translateX(${currentTranslateX}px)`;
+                
+                requestAnimationFrame(animateMap);
+            }
+            requestAnimationFrame(animateMap); 
+
+            mapViewport.addEventListener('mousedown', (e) => {
+                if (e.target.closest('.building-container') || e.target.closest('.trigger-box') || e.target.closest('#top-nav') || e.target.closest('.floating-ball')) return;
+                isDraggingMap = true;
+                mapViewport.style.cursor = 'grabbing';
+                startMouseX = e.clientX;
+                startTranslateX = targetTranslateX;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDraggingMap) return;
+                const dx = e.clientX - startMouseX;
+                targetTranslateX = startTranslateX + dx;
+                if (targetTranslateX > 0) targetTranslateX = 0;
+                if (targetTranslateX < -maxTranslateX) targetTranslateX = -maxTranslateX;
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDraggingMap = false;
+                mapViewport.style.cursor = 'grab';
+            });
+
+            mapViewport.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                targetTranslateX -= e.deltaY;
+                if (targetTranslateX > 0) targetTranslateX = 0;
+                if (targetTranslateX < -maxTranslateX) targetTranslateX = -maxTranslateX;
+            }, { passive: false });
+            
+            const videoOverlay = document.getElementById('videoOverlay');
+            const introVideo = document.getElementById('introVideo');
+            if (introVideo) {
+                introVideo.addEventListener('ended', function() { videoOverlay.style.display = 'none'; });
+                introVideo.addEventListener('error', function() { videoOverlay.style.display = 'none'; });
+            }
+        });
+        
+        // ========== 3.5 水波纹系统 ==========
+        const waterCanvas = document.getElementById('water-ripple-canvas');
+        const waterCtx = waterCanvas.getContext('2d');
+        waterCanvas.width = 2500;
+        waterCanvas.height = 740;
+
+        const riverZones = [
+            { x: 0, y: 420, w: 2500, h: 80 },
+            { x: 200, y: 380, w: 400, h: 60 },
+            { x: 900, y: 460, w: 600, h: 50 },
+            { x: 1600, y: 400, w: 500, h: 70 },
+            { x: 500, y: 520, w: 300, h: 40 },
+            { x: 1300, y: 350, w: 200, h: 50 },
+        ];
+
+        let waterRipples = [];
+        const maxWaterRipples = 30;
+
+        class WaterRipple {
+            constructor() {
+                const zone = riverZones[Math.floor(Math.random() * riverZones.length)];
+                this.x = zone.x + Math.random() * zone.w;
+                this.y = zone.y + Math.random() * zone.h;
+                this.radius = 0;
+                this.maxRadius = 15 + Math.random() * 35;
+                this.opacity = 0.15 + Math.random() * 0.25;
+                this.speed = 0.3 + Math.random() * 0.5;
+                this.life = 0;
+                this.maxLife = 120 + Math.random() * 100;
+                this.ellipseRatio = 0.3 + Math.random() * 0.4;
+            }
+            update() {
+                this.life++;
+                this.radius += this.speed;
+                const progress = this.life / this.maxLife;
+                if (progress < 0.3) {
+                    this.currentOpacity = this.opacity * (progress / 0.3);
+                } else if (progress > 0.7) {
+                    this.currentOpacity = this.opacity * ((1 - progress) / 0.3);
+                } else {
+                    this.currentOpacity = this.opacity;
+                }
+                return this.life < this.maxLife && this.radius < this.maxRadius;
+            }
+            draw(ctx) {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.scale(1, this.ellipseRatio);
+                ctx.beginPath();
+                ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(200, 220, 240, ${this.currentOpacity})`;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                if (this.radius > 5) {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.radius * 0.6, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(230, 240, 255, ${this.currentOpacity * 0.5})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+        }
+
+        setInterval(() => {
+            if (waterRipples.length < maxWaterRipples && Math.random() > 0.3) {
+                waterRipples.push(new WaterRipple());
+            }
+        }, 400);
+
+        function animateWaterRipples() {
+            waterCtx.clearRect(0, 0, waterCanvas.width, waterCanvas.height);
+            waterRipples = waterRipples.filter(r => {
+                const alive = r.update();
+                if (alive) r.draw(waterCtx);
+                return alive;
+            });
+            requestAnimationFrame(animateWaterRipples);
+        }
+        animateWaterRipples();
         
         // 获取DOM元素
         const overlay = document.getElementById('overlay');
@@ -1339,6 +1946,7 @@
                 title: '京派·北京四合院',
                 content: '中国北方典型合院式民居，以中轴对称、院落围合为特征，承载着传统礼制与居住秩序。',
                 image: '游戏_京派.jpg',
+                video: '北京四合院.mp4',
                 explorationPoints: [
                     {
                         x: 50, // 相对于图片宽度的百分比
@@ -1364,6 +1972,7 @@
                 title: '晋派·山西大院',
                 content: '晋商豪宅代表，高墙深院、三雕精美，布局严谨气派，彰显晋商财富与儒商文化。',
                 image: '游戏_晋派.jpg',
+                video: '山西大院.mp4',
                 explorationPoints: [
                     {
                         x: 40,
@@ -1383,6 +1992,7 @@
                 title: '川派·川渝吊脚楼',
                 content: '西南山地干栏式民居，底层架空、依山而建，适应潮湿地形，是川渝少数民族与山地居民的经典居所。',
                 image: '游戏_川派.jpg',
+                video: '川渝吊脚楼.mp4',
                 explorationPoints: [
                     {
                         x: 30,
@@ -1408,6 +2018,7 @@
                 title: '苏派·苏州庭院',
                 content: '江南文人园林典范，以小中见大、移步换景、漏窗曲廊营造含蓄雅致的山水意境。',
                 image: '游戏_苏派.jpg',
+                video: '苏州庭院.mp4',
                 explorationPoints: [
                     {
                         x: 30,
@@ -1433,6 +2044,7 @@
                 title: '徽派·安徽马头墙',
                 content: '徽派建筑标志性封火墙，阶梯式叠落形似马头，兼具防火防风与等级象征意义。',
                 image: '游戏_徽派.jpg',
+                video: '安徽马头墙.mp4',
                 explorationPoints: [
                     {
                         x: 30,
@@ -1452,6 +2064,7 @@
                 title: '闽派·福建土楼',
                 content: '客家聚居式巨型夯土建筑，环形封闭、聚族而居，兼具居住、防御与宗族文化功能。',
                 image: '游戏_闽派.jpg',
+                video: '福建土楼.mp4',
                 explorationPoints: [
                     {
                         x: 25,
@@ -1477,6 +2090,7 @@
                 title: '粤派·广东镬耳墙',
                 content: '岭南广府特色民居，以锅耳状山墙为标志，通风防火，是功名与家族地位的象征。',
                 image: '游戏_粤派.jpg',
+                video: '广东镬耳墙.mp4',
                 explorationPoints: [
                     {
                         x: 70,
@@ -1508,6 +2122,7 @@
                 title: '海派·上海石库门',
                 content: '近代上海中西合璧里弄住宅，石框木门融合中式仪门与西式装饰，是海派文化的代表。',
                 image: '游戏_海派.jpg',
+                video: '上海石库门.mp4',
                 explorationPoints: [
                     {
                         x: 35,
@@ -1665,6 +2280,37 @@
                 boxContentIntro.textContent = buildingData[buildingName].content;
                 buildingImage.src = buildingData[buildingName].image;
                 
+                // 处理视频播放逻辑
+                const buildingVideo = document.getElementById('buildingVideo');
+                const videoPlaceholder = document.getElementById('videoPlaceholder');
+                const videoSrc = buildingData[buildingName].video;
+                if (videoSrc) {
+                    buildingVideo.classList.remove('revealed');
+                    buildingVideo.src = videoSrc;
+                    buildingVideo.style.display = 'block';
+                    videoPlaceholder.style.display = 'none';
+                    // 移除循环播放，让视频播放完后停在最后一帧
+                    buildingVideo.loop = false;
+                    // 添加播放结束事件，确保停在最后一帧
+                    const handleVideoEnd = function() {
+                        // 视频播放结束时，将播放位置设为最后一帧
+                        buildingVideo.currentTime = buildingVideo.duration;
+                        buildingVideo.pause();
+                    };
+                    // 先移除之前的事件监听器，避免重复绑定
+                    buildingVideo.removeEventListener('ended', handleVideoEnd);
+                    buildingVideo.addEventListener('ended', handleVideoEnd);
+                    buildingVideo.play().catch(e => console.log("浏览器限制了自动播放", e));
+                    // 云雾散开后渐显视频
+                    setTimeout(() => {
+                        buildingVideo.classList.add('revealed');
+                    }, 600);
+                } else {
+                    buildingVideo.classList.remove('revealed');
+                    buildingVideo.style.display = 'none';
+                    videoPlaceholder.style.display = 'block';
+                }
+                
                 // 初始化探索点
                 initExplorationPoints(buildingName);
                 
@@ -1679,6 +2325,19 @@
                 topNav.style.webkitBackdropFilter = 'none';
                 topNav.style.borderBottom = 'none';
                 topNav.style.boxShadow = 'none';
+
+                // --- 触发拨云见日特效 ---
+                const cloudParting = document.getElementById('cloudParting');
+                if (cloudParting) {
+                    // 先重置云层的状态使其居中闭合
+                    cloudParting.classList.remove('open');
+                    cloudParting.classList.add('active');
+
+                    // 稍微延迟后触发左右拨开云层的动画 (产生揭开帷幕的感觉)
+                    setTimeout(() => {
+                        cloudParting.classList.add('open');
+                    }, 50);
+                }
             });
         });
         
@@ -1736,6 +2395,19 @@
             explorationPoints.innerHTML = '';
             // 清空右侧文字区域
             textArea.innerHTML = '';
+
+            // 关闭弹窗时停止播放视频，并隐藏拨云特效图层
+            const buildingVideo = document.getElementById('buildingVideo');
+            if(buildingVideo) {
+                buildingVideo.classList.remove('revealed');
+                buildingVideo.pause();
+                buildingVideo.src = '';
+            }
+            const cloudParting = document.getElementById('cloudParting');
+            if (cloudParting) {
+                cloudParting.classList.remove('active');
+                cloudParting.classList.remove('open');
+            }
         });
         
         // 完成任务按钮事件
