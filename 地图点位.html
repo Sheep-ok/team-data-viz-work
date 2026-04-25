@@ -466,7 +466,7 @@
                     全国重点文物保护单位空间分布概况介绍
                 </p>
                 <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
-                    本地图可视化展示了八批共 5058 处全国重点文物保护单位的空间分布与核心信息，涵盖了从古代遗址到近现代革命旧址的各类文化遗产。
+                    本地图可视化展示了八批共 5058 处全国重点文物保护单位的空间分布与核心信息，涵盖了各类文化遗产。
                 </p>
                 <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
                     从分布格局来看，国保单位呈现出明显的区域集聚特征：
@@ -481,7 +481,7 @@
                     西南、西北边疆地区的国保单位多为少数民族特色建筑、宗教遗存与革命遗址，体现了多民族文化交融与红色历史印记。
                 </p>
                 <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
-                    从类型构成上看，数据覆盖古遗址、古墓葬、古建筑、石窟寺及石刻、近现代重要史迹及代表性建筑等六大类别，其中古建筑占比最高，广泛分布于全国各地，是中国传统营造技艺与地域建筑文化的直观载体；近现代重要史迹则集中于革命老区与通商口岸城市，成为中国近代历史的重要见证。
+                    从类型构成上看，数据覆盖古遗址、古墓葬、古建筑、石窟寺及石刻等多种类别，其中古建筑占比最高，广泛分布于全国各地，是中国传统营造技艺与地域建筑文化的直观载体。
                 </p>
                 <p style="margin-bottom: 12px; font-size: 13px; text-align: justify; text-indent: 2em;">
                     通过地理编码获取的经纬度坐标，本可视化实现了国保单位的精准落位，既展现了中华文明多元一体、绵延不绝的时空脉络，也为文化遗产保护、旅游开发与学术研究提供了直观的空间参考。
@@ -567,9 +567,6 @@
                         </label>
                         <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
                             <input type="checkbox" class="dynasty-checkbox" value="明清" style="width: 10px; height: 10px;"> 明清
-                        </label>
-                        <label style="font-size: 10px; color: #333; display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" class="dynasty-checkbox" value="近现代" style="width: 10px; height: 10px;"> 近现代
                         </label>
                     </div>
                     <button id="apply-dynasty" style="margin-top: 8px; padding: 4px 8px; font-size: 10px; color: #333; background: rgba(212, 175, 55, 0.2); border: 1px solid rgba(212, 175, 55, 0.5); border-radius: 10px; cursor: pointer; width: 100%;">应用筛选</button>
@@ -902,38 +899,65 @@
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
-                        // 筛选数据（仅对国保单位应用朝代筛选）
+                        // 筛选数据（仅对国保单位应用朝代筛选，排除近现代点位）
                         let filteredData = data;
-                        if (dataFile === 'map_points.json' && selectedDynasties.length > 0 && !selectedDynasties.includes('全部')) {
+                        if (dataFile === 'map_points.json') {
+                            // 始终排除近现代点位（1840年及以后视为近现代）
                             filteredData = data.filter(point => {
                                 if (point.era) {
-                                    // 简化朝代匹配逻辑
                                     const era = point.era;
-                                    return selectedDynasties.some(dynasty => {
-                                        switch(dynasty) {
-                                            case '新石器时代':
-                                                return era.includes('新石器');
-                                            case '夏商周':
-                                                return era.includes('夏') || era.includes('商') || era.includes('周') || era.includes('先秦');
-                                            case '秦汉':
-                                                return era.includes('秦') || era.includes('汉');
-                                            case '魏晋南北朝':
-                                                return era.includes('魏晋') || era.includes('南北朝') || era.includes('三国');
-                                            case '隋唐':
-                                                return era.includes('隋') || era.includes('唐');
-                                            case '宋元':
-                                                return era.includes('宋') || era.includes('元');
-                                            case '明清':
-                                                return era.includes('明') || era.includes('清');
-                                            case '近现代':
-                                                return era.includes('近代') || era.includes('现代') || era.includes('民国') || era.includes('中华人民共和国');
-                                            default:
-                                                return false;
+                                    // 检查是否包含近现代关键词
+                                    if (era.includes('近代') || era.includes('现代') || era.includes('民国') || era.includes('中华人民共和国')) {
+                                        return false;
+                                    }
+                                    // 检查是否是20世纪或21世纪（1901年以后）
+                                    const centuryMatch = era.match(/(\d+)世纪/);
+                                    if (centuryMatch) {
+                                        const century = parseInt(centuryMatch[1]);
+                                        // 19世纪及以后（1801年以后）都视为近现代
+                                        if (century >= 19) {
+                                            return false;
                                         }
-                                    });
+                                    }
+                                    // 提取年份数字
+                                    const yearMatch = era.match(/(\d{4})/);
+                                    if (yearMatch) {
+                                        const year = parseInt(yearMatch[1]);
+                                        // 1840年鸦片战争之后视为近现代，需要排除
+                                        return year < 1840;
+                                    }
                                 }
                                 return true;
                             });
+                            // 应用朝代筛选
+                            if (selectedDynasties.length > 0 && !selectedDynasties.includes('全部')) {
+                                filteredData = filteredData.filter(point => {
+                                    if (point.era) {
+                                        const era = point.era;
+                                        return selectedDynasties.some(dynasty => {
+                                            switch(dynasty) {
+                                                case '新石器时代':
+                                                    return era.includes('新石器');
+                                                case '夏商周':
+                                                    return era.includes('夏') || era.includes('商') || era.includes('周') || era.includes('先秦');
+                                                case '秦汉':
+                                                    return era.includes('秦') || era.includes('汉');
+                                                case '魏晋南北朝':
+                                                    return era.includes('魏晋') || era.includes('南北朝') || era.includes('三国');
+                                                case '隋唐':
+                                                    return era.includes('隋') || era.includes('唐');
+                                                case '宋元':
+                                                    return era.includes('宋') || era.includes('元');
+                                                case '明清':
+                                                    return era.includes('明') || era.includes('清');
+                                                default:
+                                                    return false;
+                                            }
+                                        });
+                                    }
+                                    return true;
+                                });
+                            }
                         }
                         
                         // 筛选数据（仅对中国传统村落应用地区筛选）

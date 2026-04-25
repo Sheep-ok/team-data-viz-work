@@ -485,6 +485,44 @@
             100% { transform: translate(0, 0) rotate(-1deg); }
         }
 
+        /* ========== 祥云动态样式 ========== */
+        .cloud-container {
+            position: absolute;
+            z-index: 7; 
+            width: 110px; 
+            height: auto;
+            pointer-events: none; 
+            animation: cloudFloat 12s ease-in-out infinite;
+            filter: drop-shadow(0 4px 10px rgba(101, 67, 33, 0.3)); 
+            opacity: 0.75;
+        }
+
+        .cloud-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes cloudFloat {
+            0% { transform: translate(0, 0) rotate(-2deg); }
+            25% { transform: translate(15px, -8px) rotate(0deg); }
+            50% { transform: translate(30px, 0) rotate(2deg); }
+            75% { transform: translate(15px, 8px) rotate(0deg); }
+            100% { transform: translate(0, 0) rotate(-2deg); }
+        }
+
+        /* 第二个祥云动画 - 不同的时间和位置偏移 */
+        .cloud-container-2 {
+            animation: cloudFloat 15s ease-in-out infinite;
+            animation-delay: -5s;
+        }
+
+        /* 第三个祥云动画 */
+        .cloud-container-3 {
+            animation: cloudFloat 18s ease-in-out infinite;
+            animation-delay: -10s;
+        }
+
         /* ========== 拨云见日特效 (纯SVG矢量渲染层) ========== */
         .cloud-parting {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -1409,6 +1447,17 @@
 
                 <div class="fisherman-container" style="top: 480px; left: 1300px;">
                     <img src="渔夫.png" alt="江上渔翁">
+                </div>
+
+                <!-- 祥云动画元素 -->
+                <div class="cloud-container" style="top: 150px; left: 500px;">
+                    <img src="祥云.png" alt="祥云">
+                </div>
+                <div class="cloud-container cloud-container-2" style="top: 190px; left: 1600px;">
+                    <img src="祥云.png" alt="祥云">
+                </div>
+                <div class="cloud-container cloud-container-3" style="top: 130px; left: 2200px;">
+                    <img src="祥云.png" alt="祥云">
                 </div>
 
                 <div class="building-container" data-building="北京四合院" style="top: 180px; left: 1310px;">
