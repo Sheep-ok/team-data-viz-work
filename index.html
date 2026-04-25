@@ -743,6 +743,28 @@
             // 视频列表，按顺序循环播放
             const videoList = ['intro-video.mp4', 'intro_video3.mp4', 'intro_video2.mp4'];
             
+            // 为每个视频配置箭头位置
+            const arrowPositionConfig = {
+                'intro-video.mp4': { // 宫墙开场
+                    'back-left': { left: '36%', right: 'auto', top: '82%', bottom: 'auto' },
+                    'back-right': { left: 'auto', right: '36%', top: '82%', bottom: 'auto' },
+                    'front-left': { left: '55%', right: 'auto', top: 'auto', bottom: '20%' },
+                    'front-right': { left: 'auto', right: '55%', top: 'auto', bottom: '20%' }
+                },
+                'intro_video3.mp4': { // 藻井开场 - 围绕龙头的箭头
+                    'back-left': { left: '35%', right: 'auto', top: '70%', bottom: 'auto' },
+                    'back-right': { left: 'auto', right: '37%', top: '70%', bottom: 'auto' },
+                    'front-left': { left: 'auto', right: '37%', top: '30%', bottom: 'auto' },
+                    'front-right': { left: '35%', right: 'auto', top: '30%', bottom: 'auto' }
+                },
+                'intro_video2.mp4': { // 园林开场
+                    'back-left': { left: '38%', right: 'auto', top: '84%', bottom: 'auto' },
+                    'back-right': { left: 'auto', right: '38%', top: '84%', bottom: 'auto' },
+                    'front-left': { left: '56%', right: 'auto', top: 'auto', bottom: '18%' },
+                    'front-right': { left: 'auto', right: '56%', top: 'auto', bottom: '18%' }
+                }
+            };
+            
             // 跟踪当前选择的视频
             let currentVideo = 'intro-video.mp4';
             
@@ -846,16 +868,48 @@
             const directionButtons = document.querySelectorAll('.direction-arrow');
             const arrowLabels = document.querySelectorAll('.arrow-label');
             
-            // 视频时间更新事件 - 宫墙视频特殊处理
+            // 为箭头按钮应用位置配置
+            function applyArrowPositions() {
+                const positions = arrowPositionConfig[currentVideo];
+                if (!positions) return;
+                
+                directionButtons.forEach(btn => {
+                    const direction = btn.getAttribute('data-direction');
+                    if (direction && direction !== 'front' && positions[direction]) {
+                        const config = positions[direction];
+                        const arrowGroup = btn.parentElement;
+                        
+                        // 重置所有位置属性
+                        arrowGroup.style.left = 'auto';
+                        arrowGroup.style.right = 'auto';
+                        arrowGroup.style.top = 'auto';
+                        arrowGroup.style.bottom = 'auto';
+                        
+                        // 应用新的位置配置
+                        if (config.left !== 'auto') arrowGroup.style.left = config.left;
+                        if (config.right !== 'auto') arrowGroup.style.right = config.right;
+                        if (config.top !== 'auto') arrowGroup.style.top = config.top;
+                        if (config.bottom !== 'auto') arrowGroup.style.bottom = config.bottom;
+                    }
+                });
+            }
+            
+            
+            // 视频时间更新事件 - 所有视频都支持箭头导向
             let hasPausedAt1s = false;
             let hasClickedFrontArrow = false; // 记录是否点击过指向用户的箭头
             introVideo.addEventListener('timeupdate', () => {
-                // 只有宫墙视频且未在1秒处暂停过且未点击过指向用户的箭头
-                if (currentVideo === 'intro-video.mp4' && !hasPausedAt1s && !hasClickedFrontArrow && introVideo.currentTime >= 1) {
+                // 三个视频都在1秒处显示箭头导向（未暂停过且未点击过指向用户的箭头）
+                if (!hasPausedAt1s && !hasClickedFrontArrow && introVideo.currentTime >= 1) {
                     introVideo.pause();
                     hasPausedAt1s = true;
+                    
+                    // 应用当前视频的箭头位置配置
+                    applyArrowPositions();
+                    
                     // 显示方向箭头
                     directionArrows.style.display = 'flex';
+                    
                     // 添加淡入动画 - 箭头
                     directionButtons.forEach((btn, index) => {
                         btn.style.opacity = '0';
@@ -866,6 +920,7 @@
                             btn.style.transform = btn.style.transform ? btn.style.transform.replace(' scale(0.5)', '') : 'scale(1)';
                         }, index * 100);
                     });
+                    
                     // 添加淡入动画 - 文字标签
                     arrowLabels.forEach((label, index) => {
                         label.style.opacity = '0';
@@ -940,8 +995,10 @@
                     const videoPath = button.getAttribute('data-video');
                     currentVideo = videoPath;
                     
-                    // 重置暂停标记（每次切换视频都重置，确保宫墙视频每次播放都会触发暂停）
+                    // 重置暂停标记（每次切换视频都重置）
                     hasPausedAt1s = false;
+                    hasClickedFrontArrow = false; // 同时重置点击标记
+                    
                     // 隐藏方向箭头
                     directionArrows.style.display = 'none';
                     
