@@ -518,15 +518,6 @@
             transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.2s ease 0.3s; 
         }
         
-        /* 视频优化：使用 object-fit: contain 保证完整显示 */
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #f7f3e2;
-        }
-        
         /* 触发框样式 - 全屏覆盖 */
         .trigger-box {
             position: absolute;
@@ -563,28 +554,12 @@
         }
         
         .trigger-box-left-placeholder {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(101, 67, 33, 0.8);
             font-size: 18px;
             text-align: center;
             padding: 20px;
             z-index: 2;
-            position: absolute;
-        }
-        
-        /* 视频优化：使用 object-fit: contain 保证完整显示，配合黑边填充 */
-        .video-wrapper {
             position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #f7f3e2;
-        }
-        #buildingVideo { 
-            position: relative;
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain;
-            z-index: 1; 
         }
         
         /* 右侧三分之二区域 */
@@ -1333,70 +1308,64 @@
         <img src="收集成功图.jpg" alt="收集成功" class="success-image">
     </div>
     
+    <!-- 拨云见日特效 -->
+    <div class="cloud-parting" id="cloudParting">
+        <div class="cloud-half cloud-left">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block;">
+                <defs>
+                    <filter id="cloudShadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="5" dy="0" stdDeviation="12" flood-color="#654321" flood-opacity="0.2"/>
+                    </filter>
+                    <linearGradient id="cloudGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#fdfbf5"/>
+                        <stop offset="100%" stop-color="#f4ebd8"/>
+                    </linearGradient>
+                </defs>
+                <rect width="400" height="800" fill="#f7f3e2"/>
+                <path d="M0,800 L250,800 C370,750 370,650 250,600 C370,550 370,450 250,400 C370,350 370,250 250,200 C370,150 370,50 250,0 L0,0 Z" fill="url(#cloudGrad)" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="4"/>
+                <path d="M250,750 C330,750 330,650 250,650 C180,650 180,720 250,720 C290,720 290,680 250,680" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                <path d="M250,550 C330,550 330,450 250,450 C180,450 180,520 250,520 C290,520 290,480 250,480" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                <path d="M250,350 C330,350 330,250 250,250 C180,250 180,320 250,320 C290,320 290,280 250,280" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                <path d="M250,150 C330,150 330,50 250,50 C180,50 180,120 250,120 C290,120 290,80 250,80" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                <path d="M0,800 L120,800 C220,730 220,670 120,620 C220,530 220,470 120,420 C220,330 220,270 120,220 C220,130 220,70 120,20 L0,0 Z" fill="#fffdf0" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="3"/>
+                <path d="M120,730 C180,730 180,670 120,670 C70,670 70,710 120,710 C150,710 150,685 120,685" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                <path d="M120,530 C180,530 180,470 120,470 C70,470 70,510 120,510 C150,510 150,485 120,485" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                <path d="M120,330 C180,330 180,270 120,270 C70,270 70,310 120,310 C150,310 150,285 120,285" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                <path d="M120,130 C180,130 180,70 120,70 C70,70 70,110 120,110 C150,110 150,85 120,85" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div class="cloud-half cloud-right">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block; transform: scaleX(-1);">
+                <defs>
+                    <filter id="cloudShadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="5" dy="0" stdDeviation="12" flood-color="#654321" flood-opacity="0.2"/>
+                    </filter>
+                    <linearGradient id="cloudGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#fdfbf5"/>
+                        <stop offset="100%" stop-color="#f4ebd8"/>
+                    </linearGradient>
+                </defs>
+                <rect width="400" height="800" fill="#f7f3e2"/>
+                <path d="M0,800 L250,800 C370,750 370,650 250,600 C370,550 370,450 250,400 C370,350 370,250 250,200 C370,150 370,50 250,0 L0,0 Z" fill="url(#cloudGrad)" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="4"/>
+                <path d="M250,750 C330,750 330,650 250,650 C180,650 180,720 250,720 C290,720 290,680 250,680" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                <path d="M250,550 C330,550 330,450 250,450 C180,450 180,520 250,520 C290,520 290,480 250,480" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                <path d="M250,350 C330,350 330,250 250,250 C180,250 180,320 250,320 C290,320 290,280 250,280" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                <path d="M250,150 C330,150 330,50 250,50 C180,50 180,120 250,120 C290,120 290,80 250,80" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
+                <path d="M0,800 L120,800 C220,730 220,670 120,620 C220,530 220,470 120,420 C220,330 220,270 120,220 C220,130 220,70 120,20 L0,0 Z" fill="#fffdf0" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="3"/>
+                <path d="M120,730 C180,730 180,670 120,670 C70,670 70,710 120,710 C150,710 150,685 120,685" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                <path d="M120,530 C180,530 180,470 120,470 C70,470 70,510 120,510 C150,510 150,485 120,485" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                <path d="M120,330 C180,330 180,270 120,270 C70,270 70,310 120,310 C150,310 150,285 120,285" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+                <path d="M120,130 C180,130 180,70 120,70 C70,70 70,110 120,110 C150,110 150,85 120,85" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </div>
+    
     <!-- 触发框 -->
     <div class="trigger-box" id="triggerBox">
         
-        <div class="cloud-parting" id="cloudParting">
-            <div class="cloud-half cloud-left">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block;">
-                    <defs>
-                        <filter id="cloudShadow" x="-20%" y="-20%" width="140%" height="140%">
-                            <feDropShadow dx="5" dy="0" stdDeviation="12" flood-color="#654321" flood-opacity="0.2"/>
-                        </filter>
-                        <linearGradient id="cloudGrad" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stop-color="#fdfbf5"/>
-                            <stop offset="100%" stop-color="#f4ebd8"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="400" height="800" fill="#f7f3e2"/>
-                    <path d="M0,800 L250,800 C370,750 370,650 250,600 C370,550 370,450 250,400 C370,350 370,250 250,200 C370,150 370,50 250,0 L0,0 Z" fill="url(#cloudGrad)" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="4"/>
-                    <path d="M250,750 C330,750 330,650 250,650 C180,650 180,720 250,720 C290,720 290,680 250,680" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M250,550 C330,550 330,450 250,450 C180,450 180,520 250,520 C290,520 290,480 250,480" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M250,350 C330,350 330,250 250,250 C180,250 180,320 250,320 C290,320 290,280 250,280" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M250,150 C330,150 330,50 250,50 C180,50 180,120 250,120 C290,120 290,80 250,80" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M0,800 L120,800 C220,730 220,670 120,620 C220,530 220,470 120,420 C220,330 220,270 120,220 C220,130 220,70 120,20 L0,0 Z" fill="#fffdf0" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="3"/>
-                    <path d="M120,730 C180,730 180,670 120,670 C70,670 70,710 120,710 C150,710 150,685 120,685" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M120,530 C180,530 180,470 120,470 C70,470 70,510 120,510 C150,510 150,485 120,485" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M120,330 C180,330 180,270 120,270 C70,270 70,310 120,310 C150,310 150,285 120,285" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M120,130 C180,130 180,70 120,70 C70,70 70,110 120,110 C150,110 150,85 120,85" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div class="cloud-half cloud-right">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" preserveAspectRatio="none" style="width: 100%; height: 100%; display: block; transform: scaleX(-1);">
-                    <defs>
-                        <filter id="cloudShadow" x="-20%" y="-20%" width="140%" height="140%">
-                            <feDropShadow dx="5" dy="0" stdDeviation="12" flood-color="#654321" flood-opacity="0.2"/>
-                        </filter>
-                        <linearGradient id="cloudGrad" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stop-color="#fdfbf5"/>
-                            <stop offset="100%" stop-color="#f4ebd8"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="400" height="800" fill="#f7f3e2"/>
-                    <path d="M0,800 L250,800 C370,750 370,650 250,600 C370,550 370,450 250,400 C370,350 370,250 250,200 C370,150 370,50 250,0 L0,0 Z" fill="url(#cloudGrad)" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="4"/>
-                    <path d="M250,750 C330,750 330,650 250,650 C180,650 180,720 250,720 C290,720 290,680 250,680" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M250,550 C330,550 330,450 250,450 C180,450 180,520 250,520 C290,520 290,480 250,480" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M250,350 C330,350 330,250 250,250 C180,250 180,320 250,320 C290,320 290,280 250,280" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M250,150 C330,150 330,50 250,50 C180,50 180,120 250,120 C290,120 290,80 250,80" fill="none" stroke="#c8b598" stroke-width="5" stroke-linecap="round"/>
-                    <path d="M0,800 L120,800 C220,730 220,670 120,620 C220,530 220,470 120,420 C220,330 220,270 120,220 C220,130 220,70 120,20 L0,0 Z" fill="#fffdf0" filter="url(#cloudShadow)" stroke="#d4c4a8" stroke-width="3"/>
-                    <path d="M120,730 C180,730 180,670 120,670 C70,670 70,710 120,710 C150,710 150,685 120,685" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M120,530 C180,530 180,470 120,470 C70,470 70,510 120,510 C150,510 150,485 120,485" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M120,330 C180,330 180,270 120,270 C70,270 70,310 120,310 C150,310 150,285 120,285" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M120,130 C180,130 180,70 120,70 C70,70 70,110 120,110 C150,110 150,85 120,85" fill="none" stroke="#e3d5c1" stroke-width="4" stroke-linecap="round"/>
-                </svg>
-            </div>
-        </div>
-
         <!-- 左侧三分之一预留区域 - 用于3D效果 -->
         <div class="trigger-box-left" id="triggerBoxLeft">
-            <div class="scroll-frame">
-                <div class="scroll-roller left"></div>
-                <div class="scroll-roller right"></div>
-                <div class="video-wrapper">
-                    <video id="buildingVideo" autoplay loop muted playsinline></video>
-                </div>
-                <div class="trigger-box-left-placeholder" id="videoPlaceholder">3D展示区域<br>（预留）</div>
-            </div>
+            <div class="trigger-box-left-placeholder">3D展示区域<br>（预留）</div>
         </div>
         
         <!-- 右侧三分之二区域 -->
@@ -2275,71 +2244,297 @@
                 // 更新进度
                 updateProgress();
                 
-                // 更新触发框内容
-                boxTitle.textContent = buildingData[buildingName].title;
-                boxContentIntro.textContent = buildingData[buildingName].content;
-                buildingImage.src = buildingData[buildingName].image;
-                
-                // 处理视频播放逻辑
-                const buildingVideo = document.getElementById('buildingVideo');
-                const videoPlaceholder = document.getElementById('videoPlaceholder');
-                const videoSrc = buildingData[buildingName].video;
-                if (videoSrc) {
-                    buildingVideo.classList.remove('revealed');
-                    buildingVideo.src = videoSrc;
-                    buildingVideo.style.display = 'block';
-                    videoPlaceholder.style.display = 'none';
-                    // 移除循环播放，让视频播放完后停在最后一帧
-                    buildingVideo.loop = false;
-                    // 添加播放结束事件，确保停在最后一帧
-                    const handleVideoEnd = function() {
-                        // 视频播放结束时，将播放位置设为最后一帧
-                        buildingVideo.currentTime = buildingVideo.duration;
-                        buildingVideo.pause();
-                    };
-                    // 先移除之前的事件监听器，避免重复绑定
-                    buildingVideo.removeEventListener('ended', handleVideoEnd);
-                    buildingVideo.addEventListener('ended', handleVideoEnd);
-                    buildingVideo.play().catch(e => console.log("浏览器限制了自动播放", e));
-                    // 云雾散开后渐显视频
-                    setTimeout(() => {
-                        buildingVideo.classList.add('revealed');
-                    }, 600);
+                // 检查是否是粤派、苏派、晋派、川派、闽派、海派、徽派或京派建筑
+                if (buildingName === '广东镬耳墙' || buildingName === '苏州庭院' || buildingName === '山西大院' || buildingName === '川渝吊脚楼' || buildingName === '福建土楼' || buildingName === '上海石库门' || buildingName === '安徽马头墙' || buildingName === '北京四合院') {
+                    // 先显示祥云动画
+                    const cloudParting = document.getElementById('cloudParting');
+                    if (cloudParting) {
+                        // 先重置云层的状态使其居中闭合
+                        cloudParting.classList.remove('open');
+                        cloudParting.classList.add('active');
+
+                        // 稍微延迟后触发左右拨开云层的动画 (产生揭开帷幕的感觉)
+                        setTimeout(() => {
+                            cloudParting.classList.add('open');
+                            
+                            // 祥云动画结束后直接显示弹窗
+                            setTimeout(() => {
+                                // 直接显示弹窗，视频将在3D预留区域播放
+                                showBuildingPopup(buildingName, true);
+                            }, 1500); // 等待祥云动画完成
+                        }, 50);
+                    } else {
+                        // 如果没有云层元素，直接显示弹窗
+                        showBuildingPopup(buildingName);
+                    }
                 } else {
-                    buildingVideo.classList.remove('revealed');
-                    buildingVideo.style.display = 'none';
-                    videoPlaceholder.style.display = 'block';
-                }
-                
-                // 初始化探索点
-                initExplorationPoints(buildingName);
-                
-                // 显示遮罩层、触发框和关闭按钮
-                overlay.classList.add('active');
-                triggerBox.classList.add('active');
-                closeBtn.classList.add('active');
-                // 修改导航栏背景，使其与触发框背景一致
-                const topNav = document.getElementById('top-nav');
-                topNav.style.background = 'rgba(247, 243, 226, 0.85)';
-                topNav.style.backdropFilter = 'none';
-                topNav.style.webkitBackdropFilter = 'none';
-                topNav.style.borderBottom = 'none';
-                topNav.style.boxShadow = 'none';
-
-                // --- 触发拨云见日特效 ---
-                const cloudParting = document.getElementById('cloudParting');
-                if (cloudParting) {
-                    // 先重置云层的状态使其居中闭合
-                    cloudParting.classList.remove('open');
-                    cloudParting.classList.add('active');
-
-                    // 稍微延迟后触发左右拨开云层的动画 (产生揭开帷幕的感觉)
-                    setTimeout(() => {
-                        cloudParting.classList.add('open');
-                    }, 50);
+                    // 其他建筑直接显示弹窗
+                    showBuildingPopup(buildingName);
                 }
             });
         });
+        
+        // 显示建筑弹窗函数
+        function showBuildingPopup(buildingName, fromVideo = false) {
+            // 更新触发框内容
+            boxTitle.textContent = buildingData[buildingName].title;
+            boxContentIntro.textContent = buildingData[buildingName].content;
+            buildingImage.src = buildingData[buildingName].image;
+            
+            // 初始化探索点
+            initExplorationPoints(buildingName);
+            
+            // 显示遮罩层
+            overlay.classList.add('active');
+            
+            // 显示触发框
+            triggerBox.classList.add('active');
+            
+            // 如果是粤派、苏派、晋派、川派、闽派、海派、徽派或京派建筑，在3D预留区域播放视频
+            if (fromVideo && (buildingName === '广东镬耳墙' || buildingName === '苏州庭院' || buildingName === '山西大院' || buildingName === '川渝吊脚楼' || buildingName === '福建土楼' || buildingName === '上海石库门' || buildingName === '安徽马头墙' || buildingName === '北京四合院')) {
+                // 直接显示弹窗，不使用滑入动画
+                triggerBox.style.transform = 'translateX(0)';
+                triggerBox.style.transition = 'none';
+                
+                // 在3D预留区域播放视频
+                const triggerBoxLeft = document.getElementById('triggerBoxLeft');
+                if (triggerBoxLeft) {
+                    // 清空3D预留位置的内容
+                    triggerBoxLeft.innerHTML = '';
+                    
+                    // 创建视频元素
+                    const video = document.createElement('video');
+                    // 根据建筑类型选择对应的视频
+                    if (buildingName === '广东镬耳墙') {
+                        video.src = '游戏地图相关/推进动画粤派 (2).mp4';
+                    } else if (buildingName === '苏州庭院') {
+                        video.src = '游戏地图相关/推进动画苏派.mp4';
+                    } else if (buildingName === '山西大院') {
+                        video.src = '游戏地图相关/推进动画晋派.mp4';
+                    } else if (buildingName === '川渝吊脚楼') {
+                        video.src = '游戏地图相关/推进动画川派.mp4';
+                    } else if (buildingName === '福建土楼') {
+                        video.src = '游戏地图相关/推进动画闽派.mp4';
+                    } else if (buildingName === '上海石库门') {
+                        video.src = '游戏地图相关/推进动画海派.mp4';
+                    } else if (buildingName === '安徽马头墙') {
+                        video.src = '游戏地图相关/推进动画徽派.mp4';
+                    } else if (buildingName === '北京四合院') {
+                        video.src = '游戏地图相关/推进动画京派.mp4';
+                    }
+                    video.autoplay = true;
+                    video.muted = true;
+                    video.playsinline = true;
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'cover';
+                    // 根据建筑类型调整视频位置
+                    if (buildingName === '山西大院') {
+                        video.style.objectPosition = '55% center'; // 晋派建筑：视频中心更靠右
+                    } else if (buildingName === '川渝吊脚楼') {
+                        video.style.objectPosition = '45% center'; // 川派建筑：视频中心较大左移，再右移一部分
+                    } else if (buildingName === '福建土楼') {
+                        video.style.objectPosition = '59% center'; // 闽派建筑：视频中心更靠右
+                    } else {
+                        video.style.objectPosition = '55% center'; // 其他建筑：视频中心更靠右
+                    }
+                    
+                    // 将视频添加到3D预留位置
+                    triggerBoxLeft.appendChild(video);
+                    
+                    // 视频播放结束后，保留最后一帧
+                    if (buildingName === '上海石库门') {
+                        // 海派建筑：视频播放到85%时就停止并截取帧
+                        video.addEventListener('timeupdate', function() {
+                            if (video.currentTime / video.duration >= 0.85) {
+                                video.pause();
+                                
+                                // 创建canvas来截取视频当前帧
+                                const canvas = document.createElement('canvas');
+                                canvas.width = video.videoWidth;
+                                canvas.height = video.videoHeight;
+                                const ctx = canvas.getContext('2d');
+                                
+                                // 将视频当前帧绘制到canvas上
+                                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                
+                                // 将canvas转换为图片
+                                const imageData = canvas.toDataURL('image/png');
+                                
+                                // 创建图片元素
+                                const img = document.createElement('img');
+                                img.src = imageData;
+                                img.style.width = '100%';
+                                img.style.height = '100%';
+                                img.style.objectFit = 'cover';
+                                img.style.objectPosition = '55% center'; // 海派建筑：图片中心更靠右
+                                
+                                // 替换视频元素为图片
+                                triggerBoxLeft.innerHTML = '';
+                                triggerBoxLeft.appendChild(img);
+                            }
+                        });
+                    } else if (buildingName === '福建土楼') {
+                        // 闽派建筑：视频播放到85%时就停止并截取帧
+                        video.addEventListener('timeupdate', function() {
+                            if (video.currentTime / video.duration >= 0.85) {
+                                video.pause();
+                                
+                                // 创建canvas来截取视频当前帧
+                                const canvas = document.createElement('canvas');
+                                canvas.width = video.videoWidth;
+                                canvas.height = video.videoHeight;
+                                const ctx = canvas.getContext('2d');
+                                
+                                // 将视频当前帧绘制到canvas上
+                                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                
+                                // 将canvas转换为图片
+                                const imageData = canvas.toDataURL('image/png');
+                                
+                                // 创建图片元素
+                                const img = document.createElement('img');
+                                img.src = imageData;
+                                img.style.width = '100%';
+                                img.style.height = '100%';
+                                img.style.objectFit = 'cover';
+                                img.style.objectPosition = '59% center'; // 闽派建筑：图片中心更靠右
+                                
+                                // 替换视频元素为图片
+                                triggerBoxLeft.innerHTML = '';
+                                triggerBoxLeft.appendChild(img);
+                            }
+                        });
+                    } else {
+                        // 其他建筑：视频播放到95%时就停止并截取帧
+                        video.addEventListener('timeupdate', function() {
+                            if (video.currentTime / video.duration >= 0.95) {
+                                video.pause();
+                                
+                                // 创建canvas来截取视频当前帧
+                                const canvas = document.createElement('canvas');
+                                canvas.width = video.videoWidth;
+                                canvas.height = video.videoHeight;
+                                const ctx = canvas.getContext('2d');
+                                
+                                // 将视频当前帧绘制到canvas上
+                                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                                
+                                // 将canvas转换为图片
+                                const imageData = canvas.toDataURL('image/png');
+                                
+                                // 创建图片元素
+                                const img = document.createElement('img');
+                                img.src = imageData;
+                                img.style.width = '100%';
+                                img.style.height = '100%';
+                                img.style.objectFit = 'cover';
+                                // 根据建筑类型调整图片位置
+                                if (buildingName === '山西大院') {
+                                    img.style.objectPosition = '55% center'; // 晋派建筑：图片中心更靠右
+                                } else if (buildingName === '川渝吊脚楼') {
+                                    img.style.objectPosition = '45% center'; // 川派建筑：视频中心较大左移，再右移一部分
+                                } else {
+                                    img.style.objectPosition = '55% center'; // 其他建筑：图片中心更靠右
+                                }
+                                
+                                // 替换视频元素为图片
+                                triggerBoxLeft.innerHTML = '';
+                                triggerBoxLeft.appendChild(img);
+                            }
+                        });
+                    }
+                }
+            } else {
+                // 普通显示，从右侧滑入
+                triggerBox.style.transform = 'translateX(100%)';
+                triggerBox.style.transition = 'transform 0.8s ease-out';
+                
+                // 触发滑入动画
+                setTimeout(() => {
+                    triggerBox.style.transform = 'translateX(0)';
+                }, 10);
+            }
+            
+            // 显示关闭按钮
+            closeBtn.classList.add('active');
+            
+            // 修改导航栏背景，使其与触发框背景一致
+            const topNav = document.getElementById('top-nav');
+            topNav.style.background = 'rgba(247, 243, 226, 0.85)';
+            topNav.style.backdropFilter = 'none';
+            topNav.style.webkitBackdropFilter = 'none';
+            topNav.style.borderBottom = 'none';
+            topNav.style.boxShadow = 'none';
+        }
+        
+        // 截取视频最后一帧并显示在3D预留位置
+        function captureVideoFrame(video) {
+            // 确保视频已经加载完成
+            if (video.readyState < 2) {
+                console.log("视频未加载完成，无法截取帧");
+                return;
+            }
+            
+            // 获取3D预留区域的尺寸
+            const triggerBoxLeft = document.getElementById('triggerBoxLeft');
+            if (!triggerBoxLeft) {
+                console.log("3D预留区域不存在");
+                return;
+            }
+            
+            // 获取3D预留区域的实际尺寸
+            const leftWidth = triggerBoxLeft.offsetWidth;
+            const leftHeight = triggerBoxLeft.offsetHeight;
+            
+            // 创建canvas来截取视频帧，使用3D预留区域的尺寸
+            const canvas = document.createElement('canvas');
+            canvas.width = leftWidth;
+            canvas.height = leftHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // 计算视频的宽高比和3D区域的宽高比
+            const videoAspectRatio = video.videoWidth / video.videoHeight;
+            const leftAspectRatio = leftWidth / leftHeight;
+            
+            let drawWidth, drawHeight, offsetX, offsetY;
+            
+            // 根据宽高比计算绘制区域，确保视频内容居中显示
+            if (videoAspectRatio > leftAspectRatio) {
+                // 视频比3D区域更宽，以高度为基准
+                drawHeight = leftHeight;
+                drawWidth = drawHeight * videoAspectRatio;
+                offsetX = (leftWidth - drawWidth) / 2;
+                offsetY = 0;
+            } else {
+                // 视频比3D区域更高，以宽度为基准
+                drawWidth = leftWidth;
+                drawHeight = drawWidth / videoAspectRatio;
+                offsetX = 0;
+                offsetY = (leftHeight - drawHeight) / 2;
+            }
+            
+            // 将视频当前帧绘制到canvas上，保持正确的宽高比并居中
+            ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
+            
+            // 将canvas转换为图片
+            const imageData = canvas.toDataURL('image/png');
+            
+            // 在3D预留位置显示截取的图片
+            // 清空3D预留位置的内容
+            triggerBoxLeft.innerHTML = '';
+            
+            // 创建图片元素
+            const img = document.createElement('img');
+            img.src = imageData;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.objectPosition = 'center';
+            
+            // 将图片添加到3D预留位置
+            triggerBoxLeft.appendChild(img);
+        }
         
         // 放大镜功能
         imageArea.addEventListener('mousemove', function(e) {
