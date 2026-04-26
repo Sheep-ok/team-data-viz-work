@@ -681,6 +681,208 @@
             font-weight: bold;
         }
         
+        /* 演示视频按钮 */
+        .video-demo-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #8b5a2b 0%, #6b4423 100%);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(139, 90, 43, 0.3);
+        }
+        
+        .video-demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(139, 90, 43, 0.4);
+            background: linear-gradient(135deg, #a06030 0%, #8b5a2b 100%);
+        }
+        
+        /* 视频弹窗遮罩 */
+        .video-modal-mask {
+            display: none;
+            position: absolute;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 1527px;
+            height: 740px;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        /* 视频弹窗 */
+        .video-modal {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            left: 364px;
+            top: 95px;
+            width: 800px;
+            height: 550px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        .video-modal-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .video-close-btn {
+            position: absolute;
+            top: -35px;
+            right: 0;
+            color: #fff;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 10;
+            width: 30px;
+            height: 30px;
+            line-height: 26px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+        }
+        
+        .video-close-btn:hover,
+        .video-close-btn:focus {
+            color: #ffd700;
+            text-decoration: none;
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .video-modal-content video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+        
+        /* 小程序图片轮播样式 */
+        .carousel-section {
+            width: 100%;
+            margin-bottom: 30px;
+            background: rgba(245, 232, 211, 0.7);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .carousel-title {
+            font-size: 24px;
+            color: #5d3a1a;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .carousel-slide {
+            flex: 0 0 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .carousel-slide img {
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 轮播箭头 */
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(139, 90, 43, 0.8);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .carousel-arrow:hover {
+            background: rgba(139, 90, 43, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-arrow.prev {
+            left: 20px;
+        }
+        
+        .carousel-arrow.next {
+            right: 20px;
+        }
+        
+        /* 轮播指示器 */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(139, 90, 43, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .carousel-indicator.active {
+            background: rgba(139, 90, 43, 1);
+            transform: scale(1.2);
+        }
+        
         /* 特色产品展示 */
         .features-section {
             width: 100%;
@@ -962,6 +1164,69 @@
                     </div>
                 </div>
                 
+                <!-- 小程序展示卡片 (3*2) -->
+                <div class="card card-complete">
+                    <div class="card-image-wrapper">
+                        <img src="小程序展示.jpg" alt="小程序展示" class="card-image">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">国风筑韵 · 小程序展示</h3>
+                        <p class="card-description">体验国风筑韵小程序，开启沉浸式古建筑探索之旅，与卯卯一起发现东方之美。小程序尚未正式上线，敬请期待...</p>
+                        <button class="video-demo-btn" onclick="openVideoModal()">演示视频</button>
+                    </div>
+                </div>
+                
+                <!-- 小程序图片轮播卡片 (3*2) -->
+                <div class="card card-complete">
+                    <div class="carousel-section">
+                        <h4 class="carousel-title">珐琅冰箱贴系列</h4>
+                        <div class="carousel-container">
+                            <button class="carousel-arrow prev" onclick="prevSlide()">&#8249;</button>
+                            <div class="carousel-track" id="carouselTrack">
+                                <div class="carousel-slide">
+                                    <img src="小程序图片/珐琅冰箱贴京派.png" alt="珐琅冰箱贴京派">
+                                </div>
+                                <div class="carousel-slide">
+                                    <img src="小程序图片/珐琅冰箱贴京派光影.png" alt="珐琅冰箱贴京派光影">
+                                </div>
+                                <div class="carousel-slide">
+                                    <img src="小程序图片/珐琅冰箱贴徽派.png" alt="珐琅冰箱贴徽派">
+                                </div>
+                                <div class="carousel-slide">
+                                    <img src="小程序图片/珐琅冰箱贴徽派光影.png" alt="珐琅冰箱贴徽派光影">
+                                </div>
+                                <div class="carousel-slide">
+                                    <img src="小程序图片/珐琅冰箱贴苏派.png" alt="珐琅冰箱贴苏派">
+                                </div>
+                                <div class="carousel-slide">
+                                    <img src="小程序图片/珐琅冰箱贴苏派光影.png" alt="珐琅冰箱贴苏派光影">
+                                </div>
+                                <div class="carousel-slide">
+                                    <img src="小程序图片/珐琅冰箱贴闽派.png" alt="珐琅冰箱贴闽派">
+                                </div>
+                                <div class="carousel-slide">
+                                    <img src="小程序图片/珐琅冰箱贴闽派光影.png" alt="珐琅冰箱贴闽派光影">
+                                </div>
+                            </div>
+                            <button class="carousel-arrow next" onclick="nextSlide()">&#8250;</button>
+                        </div>
+                        <div class="carousel-indicators" id="carouselIndicators">
+                            <button class="carousel-indicator active" onclick="goToSlide(0)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide(1)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide(2)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide(3)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide(4)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide(5)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide(6)"></button>
+                            <button class="carousel-indicator" onclick="goToSlide(7)"></button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">文创产品展示</h3>
+                        <p class="card-description">欣赏精美文创产品图片，体验东方美学魅力</p>
+                    </div>
+                </div>
+                
                 <!-- 拍照功能卡片 (3*2) -->
                 <div class="card photo-card">
                     <div class="card-image-wrapper">
@@ -1088,6 +1353,19 @@
                         <div class="feature-title">礼品</div>
                     </div>
                 </div>
+            </div>
+        </div>
+        
+        <!-- 视频弹窗遮罩 -->
+        <div id="videoModalMask" class="video-modal-mask" onclick="closeVideoModal()"></div>
+        
+        <!-- 视频弹窗 -->
+        <div id="videoModal" class="video-modal">
+            <div class="video-modal-content">
+                <span class="video-close-btn" onclick="closeVideoModal()">&times;</span>
+                <video id="demoVideo" controls autoplay>
+                    <source src="小程序录屏.mp4" type="video/mp4">
+                </video>
             </div>
         </div>
     </div>
@@ -1283,6 +1561,75 @@
                 }
             });
         })();
+    
+    // 小程序图片轮播功能
+    let currentSlide = 0;
+    
+    function updateCarousel() {
+        const track = document.getElementById('carouselTrack');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        
+        if (track && indicators.length > 0) {
+            // 更新轮播位置
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // 更新指示器
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+        }
+    }
+    
+    function nextSlide() {
+        const slides = document.querySelectorAll('.carousel-slide');
+        if (slides.length > 0) {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateCarousel();
+        }
+    }
+    
+    function prevSlide() {
+        const slides = document.querySelectorAll('.carousel-slide');
+        if (slides.length > 0) {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateCarousel();
+        }
+    }
+    
+    function goToSlide(index) {
+        currentSlide = index;
+        updateCarousel();
+    }
+    
+    // 视频弹窗功能
+    function openVideoModal() {
+        const modal = document.getElementById('videoModal');
+        const mask = document.getElementById('videoModalMask');
+        const video = document.getElementById('demoVideo');
+        if (modal && mask && video) {
+            mask.style.display = 'block';
+            modal.style.display = 'block';
+            video.play().catch(err => console.log('视频自动播放失败:', err));
+        }
+    }
+    
+    function closeVideoModal() {
+        const modal = document.getElementById('videoModal');
+        const mask = document.getElementById('videoModalMask');
+        const video = document.getElementById('demoVideo');
+        if (modal && mask && video) {
+            video.pause();
+            modal.style.display = 'none';
+            mask.style.display = 'none';
+        }
+    }
+    
+    // ESC键关闭弹窗
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeVideoModal();
+        }
+    });
     </script>
 </body>
 </html>
