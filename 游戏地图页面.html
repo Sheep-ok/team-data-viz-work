@@ -2305,15 +2305,11 @@
                         cloudParting.classList.remove('open');
                         cloudParting.classList.add('active');
 
-                        // 稍微延迟后触发左右拨开云层的动画 (产生揭开帷幕的感觉)
+                        // 祥云开始打开的同时就显示弹窗，实现同步效果
                         setTimeout(() => {
                             cloudParting.classList.add('open');
-                            
-                            // 祥云动画结束后直接显示弹窗
-                            setTimeout(() => {
-                                // 直接显示弹窗，视频将在3D预留区域播放
-                                showBuildingPopup(buildingName, true);
-                            }, 1500); // 等待祥云动画完成
+                            // 祥云开始打开的瞬间就显示弹窗，不再等待动画结束
+                            showBuildingPopup(buildingName, true);
                         }, 50);
                     } else {
                         // 如果没有云层元素，直接显示弹窗
