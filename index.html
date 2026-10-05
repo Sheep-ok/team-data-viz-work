@@ -12,7 +12,7 @@
       }
     </style>
     <meta charset="UTF-8">
-    <title>国风筑韵-伊始</title>
+    <title>寻韵古建-伊始</title>
     <style>
         /* ========== 入口页面样式 ========== */
         :root {
@@ -298,6 +298,8 @@
             pointer-events: none;
             z-index: 9999;
             overflow: visible;
+            /* 整体与页面背景反相，浅底显示深色、深底显示浅色 */
+            mix-blend-mode: difference;
         }
 
         /* 鼠标小圆点 */
@@ -482,7 +484,7 @@
             <div class="nav-container">
                 <!-- 品牌标识 -->
                 <div class="nav-brand">
-                    <a href="index.html">国风筑韵</a>
+                    <a href="index.html">寻韵古建</a>
                 </div>
                 
                 <!-- 导航菜单 -->
@@ -724,7 +726,7 @@
                 <button id="jump-to-caisson" style="margin-top: 15px; padding: 8px 16px; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 4px; color: white; font-size: 14px; cursor: pointer; transition: all 0.3s ease;">跳转介绍</button>
             </div>
             <img id="title-image" src="大字标题.jpg" alt="大字标题">
-            <h2 id="subtitle">——以古建筑中民居为主的数字化可视平台</h2>
+            <h2 id="subtitle">——AI赋能中国传统民居数字文化交互平台</h2>
             <button id="start-btn">启章</button>
         </div>
     </div>

@@ -12,7 +12,7 @@
       }
     </style>
     <meta charset="UTF-8">
-    <title>国风筑韵-观数</title>
+    <title>寻韵古建-观数</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.min.js"></script>
@@ -440,6 +440,8 @@
             pointer-events: none;
             z-index: 9999;
             overflow: visible;
+            /* 整体与页面背景反相，浅底显示深色、深底显示浅色 */
+            mix-blend-mode: difference;
         }
 
         /* 鼠标小圆点 */
@@ -532,6 +534,8 @@
             pointer-events: none;
             z-index: 9999;
             overflow: visible;
+            /* 整体与页面背景反相，浅底显示深色、深底显示浅色 */
+            mix-blend-mode: difference;
         }
 
         /* 鼠标小圆点 */
@@ -577,7 +581,7 @@
             <div class="nav-container">
                 <!-- 标识 -->
                 <div class="nav-brand">
-                    <a href="index.html">国风筑韵</a>
+                    <a href="index.html">寻韵古建</a>
                 </div>
                 
                 <!-- 导航菜单 -->

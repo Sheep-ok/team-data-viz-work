@@ -12,9 +12,9 @@
       }
     </style>
     <meta charset="UTF-8">
-    <title>国风筑韵-拾萃</title>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1646424915/camera_utils.min.js"></script>
+    <title>寻韵古建-拾萃</title>
+    <!-- MediaPipe 使用项目内置资源，避免 CDN/WASM 下载失败导致一直卡在 wasm-instantiate。 -->
+    <script src="_mp_tmp/hands.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
     <style>
         /* ========== 抽卡页面样式 ========== */
@@ -378,6 +378,8 @@
             pointer-events: none;
             z-index: 9999;
             overflow: visible;
+            /* 整体与页面背景反相，浅底显示深色、深底显示浅色 */
+            mix-blend-mode: difference;
         }
 
         /* 鼠标小圆点 */
@@ -666,7 +668,7 @@
             <div class="nav-container">
                 <!-- 标识 -->
                 <div class="nav-brand">
-                    <a href="index.html">国风筑韵</a>
+                    <a href="index.html">寻韵古建</a>
                 </div>
                 
                 <!-- 导航菜单 -->
@@ -781,7 +783,7 @@
     
     <script>
         // ========== 抽卡页面脚本 ==========
-        function initChooseCard() {
+        async function initChooseCard() {
             // ========== DOM元素引用 ==========
             const carousel = document.getElementById('carousel'); // 3D旋转舞台
             const statusDiv = document.getElementById('status'); // 状态提示栏
@@ -1034,11 +1036,11 @@
                         }, i * 80); // 减少延迟从150ms到80ms，加快入场速度
                     });
                     
-                    // 动画结束后开始自动旋转
+                    // 动画结束后保持 INIT，等待手势初始化结果决定进入手势或鼠标模式。
+                    // 不在延迟回调中覆盖状态栏，否则摄像头失败后的降级提示会被误覆盖。
                     setTimeout(() => {
                         requestAnimationFrame(() => {
-                            interactionState = "IDLE";
-                            statusDiv.innerHTML = "✅ 初始化成功！<br>✊ 握拳：旋转洗牌中...<br>☝️ 比1：选择该卡牌<br>🖐️ 张手：查看详情";
+                            console.log('卡牌入场动画完成');
                         });
                     }, cardCount * 80 + 800); // 调整等待时间，与新的延迟匹配
                 }
@@ -1082,8 +1084,8 @@
                 }
             }
             
-            // 开始初始化
-            initialize();
+            // 先完成卡牌创建，再启动手势或鼠标交互；避免降级事件绑定到空数组。
+            await initialize();
 
             // ========== 2. 动画循环 ==========
             let lastTime = 0;
@@ -1291,24 +1293,25 @@
         let gestureTimer = null;
         const gestureDebounceTime = 200; // 防抖时间
 
+        // 为模型初始化增加真正可等待的超时；只有 WASM/模型加载完成后才显示“就绪”。
+        function withTimeout(promise, timeoutMs, message) {
+            let timer;
+            const timeout = new Promise((_, reject) => {
+                timer = setTimeout(() => reject(new Error(message)), timeoutMs);
+            });
+            return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+        }
+
         // 初始化手势识别（优化版，带超时和降级）
         async function initGestureRecognition() {
-            // 创建超时Promise
-            const timeoutPromise = new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    reject(new Error('手势识别初始化超时'));
-                }, 10000); // 10秒超时
-            });
-
-            const initPromise = new Promise(async (resolve, reject) => {
-                try {
+            try {
                     // ========== 5. MediaPipe手势识别配置 ==========
                     // 优化：预加载状态反馈
                     statusDiv.innerHTML = "🤚 正在初始化手势识别...<br>请将手放在摄像头前";
                     
-                    // 初始化MediaPipe Hands实例 - 使用指定版本的CDN路径
+                    // 初始化 MediaPipe Hands 实例，全部资源均从本地目录读取。
                     const hands = new Hands({
-                        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/${file}`
+                        locateFile: (file) => `_mp_tmp/${file}`
                     });
                     
                     // 优化手势识别参数 - 提高识别率
@@ -1322,6 +1325,14 @@
                         staticImageMode: false, // 对于视频流使用false，提高性能
                         refineLandmarks: true // 启用细化关键点，提高手势识别准确性
                     });
+
+                    // hands.send() 会隐式初始化，但不能被可靠地判断是否成功。
+                    // 显式等待 initialize()，避免模型仍卡住时误报“初始化完成”。
+                    await withTimeout(
+                        hands.initialize(),
+                        15000,
+                        'MediaPipe Hands 模型加载超时'
+                    );
                 
                 // 手势识别结果防抖 - 降低延迟
                 let lastGesture = null;
@@ -1468,14 +1479,14 @@
                 // 初始化完成后更新状态
                 statusDiv.innerHTML = "✅ 手势识别就绪！<br>✊ 握拳：开始/旋转卡牌<br>☝️ 比1：选择卡牌<br>🖐️ 张手：查看详情";
                 
-                resolve();
             } catch (error) {
-                reject(error);
+                console.error('手势识别初始化失败:', error);
+                fallbackToMouseInteraction();
             }
-        });
+        }
 
-            // 降级到鼠标交互模式
-            function fallbackToMouseInteraction() {
+        // 降级到鼠标交互模式
+        function fallbackToMouseInteraction() {
                 // 隐藏摄像头视频
                 const inputVideo = document.getElementById('input_video');
                 if (inputVideo) {
@@ -1509,25 +1520,10 @@
                 // 自动完成初始化，进入空闲状态
                 initComplete = true;
                 interactionState = "IDLE";
-            }
-
-            try {
-                // 使用Promise.race实现超时控制
-                await Promise.race([initPromise, timeoutPromise]);
-            } catch (error) {
-                console.error('手势识别初始化失败或超时:', error);
-                // 降级到鼠标交互模式
-                fallbackToMouseInteraction();
-            }
         }
 
-        // 初始化手势识别
-        (async function() {
-            await initGestureRecognition();
-        })();
-        
-        // 初始化完成
-        statusDiv.innerHTML = "初始化中...<br>卡牌正在入场，请稍候";
+        // 卡牌 DOM 已创建完成，此时再初始化手势识别。
+        await initGestureRecognition();
         
         // 确保游戏循环正常运行
         console.log('游戏初始化完成，等待手势输入');
