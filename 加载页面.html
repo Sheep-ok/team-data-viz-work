@@ -14,8 +14,8 @@
     <meta charset="UTF-8">
     <title>寻韵古建-启卷</title>
     <!-- 预加载MediaPipe模型 -->
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="_mp_tmp/hands.min.js"></script>
+    <script src="_vendor/camera_utils.js"></script>
     <style>
         /* ========== 基础样式 ========== */
         * {
@@ -755,7 +755,7 @@
                         // 创建Hands实例，触发模型下载
                         const hands = new Hands({
                             locateFile: (file) => {
-                                return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+                                return `_mp_tmp/${file}`;
                             }
                         });
                         
